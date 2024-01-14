@@ -5,7 +5,7 @@ import httpx
 import pytest
 from httpx import Client
 
-devices_dict = toml.load("/config.toml")
+devices_dict = toml.load("../resources/config.toml")
 
 
 @pytest.mark.parametrize("devices", devices_dict.items())
