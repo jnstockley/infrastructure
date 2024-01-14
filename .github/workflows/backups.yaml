@@ -19,7 +19,7 @@ jobs:
           tags: tag:github
       - name: Step 3 - Test Tailscale
         run: |
-          ping 192.168.1.83 -c 5
-          ping 192.168.0.17 -c 5
-          ping 192.168.0.198 -c 5
-          ping 100.120.206.24 -c 5
+          ping ${{ secrets.BACKUP_SERVER_IP }} -c 5
+          ping ${{ secrets.CHICAGO_HOME_IP }} -c 5
+          ping ${{ secrets.IOWA_HOME_IP }} -c 5
+          ping ${{ secrets.SYNOLOGY_IP }} -c 5
