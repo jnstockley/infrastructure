@@ -12,7 +12,7 @@ jobs:
     
     steps:
       - name: Step 1 - Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Step 2 - Setup and Connect to Tailscale
         uses: tailscale/github-action@v2
         with:
