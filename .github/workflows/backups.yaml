@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Step 1 - Checkout Nightly Branch
+      - name: Step 1 - Checkout
         uses: actions/checkout@v3
       - name: Step 2 - Setup and Connect to Tailscale
         uses: tailscale/github-action@v2
@@ -17,9 +17,18 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
-      - name: Step 3 - Test Tailscale
+      - name: Step 3 - Create config file
         run: |
-          ping ${{ secrets.BACKUP_SERVER_IP }} -c 5
-          ping ${{ secrets.CHICAGO_HOME_IP }} -c 5
-          ping ${{ secrets.IOWA_HOME_IP }} -c 5
-          ping ${{ secrets.SYNOLOGY_IP }} -c 5
+          touch resources/config.toml
+          echo "\"http://${{ secrets.BACKUP_SERVER_IP }}:8384\" = \"${{ secrets.BACKUP_SERVER_API_KEY }}\"" >> resources/config.toml
+          echo "\"http://${{ secrets.CHICAGO_HOME_IP }}:8384\ = \"${{ secrets.CHICAGO_HOME_API_KEY }}\"" >> resources/config.toml
+          echo "\"http://${{ secrets.IOWA_HOME_IP }}:8384\" = \"${{ secrets.IOWA_HOME_API_KEY }}\"" >> resources/config.toml
+          echo "\"http://${{ secrets.SYNOLOGY_IP }}:8384\" = \"${{ secrets.SYNOLOGY_API_KEY }\"" >> resources/config.toml
+          echo "\"https://${{ secrets.RACKNERD_IP }}:8384\" = \"${{ secrets.RACKNERD_API_KEY }\"" >> resources/config.toml
+      - name: Step 4 - Install Poetry and Dependencies
+        uses: knowsuchagency/poetry-install@v2
+        with:
+          # Have poetry create a virtualenv for the project on installation.
+          create-virtualenv: # optional, default is false
+      - name: Step 5 - Run Tests
+        run: pytest tests/*.py
