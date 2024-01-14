@@ -21,7 +21,7 @@ class TestBackups:
         self.host = devices[0]
         self.api_key = devices[1]
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        self.client = httpx.Client(headers=headers)
+        self.client = httpx.Client(headers=headers, verify=False)
 
     def test_health_check(self):
         url = f"{self.host}/rest/noauth/health"
