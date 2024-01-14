@@ -1,0 +1,23 @@
+name: Backups
+
+on:  
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Backup Status
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Step 1 - Checkout Nightly Branch
+        uses: actions/checkout@v3
+      - name: Step 2 - Setup and Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:acls
+      - name: Step 3 - Test Tailscale
+        run: |
+          ping 192.168.1.1
+          ping 192.168.0.1
