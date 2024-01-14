@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+  uptime-kuma:
+    container_name: "uptime-kuma"
+    expose:
+      - "3001/tcp"
+    image: "louislam/uptime-kuma:1.23.11"
+    networks:
+      - "uptime-kuma"
+    restart: "unless-stopped"
+    volumes:
+      - "/home/jackstockley/docker/uptime-kuma/uptime-kuma-data:/app/data"
+      - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro"
+
+networks:
+  uptime-kuma:
+    external: true
+    name: "uptime-kuma"

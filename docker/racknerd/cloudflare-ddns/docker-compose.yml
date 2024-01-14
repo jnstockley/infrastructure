@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+  cloudflare-ddns:
+    container_name: "cloudflare-ddns"
+    image: "timothyjmiller/cloudflare-ddns:latest"
+    networks:
+      - "cloudflare-ddns"
+    restart: "unless-stopped"
+    volumes:
+      - "/home/jackstockley/docker/cloudflare-ddns/config.json:/config.json"
+
+networks:
+  cloudflare-ddns:
+    external: true
+    name: "cloudflare-ddns"

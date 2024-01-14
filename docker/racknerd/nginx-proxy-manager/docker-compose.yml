@@ -1,0 +1,33 @@
+version: "3.6"
+
+services:
+  app:
+    image: "jc21/nginx-proxy-manager:2.10.4"
+    container_name: "nginx-proxy-manager"
+    restart: "unless-stopped"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - "./data:/data"
+      - "./letsencrypt:/etc/letsencrypt"
+    networks:
+      - "portainer"
+      - "adguard"
+      - "uptime-kuma"
+      - "vaultwarden"
+
+networks:
+  portainer:
+    external: true
+    name: "portainer"
+  adguard:
+    external: true
+    name: "adguard"
+  uptime-kuma:
+    external: true
+    name: "uptime-kuma"
+  vaultwarden:
+    external: true
+    name: "vaultwarden"

@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  adguard:
+    container_name: "adguard"
+    image: "adguard/adguardhome:v0.107.43"
+    networks:
+      - "adguard"
+    restart: "unless-stopped"
+    volumes:
+      - "/home/jackstockley/docker/adguard/confdir:/opt/adguardhome/conf"
+      - "/home/jackstockley/docker/adguard/workdir:/opt/adguardhome/work"
+
+networks:
+  adguard:
+    external: true
+    name: "adguard"

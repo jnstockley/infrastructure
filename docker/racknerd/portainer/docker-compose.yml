@@ -1,0 +1,19 @@
+version: "3.6"
+
+services:
+  portainer:
+    image: "portainer/portainer-ce:2.19.4"
+    volumes:
+      - "data:/data"
+      - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock"
+    restart: "unless-stopped"
+    networks:
+       - "portainer"
+
+volumes:
+  data:
+
+networks:
+  portainer:
+    external: true
+    name: "portainer"
