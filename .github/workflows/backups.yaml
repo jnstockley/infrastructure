@@ -27,9 +27,8 @@ jobs:
           echo "\"http://${{ secrets.SYNOLOGY_IP }}:8384\" = \"${{ secrets.SYNOLOGY_API_KEY }}\"" >> resources/config.toml
           echo "\"https://${{ secrets.RACKNERD_IP }}:8384\" = \"${{ secrets.RACKNERD_API_KEY }}\"" >> resources/config.toml
       - name: Step 4 - Install Poetry and Dependencies
-        uses: knowsuchagency/poetry-install@v2
-        with:
-          # Have poetry create a virtualenv for the project on installation.
-          create-virtualenv: # optional, default is false
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
       - name: Step 5 - Run Tests
         run: pytest tests/*.py
