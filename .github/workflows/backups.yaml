@@ -16,7 +16,7 @@ jobs:
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:acls
+          tags: acls
       - name: Step 3 - Test Tailscale
         run: |
           ping 192.168.1.1
