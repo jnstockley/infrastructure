@@ -26,9 +26,13 @@ jobs:
           echo "\"http://${{ secrets.IOWA_HOME_IP }}:8384\" = \"${{ secrets.IOWA_HOME_API_KEY }}\"" >> resources/config.toml
           echo "\"http://${{ secrets.SYNOLOGY_IP }}:8384\" = \"${{ secrets.SYNOLOGY_API_KEY }}\"" >> resources/config.toml
           echo "\"https://${{ secrets.RACKNERD_IP }}:8384\" = \"${{ secrets.RACKNERD_API_KEY }}\"" >> resources/config.toml
-      - name: Step 4 - Install Poetry and Dependencies
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+      - name: Step 5 - Install Poetry and Dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install --no-root
-      - name: Step 5 - Run Tests
+      - name: Step 6 - Run Tests
         run: pytest tests/*.py
