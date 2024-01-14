@@ -1,4 +1,4 @@
 # TODO
-1. Check if folder syncs are paused and fail
-2. Run on cron schedule (every 6 hours)
-3. Make `outdated_time` controllable in `config.toml`
+1. Auto updates for machines
+2. Add docker-compose files
+3. Set-up dependabot alerts

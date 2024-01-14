@@ -1,5 +1,3 @@
-import json
-import urllib.parse
 
 import toml
 import datetime
@@ -13,17 +11,16 @@ devices_dict = toml.load("resources/config.toml")
 
 @pytest.mark.parametrize("devices", devices_dict.items())
 class TestBackups:
-    port = 8384
-
     client: Client
-
-    outdated_time = (datetime.datetime.now() - datetime.timedelta(hours=12)).timestamp()
 
     @pytest.fixture(scope='function', autouse=True)
     def setup_method(self, devices):
-        self.host = devices[0]
-        self.api_key = devices[1]
-        self.ip = urllib.parse.urlparse(self.host).hostname
+        self.name = devices[0]
+        parameters = devices[1]
+        self.host = parameters['url']
+        self.api_key = parameters['api_key']
+        outdated_interval = int(parameters['outdated_interval'])
+        self.outdated_time = (datetime.datetime.now() - datetime.timedelta(hours=outdated_interval)).timestamp()
         headers = {"Authorization": f"Bearer {self.api_key}"}
         self.client = httpx.Client(headers=headers, verify=False)
 
@@ -37,7 +34,7 @@ class TestBackups:
 
         assert response is not None
         assert response.status_code == 200
-        assert response.json() == ok, f"Health check failed for {self.host}"
+        assert response.json() == ok, f"Health check failed for {self.name}"
 
     def test_paused(self):
         url = f"{self.host}/rest/config/folders"
@@ -54,7 +51,7 @@ class TestBackups:
             data = dict(folder)
             assert "paused" in data
             assert "label" in data
-            assert not data['paused'], f"{data['label']} is paused on {self.ip}"
+            assert not data['paused'], f"{data['label']} is paused on {self.name}"
 
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
@@ -69,5 +66,4 @@ class TestBackups:
         for (folder, data) in folders.items():
             assert 'lastScan' in data
             last_scan = datetime.datetime.fromisoformat(data['lastScan']).timestamp()
-            assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.ip}"
-
+            assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.name}"

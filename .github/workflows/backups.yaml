@@ -1,6 +1,8 @@
 name: Backups
 
-on:  
+on:
+  schedule:
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -21,11 +23,26 @@ jobs:
         run: |
           mkdir resources
           touch resources/config.toml
-          echo "\"${{ secrets.BACKUP_SERVER }}\" = \"${{ secrets.BACKUP_SERVER_API_KEY }}\"" >> resources/config.toml
-          echo "\"${{ secrets.CHICAGO_HOME }}\" = \"${{ secrets.CHICAGO_HOME_API_KEY }}\"" >> resources/config.toml
-          echo "\"${{ secrets.IOWA_HOME }}\" = \"${{ secrets.IOWA_HOME_API_KEY }}\"" >> resources/config.toml
-          echo "\"${{ secrets.SYNOLOGY }}\" = \"${{ secrets.SYNOLOGY_API_KEY }}\"" >> resources/config.toml
-          echo "\"${{ secrets.RACKNERD }}\" = \"${{ secrets.RACKNERD_API_KEY }}\"" >> resources/config.toml
+          echo "[Iowa-Home]"  >> resources/config.toml
+          echo "url = '${{ secrets.IOWA_HOME }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.IOWA_HOME_API_KEY }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[Chicago-Home]"  >> resources/config.toml
+          echo "url = '${{ secrets.CHICAGO_HOME }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.CHICAGO_HOME_API_KEY }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[Backup-Server]"  >> resources/config.toml
+          echo "url = '${{ secrets.BACKUP_SERVER }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.BACKUP_SERVER_API_KEY }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[Synology]"  >> resources/config.toml
+          echo "url = '${{ secrets.SYNOLOGY }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.SYNOLOGY_API_KEY }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[Racknerd]"  >> resources/config.toml
+          echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
         with:
