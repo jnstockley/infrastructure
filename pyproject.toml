@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "infrastructure"
+version = "0.1.0"
+description = ""
+authors = ["Jack Stockley <34308937+jnstockley@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+httpx = "^0.26.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
