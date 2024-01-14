@@ -1,0 +1,22 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Docker Container Update
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.RACKNERD_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+      - name: Deploy to server
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley && touch hello-world.txt"
