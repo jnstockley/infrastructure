@@ -10,7 +10,7 @@ services:
       - "uptime-kuma"
     restart: "unless-stopped"
     volumes:
-      - "/home/jackstockley/docker/uptime-kuma/uptime-kuma-data:/app/data"
+      - "/home/jackstockley/infrastructure/docker/racknerd/uptime-kuma/uptime-kuma-data:/app/data"
       - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro"
 
 networks:
