@@ -21,13 +21,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       - name: Deploy to server
+        env:
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+          DUO_IKEY: ${{ secrets.DUO_IKEY }}
+          DUO_SKEY: ${{ secrets.DUO_SKEY }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main"
-      - name: Replace Secrets
-        uses: jacobtomlinson/gha-find-replace@v3
-        with:
-          find: "__(.+)__"
-          replace: ${1}
-          regex: true
-
-
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main && bash /docker/replace.sh"
