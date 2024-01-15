@@ -27,7 +27,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: "__(.+)__"
-          replace: "${{ secrets\.${1} }}"
+          replace: ${{ secrets.${1} }}
           regex: true
 
 
