@@ -4,7 +4,7 @@ services:
   vaultwarden:
     container_name: "vaultwarden"
     environment:
-      - "ADMIN_TOKEN=__ADMIN_TOKEN__"
+      - "ADMIN_TOKEN=${ADMIN_TOKEN}"
       - "DOMAIN=https://vault.jstockley.com"
       - "DUO_HOST=api-c8dece9f.duosecurity.com"
       - "DUO_IKEY=__DUO_IKEY__"
