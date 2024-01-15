@@ -23,3 +23,11 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main"
+      - name: Replace Secrets
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: "__(.+)__"
+          replace: ${1}
+          regex: true
+
+
