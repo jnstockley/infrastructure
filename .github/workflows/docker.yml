@@ -19,5 +19,5 @@ jobs:
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       - name: Deploy to server
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main && find . -type f -exec sed -i \"s/__\([a-zA-Z0-9_]*\)__/${{ secrets.\1 }}/g\" {} +"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main && find . -type f -exec sed -i \"s/__\([a-zA-Z0-9_]*\)__/${{ secrets.\\1 }}/g\" {} +"
           
