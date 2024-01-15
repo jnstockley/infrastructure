@@ -27,7 +27,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: "__(.+)__"
-          replace: ${1}
+          replace: "${1}"
           regex: true
 
 
