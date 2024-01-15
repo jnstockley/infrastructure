@@ -34,6 +34,6 @@ jobs:
             cd /home/jackstockley/infrastructure/
             git fetch
             git reset --hard HEAD
-            git merge '@{u}'
-            git pull;
+            git merge main
+            git pull origin main
             bash docker/replace.sh
