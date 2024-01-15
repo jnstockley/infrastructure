@@ -19,4 +19,4 @@ jobs:
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       - name: Deploy to server
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main && for file in \$(find . -type f \( -name '*.json' -o -name '*.yml' \)); do for secret in \$(compgen -e); do sed -i \"s/__\${secret}__/\"\$secret\"/g\" \$file; done; done"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main && find . -type f \( -name '*.json' -o -name '*.yml' \) -exec sed -i 's/__\([a-zA-Z0-9_]*\)__/$(eval echo \${{ secrets.\1 }})/g' {} +"
