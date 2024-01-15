@@ -20,14 +20,12 @@ jobs:
           echo "${{ secrets.RACKNERD_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-      - name: Deploy to server
-        run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main"
       - name: Replace Secrets
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: "__(.+)__"
           replace: "${1}"
           regex: true
-
-
+      - name: Deploy to server
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no jackstockley@${{ secrets.RACKNERD_IP }} "cd /home/jackstockley/infrastructure/ && git pull origin main"
