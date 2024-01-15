@@ -37,7 +37,7 @@ services:
       - "vaultwarden"
     restart: "unless-stopped"
     volumes:
-      - "/home/jackstockley/docker/vaultwarden/vw-data:/data"
+      - "/home/jackstockley/infrastructure/docker/racknerd/vaultwarden/vw-data:/data"
 
 networks:
   vaultwarden:

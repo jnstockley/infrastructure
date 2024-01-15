@@ -17,6 +17,7 @@ services:
       - "adguard"
       - "uptime-kuma"
       - "vaultwarden"
+      - "dockge"
 
 networks:
   portainer:
@@ -31,3 +32,6 @@ networks:
   vaultwarden:
     external: true
     name: "vaultwarden"
+  dockge:
+    name: "dockge"
+    external: true

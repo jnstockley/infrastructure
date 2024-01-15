@@ -8,7 +8,7 @@ services:
       - "cloudflare-ddns"
     restart: "unless-stopped"
     volumes:
-      - "/home/jackstockley/docker/cloudflare-ddns/config.json:/config.json"
+      - "/home/jackstockley/infrastructure/docker/racknerd/cloudflare-ddns/config.json:/config.json"
 
 networks:
   cloudflare-ddns:

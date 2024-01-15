@@ -8,8 +8,8 @@ services:
       - "adguard"
     restart: "unless-stopped"
     volumes:
-      - "/home/jackstockley/docker/adguard/confdir:/opt/adguardhome/conf"
-      - "/home/jackstockley/docker/adguard/workdir:/opt/adguardhome/work"
+      - "/home/jackstockley/infrastructure/docker/racknerd/adguard/confdir:/opt/adguardhome/conf"
+      - "/home/jackstockley/infrastructure/docker/racknerd/workdir:/opt/adguardhome/work"
 
 networks:
   adguard:
