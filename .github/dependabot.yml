@@ -14,6 +14,6 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker" # See documentation for possible values
-    directory: "/docker/*/*" # Location of package manifests
+    directory: "docker/racknerd/nginx-proxy-manager" # Location of package manifests
     schedule:
       interval: "daily"
