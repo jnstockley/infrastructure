@@ -1,4 +1,3 @@
-
 import toml
 import datetime
 
@@ -6,10 +5,10 @@ import httpx
 import pytest
 from httpx import Client, Response
 
-devices_dict = toml.load("resources/config.toml")
+devices = toml.load("resources/config.toml")['Backups']
 
 
-@pytest.mark.parametrize("devices", devices_dict.items())
+@pytest.mark.parametrize("devices", devices.items())
 class TestBackups:
     client: Client
 

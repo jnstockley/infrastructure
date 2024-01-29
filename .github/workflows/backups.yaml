@@ -23,23 +23,24 @@ jobs:
         run: |
           mkdir resources
           touch resources/config.toml
-          echo "[Iowa-Home]"  >> resources/config.toml
+          echo "[Backups]"  >> resources/config.toml
+          echo "[Backups.Iowa-Home]"  >> resources/config.toml
           echo "url = '${{ secrets.IOWA_HOME }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.IOWA_HOME_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "[Chicago-Home]"  >> resources/config.toml
+          echo "[Backups.Chicago-Home]"  >> resources/config.toml
           echo "url = '${{ secrets.CHICAGO_HOME }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.CHICAGO_HOME_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "[Backup-Server]"  >> resources/config.toml
+          echo "[Backups.Backup-Server]"  >> resources/config.toml
           echo "url = '${{ secrets.BACKUP_SERVER }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.BACKUP_SERVER_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "[Synology]"  >> resources/config.toml
+          echo "[Backups.Synology]"  >> resources/config.toml
           echo "url = '${{ secrets.SYNOLOGY }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.SYNOLOGY_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "[Racknerd]"  >> resources/config.toml
+          echo "[Backups.Racknerd]"  >> resources/config.toml
           echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
@@ -52,4 +53,4 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install --no-root
       - name: Step 6 - Run Tests
-        run: poetry run pytest tests/*.py
+        run: poetry run pytest tests/test_backups.py
