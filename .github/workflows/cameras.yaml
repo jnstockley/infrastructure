@@ -13,3 +13,31 @@ jobs:
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4
+
+      - name: Step 2 - Setup and Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github
+      - name: Step 3 - Create config file
+        run: |
+          mkdir resources
+          touch resources/config.toml
+          echo "[Cameras]"  >> resources/config.toml
+          echo "[Cameras.Family-Room]"  >> resources/config.toml
+          echo "main_stream = '${{ secrets.FAMILY_ROOM_CAM_MAIN_STREAM }}'"  >> resources/config.toml
+          echo "backup_stream = '${{ secrets.FAMILY_ROOM_CAM_BACKUP_STREAM }}'"  >> resources/config.toml
+          echo "[Cameras.Outside]"  >> resources/config.toml
+          echo "main_stream = '${{ secrets.OUTSIDE_CAM_MAIN_STREAM }}'"  >> resources/config.toml
+          echo "backup_stream = '${{ secrets.OUTSIDE_CAM_BACKUP_STREAM }}'"  >> resources/config.toml
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Step 5 - Install Poetry and Dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
+      - name: Step 6 - Run Tests
+        run: poetry run pytest tests/test_cameras.py

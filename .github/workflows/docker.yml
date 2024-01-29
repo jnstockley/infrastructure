@@ -32,5 +32,8 @@ jobs:
           envs: ADMIN_TOKEN,DUO_IKEY,DUO_SKEY,SMTP_FROM,SMTP_PASSWORD,CLOUDFLARE_API_TOKEN,CLOUDFLARE_ZONE_ID
           script: |
             cd /home/jackstockley/infrastructure/
+            git fetch
+            git reset --hard HEAD
+            git merge main
             git pull origin main
             bash docker/replace.sh
