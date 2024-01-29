@@ -1,0 +1,15 @@
+name: Cameras
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Cameras
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Checkout
+        uses: actions/checkout@v4
