@@ -35,5 +35,5 @@ jobs:
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --accept-license
           speedtest --servers
-          speedtest --server-id=10145 --format=json
+          speedtest --server-id=10134 --format=json
       
