@@ -26,12 +26,12 @@ jobs:
           sudo apt install speedtest
       - name: Step 4 - Iowa Speedtest
         run: |
-          tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --list
           speedtest --server 47744 --secure --json
       - name: Step 5 - Chicago Speedtest
         run: |
-          tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --list
           speedtest --server 10145 --secure --json
       
