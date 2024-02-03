@@ -1,4 +1,4 @@
-name: Cameras
+name: Speedtest
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   backup:
-    name: Cameras
+    name: Speedtest
     runs-on: ubuntu-latest
 
     steps:
