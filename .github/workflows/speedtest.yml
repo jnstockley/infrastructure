@@ -20,19 +20,28 @@ jobs:
       #    oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
       #    oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
       #    tags: tag:github
-      - name: Step 3 - Install Speedtest CLI
+      - name: Step 1 - Install Speedtest CLI
         run: |
           curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S bash
           echo echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt install speedtest
-      - name: Step 4 - Iowa Speedtest
+      - name: Step 2 - Chicago Speedtest
         run: |
-          
           speedtest --accept-license
           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node chicago-home
           speedtest --server-id=1776 --format=json
           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
+      - name: Step 3 - Iowa Speedtest
+        run: |
+          speedtest --accept-license
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node iowa-home
+          speedtest --server-id=10134 --format=json
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
+          
+      
 
       #- name: Step 5 - Chicago Speedtest
       #  run: |
