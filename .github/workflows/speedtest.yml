@@ -22,17 +22,17 @@ jobs:
       #    tags: tag:github
       - name: Step 3 - Install Speedtest CLI
         run: |
-          curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
-          sudo apt install speedtest
+          curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S bash
+          echo echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt install speedtest
       - name: Step 4 - Iowa Speedtest
         run: |
-          sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --accept-license
           speedtest --servers
           speedtest --server-id=1776 --format=json
       - name: Step 5 - Chicago Speedtest
         run: |
-          sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --accept-license
           speedtest --servers
           speedtest --server-id=10134 --format=json
