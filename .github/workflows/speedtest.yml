@@ -33,7 +33,7 @@ jobs:
           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale down --accept-risk=all
       - name: Step 5 - Chicago Speedtest
         run: |
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home 
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
           speedtest --accept-license
           speedtest --servers
           speedtest --server-id=10134 --format=json
