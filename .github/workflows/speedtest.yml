@@ -26,13 +26,13 @@ jobs:
           echo echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt install speedtest
       - name: Step 4 - Iowa Speedtest
         run: |
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --accept-routes --advertise-tags=tag:github --exit-node=chicago-home --hostname=github-fv-az1208-982 --advertise-exit-node
           speedtest --accept-license
           speedtest --servers
           speedtest --server-id=1776 --format=json
       - name: Step 5 - Chicago Speedtest
         run: |
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
+          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --accept-routes --advertise-tags=tag:github --exit-node=iowa-home --hostname=github-fv-az1208-982 --advertise-exit-node
           speedtest --accept-license
           speedtest --servers
           speedtest --server-id=10134 --format=json
