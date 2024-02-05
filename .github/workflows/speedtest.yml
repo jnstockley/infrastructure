@@ -29,6 +29,7 @@ jobs:
           key: ${{ secrets.IOWA_HOME_SSH_KEY }}
           envs: download_threshold,upload_threshold
           script: |
+            rm -rf /root/speedtest/
             mkdir -p /root/speedtest/
             cd /root/speedtest/
             wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz
@@ -54,6 +55,7 @@ jobs:
           key: ${{ secrets.CHICAGO_HOME_SSH_KEY }}
           envs: download_threshold,upload_threshold
           script: |
+            rm -rf /root/speedtest/
             mkdir -p /root/speedtest/
             cd /root/speedtest/
             wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz
@@ -77,16 +79,20 @@ jobs:
           download_threshold: 1875000
           upload_threshold: 1875000
         run: |
+          rm output.json
           sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=1776 --format=json >> output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          rm output.json
       - name: Step 6 - Iowa Speedtest
         env:
           download_threshold: 21250000
           upload_threshold: 18750000
         run: |
+          rm output.json
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=10134 --format=json >> output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          rm output.json
