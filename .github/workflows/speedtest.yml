@@ -8,7 +8,8 @@ on:
 jobs:
   backup:
     name: Speedtest
-    runs-on: self-hosted
+    #runs-on: self-hosted
+    runs-on: ubuntu
 
     steps:
       #- name: Step 1 - Checkout
@@ -25,20 +26,37 @@ jobs:
           curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S bash
           echo echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt install speedtest
           speedtest --accept-license
-      - name: Step 2 - Chicago Speedtest
-        run: |
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node chicago-home
-          speedtest --server-id=1776 --format=json
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
+      #- name: Step 2 - Chicago Speedtest
+      #  run: |
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node chicago-home
+      #    speedtest --server-id=1776 --format=json
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
       - name: Step 3 - Iowa Speedtest
-        run: |
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node iowa-home
-          speedtest --server-id=10134 --format=json
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
-          echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.IOWA_HOME }}
+          username: root
+          key: ${{ secrets.IOWA_HOME_SSH_KEY }}
+          script: |
+            mkdir -p /root/speedtest/
+            cd /root/speedtest/
+            wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz
+            tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
+            chmod +x speedtest
+            ./speedtest --accept-license
+            ./speedtest --server-id=10134 --format=json
+            cd ..
+            rm -rf /root/speedtest/
+
+          #- name: Step 3 - Iowa Speedtest
+      #  run: |
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node iowa-home
+      #    speedtest --server-id=10134 --format=json
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
+      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
           
       
 
