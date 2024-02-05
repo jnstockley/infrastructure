@@ -8,7 +8,6 @@ on:
 jobs:
   backup:
     name: Speedtest
-    #runs-on: self-hosted
     runs-on: ubuntu-latest
 
     steps:
@@ -18,13 +17,17 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
-      - name: Step 5 - Iowa Local Speedtest
+      - name: Step 2 - Iowa Local Speedtest
+        env:
+          download_threshold: 106300000
+          upload_threshold: 100000000
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 192.168.0.17
           port: 22
           username: root
           key: ${{ secrets.IOWA_HOME_SSH_KEY }}
+          envs: download_threshold,upload_threshold
           script: |
             mkdir -p /root/speedtest/
             cd /root/speedtest/
@@ -32,16 +35,22 @@ jobs:
             tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
             chmod +x speedtest
             ./speedtest --accept-license
-            ./speedtest --server-id=10134 --format=json
+            ./speedtest --server-id=10134 --format=json >> output.json
+            jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+            jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
             cd ..
             rm -rf /root/speedtest/
-      - name: Step 6 - Chicago Local Speedtest
+      - name: Step 3 - Chicago Local Speedtest
+        env:
+          download_threshold: 10000000
+          upload_threshold: 1875000
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 192.168.1.83
           port: 22
           username: root
           key: ${{ secrets.CHICAGO_HOME_SSH_KEY }}
+          envs: download_threshold,upload_threshold
           script: |
             mkdir -p /root/speedtest/
             cd /root/speedtest/
@@ -49,47 +58,31 @@ jobs:
             tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
             chmod +x speedtest
             ./speedtest --accept-license
-            ./speedtest --server-id=1776 --format=json
+            ./speedtest --server-id=1776 --format=json >> output.json
+            jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+            jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
             cd ..
             rm -rf /root/speedtest/
-      - name: Step 2 - Install Speedtest CLI
+      - name: Step 4 - Install Speedtest CLI
         run: |
           curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
           sudo apt install speedtest
           speedtest --accept-license
-      - name: Step 3 - Chicago Speedtest
+      - name: Step 5 - Chicago Speedtest
+        env:
+          download_threshold: 1875000
+          upload_threshold: 1875000
         run: |
           sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --server-id=1776 --format=json
-      - name: Step 4 - Iowa Speedtest
+          speedtest --server-id=1776 --format=json >> output.json
+          jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+      - name: Step 6 - Iowa Speedtest
+        env:
+          download_threshold: 21250000
+          upload_threshold: 18750000
         run: |
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --server-id=10134 --format=json
-      
-
-        #- name: Step 3 - Iowa Speedtest
-      #  run: |
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node iowa-home
-      #    speedtest --server-id=10134 --format=json
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node ""
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node
-          
-      
-
-      #- name: Step 5 - Chicago Speedtest
-      #  run: |
-
-      #           echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
-      # echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
-
-      # echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982 --reset
-      # speedtest --server-id=1776 --format=json
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1208-982
-      #    speedtest --accept-license
-      #    speedtest --servers
-      #    speedtest --server-id=10134 --format=json
-      #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale down --accept-risk=all
-
-#echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --exit-node iowa-home
-#          speedtest --server-id=10134 --format=json
+          speedtest --server-id=10134 --format=json >> output.json
+          jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
