@@ -21,11 +21,11 @@ jobs:
       #    oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
       #    oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
       #    tags: tag:github
-      - name: Step 1 - Install Speedtest CLI
-        run: |
-          curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S bash
-          echo echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt install speedtest
-          speedtest --accept-license
+      #- name: Step 1 - Install Speedtest CLI
+      #  run: |
+      #    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+      #    sudo apt install speedtest
+      #    speedtest --accept-license
       #- name: Step 2 - Chicago Speedtest
       #  run: |
       #    echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S tailscale set --advertise-exit-node=false
