@@ -23,15 +23,15 @@ jobs:
           curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
           sudo apt install speedtest
           speedtest --accept-license
-      - name: Step 3 - Iowa Speedtest
+      - name: Step 3 - Chicago Speedtest
         run: |
-          tailscale up --exit-node=chicago-home
+          tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=1776 --format=json
-      - name: Step 5 - Chicago Speedtest
+      - name: Step 4 - Iowa Speedtest
         run: |
-          tailscale up --exit-node=iowa-home
+          tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=10134 --format=json
-      - name: Step 4- Iowa Local Speedtest
+      - name: Step 5- Iowa Local Speedtest
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 192.168.0.17
@@ -48,7 +48,7 @@ jobs:
             ./speedtest --server-id=10134 --format=json
             cd ..
             rm -rf /root/speedtest/
-      - name: Step 5 - Chicago Local Speedtest
+      - name: Step 6 - Chicago Local Speedtest
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 192.168.1.83
