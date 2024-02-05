@@ -25,11 +25,11 @@ jobs:
           speedtest --accept-license
       - name: Step 3 - Chicago Speedtest
         run: |
-          tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
+          sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=1776 --format=json
       - name: Step 4 - Iowa Speedtest
         run: |
-          tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
+          sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           speedtest --server-id=10134 --format=json
       - name: Step 5- Iowa Local Speedtest
         uses: appleboy/ssh-action@v1.0.3
