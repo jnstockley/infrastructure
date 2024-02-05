@@ -43,6 +43,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.IOWA_HOME }}
+          port: 22
           username: root
           key: ${{ secrets.IOWA_HOME_SSH_KEY }}
           script: |
