@@ -36,6 +36,8 @@ jobs:
             chmod +x speedtest
             ./speedtest --accept-license
             ./speedtest --server-id=10134 --format=json >> output.json
+            download_threshold=106300000
+            upload_threshold=100000000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
             jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
             cd ..
@@ -58,7 +60,9 @@ jobs:
             tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
             chmod +x speedtest
             ./speedtest --accept-license
-            ./speedtest --server-id=1776 --format=json >> output.json
+            ./speedtest --server-id=1776 --format=json >> output.json          
+            download_threshold=10000000
+            upload_threshold=1875000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
             jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
             cd ..
