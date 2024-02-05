@@ -9,7 +9,7 @@ jobs:
   backup:
     name: Speedtest
     #runs-on: self-hosted
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       #- name: Step 1 - Checkout
