@@ -1,0 +1,73 @@
+name: Updated
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Updates
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Setup and Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github
+      - name: Step 2 - Racknerd
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          port: 22
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt upgrade -y
+            echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S snap upgrade
+      - name: Step 3 - PiKVM
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 192.168.0.24
+          port: 22
+          username: jackstockley
+          password: ${{ secrets.PIKVM_USER_PASSWORD }}
+          script: |
+            echo ${{ secrets.PIKVM_USER_PASSWORD }} | sudo -S rw
+            echo ${{ secrets.PIKVM_USER_PASSWORD }} | sudo -S pacman -Syyu
+            echo ${{ secrets.PIKVM_USER_PASSWORD }} | sudo -S ro
+      - name: Step 4 - Iowa Home
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 192.168.0.17
+          port: 22
+          username: root
+          key: ${{ secrets.IOWA_HOME_SSH_KEY }}
+          script: |
+            ha core update --backup
+            ha os update --backup
+            ha supervisor update --backup
+      - name: Step 5 - Chicago Home
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 192.168.1.83
+          port: 22
+          username: root
+          key: ${{ secrets.CHICAGO_HOME_SSH_KEY }}
+          script: |
+            ha core update --backup
+            ha os update --backup
+            ha supervisor update --backup
+      - name: Step 6 - Backup Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 192.168.0.18
+          port: 22
+          username: Jack Stockley
+          password: ${{ secrets.BACKUP_SERVER_USER_PASSWORD }}
+          script: |
+            schtasks /run /tn "Winget Upgrade"
+            schtasks /run /tn "Check Windows Update"
+            schtasks /run /tn "Install Windows Update"
