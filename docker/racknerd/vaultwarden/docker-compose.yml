@@ -32,7 +32,7 @@ services:
       - "WEBSOCKET_ADDRESS=0.0.0.0"
       - "WEBSOCKET_ENABLED=true"
       - "WEBSOCKET_PORT=3012"
-    image: "vaultwarden/server:1.30.1"
+    image: "vaultwarden/server:1.30.3"
     networks:
       - "vaultwarden"
     restart: "unless-stopped"

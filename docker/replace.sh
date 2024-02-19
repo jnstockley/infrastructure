@@ -1,6 +1,6 @@
 #!/bin/bash
 search_path="/home/jackstockley/infrastructure/docker/"
-file_extensions=("yml" "yaml", "json")
+file_extensions=("yml" "yaml" "json" "env")
 
 for ext in "${file_extensions[@]}"; do
     find "$search_path" -type f -name "*.$ext" | while read -r file; do
