@@ -18,6 +18,7 @@ services:
       - "uptime-kuma"
       - "vaultwarden"
       - "dockge"
+      - "jnstockley-api"
 
 networks:
   portainer:
@@ -35,3 +36,6 @@ networks:
   dockge:
     name: "dockge"
     external: true
+  jnstockley-api:
+    external: true
+    name: "jnstockley-api"
