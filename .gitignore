@@ -161,8 +161,8 @@ cython_debug/
 resources/*
 
 # Docker container volumes
-docker/racknerd/aguard/confdir
-docker/racknerd/aguard/workdir
+docker/racknerd/adguard/confdir
+docker/racknerd/adguard/workdir
 
 docker/racknerd/dockge/data
 
