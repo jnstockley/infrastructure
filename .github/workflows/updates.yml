@@ -26,7 +26,7 @@ jobs:
           key: ${{ secrets.RACKNERD_SSH_KEY }}
           script: |
             echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S apt upgrade -y
-            echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S snap upgrade
+            echo ${{ secrets.RACKNER_USER_PASSWORD }} | sudo -S snap refresh
       - name: Step 3 - PiKVM
         uses: appleboy/ssh-action@v1.0.3
         with:
