@@ -8,7 +8,7 @@ on:
     types:
       - closed
     paths:
-      - docker/racknerd/***
+      - docker/racknerd/**
 
 jobs:
   deploy:
