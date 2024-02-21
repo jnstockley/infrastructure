@@ -35,8 +35,7 @@ jobs:
             wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz
             tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
             chmod +x speedtest
-            ./speedtest --accept-license
-            ./speedtest --server-id=10134 --format=json >> output.json
+            ./speedtest --accept-license --server-id=10134 --format=json >> output.json
             download_threshold=106300000
             upload_threshold=100000000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
@@ -62,8 +61,7 @@ jobs:
             wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz
             tar -xvzf ookla-speedtest-1.2.0-linux-aarch64.tgz
             chmod +x speedtest
-            ./speedtest --accept-license
-            ./speedtest --server-id=1776 --format=json >> output.json          
+            ./speedtest --accept-license --server-id=1776 --format=json >> output.json          
             download_threshold=10000000
             upload_threshold=1875000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
@@ -90,8 +88,8 @@ jobs:
           rm -f output.json
       - name: Step 6 - Iowa Speedtest
         env:
-          download_threshold: 21250000
-          upload_threshold: 18750000
+          download_threshold: 20000000
+          upload_threshold: 20000000
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
