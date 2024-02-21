@@ -75,7 +75,6 @@ jobs:
         run: |
           curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
           sudo apt install speedtest
-          speedtest --accept-license
       - name: Step 5 - Chicago Speedtest
         env:
           download_threshold: 1875000
@@ -83,8 +82,8 @@ jobs:
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --server-id=1776 --format=json >> output.json
-          sudo tailscale up --exit-node=
+          speedtest --accept-license --server-id=1776 --format=json >> output.json
+          sudo tailscale up --exit-node= --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           cat output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
@@ -96,8 +95,8 @@ jobs:
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --server-id=10134 --format=json >> output.json
-          sudo tailscale up --exit-node=
+          speedtest --accept-license --server-id=10134 --format=json >> output.json
+          sudo tailscale up --exit-node= --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           cat output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
