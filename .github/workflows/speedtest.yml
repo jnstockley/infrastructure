@@ -41,6 +41,7 @@ jobs:
             upload_threshold=100000000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
             jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+            cat output.json
             cd ..
             rm -rf /root/speedtest/
       - name: Step 3 - Chicago Local Speedtest
@@ -67,6 +68,7 @@ jobs:
             upload_threshold=1875000
             jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
             jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+            cat output.json
             cd ..
             rm -rf /root/speedtest/
       - name: Step 4 - Install Speedtest CLI
@@ -84,6 +86,7 @@ jobs:
           speedtest --server-id=1776 --format=json >> output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          cat output.json
           rm -f output.json
       - name: Step 6 - Iowa Speedtest
         env:
@@ -95,4 +98,5 @@ jobs:
           speedtest --server-id=10134 --format=json >> output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          cat output.json
           rm -f output.json
