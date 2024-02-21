@@ -2,14 +2,19 @@ name: Docker
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+    paths:
+      - docker/racknerd/***
 
 jobs:
-  backup:
+  deploy:
+    if: github.event.pull_request.merged == true
     name: Docker Container Update
     runs-on: ubuntu-latest
-
-    env:
-      ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -40,3 +45,151 @@ jobs:
             git merge main
             git pull origin main
             bash docker/replace.sh
+      - name: Check changes
+        uses: dorny/paths-filter@v3.0.1
+        id: changes
+        with:
+          filters: |
+            adguard:
+              - docker/racknerd/adguard/**
+            api:
+              - docker/racknerd/api/**
+            cloudflare-dns:
+              - docker/racknerd/cloudflare-ddns/**
+            dockge:
+              - docker/racknerd/dockge/**
+            nextcloud:
+              - docker/racknerd/nextcloud-aio/**
+            nginx-proxy-manager:
+              - docker/racknerd/nginx-proxy-manager/**
+            portainer:
+              - docker/racknerd/portainer/**
+            syncthing:
+              - docker/racknerd/syncthing/**
+            tailscale:
+              - docker/racknerd/tailscale/**
+            uptime-kuma:
+              - docker/racknerd/uptime-kuma/**
+            vaultwarden:
+              - docker/racknerd/vaultwarden/**
+      - name: Re-deploy adguard
+        if: steps.changes.outputs.adguard == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/adguard
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy api
+        if: steps.changes.outputs.api == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/api
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy cloudflare-ddns
+        if: steps.changes.outputs.cloudflare-ddns == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/cloudflare-ddns
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy dockge
+        if: steps.changes.outputs.dockge == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/dockge
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy nextcloud
+        if: steps.changes.outputs.nextcloud == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/nextcloud-aio
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy nginx proxy manager
+        if: steps.changes.outputs.nginx-proxy-manager == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/nginx-proxy-manager
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy portainer
+        if: steps.changes.outputs.portainer == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/portainer
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy syncthing
+        if: steps.changes.outputs.syncthing == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/syncthing
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy tailscale
+        if: steps.changes.outputs.tailscale == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/tailscale
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy uptime kuma
+        if: steps.changes.outputs.uptime-kuma == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/uptime-kuma
+            docker compose down
+            docker compose up -d
+      - name: Re-deploy vaultwarden
+        if: steps.changes.outputs.vaultwarden == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          script: |
+            cd /home/jackstockley/infrastructure/docker/racknerd/vaultwarden
+            docker compose down
+            docker compose up -d
