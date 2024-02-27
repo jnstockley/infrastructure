@@ -12,3 +12,4 @@
 5. IP address testing???
 6. Check if Hassio devices have issues (disconnected stuck on initializing)
 7. see if way to check homekit if devices aren't responding
+8. Switch to docker secret instead of replace.sh script
