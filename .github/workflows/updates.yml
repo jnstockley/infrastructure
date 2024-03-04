@@ -2,7 +2,7 @@ name: Updated
 
 on:
   schedule:
- #   - cron: '0 2 * * *'
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -60,14 +60,14 @@ jobs:
             ha core update --backup
             ha os update
             ha supervisor update
-      - name: Step 6 - Backup Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 192.168.0.18
-          port: 22
-          username: Jack Stockley
-          password: ${{ secrets.BACKUP_SERVER_USER_PASSWORD }}
-          script: |
-            schtasks /run /tn "Winget Upgrade"
-            schtasks /run /tn "Check Windows Update"
-            schtasks /run /tn "Install Windows Update"
+      #- name: Step 6 - Backup Server
+      #  uses: appleboy/ssh-action@v1.0.3
+      #  with:
+      #    host: 192.168.0.18
+      #    port: 22
+      #    username: Jack Stockley
+      #    password: ${{ secrets.BACKUP_SERVER_USER_PASSWORD }}
+      #    script: |
+      #      schtasks /run /tn "Winget Upgrade"
+      #      schtasks /run /tn "Check Windows Update"
+      #      schtasks /run /tn "Install Windows Update"
