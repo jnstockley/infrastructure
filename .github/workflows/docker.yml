@@ -46,7 +46,7 @@ jobs:
             git pull origin main
             bash docker/replace.sh
       - name: Check changes
-        uses: dorny/paths-filter@v3.0.1
+        uses: dorny/paths-filter@v3.0.2
         id: changes
         with:
           filters: |

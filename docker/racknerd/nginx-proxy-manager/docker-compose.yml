@@ -19,6 +19,7 @@ services:
       - "vaultwarden"
       - "dockge"
       - "jnstockley-api"
+      - "postgres-external"
 
 networks:
   portainer:
@@ -39,3 +40,6 @@ networks:
   jnstockley-api:
     external: true
     name: "jnstockley-api"
+  postgres-external:
+    external: true
+    name: "postgres-external"

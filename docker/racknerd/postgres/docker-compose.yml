@@ -1,0 +1,31 @@
+version: 3.8
+
+services:
+  postgres-db:
+    image: postgres:16.2-alpine3.19
+    container_name: postgres
+    networks:
+      - postgres-internal
+    environment:
+      - POSTGRES_USER=__POSTGRES_USER__
+      - POSTGRES_PASSWORD=__POSTGRES_PASSWORD__
+    restart: unless-stopped
+
+  pg-admin:
+    image: dpage/pgadmin4:8.3
+    container_name: pgadmin
+    networks:
+      - postgres-internal
+      - postgres-external
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=__PGADMIN_EMAIL__
+      - PGADMIN_DEFAULT_PASSWORD=__PG_ADMIN_PASSWORD__
+    restart: unless-stopped
+
+networks:
+  postgres-internal:
+    external: true
+    name: postgres-internal
+  postgres-external:
+    external: true
+    name: postgres-external
