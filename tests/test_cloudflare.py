@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from pytz import timezone
 
 import httpx
 
@@ -121,7 +122,7 @@ class TestCloudflare:
             assert record is not None
             comment: str = record['comment']
 
-            outdated_time = (datetime.now() - timedelta(hours=6))
+            outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
             updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f')
 
             assert updated_at.timestamp() >= outdated_time.timestamp()
@@ -133,7 +134,7 @@ class TestCloudflare:
 
             comment: str = policy['name']
 
-            outdated_time = (datetime.now() - timedelta(hours=6))
+            outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
             updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f')
 
             assert updated_at.timestamp() >= outdated_time.timestamp()
