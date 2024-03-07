@@ -120,21 +120,21 @@ class TestCloudflare:
         for dns_record in self.dns_records:
             record = get_dns_record(self.zone_name, dns_record, self.api_key)
             assert record is not None
-            comment: str = record['comment']
+            comment: str = f"{record['comment']} CST"
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f').astimezone(timezone('US/Central'))
+            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f %Z')
 
-            assert updated_at >= outdated_time
+            assert updated_at.timestamp() >= outdated_time.timestamp()
 
     def test_zero_trust_app_policies(self):
         for app in self.applications:
             policy = get_zero_trust_application_policies(self.zone_name, app, self.api_key)
             assert policy is not None
 
-            comment: str = policy['name']
+            comment: str = f"{policy['name']} CST"
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f').astimezone(timezone('US/Central'))
+            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f %Z')
 
-            assert updated_at >= outdated_time
+            assert updated_at.timestamp() >= outdated_time.timestamp()
