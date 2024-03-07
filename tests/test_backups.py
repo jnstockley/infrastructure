@@ -28,8 +28,11 @@ class TestBackups:
         response: Response
         ok = {"status": "OK"}
 
-        with self.client as c:
-            response = c.get(url)
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
@@ -39,8 +42,11 @@ class TestBackups:
         url = f"{self.host}/rest/config/folders"
         response: Response
 
-        with self.client as c:
-            response = c.get(url)
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
@@ -55,8 +61,12 @@ class TestBackups:
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
         response: Response
-        with self.client as c:
-            response = c.get(url)
+
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
