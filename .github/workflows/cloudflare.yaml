@@ -13,21 +13,19 @@ jobs:
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4
-      - name: Step 2 - Setup and Connect to Tailscale
-        uses: tailscale/github-action@v2
+      - name: Step 2 - Set Timezone
+        uses: szenius/set-timezone@v1.2
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:github
+          timezoneLinux: "America/Chicago"
       - name: Step 3 - Create config file
         run: |
           mkdir resources
           touch resources/config.toml
           echo "[Cloudflare]"  >> resources/config.toml
           echo "api_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
-          echo "zone_zone = '${{ secrets.CLOUDFLARE_ZONE_NAME }}'" >> resources/config.toml
-          echo "dns_records = '${{ secrets.CLOUDFLARE_DNS_RECORDS }}'" >> resources/config.toml
-          echo "dns_records = '${{ secrets.CLOUDFLARE_APP_NAMES }}'" >> resources/config.toml
+          echo "zone_name = '${{ secrets.CLOUDFLARE_ZONE_NAME }}'" >> resources/config.toml
+          echo "dns_records = ${{ secrets.CLOUDFLARE_DNS_RECORDS }}" >> resources/config.toml
+          echo "applications = ${{ secrets.CLOUDFLARE_APP_NAMES }}" >> resources/config.toml
 
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
