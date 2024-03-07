@@ -25,7 +25,7 @@ class TestBackups:
 
     def test_health_check(self):
         url = f"{self.host}/rest/noauth/health"
-        response: Response
+        response: Response = None
         ok = {"status": "OK"}
 
         try:
@@ -40,7 +40,7 @@ class TestBackups:
 
     def test_paused(self):
         url = f"{self.host}/rest/config/folders"
-        response: Response
+        response: Response = None
 
         try:
             with self.client as c:
@@ -60,7 +60,7 @@ class TestBackups:
 
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
-        response: Response
+        response: Response = None
 
         try:
             with self.client as c:
