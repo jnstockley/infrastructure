@@ -21,7 +21,7 @@ jobs:
           echo "api_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
           echo "zone_zone = '${{ secrets.CLOUDFLARE_ZONE_NAME }}'" >> resources/config.toml
           echo "dns_records = ${{ secrets.CLOUDFLARE_DNS_RECORDS }}" >> resources/config.toml
-          echo "dns_records = ${{ secrets.CLOUDFLARE_APP_NAMES }}" >> resources/config.toml
+          echo "applications = ${{ secrets.CLOUDFLARE_APP_NAMES }}" >> resources/config.toml
 
       - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
