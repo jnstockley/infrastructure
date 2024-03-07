@@ -25,11 +25,14 @@ class TestBackups:
 
     def test_health_check(self):
         url = f"{self.host}/rest/noauth/health"
-        response: Response
+        response: Response = None
         ok = {"status": "OK"}
 
-        with self.client as c:
-            response = c.get(url)
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
@@ -37,10 +40,13 @@ class TestBackups:
 
     def test_paused(self):
         url = f"{self.host}/rest/config/folders"
-        response: Response
+        response: Response = None
 
-        with self.client as c:
-            response = c.get(url)
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
@@ -54,9 +60,13 @@ class TestBackups:
 
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
-        response: Response
-        with self.client as c:
-            response = c.get(url)
+        response: Response = None
+
+        try:
+            with self.client as c:
+                response = c.get(url)
+        except httpx.ConnectTimeout:
+            assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
         assert response.status_code == 200
