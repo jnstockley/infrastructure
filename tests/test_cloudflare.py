@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from pytz import timezone
 
 import httpx
 
@@ -120,10 +119,10 @@ class TestCloudflare:
         for dns_record in self.dns_records:
             record = get_dns_record(self.zone_name, dns_record, self.api_key)
             assert record is not None
-            comment: str = f"{record['comment']} CDT"
+            comment: str = f"{record['comment']}"
 
-            outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f %Z')
+            outdated_time = (datetime.now() - timedelta(hours=6))
+            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f')
 
             assert updated_at.timestamp() >= outdated_time.timestamp()
 
@@ -132,9 +131,9 @@ class TestCloudflare:
             policy = get_zero_trust_application_policies(self.zone_name, app, self.api_key)
             assert policy is not None
 
-            comment: str = f"{policy['name']} CDT"
+            comment: str = f"{policy['name']}"
 
-            outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f %Z')
+            outdated_time = (datetime.now() - timedelta(hours=6))
+            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f')
 
             assert updated_at.timestamp() >= outdated_time.timestamp()
