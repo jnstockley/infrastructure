@@ -120,7 +120,7 @@ class TestCloudflare:
         for dns_record in self.dns_records:
             record = get_dns_record(self.zone_name, dns_record, self.api_key)
             assert record is not None
-            comment: str = f"{record['comment']} CST"
+            comment: str = f"{record['comment']} CDT"
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
             updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f %Z')
@@ -132,7 +132,7 @@ class TestCloudflare:
             policy = get_zero_trust_application_policies(self.zone_name, app, self.api_key)
             assert policy is not None
 
-            comment: str = f"{policy['name']} CST"
+            comment: str = f"{policy['name']} CDT"
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
             updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f %Z')
