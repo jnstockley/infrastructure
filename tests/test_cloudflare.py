@@ -123,9 +123,9 @@ class TestCloudflare:
             comment: str = record['comment']
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f')
+            updated_at = datetime.strptime(comment[25:], '%Y-%m-%d %H:%M:%S.%f').astimezone(timezone('US/Central'))
 
-            assert updated_at.timestamp() >= outdated_time.timestamp()
+            assert updated_at >= outdated_time
 
     def test_zero_trust_app_policies(self):
         for app in self.applications:
@@ -135,6 +135,6 @@ class TestCloudflare:
             comment: str = policy['name']
 
             outdated_time = (datetime.now(timezone('US/Central')) - timedelta(hours=6))
-            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f')
+            updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f').astimezone(timezone('US/Central'))
 
-            assert updated_at.timestamp() >= outdated_time.timestamp()
+            assert updated_at >= outdated_time
