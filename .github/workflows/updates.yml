@@ -47,8 +47,8 @@ jobs:
           key: ${{ secrets.IOWA_HOME_SSH_KEY }}
           script: |
             ha core update --backup
-            ha os update --backup
-            ha supervisor update --backup
+            ha os update
+            ha supervisor update
       - name: Step 5 - Chicago Home
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -58,16 +58,16 @@ jobs:
           key: ${{ secrets.CHICAGO_HOME_SSH_KEY }}
           script: |
             ha core update --backup
-            ha os update --backup
-            ha supervisor update --backup
-      - name: Step 6 - Backup Server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: 192.168.0.18
-          port: 22
-          username: Jack Stockley
-          password: ${{ secrets.BACKUP_SERVER_USER_PASSWORD }}
-          script: |
-            schtasks /run /tn "Winget Upgrade"
-            schtasks /run /tn "Check Windows Update"
-            schtasks /run /tn "Install Windows Update"
+            ha os update
+            ha supervisor update
+      #- name: Step 6 - Backup Server
+      #  uses: appleboy/ssh-action@v1.0.3
+      #  with:
+      #    host: 192.168.0.18
+      #    port: 22
+      #    username: Jack Stockley
+      #    password: ${{ secrets.BACKUP_SERVER_USER_PASSWORD }}
+      #    script: |
+      #      schtasks /run /tn "Winget Upgrade"
+      #      schtasks /run /tn "Check Windows Update"
+      #      schtasks /run /tn "Install Windows Update"
