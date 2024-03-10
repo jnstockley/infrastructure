@@ -26,7 +26,7 @@ jobs:
           echo "zone_name = '${{ secrets.CLOUDFLARE_ZONE_NAME }}'" >> resources/config.toml
           echo "dns_records = ${{ secrets.CLOUDFLARE_DNS_RECORDS }}" >> resources/config.toml
           echo "applications = ${{ secrets.CLOUDFLARE_APP_NAMES }}" >> resources/config.toml
-
+          echo "application-urls = ${{ secrets.CLOUDFLARE_APP_URLS }}" >> resources/config.toml
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
         with:
