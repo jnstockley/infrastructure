@@ -114,6 +114,7 @@ class TestCloudflare:
         self.zone_name = cloudflare['zone_name']
         self.dns_records = cloudflare['dns_records']
         self.applications = cloudflare['applications']
+        self.application_urls = cloudflare['application-urls']
 
     def test_dns_records(self):
         for dns_record in self.dns_records:
@@ -137,3 +138,8 @@ class TestCloudflare:
             updated_at = datetime.strptime(comment[28:], '%Y-%m-%d %H:%M:%S.%f')
 
             assert updated_at.timestamp() >= outdated_time.timestamp()
+
+    def test_not_accessible(self):
+        for url in self.application_urls:
+            res = httpx.get(url)
+            assert res.status_code == 403
