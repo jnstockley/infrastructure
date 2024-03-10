@@ -68,5 +68,5 @@ jobs:
           username: Jack Stockley
           key: ${{ secrets.BACKUP_SERVER_KEY }}
           script: |
-            schtasks /run /tn "Windows Updates"
             schtasks /run /tn "Winget Upgrade"
+            schtasks /run /tn "Windows Updates"
