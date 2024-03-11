@@ -68,5 +68,5 @@ jobs:
           username: Jack Stockley
           key: ${{ secrets.BACKUP_SERVER_KEY }}
           script: |
-            schtasks /run /tn "Winget Upgrade"
-            schtasks /run /tn "Windows Updates"
+            "C:\Program Files\PowerShell\7\pwsh.exe" -command "Get-WindowsUpdate && Get-WUInstall -AcceptAll –AutoReboot"
+            "C:\Program Files\PowerShell\7\pwsh.exe" -command "winget upgrade --all"
