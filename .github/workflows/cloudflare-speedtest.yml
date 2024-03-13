@@ -30,6 +30,7 @@ jobs:
           upload_threshold: 20000000
         run: |
           node speedtest.js >> output.json
+          cat output.json
           jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
         
