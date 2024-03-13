@@ -14,6 +14,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21
-      - run: |
-          const {default: Speedtest } = await import('@cloudflare/speedtest');
-          new Speedtest().onFinish = results => console.log(results.getSummary());
+      - name: create javascript file
+        run: |
+          touch speedtest.js
+          echo "async function run() {" >> speedtest.js
+          echo "    const {default: Speedtest } = await import('@cloudflare/speedtest');" >> speedtest.js
+          echo "    new Speedtest().onFinish = results => console.log(results.getSummary());" >> speedtest.js
+          echo "}" >> speedtest.js
+          echo "run()" >> speedtest.js
+      - name: install speedtest
+        run: npm i @cloudflare/speedtest
+      - name: run speedtest
+        run: node speedtest.js
