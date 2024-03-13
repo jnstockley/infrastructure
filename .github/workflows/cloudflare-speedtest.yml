@@ -1,0 +1,19 @@
+name: Cloudflare Speedtest
+
+on:
+  #schedule:
+  #  - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Speedtest
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: |
+          const {default: Speedtest } = await import('@cloudflare/speedtest');
+          new Speedtest().onFinish = results => console.log(results.getSummary());
