@@ -26,14 +26,10 @@ jobs:
         run: npm i @cloudflare/speedtest
       - name: run speedtest
         env:
-          download_threshold: 15000000
-          upload_threshold: 20000000
+          download_threshold: 1.25
+          upload_threshold: 0.5
         run: |
           node speedtest.js | tee output.json
-          cat output.json
-          jq '.' output.json
-          jq '.download' output.json
-          jq '.upload' output.json
-          #jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
-          #jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
         
