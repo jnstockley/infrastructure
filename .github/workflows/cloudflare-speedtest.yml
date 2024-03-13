@@ -19,7 +19,7 @@ jobs:
           touch speedtest.js
           echo "async function run() {" >> speedtest.js
           echo "    const {default: Speedtest } = await import('@cloudflare/speedtest');" >> speedtest.js
-          echo "    new Speedtest().onFinish = results => console.log('{\"download\": ' + results.getDownloadBandwidth() + ', \"upload\": ' + results.getUploadBandwidth() + '}');" >> speedtest.js
+          echo "    new Speedtest().onFinish = results => console.log('{\"download\": ' + results.getDownloadBandwidth() / 1000000000 + ', \"upload\": ' + results.getUploadBandwidth() / 1000000000 + '}');" >> speedtest.js
           echo "}" >> speedtest.js
           echo "run()" >> speedtest.js
       - name: install speedtest
