@@ -43,7 +43,7 @@ jobs:
           #echo "[Backups.Racknerd]"  >> resources/config.toml
           #echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
           #echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
-          echo "outdated_interval = 6" >> resources/config.toml
+          #echo "outdated_interval = 6" >> resources/config.toml
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
         with:
