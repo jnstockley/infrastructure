@@ -159,16 +159,3 @@ cython_debug/
 .idea/
 
 resources/*
-
-# Docker container volumes
-docker/racknerd/adguard/confdir
-docker/racknerd/adguard/workdir
-
-docker/racknerd/dockge/data
-
-docker/racknerd/nginx-proxy-manager/data
-docker/racknerd/nginx-proxy-manager/letsencrypt
-
-docker/racknerd/uptime-kuma/uptime-kuma-data
-
-docker/racknerd/vaultwarden/vw-data
