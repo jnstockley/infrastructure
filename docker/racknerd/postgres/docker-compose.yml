@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   pg-admin:
-    image: dpage/pgadmin4:8.3
+    image: dpage/pgadmin4:8.5
     container_name: pgadmin
     networks:
       - postgres-internal
