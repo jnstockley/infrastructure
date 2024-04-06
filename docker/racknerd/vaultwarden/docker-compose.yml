@@ -2,7 +2,10 @@ services:
   vaultwarden:
     container_name: "vaultwarden"
     env_file:
-      - .env
+      - path: ./.env
+        required: true
+    environment:
+      - TZ=America/Chicago
     image: "vaultwarden/server:1.30.5-alpine"
     networks:
       - "vaultwarden"
