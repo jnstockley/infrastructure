@@ -7,5 +7,16 @@ services:
         required: true
     environment:
       - TZ=America/Chicago
+    networks:
+      - traefik
+      - nextcloud-aio
     restart: unless-stopped
     command: tunnel run
+
+networks:
+  nextcloud-aio:
+    external: true
+    name: "nextcloud-aio"
+  traefik:
+    external: true
+    name: "traefik"

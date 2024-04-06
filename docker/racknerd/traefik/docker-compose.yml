@@ -6,7 +6,7 @@ services:
       - 80:80
       - 443:443
       # -- (Optional) Enable Dashboard, don't do in production
-      - 8080:8080
+      # - 8080:8080
     environment:
       - TZ=America/Chicago
     volumes:
@@ -23,6 +23,7 @@ services:
       - adguard
       - vaultwarden
       - nextcloud-aio
+      - traefik
     restart: unless-stopped
 
 networks:
@@ -35,3 +36,6 @@ networks:
   nextcloud-aio:
     external: true
     name: "nextcloud-aio"
+  traefik:
+    external: true
+    name: "traefik"
