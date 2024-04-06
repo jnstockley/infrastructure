@@ -1,17 +1,11 @@
-version: "3.8"
-
 services:
   cloudflared:
-    image: cloudflare/cloudflared:2024.2.1
+    image: cloudflare/cloudflared:2024.3.0
     container_name: cloudflared
-    networks:
-      - nginx-proxy-manager
+    env_file:
+      - path: ./.env
+        required: true
     environment:
-      - TUNNEL_TOKEN=eyJhIjoiYzZkN2RjMGVlMTVkN2YyYjhjMDhkN2MwMmE3ZTBkNjciLCJ0IjoiNzE2N2Y4YzAtYjYzOC00MGUyLWExY2ItNTJjNGExYTFiNzIzIiwicyI6IlpEWXlPRGxtWlRrdFpHVmlNaTAwTURJMUxUbG1OMlV0TURObE1HVXhNekUzTjJFMyJ9
+      - TZ=America/Chicago
     restart: unless-stopped
     command: tunnel run
-
-networks:
-  nginx-proxy-manager:
-    external: true
-    name: nginx-proxy-manager
