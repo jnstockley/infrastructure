@@ -1,15 +1,14 @@
-version: '3.6'
-
 services:
   api:
-    container_name: "jnstockley-api"
-    image: "jnstockley/api:v0.0.2-fix"
+    container_name: jnstockley-api
+    image: jnstockley/api:v0.0.2-fix
     working_dir: "/opt/jstockley-api"
     env_file:
-      - ".env"
+      - path: ./.env
+        required: true
     restart: "unless-stopped"
     networks:
-      - "jnstockley-api"
+      - jnstockley-api
 
 networks:
   jnstockley-api:
