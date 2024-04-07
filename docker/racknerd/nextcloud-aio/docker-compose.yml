@@ -6,23 +6,19 @@ services:
     volumes:
       - "nextcloud_aio_mastercontainer:/mnt/docker-aio-config"
       - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro"
-    #ports:
-    #  - "8080:8080"
+    ports:
+      - "8080:8080"
     networks:
-      - nextcloud-ai
+      - nextcloud-aio
     environment:
-      - "APACHE_PORT=11000"
-      - "WATCHTOWER_DOCKER_SOCKET_PATH=$XDG_RUNTIME_DIR/docker.sock"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud.tls=true"
-      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.jstockley.com`)"
-      - "traefik.http.routers.nextcloud.entrypoints=websecure"
-      - "traefik.http.services.nextcloud.loadbalancer.server.port=11000"
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=127.0.0.1
+      - WATCHTOWER_DOCKER_SOCKET_PATH=$XDG_RUNTIME_DIR/docker.sock
 
 volumes:
   nextcloud_aio_mastercontainer:
     name: "nextcloud_aio_mastercontainer"
+    external: true
 
 networks:
   nextcloud-aio:
