@@ -24,6 +24,7 @@ services:
       - vaultwarden
       - nextcloud-aio
       - traefik
+      - uptime-kuma
     restart: unless-stopped
 
 networks:
@@ -39,3 +40,6 @@ networks:
   traefik:
     external: true
     name: "traefik"
+  uptime-kuma:
+    external: true
+    name: "uptime-kuma"
