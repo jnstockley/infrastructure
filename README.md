@@ -16,4 +16,5 @@
 8. setup sso
 9. make format between compose files the same
 10. fix issues with syncthing and tailscale
-11. improve test error messages and logging   
+11. improve test error messages and loggin
+12. 12. convert speedtest to use cloudflare speedtest
