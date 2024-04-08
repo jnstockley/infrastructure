@@ -17,4 +17,5 @@
 9. make format between compose files the same
 10. fix issues with syncthing and tailscale
 11. improve test error messages and loggin
-12. 12. convert speedtest to use cloudflare speedtest
+12. convert speedtest to use cloudflare speedtest
+13. notifications if no dns request from devices for so long
