@@ -7,7 +7,11 @@
 
 # TODO
 1. Auto updates for machines
-2. Update docker-compose files (match what's on server)
-3. Check if Hassio devices have issues (disconnected stuck on initializing)
-4. see if way to check homekit if devices aren't responding 
-5. Switch to docker secret instead of replace.sh script
+2. Check if Hassio devices have issues (disconnected stuck on initializing)
+3. see if way to check homekit if devices aren't responding 
+4. get tests passing
+5. add check for sensitive services
+6. move containers to use local postgress db
+7. get logs in a central location
+8. setup sso
+9. make format between compose files the same
