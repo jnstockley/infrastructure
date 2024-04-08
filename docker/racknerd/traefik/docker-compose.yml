@@ -27,6 +27,7 @@ services:
       - uptime-kuma
       - postgres-external
       - api
+      - dockge
     restart: unless-stopped
 
 networks:
@@ -51,3 +52,6 @@ networks:
   api:
     external: true
     name: api
+  dockge:
+    name: "dockge"
+    external: true
