@@ -26,6 +26,7 @@ services:
       - traefik
       - uptime-kuma
       - postgres-external
+      - api
     restart: unless-stopped
 
 networks:
@@ -47,3 +48,6 @@ networks:
   postgres-external:
     external: true
     name: "postgres-external"
+  api:
+    external: true
+    name: api
