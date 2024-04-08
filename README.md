@@ -15,4 +15,5 @@
 7. get logs in a central location
 8. setup sso
 9. make format between compose files the same
-10 fix issues with syncthing and tailscale
+10. fix issues with syncthing and tailscale
+11. improve test error messages and logging   
