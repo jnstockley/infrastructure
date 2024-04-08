@@ -25,6 +25,7 @@ services:
       - nextcloud-aio
       - traefik
       - uptime-kuma
+      - postgres-external
     restart: unless-stopped
 
 networks:
@@ -43,3 +44,6 @@ networks:
   uptime-kuma:
     external: true
     name: "uptime-kuma"
+  postgres-external:
+    external: true
+    name: "postgres-external"
