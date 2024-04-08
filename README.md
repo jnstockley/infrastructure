@@ -19,3 +19,4 @@
 11. improve test error messages and loggin
 12. convert speedtest to use cloudflare speedtest
 13. notifications if no dns request from devices for so long
+14. setup git mirror
