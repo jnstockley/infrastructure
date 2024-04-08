@@ -1,18 +1,22 @@
 ---
 services:
   syncthing:
-    image: lscr.io/linuxserver/syncthing:1.27.5
+    image: syncthing/syncthing:1.27.5
     container_name: syncthing
     hostname: racknerd
+    #user:
+    #  1000:1000
     environment:
-      - UMASK=022
-      - PUID=1000
-      - PGID=1000
+    #  - PUID=1000
+    #  - PGID=1000
+      - PCAP=cap_chown,cap_fowner+ep
       - TZ=America/Chicago
-    volumes:
-      - ./config:/config
-      - /mnt/backup/:/data1
-      - /home/jackstockley/:/data2
+   # volumes:
+     # - syncthing:/var/syncthing/config
+    #  - "syncthing:/var/syncthing/config"
+    #  - ./config:/var/syncthing/config
+    #  - /mnt/backup/:/var/syncthing/nextcloud
+    #  - /home/jackstockley/:/var/syncthing/home
     networks:
       - syncthing
     restart: unless-stopped
@@ -25,6 +29,11 @@ services:
       - "traefik.http.routers.syncthing.service=syncthing"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
       - "traefik.docker.network=syncthing"
+
+#volumes:
+#  syncthing:
+ #   name: "syncthing"
+#    external: true
 
 networks:
   syncthing:

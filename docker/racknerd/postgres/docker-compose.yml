@@ -1,26 +1,39 @@
-version: "3.8"
-
 services:
   postgres-db:
     image: postgres:16.2-alpine3.19
     container_name: postgres
     networks:
       - postgres-internal
+    env_file:
+      - path: ./.env
+        required: true
     environment:
-      - POSTGRES_USER=__POSTGRES_USER__
-      - POSTGRES_PASSWORD=__POSTGRES_PASSWORD__
+      - TZ=America/Chicago
     restart: unless-stopped
 
   pg-admin:
-    image: dpage/pgadmin4:8.3
+    image: dpage/pgadmin4:8.5
+    depends_on:
+      - postgres-db
     container_name: pgadmin
+    env_file:
+      - path: ./.env
+        required: true
     networks:
       - postgres-internal
       - postgres-external
     environment:
-      - PGADMIN_DEFAULT_EMAIL=__PGADMIN_EMAIL__
-      - PGADMIN_DEFAULT_PASSWORD=__PG_ADMIN_PASSWORD__
+      - TZ=America/Chicago
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.jstockley.com`)"
+      - "traefik.http.routers.pgadmin.tls=true"
+      - "traefik.http.routers.pgadmin.tls.certresolver=production"
+      - "traefik.http.routers.pgadmin.service=pgadmin"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+      - "traefik.docker.network=postgres-external"
 
 networks:
   postgres-internal:

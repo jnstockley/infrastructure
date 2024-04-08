@@ -1,16 +1,24 @@
 services:
   api:
-    container_name: jnstockley-api
-    image: jnstockley/api:v0.0.2-fix
-    working_dir: "/opt/jstockley-api"
+    container_name: api
+    image: jnstockley/api:v0.0.4
     env_file:
       - path: ./.env
         required: true
     restart: "unless-stopped"
     networks:
-      - jnstockley-api
+      - api
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=Host(`api.jstockley.com`)"
+      - "traefik.http.routers.api.tls=true"
+      - "traefik.http.routers.api.tls.certresolver=production"
+      - "traefik.http.routers.api.service=api"
+      - "traefik.http.services.api.loadbalancer.server.port=5000"
+      - "traefik.docker.network=api"
 
 networks:
-  jnstockley-api:
+  api:
     external: true
-    name: "jnstockley-api"
+    name: api
