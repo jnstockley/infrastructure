@@ -17,7 +17,7 @@ services:
       - "traefik.http.routers.dockge.tls=true"
       - "traefik.http.routers.dockge.tls.certresolver=production"
       - "traefik.http.routers.dockge.service=dockge"
-      - "traefik.http.services.dockge.loadbalancer.server.port=8384"
+      - "traefik.http.services.dockge.loadbalancer.server.port=5001"
       - "traefik.docker.network=dockge"
 
 
