@@ -28,6 +28,7 @@ services:
       - postgres-external
       - api
       - dockge
+      - syncthing
     restart: unless-stopped
 
 networks:
@@ -54,4 +55,7 @@ networks:
     name: api
   dockge:
     name: "dockge"
+    external: true
+  syncthing:
+    name: "syncthing"
     external: true
