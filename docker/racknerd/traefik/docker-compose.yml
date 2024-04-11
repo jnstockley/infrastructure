@@ -14,7 +14,7 @@ services:
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
-#      - traefik-certs:/etc/traefik/certs/
+      - ./logs/:/var/log/traefik/
     # -- (Optional) When using Cloudflare as Cert Resolver
     # environment:
     #   - CF_DNS_API_TOKEN=your-cloudflare-api-token
