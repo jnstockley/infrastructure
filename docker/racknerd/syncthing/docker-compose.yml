@@ -1,24 +1,16 @@
----
 services:
   syncthing:
-    image: syncthing/syncthing:1.27.5
+    image: syncthing/syncthing:1.27.6
     container_name: syncthing
     hostname: racknerd
-    #user:
-    #  1000:1000
-    environment:
-    #  - PUID=1000
-    #  - PGID=1000
-      - PCAP=cap_chown,cap_fowner+ep
-      - TZ=America/Chicago
-   # volumes:
-     # - syncthing:/var/syncthing/config
-    #  - "syncthing:/var/syncthing/config"
-    #  - ./config:/var/syncthing/config
-    #  - /mnt/backup/:/var/syncthing/nextcloud
-    #  - /home/jackstockley/:/var/syncthing/home
     networks:
       - syncthing
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      - ./config:/var/syncthing/config
+      - /mnt/backup/:/var/syncthing/nextcloud
+      - /home/jackstockley/infrastructure/:/var/syncthing/home
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -29,11 +21,6 @@ services:
       - "traefik.http.routers.syncthing.service=syncthing"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
       - "traefik.docker.network=syncthing"
-
-#volumes:
-#  syncthing:
- #   name: "syncthing"
-#    external: true
 
 networks:
   syncthing:
