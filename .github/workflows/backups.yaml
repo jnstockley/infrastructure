@@ -28,28 +28,28 @@ jobs:
           echo "url = '${{ secrets.IOWA_HOME }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.IOWA_HOME_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "bypass_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
+          echo "bypass_key = '${{ secrets.CLOUDFLARE_BYPASS }}'"  >> resources/config.toml
           echo "[Backups.Chicago-Home]"  >> resources/config.toml
           echo "url = '${{ secrets.CHICAGO_HOME }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.CHICAGO_HOME_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "bypass_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
+          echo "bypass_key = '${{ secrets.CLOUDFLARE_BYPASS }}'"  >> resources/config.toml
           echo "[Backups.Backup-Server]"  >> resources/config.toml
           echo "url = '${{ secrets.BACKUP_SERVER }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.BACKUP_SERVER_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "bypass_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
+          echo "bypass_key = '${{ secrets.CLOUDFLARE_BYPASS }}'"  >> resources/config.toml
           echo "[Backups.Synology]"  >> resources/config.toml
           echo "url = '${{ secrets.SYNOLOGY }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.SYNOLOGY_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "bypass_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
+          echo "bypass_key = '${{ secrets.CLOUDFLARE_BYPASS }}'"  >> resources/config.toml
           echo "[Backups.Racknerd]"  >> resources/config.toml
           #echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
           echo "url = 'https://backup.jstockley.com'"  >> resources/config.toml
           echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "bypass_key = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
+          echo "bypass_key = '${{ secrets.CLOUDFLARE_BYPASS }}'"  >> resources/config.toml
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
         with:
