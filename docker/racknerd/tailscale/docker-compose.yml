@@ -4,13 +4,15 @@ services:
     container_name: tailscale
     hostname: racknerd
     environment:
-      - TS_EXTRA_ARGS=-advertise-exit-node
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container
       - TZ=America/Chicago
     env_file:
       - path: ./.env
         required: true
     volumes:
       - /dev/net/tun:/dev/net/tun
+      - ./data:/var/lib/tailscale
     networks:
       - tailscale
     cap_add:
