@@ -35,6 +35,7 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
+        print(response.json())
         assert response.status_code == 200
         assert response.json() == ok, f"Health check failed for {self.name}"
 
@@ -49,6 +50,7 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
+        print(response.json())
         assert response.status_code == 200
 
         folders = response.json()
@@ -69,6 +71,7 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
+        print(response.json())
         assert response.status_code == 200
 
         folders = response.json()
