@@ -20,7 +20,7 @@ class TestBackups:
         self.api_key = parameters['api_key']
         outdated_interval = int(parameters['outdated_interval'])
         self.outdated_time = (datetime.datetime.now() - datetime.timedelta(hours=outdated_interval)).timestamp()
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+        headers = {"Authorization": f"Bearer {self.api_key}", "x-cloudflare-bypass": {devices['bypass_key']}}
         self.client = httpx.Client(headers=headers, verify=False)
 
     def test_health_check(self):
@@ -35,7 +35,6 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
-        print(response.text)
         assert response.status_code == 200
         assert response.json() == ok, f"Health check failed for {self.name}"
 
@@ -50,7 +49,6 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
-        print(response.text)
         assert response.status_code == 200
 
         folders = response.json()
@@ -71,7 +69,6 @@ class TestBackups:
             assert response is not None, f'Cannot connect to {self.name}'
 
         assert response is not None
-        print(response.text)
         assert response.status_code == 200
 
         folders = response.json()
