@@ -6,6 +6,7 @@ services:
       - TZ=America/Chicago
     networks:
       - uptime-kuma
+      - postgres-internal
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -24,3 +25,6 @@ networks:
   uptime-kuma:
     external: true
     name: uptime-kuma
+  postgres-internal:
+    external: true
+    name: postgres-internal
