@@ -8,8 +8,7 @@ services:
       - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container --accept-routes=172.0.0.0/8
       - TZ=America/Chicago
     env_file:
-      - path: ./.env
-        required: true
+      - ./.env
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ./data:/var/lib/tailscale
