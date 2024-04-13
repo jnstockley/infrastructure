@@ -1,28 +1,26 @@
 services:
   uptime-kuma:
-    container_name: "uptime-kuma"
-    expose:
-      - "3001/tcp"
-    image: "louislam/uptime-kuma:1.23.11-alpine"
+    container_name: uptime-kuma
+    image: louislam/uptime-kuma:1.23.11-alpine
     environment:
       - TZ=America/Chicago
     networks:
-      - "uptime-kuma"
-    restart: "unless-stopped"
+      - uptime-kuma
+    restart: unless-stopped
     volumes:
-      - "./data:/app/data"
-      - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro"
+      - ./data:/app/data
+      - $XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
-      - "traefik.http.routers.uptime-kuma.rule=Host(`status.jstockley.com`)"
-      - "traefik.http.routers.uptime-kuma.tls=true"
-      - "traefik.http.routers.uptime-kuma.tls.certresolver=production"
-      - "traefik.http.routers.uptime-kuma.service=uptime-kuma"
-      - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
-      - "traefik.docker.network=uptime-kuma"
+      - traefik.enable=true
+      - traefik.http.routers.uptime-kuma.entrypoints=websecure
+      - traefik.http.routers.uptime-kuma.rule=Host(`status.jstockley.com`)
+      - traefik.http.routers.uptime-kuma.tls=true
+      - traefik.http.routers.uptime-kuma.tls.certresolver=production
+      - traefik.http.routers.uptime-kuma.service=uptime-kuma
+      - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
+      - traefik.docker.network=uptime-kuma
 
 networks:
   uptime-kuma:
     external: true
-    name: "uptime-kuma"
+    name: uptime-kuma

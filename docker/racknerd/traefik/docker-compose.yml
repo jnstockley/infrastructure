@@ -31,7 +31,10 @@ services:
       - syncthing
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "traefik", "healthcheck"]
+      test:
+        - CMD
+        - traefik
+        - healthcheck
       interval: 60s
       retries: 5
       start_period: 20s
@@ -40,28 +43,28 @@ services:
 networks:
   adguard:
     external: true
-    name: "adguard"
+    name: adguard
   vaultwarden:
     external: true
-    name: "vaultwarden"
+    name: vaultwarden
   nextcloud-aio:
     external: true
-    name: "nextcloud-aio"
+    name: nextcloud-aio
   traefik:
     external: true
-    name: "traefik"
+    name: traefik
   uptime-kuma:
     external: true
-    name: "uptime-kuma"
+    name: uptime-kuma
   postgres-external:
     external: true
-    name: "postgres-external"
+    name: postgres-external
   api:
     external: true
     name: api
   dockge:
-    name: "dockge"
+    name: dockge
     external: true
   syncthing:
-    name: "syncthing"
+    name: syncthing
     external: true

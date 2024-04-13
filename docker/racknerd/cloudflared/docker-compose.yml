@@ -15,7 +15,7 @@ services:
 networks:
   nextcloud-aio:
     external: true
-    name: "nextcloud-aio"
+    name: nextcloud-aio
   traefik:
     external: true
-    name: "traefik"
+    name: traefik
