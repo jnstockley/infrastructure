@@ -5,8 +5,7 @@ services:
     networks:
       - postgres-internal
     env_file:
-      - path: ./.env
-        required: true
+      - ./.env
     environment:
       - TZ=America/Chicago
     restart: unless-stopped
@@ -17,8 +16,7 @@ services:
       - postgres-db
     container_name: pgadmin
     env_file:
-      - path: ./.env
-        required: true
+      - ./.env
     networks:
       - postgres-internal
       - postgres-external
