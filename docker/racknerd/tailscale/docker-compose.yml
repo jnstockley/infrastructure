@@ -23,7 +23,7 @@ services:
         - CMD
         - ping
         - -c
-        - 3
+        - "3"
         - racknerd
       interval: 60s
       retries: 5
