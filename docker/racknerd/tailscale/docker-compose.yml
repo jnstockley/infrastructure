@@ -18,6 +18,12 @@ services:
       - net_admin
       - sys_module
     restart: unless-stopped
+    healthcheck:
+      test: ["ping", "-c", "3", "racknerd"]
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
 networks:
   tailscale:
