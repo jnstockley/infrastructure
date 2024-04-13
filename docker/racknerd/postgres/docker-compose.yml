@@ -10,7 +10,7 @@ services:
       - TZ=America/Chicago
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "foo"]
+      test: ["CMD", "pg_isready"]
       interval: 60s
       retries: 5
       start_period: 20s
