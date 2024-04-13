@@ -25,6 +25,8 @@ api:
 entryPoints:
   web:
     address: :80
+  ping:
+    address: :8082
     # -- (Optional) Redirect all HTTP to HTTPS
     http:
       redirections:
@@ -36,6 +38,9 @@ entryPoints:
   # -- (Optional) Add custom Entrypoint
   # custom:
   #   address: :8080
+
+ping:
+  entryPoint: "ping"
 
 # -- Configure your CertificateResolver here...
 certificatesResolvers:
