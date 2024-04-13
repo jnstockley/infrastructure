@@ -3,8 +3,7 @@ services:
     image: cloudflare/cloudflared:2024.4.0
     container_name: cloudflared
     env_file:
-      - path: ./.env
-        required: true
+      - ./.env
     environment:
       - TZ=America/Chicago
     networks:
@@ -16,7 +15,7 @@ services:
 networks:
   nextcloud-aio:
     external: true
-    name: "nextcloud-aio"
+    name: nextcloud-aio
   traefik:
     external: true
-    name: "traefik"
+    name: traefik

@@ -13,16 +13,16 @@ services:
       - /home/jackstockley/infrastructure/:/var/syncthing/home
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.syncthing.entrypoints=websecure"
-      - "traefik.http.routers.syncthing.rule=Host(`backup.jstockley.com`)"
-      - "traefik.http.routers.syncthing.tls=true"
-      - "traefik.http.routers.syncthing.tls.certresolver=production"
-      - "traefik.http.routers.syncthing.service=syncthing"
-      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
-      - "traefik.docker.network=syncthing"
+      - traefik.enable=true
+      - traefik.http.routers.syncthing.entrypoints=websecure
+      - traefik.http.routers.syncthing.rule=Host(`backup.jstockley.com`)
+      - traefik.http.routers.syncthing.tls=true
+      - traefik.http.routers.syncthing.tls.certresolver=production
+      - traefik.http.routers.syncthing.service=syncthing
+      - traefik.http.services.syncthing.loadbalancer.server.port=8384
+      - traefik.docker.network=syncthing
 
 networks:
   syncthing:
     external: true
-    name: "syncthing"
+    name: syncthing

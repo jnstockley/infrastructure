@@ -1,13 +1,13 @@
 services:
   nextcloud:
-    image: "nextcloud/all-in-one:latest"
-    restart: "unless-stopped"
-    container_name: "nextcloud-aio-mastercontainer"
+    image: nextcloud/all-in-one:latest
+    restart: unless-stopped
+    container_name: nextcloud-aio-mastercontainer
     volumes:
-      - "nextcloud_aio_mastercontainer:/mnt/docker-aio-config"
-      - "$XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro"
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - $XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro
     ports:
-      - "8080:8080"
+      - 8080:8080
     networks:
       - nextcloud-aio
     environment:
@@ -17,10 +17,9 @@ services:
 
 volumes:
   nextcloud_aio_mastercontainer:
-    name: "nextcloud_aio_mastercontainer"
-    external: true
+    name: nextcloud_aio_mastercontainer
 
 networks:
   nextcloud-aio:
     external: true
-    name: "nextcloud-aio"
+    name: nextcloud-aio

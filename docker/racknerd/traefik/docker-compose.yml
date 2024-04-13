@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: traefik:v2.11.1
+    image: traefik:v2.11.2
     container_name: traefik
     ports:
       - 80:80
@@ -14,7 +14,7 @@ services:
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
-#      - traefik-certs:/etc/traefik/certs/
+      - ./logs/:/var/log/traefik/
     # -- (Optional) When using Cloudflare as Cert Resolver
     # environment:
     #   - CF_DNS_API_TOKEN=your-cloudflare-api-token
@@ -30,32 +30,41 @@ services:
       - dockge
       - syncthing
     restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - traefik
+        - healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
 networks:
   adguard:
     external: true
-    name: "adguard"
+    name: adguard
   vaultwarden:
     external: true
-    name: "vaultwarden"
+    name: vaultwarden
   nextcloud-aio:
     external: true
-    name: "nextcloud-aio"
+    name: nextcloud-aio
   traefik:
     external: true
-    name: "traefik"
+    name: traefik
   uptime-kuma:
     external: true
-    name: "uptime-kuma"
+    name: uptime-kuma
   postgres-external:
     external: true
-    name: "postgres-external"
+    name: postgres-external
   api:
     external: true
     name: api
   dockge:
-    name: "dockge"
+    name: dockge
     external: true
   syncthing:
-    name: "syncthing"
+    name: syncthing
     external: true
