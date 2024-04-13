@@ -2,6 +2,7 @@ services:
   dockge:
     image: louislam/dockge:1.4.2
     restart: unless-stopped
+    container_name: dockge
     volumes:
       - ./data:/app/data
       - $XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock
