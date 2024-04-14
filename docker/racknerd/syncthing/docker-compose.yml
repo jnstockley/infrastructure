@@ -6,6 +6,8 @@ services:
     networks:
       - syncthing
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ=America/Chicago
     volumes:
       - ./config:/var/syncthing/config
