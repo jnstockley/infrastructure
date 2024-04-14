@@ -19,7 +19,7 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
-          args: --exit-node=racknerd
+          args: --exit-node=100.87.120.89
       - name: Step 3 - Create config file
         run: |
           mkdir resources
