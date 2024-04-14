@@ -14,6 +14,7 @@ services:
       - ./data:/var/lib/tailscale
     networks:
       - tailscale
+      - syncthing
     cap_add:
       - net_admin
       - sys_module
@@ -34,3 +35,6 @@ networks:
   tailscale:
     external: true
     name: tailscale
+  syncthing:
+    external: true
+    name: syncthing
