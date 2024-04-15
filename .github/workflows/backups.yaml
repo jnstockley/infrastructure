@@ -19,7 +19,6 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
-          args: --exit-node=100.87.120.89
       - name: Step 3 - Create config file
         run: |
           mkdir resources
@@ -55,10 +54,3 @@ jobs:
           poetry install --no-root
       - name: Step 6 - Run Tests
         run: poetry run pytest tests/test_backups.py
-      - name: Step 7 - Disconnect from tailscale
-        uses: tailscale/github-action@v2
-        with:
-          #oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          #oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          #tags: tag:github
-          args: --exit-node=
