@@ -69,33 +69,47 @@ jobs:
        #     cat output.json
        #     cd ..
        #     rm -rf /root/speedtest/
-      - name: Step 4 - Install Speedtest CLI
+      #- name: Step 4 - Install Speedtest CLI
+      #  run: |
+      #    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
+      #    sudo apt install speedtest
+      - name: Step 4 - Install Node 21
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - name: Step 5 - Create Speedtest file
         run: |
-          curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
-          sudo apt install speedtest
-      - name: Step 5 - Chicago Speedtest
+          touch speedtest.js
+          echo "async function run() {" >> speedtest.js
+          echo "    const {default: Speedtest } = await import('@cloudflare/speedtest');" >> speedtest.js
+          echo "    new Speedtest().onFinish = results => console.log('{\"download\": ' + results.getDownloadBandwidth() / 1000000000 + ', \"upload\": ' + results.getUploadBandwidth() / 1000000000 + '}');" >> speedtest.js
+          echo "}" >> speedtest.js
+          echo "run()" >> speedtest.js
+      - name: Step 6 - Install Cloudflare Speedtest CLI
+        run: npm i @cloudflare/speedtest
+      - name: Step 7 - Chicago Speedtest
         env:
           download_threshold: 1875000
           upload_threshold: 1875000
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=chicago-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --accept-license --server-id=1776 --format=json >> output.json
+          node speedtest.js | tee output.json
           sudo tailscale up --exit-node= --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           cat output.json
-          jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
-          jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
           rm -f output.json
-      - name: Step 6 - Iowa Speedtest
+      - name: Step 8 - Iowa Speedtest
         env:
           download_threshold: 15000000
           upload_threshold: 20000000
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
-          speedtest --accept-license --server-id=10134 --format=json >> output.json
+          node speedtest.js | tee output.json
           sudo tailscale up --exit-node= --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           cat output.json
-          jq_output=$(jq '.download.bandwidth' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
-          jq_output=$(jq '.upload.bandwidth' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
           rm -f output.json
