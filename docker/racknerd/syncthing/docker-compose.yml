@@ -4,7 +4,8 @@ services:
     container_name: syncthing
     hostname: racknerd
     networks:
-      - syncthing
+      syncthing:
+        - ipv4_address: 172.28.0.2
     environment:
       - TZ=America/Chicago
     volumes:
