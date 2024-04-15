@@ -25,9 +25,9 @@ services:
 
 networks:
   syncthing:
+    driver: bridge
     external: true
     name: syncthing
     ipam:
       config:
-        - subnet: 172.28.0.0/16
-          gateway: 172.28.0.1
+        - subnet: 172.28.0.0/24
