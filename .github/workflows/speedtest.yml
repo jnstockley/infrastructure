@@ -26,7 +26,7 @@ jobs:
           host: 192.168.0.17
           port: 22
           username: root
-          key: ${{ secrets.IOWA_HOME_SSH_KEY }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
           envs: download_threshold,upload_threshold
           script: |
             rm -rf /root/speedtest/
@@ -52,7 +52,7 @@ jobs:
           host: 192.168.1.83
           port: 22
           username: root
-          key: ${{ secrets.CHICAGO_HOME_SSH_KEY }}
+          key: ${{ secrets.PRIVATE_SSH_KEY }}
           envs: download_threshold,upload_threshold
           script: |
             rm -rf /root/speedtest/
