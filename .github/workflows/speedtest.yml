@@ -87,6 +87,14 @@ jobs:
           echo "run()" >> speedtest.js
       - name: Step 6 - Install Cloudflare Speedtest CLI
         run: npm i @cloudflare/speedtest
+      - name: run speedtest
+        env:
+          download_threshold: 1.25
+          upload_threshold: 0.5
+        run: |
+          node speedtest.js | tee output.json
+          jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+          jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
       - name: Step 7 - Chicago Speedtest
         env:
           download_threshold: 1875000
