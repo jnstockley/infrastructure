@@ -10,6 +10,8 @@ services:
       - ./work:/opt/adguardhome/work
     environment:
       - TZ=America/Chicago
+    ports:
+      - 53:53
     cap_add:
       - NET_ADMIN
     labels:
