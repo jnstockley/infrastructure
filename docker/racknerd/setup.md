@@ -40,7 +40,7 @@
     ```
 12. Auth with GH CLI using ssh
 13. Install docker and setup rootless mode
-14. Add `net.ipv4.ip_unprivileged_port_start=80` to `/etc/sysctl.conf` and `sudo sysctl --system`
+14. Add `net.ipv4.ip_unprivileged_port_start=53` to `/etc/sysctl.conf` and `sudo sysctl --system`
 15. Clone GitHub repo and setup containers
 
 
