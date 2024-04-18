@@ -14,9 +14,7 @@
 6. move containers to use local postgress db
 7. get logs in a central location
 8. setup sso
-9. make format between compose files the same
-10. fix issues with syncthing and tailscale
-11. improve test error messages and loggin
-12. convert speedtest to use cloudflare speedtest
-13. notifications if no dns request from devices for so long
-14. setup git mirror
+9. improve test error messages and loggin
+10. convert speedtest to use cloudflare speedtest
+11. notifications if no dns request from devices for so long
+12. setup git mirror
