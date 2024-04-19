@@ -73,11 +73,11 @@ jobs:
       #  run: |
       #    curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | sudo bash
       #    sudo apt install speedtest
-      - name: Step 4 - Install Node 21
+      - name: Step 2 - Install Node 21
         uses: actions/setup-node@v4
         with:
           node-version: 21
-      - name: Step 5 - Create Speedtest file
+      - name: Step 3 - Create Speedtest file
         run: |
           touch speedtest.js
           echo "async function run() {" >> speedtest.js
@@ -85,22 +85,9 @@ jobs:
           echo "    new Speedtest().onFinish = results => console.log('{\"download\": ' + results.getDownloadBandwidth() / 1000000 + ', \"upload\": ' + results.getUploadBandwidth() / 1000000 + '}');" >> speedtest.js
           echo "}" >> speedtest.js
           echo "run()" >> speedtest.js
-      - name: Step 6 - Install Cloudflare Speedtest CLI
+      - name: Step 4 - Install Cloudflare Speedtest CLI
         run: npm i @cloudflare/speedtest
-      - name: run speedtest
-        env: # Mbps
-          download_threshold: 1.25
-          upload_threshold: 0.5
-        run: |
-          rm -f output.json
-          node speedtest.js | tee output.json
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "text<<$EOF" >> $GITHUB_OUTPUT
-          echo "SpeedTest: $(cat output.json)." >> $GITHUB_OUTPUT
-          echo "$EOF" >> $GITHUB_OUTPUT
-          cat output.json
-          rm -f output.json
-      - name: Step 7 - Chicago Speedtest
+      - name: Step 5 - Chicago Speedtest
         env: # Mbps
           download_threshold: 1
           upload_threshold: 1
@@ -117,7 +104,7 @@ jobs:
           jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
           jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
           rm -f output.json
-      - name: Step 8 - Iowa Speedtest
+      - name: Step 6 - Iowa Speedtest
         env: # Mbps
           download_threshold: 700
           upload_threshold: 700
