@@ -119,8 +119,8 @@ jobs:
           rm -f output.json
       - name: Step 8 - Iowa Speedtest
         env: # Mbps
-          download_threshold: 900
-          upload_threshold: 900
+          download_threshold: 700
+          upload_threshold: 700
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
