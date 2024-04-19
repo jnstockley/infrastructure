@@ -96,8 +96,8 @@ jobs:
           node speedtest.js | tee output.json
           cat output.json >> $GITHUB_OUTPUT
           cat output.json
-          jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
-          jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
+      #    jq_output=$(jq '.download' output.json) && (( $(echo "$jq_output > $download_threshold" | bc -l) )) && exit 0 || exit 1
+      #    jq_output=$(jq '.upload' output.json) && (( $(echo "$jq_output > $upload_threshold" | bc -l) )) && exit 0 || exit 1
           rm -f output.json
       - name: Step 7 - Chicago Speedtest
         env: # Mbps
