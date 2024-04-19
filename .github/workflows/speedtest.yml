@@ -76,7 +76,7 @@ jobs:
       - name: Step 2 - Install Node 21
         uses: actions/setup-node@v4
         with:
-          node-version: 21
+          node-version: lts
       - name: Step 3 - Create Speedtest file
         run: |
           touch speedtest.js
@@ -106,8 +106,8 @@ jobs:
           rm -f output.json
       - name: Step 6 - Iowa Speedtest
         env: # Mbps
-          download_threshold: 700
-          upload_threshold: 700
+          download_threshold: 200
+          upload_threshold: 200
         run: |
           rm -f output.json
           sudo tailscale up --exit-node=100.124.224.3 --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
