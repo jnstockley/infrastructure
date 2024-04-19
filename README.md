@@ -19,3 +19,4 @@
 11. convert speedtest to use cloudflare speedtest
 12. notifications if no dns request from devices for so long
 13. setup git mirror
+14. check if using `docker image prune -a` works with nextcloud
