@@ -110,7 +110,7 @@ jobs:
           upload_threshold: 700
         run: |
           rm -f output.json
-          sudo tailscale up --exit-node=iowa-home --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
+          sudo tailscale up --exit-node=100.124.224.3 --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           node speedtest.js | tee output.json
           sudo tailscale up --exit-node= --accept-routes --advertise-tags=tag:github --hostname=github-fv-az1530-330
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
