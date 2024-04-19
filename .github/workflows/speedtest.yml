@@ -76,7 +76,7 @@ jobs:
       - name: Step 2 - Install Node 21
         uses: actions/setup-node@v4
         with:
-          node-version: lts
+          node-version: lts/*
       - name: Step 3 - Create Speedtest file
         run: |
           touch speedtest.js
