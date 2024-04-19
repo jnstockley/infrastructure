@@ -94,7 +94,10 @@ jobs:
         run: |
           rm -f output.json
           node speedtest.js | tee output.json
-          cat output.json >> $GITHUB_OUTPUT
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "text<<$EOF" >> $GITHUB_OUTPUT
+          echo "SpeedTest: $(cat output.json)." >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
           cat output.json
           rm -f output.json
       - name: Step 7 - Chicago Speedtest
