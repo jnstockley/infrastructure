@@ -1,8 +1,8 @@
-name: Backups
+name: Speedtest
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 8 * * *'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4
-      - name: Step 3 - Create config file
+      - name: Step 2 - Create config file
         run: |
           mkdir resources
           touch resources/config.toml
@@ -28,13 +28,13 @@ jobs:
           echo "api_key = '${{ secrets.CHICAGO_HOME_HASSIO_API_KEY }}'"  >> resources/config.toml
           echo "download_limit_megabits = 15.0" >> resources/config.toml
           echo "upload_limit_megabits = 1.0" >> resources/config.toml
-      - name: Step 4 - Setup Python
+      - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12' 
-      - name: Step 5 - Install Poetry and Dependencies
+      - name: Step 4 - Install Poetry and Dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install --no-root
-      - name: Step 6 - Run Tests
+      - name: Step 5 - Run Tests
         run: poetry run pytest tests/test_speestest.py
