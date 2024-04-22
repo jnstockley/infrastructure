@@ -37,4 +37,4 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install --no-root
       - name: Step 5 - Run Tests
-        run: poetry run pytest tests/test_speestest.py
+        run: poetry run pytest tests/test_speedtest.py
