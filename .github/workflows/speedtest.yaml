@@ -7,7 +7,7 @@ on:
 
 jobs:
   backup:
-    name: Backup Status
+    name: Speedtest
     runs-on: ubuntu-latest
     
     steps:
