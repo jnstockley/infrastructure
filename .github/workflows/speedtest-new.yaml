@@ -1,0 +1,40 @@
+name: Backups
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Backup Status
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Step 1 - Checkout
+        uses: actions/checkout@v4
+      - name: Step 3 - Create config file
+        run: |
+          mkdir resources
+          touch resources/config.toml
+          echo "[Speedtest]"  >> resources/config.toml
+          echo "[Speedtest.Iowa-Home]"  >> resources/config.toml
+          echo "url = '${{ secrets.IOWA_HOME_HASSIO_URL }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.IOWA_HOME_HASSIO_API_KEY }}'"  >> resources/config.toml
+          echo "download_limit_megabits = 200.0" >> resources/config.toml
+          echo "upload_limit_megabits = 200.0" >> resources/config.toml
+          echo "[Speedtest.Chicago-Home]"  >> resources/config.toml
+          echo "url = '${{ secrets.CHICAGO_HOME_HASSIO_URL }}'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.CHICAGO_HOME_HASSIO_API_KEY }}'"  >> resources/config.toml
+          echo "download_limit_megabits = 15.0" >> resources/config.toml
+          echo "upload_limit_megabits = 1.0" >> resources/config.toml
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+      - name: Step 5 - Install Poetry and Dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
+      - name: Step 6 - Run Tests
+        run: poetry run pytest tests/test_speestest.py
