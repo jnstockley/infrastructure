@@ -15,6 +15,7 @@ services:
     networks:
       - tailscale
       - syncthing
+      - uptime-kuma
     cap_add:
       - net_admin
       - sys_module
@@ -38,3 +39,6 @@ networks:
   syncthing:
     external: true
     name: syncthing
+  uptime-kuma:
+    external: true
+    name: uptime-kuma
