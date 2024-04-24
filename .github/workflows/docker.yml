@@ -18,6 +18,23 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
       - name: Step 2 - Get Changes files
+        id: files
         uses: jitterbit/get-changed-files@v1
-      - name: Step 3 - Show changed files
-        run: echo "${changed_file}."
+        with:
+          format: 'csv'
+      - name: Step 3 - Create Config file
+        run: |
+          mkdir resources
+          touch resources/config.toml
+          echo "[Docker]"  >> resources/config.toml
+          echo "files = '${{ steps.files.outputs.added_modified }}'"  >> resources/config.toml
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Step 5 - Install Poetry and Dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
+      - name: Step 6 - Run Tests
+        run: poetry run pytest tests/test_containers.py
