@@ -24,7 +24,7 @@ jobs:
           format: 'csv'
       - name: Step 3 - Create Config file
         run: |
-          echo mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          echo "${mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')}"
           #mkdir resources
           #touch resources/config.toml
           #echo "[Docker]"  >> resources/config.toml
