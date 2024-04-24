@@ -1,0 +1,25 @@
+services:
+  server:
+    image: gitea/gitea:1.21.11-rootless
+    restart: always
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      - ./data:/var/lib/gitea
+      - ./config:/etc/gitea
+    networks:
+      - gitea
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pgadmin.entrypoints=websecure
+      - traefik.http.routers.pgadmin.rule=Host(`git.jstockley.com`)
+      - traefik.http.routers.pgadmin.tls=true
+      - traefik.http.routers.pgadmin.tls.certresolver=production
+      - traefik.http.routers.pgadmin.service=gitea
+      - traefik.http.services.pgadmin.loadbalancer.server.port=3000
+      - traefik.docker.network=gitea
+
+networks:
+  gitea:
+    external: true
+    name: gitea
