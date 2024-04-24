@@ -12,12 +12,12 @@ services:
       - gitea
     labels:
       - traefik.enable=true
-      - traefik.http.routers.pgadmin.entrypoints=websecure
-      - traefik.http.routers.pgadmin.rule=Host(`git.jstockley.com`)
-      - traefik.http.routers.pgadmin.tls=true
-      - traefik.http.routers.pgadmin.tls.certresolver=production
-      - traefik.http.routers.pgadmin.service=gitea
-      - traefik.http.services.pgadmin.loadbalancer.server.port=3000
+      - traefik.http.routers.gitea.entrypoints=websecure
+      - traefik.http.routers.gitea.rule=Host(`git.jstockley.com`)
+      - traefik.http.routers.gitea.tls=true
+      - traefik.http.routers.gitea.tls.certresolver=production
+      - traefik.http.routers.gitea.service=gitea
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
       - traefik.docker.network=gitea
 
 networks:
