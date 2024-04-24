@@ -27,7 +27,7 @@ jobs:
           mkdir resources
           touch resources/config.toml
           echo "[Docker]"  >> resources/config.toml
-          echo "files = '${{ steps.files.outputs.added_modified }}'  >> resources/config.toml
+          echo "files = '${{ steps.files.outputs.added_modified }}'"  >> resources/config.toml
       - name: Step 4 - Setup Python
         uses: actions/setup-python@v5
         with:
