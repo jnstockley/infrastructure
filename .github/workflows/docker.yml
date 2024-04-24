@@ -24,14 +24,17 @@ jobs:
           format: 'csv'
       - name: Step 3 - Create Config file
         run: |
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          echo "${added_modified_files[@]}"
-          #mkdir resources
-          #touch resources/config.toml
-          #echo "[Docker]"  >> resources/config.toml
-          #echo "filed = '${{ secrets.CLOUDFLARE_API_KEY }}'"  >> resources/config.toml
-          #echo "${{ steps.files.outputs.added_modified }}"
-          #mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
-          #for added_modified_file in "${added_modified_files[@]}"; do
-          #  echo "Do something with this ${added_modified_file}."
-          #done
+          mkdir resources
+          touch resources/config.toml
+          echo "[Docker]"  >> resources/config.toml
+          echo "files = '${{ steps.files.outputs.added_modified }}'  >> resources/config.toml
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Step 5 - Install Poetry and Dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
+      - name: Step 6 - Run Tests
+        run: poetry run pytest tests/test_containers.py
