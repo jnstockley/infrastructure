@@ -7,7 +7,6 @@ services:
     networks:
       - uptime-kuma
       - postgres-internal
-      - tailscale
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -29,6 +28,3 @@ networks:
   postgres-internal:
     external: true
     name: postgres-internal
-  tailscale:
-    external: true
-    name: tailscale
