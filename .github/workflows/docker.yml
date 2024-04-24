@@ -18,6 +18,7 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
       - name: Step 2 - Get Changes files
+        id: files
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'csv'
