@@ -5,6 +5,8 @@ services:
     restart: always
     environment:
       - TZ=America/Chicago
+    env_file:
+      - ./.env
     volumes:
       - ./data:/var/lib/gitea
       - ./config:/etc/gitea
