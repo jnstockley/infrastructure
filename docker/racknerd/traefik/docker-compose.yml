@@ -29,6 +29,7 @@ services:
       - api
       - dockge
       - syncthing
+      - gitea
     restart: unless-stopped
     healthcheck:
       test:
@@ -68,3 +69,6 @@ networks:
   syncthing:
     name: syncthing
     external: true
+  gitea:
+    external: true
+    name: gitea
