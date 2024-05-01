@@ -3,7 +3,8 @@ services:
     container_name: adguard
     image: adguard/adguardhome:v0.107.48
     networks:
-      - adguard
+      adguard:
+        ipv4_address: 172.18.0.2
     restart: unless-stopped
     volumes:
       - ./conf:/opt/adguardhome/conf
