@@ -22,7 +22,7 @@ class TestDNS:
         outdated_interval = int(parameters['outdated_interval'])
         self.outdated_time = (datetime.datetime.now() - datetime.timedelta(hours=outdated_interval)).timestamp()
         headers = {'Authorization': f'Basic {self.api_key}'}
-        self.client = httpx.Client(headers=headers)
+        self.client = httpx.Client(headers=headers, verify=False)
 
     def test_client(self):
         url = f"{self.host}querylog?search={self.client_id}&limit=1"
