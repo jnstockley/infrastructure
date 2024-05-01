@@ -1,0 +1,50 @@
+name: DNS
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: DNS Requests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Step 1 - Checkout
+        uses: actions/checkout@v4
+      - name: Step 3 - Create config file
+        run: |
+          mkdir resources
+          touch resources/config.toml
+          echo "[DNS]"  >> resources/config.toml
+          echo "[DNS.Jack-iPhone]"  >> resources/config.toml
+          echo "client_id = 'jack-iphone-14'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.ADGUARD_API_KEY }}'"  >> resources/config.toml
+          echo "host = '${{ secrets.ADGUARD_HOST }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[DNS.Jack-Apple-TV]"  >> resources/config.toml
+          echo "client_id = 'jack-apple-tv'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.ADGUARD_API_KEY }}'"  >> resources/config.toml
+          echo "host = '${{ secrets.ADGUARD_HOST }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[DNS.Jack-iPad]"  >> resources/config.toml
+          echo "client_id = 'jack-ipad-pro'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.ADGUARD_API_KEY }}'"  >> resources/config.toml
+          echo "host = '${{ secrets.ADGUARD_HOST }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+          echo "[DNS.Jack-MacBookPro]"  >> resources/config.toml
+          echo "client_id = 'jack-macbook-pro'"  >> resources/config.toml
+          echo "api_key = '${{ secrets.ADGUARD_API_KEY }}'"  >> resources/config.toml
+          echo "host = '${{ secrets.ADGUARD_HOST }}'"  >> resources/config.toml
+          echo "outdated_interval = 6" >> resources/config.toml
+      - name: Step 4 - Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+      - name: Step 5 - Install Poetry and Dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry install --no-root
+      - name: Step 6 - Run Tests
+        run: poetry run pytest tests/test_dns.py

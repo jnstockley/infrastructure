@@ -13,9 +13,9 @@ ipv4_url = "https://ipinfo.io/json"
 
 cloudflare_api = "https://api.cloudflare.com/client/v4"
 
-cloudflare_email = "jack@jstockley.com"
+cloudflare_email = ""
 
-cloudflare_api_key = "wBm1NPwohn6dLCIwaGucGC0oiRWUgw7NevKJg0Dh"
+cloudflare_api_key = ""
 
 
 def make_request(url: str, method: str = 'GET', headers: dict = None, json: dict = None) -> dict | None:
@@ -223,11 +223,11 @@ def cloudflare_ddns() -> bool:
     update_ipv6 = True
 
     if ipv4 is not None:
-        updated_ipv4 = update_dns_record(ipv4, "jstockley.com", "iowa.vpn.jstockley.com", cloudflare_email,
+        updated_ipv4 = update_dns_record(ipv4, "jstockley.com", "", cloudflare_email,
                                          cloudflare_api_key)
 
     # if ipv6 is not None:
-    #    update_ipv6 = update_dns_record(ipv6, "jstockley.com", "iowa.vpn.jstockley.com", cloudflare_email,
+    #    update_ipv6 = update_dns_record(ipv6, "jstockley.com", "", cloudflare_email,
     #                                    cloudflare_api_key, ipv6=True)
 
     return updated_ipv4 and update_ipv6
@@ -235,23 +235,23 @@ def cloudflare_ddns() -> bool:
     '''logging.debug("Sleeping for 1 sec...")
     time.sleep(1)
 
-    ips = ['2602:3f:982b:4501::/64']
+    ips = ['']
 
-    dns_records = ['iowa.vpn.jstockley.com', 'chicago.vpn.jstockley.com']
+    dns_records = ['iowa.vpn.jstockley.com', '']
 
     for dns_record in dns_records:
-        ip = get_dns_record_ip("jstockley.com", dns_record, "jack@jstockley.com", cloudflare_api_key)
+        ip = get_dns_record_ip("jstockley.com", dns_record, "", cloudflare_api_key)
         ips.append(ip)
 
-    apps = ['Nginx Proxy Manager', 'PgAdmin']
+    apps = ['']
 
     all_updated = True
 
     for app in apps:
 
-        deleted = delete_all_app_policies("jstockley.com", app, "jack@jstockley.com", cloudflare_api_key)
+        deleted = delete_all_app_policies("jstockley.com", app, "", cloudflare_api_key)
 
-        created = create_app_policy("jstockley.com", app, ips, "jack@jstockley.com", cloudflare_api_key)
+        created = create_app_policy("jstockley.com", app, ips, "", cloudflare_api_key)
 
         if not deleted and not created:
             all_updated = False
