@@ -43,6 +43,6 @@ networks:
   uptime-kuma:
     external: true
     name: uptime-kuma
-  adguard-kuma:
+  adguard:
     external: true
     name: adguard
