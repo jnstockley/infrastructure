@@ -35,6 +35,8 @@ class TestDNS:
         except httpx.ConnectTimeout:
             assert response is not None, f'Cannot connect to {self.name}'
 
+        print(response.text)
+
         assert response is not None
         assert response.status_code == 200
 

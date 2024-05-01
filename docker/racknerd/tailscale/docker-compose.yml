@@ -16,6 +16,7 @@ services:
       - tailscale
       - syncthing
       - uptime-kuma
+      - adguard
     cap_add:
       - net_admin
       - sys_module
@@ -42,3 +43,6 @@ networks:
   uptime-kuma:
     external: true
     name: uptime-kuma
+  adguard-kuma:
+    external: true
+    name: adguard
