@@ -1,7 +1,7 @@
 services:
   api:
     container_name: api
-    image: jnstockley/api:v0.0.5
+    image: jnstockley/api:testing
     env_file:
       - ./.env
     restart: unless-stopped
