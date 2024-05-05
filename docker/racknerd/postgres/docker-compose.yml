@@ -35,7 +35,7 @@ services:
     environment:
       - TZ=America/Chicago
     volumes:
-      - ./pgadmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -52,6 +52,9 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+
+volumes:
+  pgadmin
 
 networks:
   postgres-internal:
