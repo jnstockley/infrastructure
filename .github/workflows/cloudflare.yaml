@@ -34,6 +34,6 @@ jobs:
       - name: Step 5 - Install Poetry and Dependencies
         run: |
           pipx install poetry==1.8
-          poetry install --no-root
+          poetry install --no-root --only main
       - name: Step 6 - Run Tests
         run: poetry run pytest tests/test_cloudflare.py
