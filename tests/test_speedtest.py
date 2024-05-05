@@ -1,5 +1,5 @@
 import toml
-import datetime
+from . import logger
 
 import httpx
 import pytest
@@ -8,14 +8,14 @@ from httpx import Client, Response
 locations = toml.load("resources/config.toml")['Speedtest']
 
 
-@pytest.mark.parametrize("locations", locations.items())
+@pytest.mark.parametrize("location", locations.items())
 class TestSpeedtest:
     client: Client
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_method(self, locations):
-        self.name = locations[0]
-        parameters = locations[1]
+    def setup_method(self, location):
+        self.name = location[0]
+        parameters = location[1]
         self.host = parameters['url']
         self.api_key = parameters['api_key']
         self.upload_limit = parameters['upload_limit_megabits']
@@ -25,16 +25,18 @@ class TestSpeedtest:
 
     def test_speed(self):
         url = f"{self.host}/api/states"
-        response: Response = None
+        response: Response
 
         try:
             with self.client as c:
+                logger.info(f"Sending request to: {url}")
                 response = c.get(url)
-        except httpx.ConnectTimeout:
-            assert response is not None, f'Cannot connect to {self.name}'
+        except httpx.ConnectTimeout as e:
+            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(e)
+            assert False
 
-        assert response is not None
-        assert response.status_code == 200
+        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
 
         download: float = 0.0
         upload: float = 0
@@ -45,5 +47,5 @@ class TestSpeedtest:
             if entity['entity_id'] == 'sensor.speedtest_download':
                 download = float(entity['state'])
 
-        assert upload >= self.upload_limit
-        assert download >= self.download_limit
+        assert upload >= self.upload_limit, f"Upload speed below limit: {upload} for location: {self.name}"
+        assert download >= self.download_limit, f"Download speed below limit: {download} for location: {self.name}"

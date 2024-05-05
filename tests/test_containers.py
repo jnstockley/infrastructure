@@ -5,6 +5,7 @@ import toml
 import yaml
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_container_is_ready
+from . import logger
 
 containers = toml.load("resources/config.toml")['Docker']['files'].split(',')
 
@@ -23,16 +24,17 @@ class TestContainers:
             try:
                 image = get_docker_image_from_file(self.path)
             except Exception as e:
-                assert False, e
+                assert False, f"Unable to get docker image from file: {self.path}, {e}"
 
             try:
                 start_container(image)
             except Exception as e:
-                assert False, e
+                assert False, f"Unable to start container: {image}, {e}"
 
 
 def get_docker_image_from_file(path: str) -> str | None:
     if not os.path.isfile(path):
+        logger.error(f"Unable to find file: {path}")
         raise Exception(f"Unable to find file: {path}")
 
     with open(path) as f:
@@ -45,11 +47,13 @@ def get_docker_image_from_file(path: str) -> str | None:
                 if isinstance(v, dict):
                     data.append(v)
 
+    logger.error(f"Unable to find image in file: {path}")
     raise Exception(f"Unable to find image in file: {path}")
 
 
 def start_container(image: str):
     if image is None:
+        logger.error(f"Image can't be none")
         raise Exception("Image can't be none")
 
     try:
@@ -57,4 +61,5 @@ def start_container(image: str):
             wait_container_is_ready()
             return container
     except Exception as e:
+        logger.error(f"Error starting container, {e}")
         raise e
