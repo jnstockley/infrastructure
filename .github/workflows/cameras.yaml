@@ -41,6 +41,6 @@ jobs:
       - name: Step 6 - Install Poetry and Dependencies
         run: |
           pipx install poetry==1.8
-          poetry install --no-root --with=camera
+          poetry install --no-root --with camera
       - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_cameras.py
