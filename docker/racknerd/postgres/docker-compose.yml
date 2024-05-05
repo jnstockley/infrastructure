@@ -54,7 +54,7 @@ services:
       timeout: 10s
 
 volumes:
-  pgadmin
+  pgadmin:
 
 networks:
   postgres-internal:
