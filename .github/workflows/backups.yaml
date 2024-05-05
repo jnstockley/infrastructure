@@ -13,13 +13,17 @@ jobs:
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4
-      - name: Step 2 - Setup and Connect to Tailscale
+      - name: Step 2 - Set Timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "America/Chicago"
+      - name: Step 3 - Setup and Connect to Tailscale
         uses: tailscale/github-action@v2
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
-      - name: Step 3 - Create config file
+      - name: Step 4 - Create config file
         run: |
           mkdir resources
           touch resources/config.toml
@@ -44,13 +48,13 @@ jobs:
           echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-      - name: Step 4 - Setup Python
+      - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12' 
-      - name: Step 5 - Install Poetry and Dependencies
+      - name: Step 6 - Install Poetry and Dependencies
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry install --no-root
-      - name: Step 6 - Run Tests
+          pipx install poetry==1.8
+          poetry install --no-root --only main
+      - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_backups.py

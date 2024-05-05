@@ -16,24 +16,28 @@ jobs:
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
-      - name: Step 2 - Get Changes files
+      - name: Step 2 - Set Timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "America/Chicago"
+      - name: Step 3 - Get Changes files
         id: files
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'csv'
-      - name: Step 3 - Create Config file
+      - name: Step 4 - Create Config file
         run: |
           mkdir resources
           touch resources/config.toml
           echo "[Docker]"  >> resources/config.toml
           echo "files = '${{ steps.files.outputs.added_modified }}'"  >> resources/config.toml
-      - name: Step 4 - Setup Python
+      - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Step 5 - Install Poetry and Dependencies
+      - name: Step 6 - Install Poetry and Dependencies
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry install --no-root
-      - name: Step 6 - Run Tests
+          pipx install poetry==1.8
+          poetry install --no-root --only main,docker
+      - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_containers.py
