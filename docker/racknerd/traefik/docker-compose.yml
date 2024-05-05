@@ -30,6 +30,7 @@ services:
       - dockge
       - syncthing
       - gitea
+      - authentik
     restart: unless-stopped
     healthcheck:
       test:
@@ -72,3 +73,6 @@ networks:
   gitea:
     external: true
     name: gitea
+  authentik:
+    external: true
+    name: authentik
