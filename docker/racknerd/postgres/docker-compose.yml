@@ -6,6 +6,8 @@ services:
       - postgres-internal
     env_file:
       - ./.env
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
     environment:
       - TZ=America/Chicago
     restart: unless-stopped
@@ -32,6 +34,8 @@ services:
       - postgres-external
     environment:
       - TZ=America/Chicago
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
     restart: unless-stopped
     labels:
       - traefik.enable=true

@@ -13,9 +13,11 @@ ipv4_url = "https://ipinfo.io/json"
 
 cloudflare_api = "https://api.cloudflare.com/client/v4"
 
-cloudflare_email = ""
+cloudflare_email = "jack@jstockley.com"
 
-cloudflare_api_key = ""
+cloudflare_api_key = "wBm1NPwohn6dLCIwaGucGC0oiRWUgw7NevKJg0Dh"
+
+security_cloudflare_api_key = "gDxU2FGIn_1Dyo2CO_qXHiSxWTLxvzjpLzRmNile"
 
 
 def make_request(url: str, method: str = 'GET', headers: dict = None, json: dict = None) -> dict | None:
@@ -200,9 +202,21 @@ def create_app_policy(zone_name: str, app_name: str, allowed_ips: list[str], ema
         }
         ips.append(ip)
 
-    body = {'decision': 'bypass',
+    oidc_group = [
+          {
+            "oidc": {
+              "identity_provider_id": "09e99fc9-5411-46bf-a6ce-b6823a12a59e",
+              "claim_name": "groups",
+              "claim_value": "authentik Admins"
+            }
+          }
+        ]
+
+    body = {'decision': 'allow',
             'name': f'Allow Internal IPs added at {datetime.now()}',
-            'include': ips}
+            'include': ips,
+            'require': oidc_group
+            }
     url = f"{cloudflare_api}/zones/{zone_id}/access/apps/{app_id}/policies"
 
     res_json = make_request(url, method='POST', headers=headers, json=body)
@@ -214,7 +228,7 @@ def create_app_policy(zone_name: str, app_name: str, allowed_ips: list[str], ema
     return False
 
 
-@service
+#@service
 def cloudflare_ddns() -> bool:
     ipv4 = get_public_ip(ipv4_url)
     # ipv6 = get_public_ip(ipv6_url)
@@ -223,35 +237,35 @@ def cloudflare_ddns() -> bool:
     update_ipv6 = True
 
     if ipv4 is not None:
-        updated_ipv4 = update_dns_record(ipv4, "jstockley.com", "", cloudflare_email,
+        updated_ipv4 = update_dns_record(ipv4, "jstockley.com", "iowa.vpn.jstockley.com", cloudflare_email,
                                          cloudflare_api_key)
 
     # if ipv6 is not None:
-    #    update_ipv6 = update_dns_record(ipv6, "jstockley.com", "", cloudflare_email,
+    #    update_ipv6 = update_dns_record(ipv6, "jstockley.com", "iowa.vpn.jstockley.com", cloudflare_email,
     #                                    cloudflare_api_key, ipv6=True)
 
-    return updated_ipv4 and update_ipv6
+    # return updated_ipv4 and update_ipv6
 
-    '''logging.debug("Sleeping for 1 sec...")
+    logging.debug("Sleeping for 1 sec...")
     time.sleep(1)
 
-    ips = ['']
+    ips = []
 
-    dns_records = ['iowa.vpn.jstockley.com', '']
+    dns_records = ['iowa.vpn.jstockley.com', 'chicago.vpn.jstockley.com', 'vpn.jstockley.com']
 
     for dns_record in dns_records:
-        ip = get_dns_record_ip("jstockley.com", dns_record, "", cloudflare_api_key)
+        ip = get_dns_record_ip("jstockley.com", dns_record, "jack@jstockley.com", cloudflare_api_key)
         ips.append(ip)
 
-    apps = ['']
+    apps = ['Traefik', 'Nextcloud AIO', 'PgAdmin']
 
     all_updated = True
 
     for app in apps:
 
-        deleted = delete_all_app_policies("jstockley.com", app, "", cloudflare_api_key)
+        deleted = delete_all_app_policies("jstockley.com", app, "jack@jstockley.com", security_cloudflare_api_key)
 
-        created = create_app_policy("jstockley.com", app, ips, "", cloudflare_api_key)
+        created = create_app_policy("jstockley.com", app, ips, "jack@jstockley.com", security_cloudflare_api_key)
 
         if not deleted and not created:
             all_updated = False
@@ -259,6 +273,10 @@ def cloudflare_ddns() -> bool:
         logging.debug("Sleeping 1 sec in between apps...")
         time.sleep(1)
 
-    return all_updated and updated_ipv4'''
+    return all_updated and updated_ipv4
 
 # cloudflare_ddns()
+
+
+if __name__ == '__main__':
+    cloudflare_ddns()
