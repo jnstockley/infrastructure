@@ -4,18 +4,19 @@ import datetime
 import httpx
 import pytest
 from httpx import Client, Response
+from . import logger
 
-devices = toml.load("resources/config.toml")['Backups']
+backups = toml.load("resources/config.toml")['Backups']
 
 
-@pytest.mark.parametrize("devices", devices.items())
+@pytest.mark.parametrize("backup", backups.items())
 class TestBackups:
     client: Client
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_method(self, devices):
-        self.name = devices[0]
-        parameters = devices[1]
+    def setup_method(self, backup):
+        self.name = backup[0]
+        parameters = backup[1]
         self.host = parameters['url']
         self.api_key = parameters['api_key']
         outdated_interval = int(parameters['outdated_interval'])
@@ -25,54 +26,61 @@ class TestBackups:
 
     def test_health_check(self):
         url = f"{self.host}/rest/noauth/health"
-        response: Response = None
+        response: Response
         ok = {"status": "OK"}
 
         try:
             with self.client as c:
+                logger.info(f"Sending request to: {url}")
                 response = c.get(url)
-        except httpx.ConnectTimeout:
-            assert response is not None, f'Cannot connect to {self.name}'
+        except httpx.ConnectTimeout as e:
+            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(e)
+            assert False
 
-        assert response is not None
-        assert response.status_code == 200
-        assert response.json() == ok, f"Health check failed for {self.name}"
+        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+        assert response.json() == ok, f"Health check isn't ok, get: {response.json()}"
 
     def test_paused(self):
         url = f"{self.host}/rest/config/folders"
-        response: Response = None
+        response: Response
 
         try:
             with self.client as c:
+                logger.info(f"Sending request to: {url}")
                 response = c.get(url)
-        except httpx.ConnectTimeout:
-            assert response is not None, f'Cannot connect to {self.name}'
+        except httpx.ConnectTimeout as e:
+            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(e)
+            assert False
 
-        assert response is not None
-        assert response.status_code == 200
+        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
 
         folders = response.json()
+
         for folder in folders:
             data = dict(folder)
-            assert "paused" in data
-            assert "label" in data
+            assert "paused" in data, f"Invalid response message missing `paused`: {folder}"
+            assert "label" in data, f"Invalid response message missing `label`: {folder}"
             assert not data['paused'], f"{data['label']} is paused on {self.name}"
 
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
-        response: Response = None
+        response: Response
 
         try:
             with self.client as c:
+                logger.info(f"Sending request to: {url}")
                 response = c.get(url)
-        except httpx.ConnectTimeout:
-            assert response is not None, f'Cannot connect to {self.name}'
+        except httpx.ConnectTimeout as e:
+            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(e)
+            assert False
 
-        assert response is not None
-        assert response.status_code == 200
+        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
 
         folders = response.json()
         for (folder, data) in folders.items():
-            assert 'lastScan' in data
+            assert 'lastScan' in data, f"Invalid response message missing `lastScan`: {data}"
             last_scan = datetime.datetime.fromisoformat(data['lastScan']).timestamp()
-            assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.name}"
+            assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.name}, last synced: {last_scan}"

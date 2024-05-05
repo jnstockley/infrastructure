@@ -6,13 +6,13 @@ import toml
 cameras = devices_dict = toml.load("resources/config.toml")['Cameras']
 
 
-@pytest.mark.parametrize("cameras", cameras.items())
+@pytest.mark.parametrize("camera", cameras.items())
 class TestCameras:
 
     @pytest.fixture(scope='function', autouse=True)
-    def setup_method(self, cameras):
-        self.name = cameras[0]
-        parameters = cameras[1]
+    def setup_method(self, camera):
+        self.name = camera[0]
+        parameters = camera[1]
         self.main_stream = parameters['main_stream']
         self.backup_stream = parameters['backup_stream']
 
@@ -30,7 +30,7 @@ class TestCameras:
 
             capture.release()
 
-        assert ret
+        assert ret, f"Unable to read camera feed: {ret}"
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -40,5 +40,5 @@ class TestCameras:
 
         percentage_color = (np.count_nonzero(color_range) / (frame.shape[0] * frame.shape[1])) * 100
 
-        assert percentage_color <= 75
+        assert percentage_color <= 75, f"Camera black percentage higher then 75%: {percentage_color}"
 
