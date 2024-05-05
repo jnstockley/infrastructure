@@ -1,0 +1,88 @@
+services:
+  postgresql:
+    image: docker.io/library/postgres:12.18-alpine3.19
+    container_name: authentik_pg
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s
+    volumes:
+      - database:/var/lib/postgresql/data
+    env_file:
+      - .env
+    networks:
+      - authentik-private
+  redis:
+    image: docker.io/library/redis:7.2.4-alpine3.19
+    container_name: authentik_redis
+    command: --save 60 1 --loglevel warning
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 3s
+    volumes:
+      - redis:/data
+    networks:
+      - authentik-private
+  server:
+    image: ghcr.io/goauthentik/server:2024.4.1
+    container_name: authentik
+    restart: unless-stopped
+    command: server
+    volumes:
+      - ./media:/media
+      - ./custom-templates:/templates
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+      - redis
+    networks:
+      - authentik
+      - authentik-private
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.auth.entrypoints=websecure
+      - traefik.http.routers.auth.rule=Host(`auth.jstockley.com`)
+      - traefik.http.routers.auth.tls=true
+      - traefik.http.routers.auth.tls.certresolver=production
+      - traefik.http.routers.auth.service=auth
+      - traefik.http.services.auth.loadbalancer.server.port=9000
+      - traefik.docker.network=authentik
+  worker:
+    image: ghcr.io/goauthentik/server:2024.4.1
+    container_name: authentik_worker
+    restart: unless-stopped
+    command: worker
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./media:/media
+      - ./certs:/certs
+      - ./custom-templates:/templates
+    env_file:
+      - .env
+    depends_on:
+      - postgresql
+      - redis
+    networks:
+      - authentik-private
+
+volumes:
+  database:
+    driver: local
+  redis:
+    driver: local
+
+networks:
+  authentik-private:
+    name: authentik-private
+  authentik:
+    external: true
+    name: authentik
