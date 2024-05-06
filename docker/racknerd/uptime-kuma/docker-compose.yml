@@ -7,6 +7,7 @@ services:
     networks:
       - uptime-kuma
       - postgres-internal
+      - redis
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -28,3 +29,6 @@ networks:
   postgres-internal:
     external: true
     name: postgres-internal
+  redis:
+    name: redis
+    external: true
