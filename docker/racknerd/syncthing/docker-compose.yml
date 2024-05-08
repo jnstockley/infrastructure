@@ -5,9 +5,11 @@ services:
     hostname: racknerd
     networks:
       syncthing:
-        ipv4_address: 172.28.0.2
+        ipv4_address: 172.38.0.4
     environment:
       - TZ=America/Chicago
+      - PUID=0
+      - PGID=0
     volumes:
       - ./config:/var/syncthing/config
       - /mnt/backup/:/var/syncthing/nextcloud

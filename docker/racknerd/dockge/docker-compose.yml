@@ -5,7 +5,7 @@ services:
     container_name: dockge
     volumes:
       - ./data:/app/data
-      - $XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
       - /home/jackstockley/infrastructure/docker/racknerd:/home/jackstockley/infrastructure/docker/racknerd
     environment:
       - DOCKGE_STACKS_DIR=/home/jackstockley/infrastructure/docker/racknerd
