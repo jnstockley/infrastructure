@@ -16,3 +16,4 @@
 8. setup sso
 9. improve test error messages and loggin
 10. check if using `docker image prune -a` works with nextcloud
+11. syncthing check for failed items

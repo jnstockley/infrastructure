@@ -31,7 +31,7 @@ services:
   #  networks:
   #    - authentik-private
   server:
-    image: ghcr.io/goauthentik/server:2024.4.1
+    image: ghcr.io/goauthentik/server:2024.4.2
     container_name: authentik
     restart: unless-stopped
     command: server
@@ -58,7 +58,7 @@ services:
       - traefik.http.services.auth.loadbalancer.server.port=9000
       - traefik.docker.network=authentik
   worker:
-    image: ghcr.io/goauthentik/server:2024.4.1
+    image: ghcr.io/goauthentik/server:2024.4.2
     container_name: authentik_worker
     restart: unless-stopped
     command: worker

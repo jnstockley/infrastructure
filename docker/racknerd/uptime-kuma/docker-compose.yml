@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data:/app/data
-      - $XDG_RUNTIME_DIR/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
