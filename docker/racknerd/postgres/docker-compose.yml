@@ -57,6 +57,14 @@ networks:
   postgres-internal:
     external: true
     name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
   postgres-external:
     external: true
     name: postgres-external
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.5.0/24

@@ -1,35 +1,4 @@
 services:
-  #postgresql:
-  #  image: docker.io/library/postgres:12.18-alpine3.19
-  #  container_name: authentik_pg
-  #  restart: unless-stopped
-  #  healthcheck:
-  #    test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
-  #    start_period: 20s
-  #    interval: 30s
-  #    retries: 5
-  #    timeout: 5s
-  #  volumes:
-  #    - database:/var/lib/postgresql/data
-  #  env_file:
-  #    - .env
-  #  networks:
-  #    - authentik-private
-  #redis:
-  #  image: docker.io/library/redis:7.2.4-alpine3.19
-  #  container_name: authentik_redis
-  #  command: --save 60 1 --loglevel warning
-  #  restart: unless-stopped
-  #  healthcheck:
-  #    test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
-  #    start_period: 20s
-  #    interval: 30s
-  #    retries: 5
-  #    timeout: 3s
-  #  volumes:
-  #    - redis:/data
-  #  networks:
-  #    - authentik-private
   server:
     image: ghcr.io/goauthentik/server:2024.4.2
     container_name: authentik
@@ -40,9 +9,6 @@ services:
       - ./custom-templates:/templates
     env_file:
       - .env
-    #depends_on:
-    #  - postgresql
-    #  - redis
     networks:
       - authentik
       - authentik-private
@@ -70,9 +36,6 @@ services:
       - ./custom-templates:/templates
     env_file:
       - .env
-    #depends_on:
-    #  - postgresql
-    #  - redis
     networks:
       - authentik-private
       - redis
@@ -87,12 +50,28 @@ volumes:
 networks:
   authentik-private:
     name: authentik-private
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24
   authentik:
     external: true
     name: authentik
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.10.0/24
   postgres-internal:
     external: true
     name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
   redis:
     external: true
     name: redis
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.2.0/24

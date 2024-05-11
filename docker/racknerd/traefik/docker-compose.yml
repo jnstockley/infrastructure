@@ -46,33 +46,77 @@ networks:
   adguard:
     external: true
     name: adguard
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24
   vaultwarden:
     external: true
     name: vaultwarden
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.1.0/24
   nextcloud-aio:
     external: true
     name: nextcloud-aio
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.2.0/24
   traefik:
     external: true
     name: traefik
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.3.0/24
   uptime-kuma:
     external: true
     name: uptime-kuma
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.4.0/24
   postgres-external:
     external: true
     name: postgres-external
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.5.0/24
   api:
     external: true
     name: api
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.6.0/24
   dockge:
     name: dockge
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.7.0/24
   syncthing:
     name: syncthing
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.8.0/24
   gitea:
     external: true
     name: gitea
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.9.0/24
   authentik:
     external: true
     name: authentik
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.10.0/24

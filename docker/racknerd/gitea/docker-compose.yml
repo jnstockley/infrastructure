@@ -25,3 +25,7 @@ networks:
   gitea:
     external: true
     name: gitea
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.9.0/24

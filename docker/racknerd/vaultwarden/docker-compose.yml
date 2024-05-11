@@ -25,3 +25,7 @@ networks:
   vaultwarden:
     external: true
     name: vaultwarden
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.1.0/24
