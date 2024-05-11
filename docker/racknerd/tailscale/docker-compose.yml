@@ -37,12 +37,28 @@ networks:
   tailscale:
     external: true
     name: tailscale
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.3.0/24
   syncthing:
     external: true
     name: syncthing
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.8.0/24
   uptime-kuma:
     external: true
     name: uptime-kuma
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.4.0/24
   adguard:
     external: true
     name: adguard
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24

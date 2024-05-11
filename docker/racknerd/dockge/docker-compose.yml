@@ -26,3 +26,7 @@ networks:
   dockge:
     name: dockge
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.7.0/24

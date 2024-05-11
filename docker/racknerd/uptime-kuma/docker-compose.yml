@@ -26,9 +26,21 @@ networks:
   uptime-kuma:
     external: true
     name: uptime-kuma
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.4.0/24
   postgres-internal:
     external: true
     name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
   redis:
     name: redis
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.2.0/24

@@ -16,6 +16,14 @@ networks:
   nextcloud-aio:
     external: true
     name: nextcloud-aio
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.2.0/24
   traefik:
     external: true
     name: traefik
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.3.0/24

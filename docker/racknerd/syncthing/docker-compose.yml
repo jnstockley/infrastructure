@@ -5,7 +5,7 @@ services:
     hostname: racknerd
     networks:
       syncthing:
-        ipv4_address: 172.38.0.4
+        ipv4_address: 172.18.8.3
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -28,3 +28,7 @@ services:
 networks:
   syncthing:
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.8.0/24

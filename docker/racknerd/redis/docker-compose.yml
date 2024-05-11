@@ -19,3 +19,7 @@ networks:
   redis:
     name: redis
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.2.0/24
