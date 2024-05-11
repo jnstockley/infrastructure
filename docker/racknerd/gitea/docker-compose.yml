@@ -11,6 +11,7 @@ services:
       - ./data:/data
     networks:
       - gitea
+      - postgres-internal
     labels:
       - traefik.enable=true
       - traefik.http.routers.gitea.entrypoints=websecure
@@ -29,3 +30,10 @@ networks:
       driver: default
       config:
         - subnet: 172.18.9.0/24
+  postgres-internal:
+    external: true
+    name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
