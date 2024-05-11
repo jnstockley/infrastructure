@@ -49,6 +49,7 @@ volumes:
 
 networks:
   authentik-private:
+    external: true
     name: authentik-private
     ipam:
       driver: default
