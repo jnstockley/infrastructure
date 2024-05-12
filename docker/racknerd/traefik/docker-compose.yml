@@ -20,17 +20,19 @@ services:
     #   - CF_DNS_API_TOKEN=your-cloudflare-api-token
     # -- (Optional) When using a custom network
     networks:
-      - adguard
-      - vaultwarden
-      - nextcloud-aio
-      - traefik
-      - uptime-kuma
-      - postgres-external
-      - api
-      - dockge
-      - syncthing
-      - gitea
-      - authentik
+      adguard:
+        ipv4_address: 172.18.0.2
+      vaultwarden:
+      nextcloud-aio:
+      traefik:
+      uptime-kuma:
+      postgres-external:
+      api:
+      dockge:
+      syncthing:
+        ipv4_address: 172.18.8.2
+      gitea:
+      authentik:
     restart: unless-stopped
     healthcheck:
       test:
