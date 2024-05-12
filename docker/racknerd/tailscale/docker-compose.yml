@@ -15,9 +15,10 @@ services:
     networks:
       tailscale:
       syncthing:
+        ipv4_address: 172.18.8.3
       uptime-kuma:
       adguard:
-        ipv4_address: 172.18.8.3
+        ipv4_address: 172.18.0.3
     cap_add:
       - net_admin
       - sys_module
