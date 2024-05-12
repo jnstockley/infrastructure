@@ -9,11 +9,8 @@
 1. Auto updates for machines
 2. Check if Hassio devices have issues (disconnected stuck on initializing)
 3. see if way to check homekit if devices aren't responding 
-4. get tests passing
 5. add check for sensitive services
-6. move containers to use local postgress db
-7. get logs in a central location
-8. setup sso
-9. improve test error messages and loggin
-10. check if using `docker image prune -a` works with nextcloud
-11. syncthing check for failed items
+6. setup sso
+7. improve test error messages and loggin
+8. check if using `docker image prune -a` works with nextcloud
+9. syncthing check for failed items
