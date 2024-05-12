@@ -29,3 +29,10 @@ networks:
       driver: default
       config:
         - subnet: 172.18.1.0/24
+  postgres-internal:
+    external: true
+    name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
