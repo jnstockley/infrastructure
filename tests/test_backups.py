@@ -5,6 +5,7 @@ import httpx
 import pytest
 from httpx import Client, Response
 from . import logger
+import urllib.parse
 
 backups = toml.load("resources/config.toml")['Backups']
 
@@ -84,3 +85,33 @@ class TestBackups:
             assert 'lastScan' in data, f"Invalid response message missing `lastScan`: {data}"
             last_scan = datetime.datetime.fromisoformat(data['lastScan']).timestamp()
             assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.name}, last synced: {last_scan}"
+
+    def test_errors(self):
+        url = f"{self.host}/rest/stats/folder"
+        response: Response
+
+        try:
+            logger.info(f"Sending request to: {url}")
+            response = self.client.get(url)
+        except httpx.ConnectTimeout as e:
+            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(e)
+            assert False
+
+        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+
+        folders = response.json()
+        for (folder, data) in folders.items():
+            url = f"{self.host}/rest/folder/errors?folder={urllib.parse.quote_plus(folder)}"
+            try:
+                logger.info(f"Sending request to: {url}")
+                response = self.client.get(url)
+            except httpx.ConnectTimeout as e:
+                logger.critical(f"Unable to connect to host: {self.host}")
+                logger.critical(e)
+                assert False
+
+            assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+
+            folder_data = response.json()
+            assert folder_data['errors'] is None, f"Error found with {folder}: {folder_data['errors']}"
