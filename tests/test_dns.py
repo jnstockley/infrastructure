@@ -48,4 +48,4 @@ class TestDNS:
 
         last_request = datetime.datetime.fromisoformat(requests['oldest']).timestamp()
         logger.info(f"Last request received for {self.name}: {last_request}")
-        assert last_request >= self.outdated_time, f"Last request received for {self.client}: {last_request}"
+        assert last_request >= self.outdated_time, f"Last request received for {self.client_id}: {last_request}"
