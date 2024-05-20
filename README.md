@@ -11,6 +11,4 @@
 3. see if way to check homekit if devices aren't responding 
 5. add check for sensitive services
 6. setup sso
-7. improve test error messages and loggin
-8. check if using `docker image prune -a` works with nextcloud
-9. syncthing check for failed items
+7. check if using `docker image prune -a` works with nextcloud
