@@ -115,4 +115,4 @@ class TestBackups:
 
             folder_data = response.json()
             # assert not str(folder_data['errors']).startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
-            assert folder_data['errors'] is None or str(folder_data['errors']).startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
+            assert folder_data['errors'] is None or folder_data['errors']['error'].startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
