@@ -114,10 +114,9 @@ class TestBackups:
             assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
 
             folder_data = response.json()
-            # assert not str(folder_data['errors']).startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
+
             if folder_data['errors'] is not None:
                 for error in folder_data['errors']:
                     assert error['error'].startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
             else:
                 assert folder_data['errors'] is None, f"Error found with {folder}: {folder_data['errors']}"
-            # assert folder_data['errors'] is None or folder_data['errors']['error'].startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
