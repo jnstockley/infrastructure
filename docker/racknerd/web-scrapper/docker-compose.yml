@@ -1,0 +1,11 @@
+services:
+  web-scrapper:
+    container_name: web_scrapper_dev
+    image: jnstockley/web-scrapper:2024-05-26
+    working_dir: /web-scrapper
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./config.toml:/web-scrapper/config.toml
+      - ./data/:/web-scrapper/data/
