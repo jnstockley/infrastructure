@@ -5,12 +5,15 @@ on:
   pull_request:
     branches:
       - main
+    types:
+      - closed
     paths:
       - docker/racknerd/**
 
 jobs:
   deploy:
     name: Deploy new Docker Container
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
