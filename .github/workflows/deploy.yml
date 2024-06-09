@@ -56,3 +56,5 @@ jobs:
             done
             # Restore the original IFS
             IFS=$OLD_IFS
+            
+            docker image prune -a -f
