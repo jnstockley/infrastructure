@@ -1,0 +1,55 @@
+name: Docker Deploy
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - docker/racknerd/**
+
+jobs:
+  deploy:
+    name: Deploy new Docker Container
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v4
+      - name: Step 2 - Set Timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "America/Chicago"
+      - name: Step 3 - Get Changes files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'csv'
+      - name: Step 4 - Deploy containers
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          FILE: ${{ steps.files.outputs.added_modified }}
+        with:
+          host: ${{ secrets.RACKNERD_IP }}
+          username: jackstockley
+          key: ${{ secrets.RACKNERD_SSH_KEY }}
+          envs: FILE
+          script: |
+            cd ~/infrastructure/docker/racknerd/
+            git reset --hard origin/main
+            git pull
+            # Save the original IFS
+            OLD_IFS=$IFS
+            # Set the IFS to comma
+            IFS=','
+            # Read the CSV string into an array
+            read -ra ADDR <<< "FILE"
+            # Loop over the array
+            for i in "${ADDR[@]}"; do
+                FILE_PATH="~/infrastructure/$i"
+                # Run docker compose up with the current file
+                echo "Deploying $FILE_PATH"
+                docker-compose up -d --force-recreate -f "$FILE_PATH"
+            done
+            # Restore the original IFS
+            IFS=$OLD_IFS
