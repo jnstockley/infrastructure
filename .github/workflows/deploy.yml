@@ -52,7 +52,7 @@ jobs:
                 FILE_PATH="~/infrastructure/$i"
                 # Run docker compose up with the current file
                 echo "Deploying $FILE_PATH"
-                docker-compose -f "$FILE_PATH" up -d --force-recreate
+                docker compose -f "$FILE_PATH" up -d --force-recreate
             done
             # Restore the original IFS
             IFS=$OLD_IFS
