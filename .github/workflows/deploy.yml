@@ -36,25 +36,13 @@ jobs:
           username: jackstockley
           key: ${{ secrets.RACKNERD_SSH_KEY }}
           passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
-          envs: FILE
+          envs: FILES
           script: |
             cd ~/infrastructure/docker/racknerd/
             git reset --hard origin/main
             git pull
-            # Save the original IFS
-            OLD_IFS=$IFS
-            # Set the IFS to comma
-            IFS=','
-            # Read the CSV string into an array
-            read -ra ADDR <<< "FILE"
-            # Loop over the array
-            for i in "${ADDR[@]}"; do
-                FILE_PATH="~/infrastructure/$i"
-                # Run docker compose up with the current file
-                echo "Deploying $FILE_PATH"
-                docker-compose -f "$FILE_PATH" up -d --force-recreate
-            done
-            # Restore the original IFS
-            IFS=$OLD_IFS
-            
+            for file in ${FILES}; do
+              echo "Deploying $file"
+              docker compose -f $file up -d --force-recreate
+            done            
             docker image prune -a -f
