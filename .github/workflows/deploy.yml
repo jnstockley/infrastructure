@@ -26,8 +26,12 @@ jobs:
       - name: Step 3 - Get Changes files
         id: files
         uses: tj-actions/changed-files@v44.5.2
+        with:
+          docker: |
+            - docker/racknerd/**
 
       - name: Step 4 - Deploy containers
+        if: steps.files.outputs.docker_any_changed == 'true'
         uses: appleboy/ssh-action@v1.0.3
         env:
           FILES: ${{ steps.files.outputs.all_changed_files }}
@@ -42,6 +46,7 @@ jobs:
             git reset --hard origin/main
             git pull
             for file in ${FILES}; do
+              file=${file#docker/racknerd/}
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate
             done            
