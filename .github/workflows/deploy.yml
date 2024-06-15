@@ -35,6 +35,7 @@ jobs:
           host: ${{ secrets.RACKNERD_IP }}
           username: jackstockley
           key: ${{ secrets.RACKNERD_SSH_KEY }}
+          passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
           envs: FILE
           script: |
             cd ~/infrastructure/docker/racknerd/
