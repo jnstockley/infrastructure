@@ -1,5 +1,5 @@
-# Modified Jun 14 2024 8:31 PM CDT
+# Modified Jun 14 2024 8:33 PM CDT
 services:
-  redis:
+  hello-world:
     image: hello-world:linux
     container_name: hello-world
