@@ -43,11 +43,10 @@ jobs:
           passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
           envs: FILES
           script: |
-            cd ~/infrastructure/docker/racknerd/
+            cd ~/infrastructure/
             git reset --hard origin/main
             git pull
             for file in ${FILES}; do
-              file=${file#docker/racknerd/}
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate
             done            
