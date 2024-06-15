@@ -30,7 +30,7 @@ jobs:
       - name: Step 4 - Deploy containers
         uses: appleboy/ssh-action@v1.0.3
         env:
-          FILE: ${{ steps.files.outputs.all_changed_files }}
+          FILES: ${{ steps.files.outputs.all_changed_files }}
         with:
           host: ${{ secrets.RACKNERD_IP }}
           username: jackstockley
