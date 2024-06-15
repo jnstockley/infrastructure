@@ -1,0 +1,5 @@
+# Modified Jun 14 2024
+services:
+  redis:
+    image: hello-world:linux
+    container_name: hello-world

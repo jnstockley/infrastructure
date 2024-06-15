@@ -25,13 +25,12 @@ jobs:
           timezoneLinux: "America/Chicago"
       - name: Step 3 - Get Changes files
         id: files
-        uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'csv'
+        uses: tj-actions/changed-files@v44.5.2
+
       - name: Step 4 - Deploy containers
         uses: appleboy/ssh-action@v1.0.3
         env:
-          FILE: ${{ steps.files.outputs.added_modified }}
+          FILE: ${{ steps.files.outputs.all_changed_files }}
         with:
           host: ${{ secrets.RACKNERD_IP }}
           username: jackstockley
@@ -52,7 +51,7 @@ jobs:
                 FILE_PATH="~/infrastructure/$i"
                 # Run docker compose up with the current file
                 echo "Deploying $FILE_PATH"
-                docker-compose up -d --force-recreate -f "$FILE_PATH"
+                docker-compose -f "$FILE_PATH" up -d --force-recreate
             done
             # Restore the original IFS
             IFS=$OLD_IFS
