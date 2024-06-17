@@ -1,0 +1,16 @@
+name: Restart AdGuard
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Restart AgGuard Container
+    if: github.event.pull_request.merged == true
+    runs-on: self-hosted
+
+    steps:
+      - name: Restart AdGuard Container
+        run: docker compose -f ~/infrastructure/docker/racknerd/adguard/docker-compose.yml up -d --force-recreate
