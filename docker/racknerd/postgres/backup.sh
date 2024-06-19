@@ -10,4 +10,4 @@ CURRENT_DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 OUTPUT_FILE="${HOME}/infrastructure/docker/racknerd/postgres/backup/dump_${CURRENT_DATE}.sql.gz"
 
 # Run the pg_dumpall command inside the Docker container and save the output to a file
-docker exec $CONTAINER_NAME pg_dumpall -U postgres | gzip > $OUTPUT_FILE
+docker exec $CONTAINER_NAME pg_dumpall -c -U jackstockley | gzip > $OUTPUT_FILE
