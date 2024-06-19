@@ -1,3 +1,4 @@
 .env
 postgres/
 pgadmin/
+backup/
