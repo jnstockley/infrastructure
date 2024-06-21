@@ -22,15 +22,18 @@ jobs:
           timezoneLinux: "America/Chicago"
       - name: Step 3 - Get Changes files
         id: files
-        uses: jitterbit/get-changed-files@v1
+        uses: tj-actions/changed-files@v44.5.3
         with:
-          format: 'csv'
+          files_yaml: |
+            docker:
+              - docker/racknerd/**
       - name: Step 4 - Create Config file
+        if: steps.files.outputs.docker_any_changed == 'true'
         run: |
           mkdir resources
           touch resources/config.toml
           echo "[Docker]"  >> resources/config.toml
-          echo "files = '${{ steps.files.outputs.added_modified }}'"  >> resources/config.toml
+          echo "files = '${{ steps.files.outputs.docker_all_changed_files }}'"  >> resources/config.toml
       - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
         with:
