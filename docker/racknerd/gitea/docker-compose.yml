@@ -9,6 +9,8 @@ services:
       - TZ=America/Chicago
     volumes:
       - ./data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     networks:
       - gitea
       - postgres-internal
