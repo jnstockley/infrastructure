@@ -5,6 +5,8 @@ services:
     working_dir: /web-scrapper
     env_file:
       - .env
+    environment:
+      - TZ=America/Chicago
     restart: always
     volumes:
       - ./config.toml:/web-scrapper/config.toml
