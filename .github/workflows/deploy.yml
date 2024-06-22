@@ -48,6 +48,6 @@ jobs:
             git pull
             for file in ${FILES}; do
               echo "Deploying $file"
-              docker compose -f $file up -d --force-recreate
+              docker compose -f $file up -d --force-recreate --remove-orphans
             done            
             docker image prune -a -f
