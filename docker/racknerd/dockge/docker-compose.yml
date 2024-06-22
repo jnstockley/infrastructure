@@ -9,6 +9,7 @@ services:
       - /home/jackstockley/infrastructure/docker/racknerd:/home/jackstockley/infrastructure/docker/racknerd
     environment:
       - DOCKGE_STACKS_DIR=/home/jackstockley/infrastructure/docker/racknerd
+      - TZ=America/Chicago
     networks:
        - dockge
     labels:

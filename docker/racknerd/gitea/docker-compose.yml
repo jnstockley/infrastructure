@@ -3,10 +3,10 @@ services:
     image: gitea/gitea:1.22.0
     container_name: gitea
     restart: always
-    environment:
-      - TZ=America/Chicago
     env_file:
       - ./.env
+    environment:
+      - TZ=America/Chicago
     volumes:
       - ./data:/data
     networks:

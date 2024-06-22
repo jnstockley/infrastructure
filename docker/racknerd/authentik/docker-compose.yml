@@ -9,6 +9,8 @@ services:
       - ./custom-templates:/templates
     env_file:
       - .env
+    environment:
+      - TZ=America/Chicago
     networks:
       - authentik
       - authentik-private
@@ -36,6 +38,8 @@ services:
       - ./custom-templates:/templates
     env_file:
       - .env
+    environment:
+      - TZ=America/Chicago
     networks:
       - authentik-private
       - redis
