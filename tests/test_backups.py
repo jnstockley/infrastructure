@@ -35,12 +35,12 @@ class TestBackups:
                 logger.info(f"Sending request to: {url}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
-            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(f"Unable to connect to host: {self.name}")
             logger.critical(e)
             assert False
 
-        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
-        assert response.json() == ok, f"Health check isn't ok, get: {response.json()}"
+        assert response.status_code == 200, f"{self.name} -> Response code: {response.status_code}, when it should be 200"
+        assert response.json() == ok, f"{self.name} -> Health check isn't ok, get: {response.json()}"
 
     def test_paused(self):
         url = f"{self.host}/rest/config/folders"
@@ -51,19 +51,19 @@ class TestBackups:
                 logger.info(f"Sending request to: {url}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
-            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(f"Unable to connect to host: {self.name}")
             logger.critical(e)
             assert False
 
-        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+        assert response.status_code == 200, f"{self.name} -> Response code: {response.status_code}, when it should be 200"
 
         folders = response.json()
 
         for folder in folders:
             data = dict(folder)
-            assert "paused" in data, f"Invalid response message missing `paused`: {folder}"
-            assert "label" in data, f"Invalid response message missing `label`: {folder}"
-            assert not data['paused'], f"{data['label']} is paused on {self.name}"
+            assert "paused" in data, f"{self.name} -> Invalid response message missing `paused`: {folder}"
+            assert "label" in data, f"{self.name} -> Invalid response message missing `label`: {folder}"
+            assert not data['paused'], f"{self.name} -> {data['label']} is paused on {self.name}"
 
     def test_status(self):
         url = f"{self.host}/rest/stats/folder"
@@ -74,17 +74,17 @@ class TestBackups:
                 logger.info(f"Sending request to: {url}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
-            logger.critical(f"Unable to connect to host: {self.host}")
+            logger.critical(f"Unable to connect to host: {self.name}")
             logger.critical(e)
             assert False
 
-        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+        assert response.status_code == 200, f"{self.name} -> Response code: {response.status_code}, when it should be 200"
 
         folders = response.json()
         for (folder, data) in folders.items():
-            assert 'lastScan' in data, f"Invalid response message missing `lastScan`: {data}"
+            assert 'lastScan' in data, f"{self.name} -> Invalid response message missing `lastScan`: {data}"
             last_scan = datetime.datetime.fromisoformat(data['lastScan']).timestamp()
-            assert last_scan >= self.outdated_time, f"{folder} is out of sync on {self.name}, last synced: {last_scan}"
+            assert last_scan >= self.outdated_time, f"{self.name} -> {folder} is out of sync on {self.name}, last synced: {last_scan}"
 
     def test_errors(self):
         url = f"{self.host}/rest/stats/folder"
