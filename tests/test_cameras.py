@@ -30,7 +30,7 @@ class TestCameras:
 
             capture.release()
 
-        assert ret, f"Unable to read camera feed: {ret}"
+        assert ret, f"{self.name} -> Unable to read camera feed: {ret}"
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -40,5 +40,5 @@ class TestCameras:
 
         percentage_color = (np.count_nonzero(color_range) / (frame.shape[0] * frame.shape[1])) * 100
 
-        assert percentage_color <= 75, f"Camera black percentage higher then 75%: {percentage_color}"
+        assert percentage_color <= 75, f"{self.name} -> Camera black percentage higher then 75%: {percentage_color}"
 

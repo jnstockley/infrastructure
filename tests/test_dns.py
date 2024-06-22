@@ -40,12 +40,14 @@ class TestDNS:
             logger.critical(e)
             assert False
 
-        assert response.status_code == 200, f"Response code: {response.status_code}, when it should be 200"
+        assert response.status_code == 200, (f"{self.name} -> Response code: {response.status_code},"
+                                             f" when it should be 200")
 
         requests = response.json()
 
-        assert 'oldest' in requests, f"Invalid response message, missing `oldest`: {requests}"
+        assert 'oldest' in requests, f"{self.name} -> Invalid response message, missing `oldest`: {requests}"
 
         last_request = datetime.datetime.fromisoformat(requests['oldest']).timestamp()
-        logger.info(f"Last request received for {self.name}: {last_request}")
-        assert last_request >= self.outdated_time, f"Last request received for {self.client_id}: {last_request}"
+        logger.info(f"{self.name} -> Last request received for {self.name}: {last_request}")
+        assert last_request >= self.outdated_time, (f"{self.name} -> Last request received for {self.client_id}: "
+                                                    f"{last_request}")

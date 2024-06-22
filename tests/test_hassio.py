@@ -46,8 +46,9 @@ class TestHassio:
             # Wait for the selector to be available in the DOM
             page.wait_for_selector(".container ha-integration-card")
 
-            assert page.query_selector(".container ha-integration-card") is not None, ("No element with the class of "
-                                                                                       "'container' found")
+            assert page.query_selector(".container ha-integration-card") is not None, (f"{self.name} -> No element with"
+                                                                                       f" the class of 'container' "
+                                                                                       f"found")
 
             # Get all div elements with the classes 'secondary' and 'error'
             elements = page.query_selector_all("div.error")
@@ -57,4 +58,4 @@ class TestHassio:
                 parent_element = element.evaluate_handle("element => element.parentNode.parentNode.parentNode")
                 device_errors.append(parent_element.query_selector('div.primary').inner_text())
 
-        assert len(device_errors) == 0, f"Device errors found: {device_errors}"
+        assert len(device_errors) == 0, f"{self.name} -> Device errors found: {device_errors}"
