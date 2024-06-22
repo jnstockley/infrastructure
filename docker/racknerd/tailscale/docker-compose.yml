@@ -12,6 +12,8 @@ services:
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ./data:/var/lib/tailscale
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     networks:
       tailscale:
       syncthing:
