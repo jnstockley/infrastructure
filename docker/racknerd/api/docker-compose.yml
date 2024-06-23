@@ -1,7 +1,7 @@
 services:
   api:
     container_name: api
-    image: jnstockley/api:v0.0.14
+    image: jnstockley/api:v0.0.15
     env_file:
       - ./.env
     environment:
