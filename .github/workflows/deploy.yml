@@ -25,7 +25,7 @@ jobs:
           timezoneLinux: "America/Chicago"
       - name: Step 3 - Get Changes files
         id: files
-        uses: tj-actions/changed-files@v44.5.4
+        uses: tj-actions/changed-files@v44.5.5
         with:
           files_yaml: |
             docker:
