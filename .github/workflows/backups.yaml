@@ -55,7 +55,7 @@ jobs:
       - name: Step 6 - Install Poetry and Dependencies
         run: |
           export POETRY_HOME=/opt/poetry
-          python3 install-poetry.py --version 1.8.3
+          python3 ./scripts/install-poetry.py --version 1.8.3
           export PATH=$POETRY_HOME/bin:$PATH
           poetry install --no-root --only main
       - name: Step 7 - Run Tests
