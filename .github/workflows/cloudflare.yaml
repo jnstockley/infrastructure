@@ -33,7 +33,7 @@ jobs:
           python-version: '3.12' 
       - name: Step 5 - Install Poetry and Dependencies
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
+          pipx install poetry==1.8.3
           poetry install --no-root --only main
       - name: Step 6 - Run Tests
         run: poetry run pytest tests/test_cloudflare.py
