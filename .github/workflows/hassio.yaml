@@ -43,7 +43,7 @@ jobs:
           python-version: '3.12' 
       - name: Step 6 - Install Poetry and Dependencies
         run: |
-          pipx install poetry==1.8.3
+          curl -sSL https://install.python-poetry.org | python3 -
           poetry install --no-root --only main,hassio
           poetry run playwright install --with-deps chromium
       - name: Step 7 - Run Tests
