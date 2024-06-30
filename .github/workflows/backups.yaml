@@ -54,9 +54,7 @@ jobs:
           python-version: '3.12' 
       - name: Step 6 - Install Poetry and Dependencies
         run: |
-          export POETRY_HOME=/opt/poetry
-          python3 scripts/install-poetry.py --version 1.8.3
-          export PATH=$POETRY_HOME/bin:$PATH
+          pipx install poetry==1.8.3
           poetry install --no-root --only main
       - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_backups.py
