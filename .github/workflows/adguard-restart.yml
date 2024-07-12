@@ -12,4 +12,4 @@ jobs:
 
     steps:
       - name: Restart AdGuard Container
-        run: docker compose -f ~/infrastructure/docker/racknerd/adguard/docker-compose.yml up -d --force-recreate
+        run: docker compose -f ~/infrastructure/docker/racknerd/adguard/compose.yml up -d --force-recreate
