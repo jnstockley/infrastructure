@@ -36,7 +36,7 @@ jobs:
           echo "[Speedtest.Chicago-Home]"  >> resources/config.toml
           echo "url = '${{ secrets.CHICAGO_HOME_HASSIO_URL }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.CHICAGO_HOME_HASSIO_API_KEY }}'"  >> resources/config.toml
-          echo "download_limit_megabits = 70.0" >> resources/config.toml
+          echo "download_limit_megabits = 30.0" >> resources/config.toml
           echo "upload_limit_megabits = 2.0" >> resources/config.toml
       - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
