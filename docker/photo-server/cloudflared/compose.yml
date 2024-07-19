@@ -1,0 +1,16 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:2024.6.1
+    container_name: cloudflared
+    env_file:
+      - ./.env
+    environment:
+      - TZ=America/Chicago
+    networks:
+      - immich
+    restart: unless-stopped
+    command: tunnel run
+
+networks:
+  immich:
+    external: true
