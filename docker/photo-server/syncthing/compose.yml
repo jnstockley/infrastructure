@@ -1,0 +1,16 @@
+services:
+  syncthing:
+    image: syncthing/syncthing:1.27.9
+    container_name: syncthing
+    hostname: photo_server
+    ports:
+      8384:8384
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - PGID=0
+    volumes:
+      - ./config:/var/syncthing/config
+      - /mnt/photos/:/var/syncthing/photos
+      - /home/jackstockley/infrastructure/:/var/syncthing/home
+    restart: unless-stopped
