@@ -4,7 +4,7 @@ services:
     container_name: syncthing
     hostname: photo_server
     ports:
-      8384:8384
+      - 8384:8384
     environment:
       - TZ=America/Chicago
       - PUID=0
