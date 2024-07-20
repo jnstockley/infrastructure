@@ -5,7 +5,7 @@ services:
     environment:
       - TZ=America/Chicago
     ports:
-      3001:3001
+      - 3001:3001
     restart: unless-stopped
     volumes:
       - ./data:/app/data
