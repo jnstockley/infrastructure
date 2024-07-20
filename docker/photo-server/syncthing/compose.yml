@@ -5,6 +5,8 @@ services:
     hostname: photo_server
     ports:
       - 8384:8384
+    networks:
+      - internal
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -14,3 +16,7 @@ services:
       - /mnt/photos/:/var/syncthing/photos
       - /home/jackstockley/infrastructure/:/var/syncthing/home
     restart: unless-stopped
+
+networks:
+  internal:
+    external: true
