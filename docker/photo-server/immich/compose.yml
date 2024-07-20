@@ -44,6 +44,7 @@ services:
     restart: always
     networks:
       - immich_private
+      - internal
 
   database:
     container_name: immich_postgres
@@ -64,6 +65,7 @@ services:
     restart: always
     networks:
         - immich_private
+        - internal
 
 volumes:
   model-cache:
@@ -72,3 +74,5 @@ networks:
   immich:
     external: true
   immich_private:
+  internal:
+    external: true
