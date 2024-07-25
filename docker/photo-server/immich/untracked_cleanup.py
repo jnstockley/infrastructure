@@ -6,7 +6,7 @@ def update_paths(files: list[str]) -> list[str]:
     updated_files = []
     for file in files:
         if file.startswith("/usr/src/app/upload"):
-            updated_files.append(file.replace("/usr/src/app/upload/", "/mnt/photos/"))
+            updated_files.append(file.replace("/usr/src/app/upload/", "/mnt/photos/").strip())
 
     return updated_files
 
