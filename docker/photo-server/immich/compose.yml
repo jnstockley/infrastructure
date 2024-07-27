@@ -12,6 +12,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 2283:3001
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.photos.entrypoints=websecure
+      - traefik.http.routers.photos.rule=Host(`photos.jstockley.com`)
+      - traefik.http.routers.photos.tls=true
+      - traefik.http.routers.photos.tls.certresolver=production
+      - traefik.http.routers.photos.service=photos
+      - traefik.http.services.photos.loadbalancer.server.port=3001
+      - traefik.docker.network=immich
     env_file:
       - .env
     depends_on:
