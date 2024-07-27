@@ -9,8 +9,8 @@ services:
       - internal
     environment:
       - TZ=America/Chicago
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
     volumes:
       - ./config:/var/syncthing/config
       - /mnt/photos/:/var/syncthing/photos
