@@ -1,0 +1,37 @@
+services:
+  traefik:
+    image: traefik:v3.1.0
+    container_name: traefik
+    ports:
+      - 80:80
+      - 443:443
+      # -- (Optional) Enable Dashboard, don't do in production
+      # - 8080:8080
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./config/conf/:/etc/traefik/conf/
+      - ./config/certs/:/etc/traefik/certs/
+      - ./logs/:/var/log/traefik/
+    # -- (Optional) When using Cloudflare as Cert Resolver
+    # environment:
+    #   - CF_DNS_API_TOKEN=your-cloudflare-api-token
+    # -- (Optional) When using a custom network
+    networks:
+      immich:
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - traefik
+        - healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+
+networks:
+  immich:
+    external: true
