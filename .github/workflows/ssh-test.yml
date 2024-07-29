@@ -18,7 +18,7 @@ jobs:
 
       - name: Step 2 - Ping Racknerd
         run:
-          ping ${{ secrets.RACKNERD_IP }}
+          ping -c 3 ${{ secrets.RACKNERD_IP }}
 
       - name: Step 3 - Deploy containers (Racknerd)
         uses: appleboy/ssh-action@v1.0.3
@@ -32,7 +32,7 @@ jobs:
 
       - name: Step 2 - Ping Photo Server
         run:
-          ping ${{ secrets.PHOTO_SERVER_IP }}
+          ping -c 3 ${{ secrets.PHOTO_SERVER_IP }}
 
       - name: Step 3 - Deploy containers (Photo Server)
         uses: appleboy/ssh-action@v1.0.3
