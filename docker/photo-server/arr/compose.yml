@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   deluge:
-    image: linuxserver/deluge:2.1.1
+    image: linuxserver/deluge:18.04.1
     container_name: deluge
     restart: unless-stopped
     environment:
