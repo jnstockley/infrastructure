@@ -1,0 +1,10 @@
+.env
+./gluetun/
+./deluge/
+./data/
+./nzbget/
+./prowlarr/
+./sonarr/
+./radarr/
+./lidarr/
+./bazarr/
