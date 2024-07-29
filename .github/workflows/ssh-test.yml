@@ -16,9 +16,9 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:github
 
-      - name: Step 2 - Ping Racknerd
-        run:
-          ping -c 3 ${{ secrets.RACKNERD_IP }}
+      #- name: Step 2 - Ping Racknerd
+      #  run:
+      #    ping -c 3 ${{ secrets.RACKNERD_IP }}
 
       - name: Step 3 - Deploy containers (Racknerd)
         uses: appleboy/ssh-action@v1.0.3
