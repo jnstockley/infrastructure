@@ -23,7 +23,7 @@ services:
       timeout: 10s
 
   pg-admin:
-    image: dpage/pgadmin4:8.9
+    image: dpage/pgadmin4:8.10
     depends_on:
       - postgres-db
     container_name: pgadmin
