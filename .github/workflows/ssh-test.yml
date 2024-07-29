@@ -9,12 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Step 1 - Setup and Connect to Tailscale
-        uses: tailscale/github-action@v2
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:github
+
 
       - name: Step 2 - Ping Racknerd
         run:
@@ -29,6 +24,13 @@ jobs:
           passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
           script: |
             echo "Connected to Racknerd"
+
+      - name: Step 1 - Setup and Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:github
 
       - name: Step 2 - Ping Photo Server
         run:
