@@ -37,14 +37,14 @@ jobs:
           files_yaml: |
             docker_racknerd:
               - docker/racknerd/**
-       #     docker_photo_server:
-       #       - docker/photo-server/**
+            docker_photo_server:
+              - docker/photo-server/**
 
       - name: Step 5 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
         uses: appleboy/ssh-action@v1.0.3
         env:
-          FILES: ${{ steps.files.outputs.docker_racknerd_any_changed }}
+          FILES: ${{ steps.files.outputs.docker_racknerd_all_changed_files }}
         with:
           host: ${{ secrets.RACKNERD_IP }}
           username: jackstockley
@@ -66,7 +66,7 @@ jobs:
       #  if: steps.files.outputs.docker_photo_server_any_changed == 'true'
       #  uses: appleboy/ssh-action@v1.0.3
       #  env:
-      #    FILES: ${{ steps.files.outputs.docker_photo_server_any_changed }}
+      #    FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
       #  with:
       #    host: ${{ secrets.PHOTO_SERVER_IP }}
       #    username: jackstockley
