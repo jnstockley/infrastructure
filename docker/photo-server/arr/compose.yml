@@ -42,7 +42,6 @@ services:
       - PUID=1000
       - PGID=100
       - TZ=America/Chicago
-  
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./nzbget:/config
