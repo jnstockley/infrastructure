@@ -1,6 +1,6 @@
 services:
   redis:
-    image: redis:7.4.0-alpine
+    image: redis:7.4.0
     environment:
       - TZ=America/Chicago
     container_name: redis

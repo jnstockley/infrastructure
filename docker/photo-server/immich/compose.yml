@@ -49,7 +49,7 @@ services:
 
   redis:
     container_name: immich_redis
-    image: redis:7.4.0-alpine
+    image: redis:7.4.0
 #    image: docker.io/redis:6.2-alpine@sha256:328fe6a5822256d065debb36617a8169dbfbd77b797c525288e465f56c1d392b
     healthcheck:
       test: redis-cli ping || exit 1
