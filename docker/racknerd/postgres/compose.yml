@@ -1,6 +1,6 @@
 services:
   postgres-db:
-    image: postgres:16.3-alpine
+    image: postgres:16.4
     container_name: postgres
     networks:
       - postgres-internal
