@@ -1,7 +1,7 @@
 services:
   web-scrapper:
     container_name: web_scrapper
-    image: jnstockley/web-scrapper:2024.08.11
+    image: jnstockley/web-scrapper:2024.08.14
     working_dir: /web-scrapper
     env_file:
       - .env
