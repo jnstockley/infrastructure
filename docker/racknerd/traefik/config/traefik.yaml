@@ -6,7 +6,7 @@ global:
 #     - loglevels [DEBUG, INFO, WARNING, ERROR, CRITICAL]
 #     - format [common, json, logfmt]
 log:
- level: DEBUG
+ level: INFO
  format: common
  filePath: /var/log/traefik/traefik.log
 
@@ -43,6 +43,10 @@ entryPoints:
           scheme: https
   websecure:
     address: :443
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.0.0.0/8"
   # -- (Optional) Add custom Entrypoint
   # custom:
   #   address: :8080

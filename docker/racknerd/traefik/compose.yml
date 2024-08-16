@@ -33,6 +33,7 @@ services:
         ipv4_address: 172.18.8.2
       gitea:
       authentik:
+      airflow:
     restart: unless-stopped
     healthcheck:
       test:
@@ -122,3 +123,10 @@ networks:
       driver: default
       config:
         - subnet: 172.18.10.0/24
+  airflow:
+    external: true
+    name: airflow
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.11.0/24
