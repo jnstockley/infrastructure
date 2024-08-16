@@ -58,8 +58,6 @@ services:
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
-    depends_on:
-      - postgres
 
 networks:
   airflow:
