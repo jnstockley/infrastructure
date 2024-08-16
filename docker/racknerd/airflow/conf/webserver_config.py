@@ -43,7 +43,7 @@ class AuthOIDCView(AuthOIDView):
                     role = 'Admin'
 
                     user = sm.add_user(
-                        username=hawk_id,
+                        username=username,
                         first_name=first_name,
                         last_name=last_name,
                         email=email,
