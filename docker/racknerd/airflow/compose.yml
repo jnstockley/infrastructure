@@ -1,0 +1,78 @@
+x-airflow-common:
+  &airflow-common
+  image: apache/airflow:slim-2.10.0-python3.12
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+    - ./data:/opt/airflow/data
+  depends_on:
+    postgres:
+      condition: service_healthy
+  env_file:
+    - .env
+  networks:
+    - airflow
+    - postgres-internal
+
+services:
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+    restart: always
+    container_name: airflow-webserver
+    depends_on:
+      - airflow-scheduler
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.airflow.entrypoints=websecure
+      - traefik.http.routers.airflow.rule=Host(`airflow.jstockley.com`)
+      - traefik.http.routers.airflow.tls=true
+      - traefik.http.routers.airflow.tls.certresolver=production
+      - traefik.http.routers.airflow.service=airflow
+      - traefik.http.services.airflow.loadbalancer.server.port=8080
+      - traefik.docker.network=airflow
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+    restart: always
+    container_name: airflow-scheduler
+    depends_on:
+      - airflow-init
+
+  airflow-init:
+    <<: *airflow-common
+    command: version
+    environment:
+      _AIRFLOW_DB_MIGRATE: 'true'
+    depends_on:
+      - postgres
+
+networks:
+  airflow:
+    external: true
+    name: airflow
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.11.0/24
+  postgres-internal:
+    external: true
+    name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
