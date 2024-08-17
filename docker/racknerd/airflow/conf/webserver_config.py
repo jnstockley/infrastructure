@@ -140,11 +140,13 @@ CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
 url = conf.conf.get('webserver', "BASE_URL")
 
 OIDC_CLIENT_SECRETS = {'web':
-                       {'issuer': f"{Variable.get("ISSUER")}/airflow/",
+                       {'issuer': f"{Variable.get("ISSUER")}",
                         'client_id': Variable.get("CLIENT_ID"),
                         'client_secret': Variable.get("CLIENT_SECRET"),
                         'auth_uri': f'{Variable.get("ISSUER")}/authorize/',
-                        'redirect_urls': [],
+                        'redirect_urls': [
+                            url
+                        ],
                         'token_uri': f'{Variable.get("ISSUER")}/token/',
                         'userinfo_uri': f'{Variable.get("ISSUER")}/userinfo/'}}
 
