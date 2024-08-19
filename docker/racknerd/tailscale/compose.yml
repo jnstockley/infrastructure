@@ -22,6 +22,7 @@ services:
       adguard:
         ipv4_address: 172.18.0.3
       vaultwarden:
+      postgres-internal:
     cap_add:
       - net_admin
       - sys_module
@@ -74,3 +75,10 @@ networks:
       driver: default
       config:
         - subnet: 172.18.1.0/24
+  postgres-internal:
+    external: true
+    name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24

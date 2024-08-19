@@ -8,7 +8,7 @@ x-airflow-common:
     - ./data:/opt/airflow/data
   env_file:
     - .env
-  network_mode: service:tailscale
+  network_mode: container:tailscale
 
 services:
   airflow-webserver:
