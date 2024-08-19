@@ -8,12 +8,32 @@ x-airflow-common:
     - ./data:/opt/airflow/data
   env_file:
     - .env
-  network_mode: service:tailscale
 
 services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "airflow" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+    restart: always
+
+
   airflow-webserver:
     <<: *airflow-common
     command: webserver
+    ports:
+      - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 10s
@@ -24,19 +44,12 @@ services:
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.airflow.entrypoints=websecure
-      - traefik.http.routers.airflow.rule=Host(`airflow.jstockley.com`)
-      - traefik.http.routers.airflow.tls=true
-      - traefik.http.routers.airflow.tls.certresolver=production
-      - traefik.http.routers.airflow.service=airflow
-      - traefik.http.services.airflow.loadbalancer.server.port=8080
-      - traefik.docker.network=airflow
 
   airflow-scheduler:
     <<: *airflow-common
     command: scheduler
+    ports:
+      - "8974:8974"
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
       interval: 10s
@@ -53,3 +66,8 @@ services:
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-db-volume:
