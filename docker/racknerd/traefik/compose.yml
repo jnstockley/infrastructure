@@ -34,6 +34,7 @@ services:
       gitea:
       authentik:
       airflow:
+      tailscale:
     restart: unless-stopped
     healthcheck:
       test:
@@ -130,3 +131,10 @@ networks:
       driver: default
       config:
         - subnet: 172.18.11.0/24
+  tailscale:
+    external: true
+    name: tailscale
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.3.0/24
