@@ -63,7 +63,7 @@ services:
     network_mode: service:gluetun
   
   radarr:
-    image: lscr.io/linuxserver/radarr:5.8.3
+    image: lscr.io/linuxserver/radarr:5.9.1
     container_name: radarr
     restart: unless-stopped
     environment:
