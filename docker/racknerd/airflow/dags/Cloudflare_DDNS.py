@@ -48,6 +48,7 @@ def cloudflare_ddns():
         if pattern.match(ip_address):
             logger.info("Validated IPv4 address")
             ti.xcom_push(key='ipv4_address', value=ip_address)
+            return
 
         logger.error("Invalid IPv4 address")
         raise ValueError("Invalid IPv4 address")
@@ -87,6 +88,7 @@ def cloudflare_ddns():
             if pattern.match(ip_address):
                 logger.info("Validated IPv6 address")
                 ti.xcom_push(key='ipv6_address', value=ip_address)
+                return
 
             logger.error("Invalid IPv6 address")
             raise ValueError("Invalid IPv6 address")
