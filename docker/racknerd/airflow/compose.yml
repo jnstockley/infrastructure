@@ -8,7 +8,9 @@ x-airflow-common:
     - ./data:/opt/airflow/data
   env_file:
     - .env
-  network_mode: container:tailscale
+  networks:
+    - airflow
+    - postgres-internal
 
 services:
   airflow-webserver:
@@ -53,3 +55,19 @@ services:
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
+
+networks:
+  airflow:
+    external: true
+    name: airflow
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.11.0/24
+  postgres-internal:
+    external: true
+    name: postgres-internal
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
