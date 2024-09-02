@@ -1,6 +1,6 @@
 x-airflow-common:
   &airflow-common
-  image: jnstockley/airflow:2024.09.02
+  image: jnstockley/airflow:e2424f8b1b68fcb70d3b421bdf8959c727eff79c
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
