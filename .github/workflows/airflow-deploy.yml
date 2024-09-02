@@ -54,6 +54,6 @@ jobs:
           context: docker/images/airflow/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/airflow:latest,jnstockley/airflow:$GITHUB_SHA
+          tags: jnstockley/airflow:latest,jnstockley/airflow:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
 
