@@ -48,8 +48,6 @@ jobs:
             jnstockley/airflow
             ghcr.io/jnstockley/airflow
 
-      - run: echo "jnstockley/airflow:${{ github.sha }}"
-
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.7.0
         with:
