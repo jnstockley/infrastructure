@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 default_args = {
     'owner': 'jackstockley',
     'retries': 0,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=5),
+    'email': ['jack@jstockley.com'],
+    'email_on_failure': True,
 }
 
 env = Variable.get("env")
