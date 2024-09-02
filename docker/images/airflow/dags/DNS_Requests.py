@@ -31,7 +31,7 @@ env = Variable.get("env")
     catchup=False,
     tags=['dns', 'infrastructure'],
     params={
-        'outdated_interval': Param(6, type='integer', description='The number of hours since the last request'),
+        'outdated_interval': Param(1, type='integer', description='The number of hours since the last request'),
     }
 )
 def dns_requests():
@@ -41,6 +41,7 @@ def dns_requests():
         api_key = Variable.get("DNS_API_KEY")
         clients: list[str] = Variable.get("DNS_CLIENTS").split('|')
         outdated_interval: int = params['outdated_interval']
+        outdated_time = (datetime.now() - timedelta(hours=outdated_interval)).timestamp()
 
         headers = {'Authorization': f'Basic {api_key}'}
 
@@ -59,7 +60,7 @@ def dns_requests():
             last_request = datetime.fromisoformat(response.json()['oldest']).timestamp()
             logger.info(f"{client} -> Last request received for {client}: {response.json()['oldest']}")
 
-            if last_request < outdated_interval:
+            if last_request < outdated_time:
                 logger.error(f"Last request received for {client}: {last_request}")
                 raise ValueError(f"Last request received for {client}: {last_request}")
 
