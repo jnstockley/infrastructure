@@ -48,12 +48,14 @@ jobs:
             jnstockley/airflow
             ghcr.io/jnstockley/airflow
 
+      - run: echo "jnstockley/airflow:$GITHUB_SHA"
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.7.0
         with:
           context: docker/images/airflow/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/airflow:latest,"jnstockley/airflow:$GITHUB_SHA"
+          tags: jnstockley/airflow:latest,jnstockley/airflow:$GITHUB_SHA
           labels: ${{ steps.meta.outputs.labels }}
 
