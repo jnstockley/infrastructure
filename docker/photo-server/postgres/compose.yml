@@ -1,0 +1,53 @@
+services:
+  postgres-db:
+    image: postgres:16.4
+    container_name: postgres
+    networks:
+      - postgres-internal
+    env_file:
+      - ./.env
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - TZ=America/Chicago
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - -U
+        - jackstockley
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+
+  pg-admin:
+    image: dpage/pgadmin4:8.11
+    depends_on:
+      - postgres-db
+    container_name: pgadmin
+    env_file:
+      - ./.env
+    networks:
+      - postgres-internal
+      - postgres-external
+    environment:
+      - TZ=America/Chicago
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+
+networks:
+  postgres-internal:
+    external: true
+  postgres-external:
+    external: true
