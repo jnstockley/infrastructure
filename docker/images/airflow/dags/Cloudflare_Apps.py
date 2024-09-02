@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 default_args = {
     'owner': 'jackstockley',
     'retries': 0,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=5),
+    'email': ['jack@jstockley.com'],
+    'email_on_failure': True,
 }
 
 env = Variable.get("env")
@@ -29,7 +31,7 @@ CLOUDFLARE_API = "https://api.cloudflare.com/client/v4"
     start_date=datetime(2024, 3, 4),
     default_args=default_args,
     catchup=False,
-    tags=['cloudflare', 'infrastructure']
+    tags=['cloudflare', 'infrastructure'],
 )
 def cloudflare_apps():
     @task()
