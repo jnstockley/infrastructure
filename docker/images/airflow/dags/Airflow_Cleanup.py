@@ -39,7 +39,7 @@ def cleanup():
             for file in files:
                 file_path = os.path.join(root, file)
                 logger.info(f'Found file: {file_path}')
-                if os.path.getmtime(file_path) < (datetime.now() - timedelta(days=30)).timestamp():
+                if os.path.getmtime(file_path) < (datetime.now() - timedelta(days=1)).timestamp():
                     file_list.append(os.path.join(root, file))
 
         for file in file_list:
