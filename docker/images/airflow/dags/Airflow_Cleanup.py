@@ -24,7 +24,7 @@ default_args = {
 @dag(
     dag_id='Airflow-Cleanup',
     description="Cleanup logs and data folders",
-    start_date=datetime(2024, 9, 26),
+    start_date=datetime(2024, 9, 2),
     schedule_interval='@once' if env == 'dev' else '@daily',
     default_args=default_args,
     catchup=False,
