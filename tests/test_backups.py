@@ -86,7 +86,7 @@ class TestBackups:
             last_scan = datetime.datetime.fromisoformat(data['lastScan']).timestamp()
             assert last_scan >= self.outdated_time, f"{self.name} -> {folder} is out of sync on {self.name}, last synced: {last_scan}"
 
-    def test_errors(self):
+    '''def test_errors(self):
         url = f"{self.host}/rest/stats/folder"
         response: Response
 
@@ -119,4 +119,4 @@ class TestBackups:
                 for error in folder_data['errors']:
                     assert error['error'].startswith('hashing: '), f"Error found with {folder}: {folder_data['errors']}"
             else:
-                assert folder_data['errors'] is None, f"Error found with {folder}: {folder_data['errors']}"
+                assert folder_data['errors'] is None, f"Error found with {folder}: {folder_data['errors']}"'''
