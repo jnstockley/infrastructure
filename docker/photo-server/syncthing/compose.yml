@@ -1,6 +1,6 @@
 services:
   syncthing:
-    image: syncthing/syncthing:1.27.11
+    image: syncthing/syncthing:1.27.12
     container_name: syncthing
     hostname: photo_server
     ports:
