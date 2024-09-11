@@ -21,6 +21,7 @@ services:
     # -- (Optional) When using a custom network
     networks:
       immich:
+      gitea:
     restart: unless-stopped
     healthcheck:
       test:
