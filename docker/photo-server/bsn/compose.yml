@@ -1,0 +1,10 @@
+services:
+  bsn:
+    container_name: bsn
+    image: jnstockley/bsn:v0.1.0
+    volumes:
+      - ./data:/bsn/data
+      - ./logs:/bsn/logs
+    env_file:
+      - .env
+    restart: always
