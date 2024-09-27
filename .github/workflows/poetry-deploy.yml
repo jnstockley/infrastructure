@@ -54,7 +54,7 @@ jobs:
         with:
           context: docker/images/poetry/.
           platforms: linux/amd64,linux/arm64
-          push: false
+          push: true
           tags: jnstockley/poetry:latest
           labels: ${{ steps.meta.outputs.labels }}
 
