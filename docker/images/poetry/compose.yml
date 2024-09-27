@@ -1,0 +1,7 @@
+services:
+  poetry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: local/poetry:1.8.3
+    command: poetry --version

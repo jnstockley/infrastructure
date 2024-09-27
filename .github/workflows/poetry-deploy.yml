@@ -8,10 +8,10 @@ on:
     types:
       - closed
     paths:
-      - docker/images/airflow/**
-      - .github/workflows/airflow-deploy.yml
+      - docker/images/poetry/**
+      - .github/workflows/poetry-deploy.yml
 jobs:
-  airflow_image_deploy:
+  poetry_image_deploy:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
     permissions:
@@ -45,15 +45,27 @@ jobs:
         uses: docker/metadata-action@v5.5.1
         with:
           images: |
-            jnstockley/airflow
-            ghcr.io/jnstockley/airflow
+            jnstockley/poetry
+            ghcr.io/jnstockley/poetry
+
+      - name: Get Python version
+        id: get-python-version
+        run: |
+          PYTHON_VERSION=$(docker run --rm jnstockley/poetry:latest python --version | awk '{print $2}')
+          echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
+
+      - name: Get Poetry version
+        id: get-poetry-version
+        run: |
+          POETRY_VERSION=$(docker run --rm jnstockley/poetry:latest poetry --version | awk '{print $3}')
+          echo "POETRY_VERSION=$POETRY_VERSION" >> $GITHUB_ENV
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.8.0
         with:
-          context: docker/images/airflow/.
+          context: docker/images/poetry/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/airflow:latest,jnstockley/airflow:${{ github.sha }}
+          tags: jnstockley/poetry:latest,jnstockley/poetry:${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
 
