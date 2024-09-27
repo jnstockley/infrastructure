@@ -66,6 +66,6 @@ jobs:
           context: docker/images/poetry/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/poetry:latest,jnstockley/poetry:${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+          tags: jnstockley/poetry:latest,jnstockley/poetry:python${{ env.PYTHON_VERSION }}-poetry${{ env.POETRY_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
 
