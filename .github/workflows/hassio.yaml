@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  backup:
+  hassio:
     name: Hassio Device Errors
     runs-on: ubuntu-latest
     

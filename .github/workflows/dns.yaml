@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  backup:
+  dns:
     name: DNS Requests
     runs-on: ubuntu-latest
     

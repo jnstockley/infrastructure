@@ -9,7 +9,7 @@ on:
       - docker/racknerd/**
 
 jobs:
-  deploy:
+  docker_compatibility:
     name: Test Docker Images compatibility
     runs-on: ubuntu-latest
 
