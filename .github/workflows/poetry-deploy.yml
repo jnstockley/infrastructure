@@ -119,10 +119,10 @@ jobs:
         uses: docker/build-push-action@v6.8.0
         with:
           build-args: |
-            PYTHON_VERSION=${{ matrix.python-version }}
+            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
           context: docker/images/poetry/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/poetry:${{ env.POETRY_VERSION }}-python${{ matrix.python-version }}
+          tags: jnstockley/poetry:${{ env.POETRY_VERSION }}-python${{ env.PYTHON_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
 
