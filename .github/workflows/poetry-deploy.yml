@@ -12,12 +12,8 @@ on:
       - .github/workflows/poetry-deploy.yml
 jobs:
   poetry_image_latest_deploy:
-    poetry_image_deploy:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-          python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
     permissions:
       packages: write
       contents: read
