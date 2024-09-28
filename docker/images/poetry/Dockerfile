@@ -1,4 +1,5 @@
-FROM python:3.12.6-alpine
+ARG PYTHON_VERSION=3.12.6
+FROM python:${PYTHON_VERSION}-alpine
 
 RUN apk update
 
