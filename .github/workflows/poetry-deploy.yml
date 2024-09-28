@@ -59,6 +59,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   poetry_image_deploy:
+    needs: poetry_image_latest_deploy
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
     strategy:
