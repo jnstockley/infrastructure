@@ -103,6 +103,12 @@ jobs:
             jnstockley/poetry
             ghcr.io/jnstockley/poetry
 
+      - name: Get Python version
+        id: get-python-version
+        run: |
+          PYTHON_VERSION=$(python --version | awk '{print $2}')
+          echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
+
       - name: Get Poetry version
         id: get-poetry-version
         run: |
