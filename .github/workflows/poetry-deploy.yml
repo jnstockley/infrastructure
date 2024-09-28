@@ -14,6 +14,8 @@ jobs:
   poetry_image_deploy:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
+    matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
     permissions:
       packages: write
       contents: read
@@ -58,12 +60,6 @@ jobs:
           tags: jnstockley/poetry:latest
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Get Python version
-        id: get-python-version
-        run: |
-          PYTHON_VERSION=$(docker run --rm jnstockley/poetry:latest python --version | awk '{print $2}')
-          echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
-
       - name: Get Poetry version
         id: get-poetry-version
         run: |
@@ -73,9 +69,11 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.8.0
         with:
+          build-args: |
+            PYTHON_VERSION=${{ matrix.python-version }}
           context: docker/images/poetry/.
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jnstockley/poetry:${{ env.POETRY_VERSION }}-python${{ env.PYTHON_VERSION }}
+          tags: jnstockley/poetry:${{ env.POETRY_VERSION }}-python${{ matrix.python-version }}
           labels: ${{ steps.meta.outputs.labels }}
 
