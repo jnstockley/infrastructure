@@ -14,14 +14,14 @@ on:
 jobs:
   deploy:
     name: Deploy new Docker Container
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
       - name: Step 2 - Set Timezone
-        uses: szenius/set-timezone@v2
+        uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: "America/Chicago"
       #- name: Step 3 - Setup and Connect to Tailscale
