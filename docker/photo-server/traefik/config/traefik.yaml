@@ -16,6 +16,9 @@ accesslog:
   format: common
   filePath: /var/log/traefik/access.log
 
+serversTransport:
+  insecureSkipVerify: true
+
 # -- (Optional) Enable API and Dashboard here, don't do in production
 api:
   dashboard: true

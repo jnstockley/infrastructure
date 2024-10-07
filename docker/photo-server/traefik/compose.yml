@@ -22,6 +22,7 @@ services:
     networks:
       immich:
       gitea:
+      mc:
     restart: unless-stopped
     healthcheck:
       test:
@@ -39,3 +40,5 @@ networks:
   gitea:
     external: true
     name: gitea
+  mc:
+    external: true
