@@ -42,7 +42,7 @@ jobs:
 
       - name: Step 5 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.3
         env:
           FILES: ${{ steps.files.outputs.docker_racknerd_all_changed_files }}
         with:
