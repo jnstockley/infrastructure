@@ -1,0 +1,34 @@
+services:
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    environment:
+        - TZ=America/Chicago
+    ports:
+    #    - "8443:8443" # HTTPS
+    #    - "8123:8123" # DYNMAP
+        - "25500-25600:25500-25600" # MC SERV PORT RANGE
+    networks:
+        mc:
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.mc.entrypoints=websecure
+        - traefik.http.routers.mc.rule=Host(`mc.jstockley.com`)
+        - traefik.http.routers.mc.tls=true
+        - traefik.http.routers.mc.tls.certresolver=production
+        - traefik.http.routers.mc.service=mc
+        - traefik.http.services.mc.loadbalancer.server.port=8443
+        - traefik.http.services.mc.loadbalancer.server.scheme=https
+        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.docker.network=mc
+    volumes:
+        - ./backups:/crafty/backups
+        - ./logs:/crafty/logs
+        - ./servers:/crafty/servers
+        - ./config:/crafty/app/config
+        - ./import:/crafty/import
+
+networks:
+  mc:
+    external: true
