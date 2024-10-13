@@ -13,7 +13,7 @@ services:
       - traefik.docker.network=mend
     volumes:
       - ./logs:/logs
-      - ./certs:/usr/src/app/
+      - ./certs:/certs
     env_file:
       - .env
     networks:
