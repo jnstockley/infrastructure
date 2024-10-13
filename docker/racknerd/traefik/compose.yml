@@ -35,6 +35,7 @@ services:
       authentik:
       airflow:
       tailscale:
+      mend:
     restart: unless-stopped
     healthcheck:
       test:
@@ -138,3 +139,6 @@ networks:
       driver: default
       config:
         - subnet: 172.19.3.0/24
+  mend:
+    external: true
+    name: mend
