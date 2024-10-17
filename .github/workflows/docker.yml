@@ -28,6 +28,7 @@ jobs:
           files_yaml: |
             docker:
               - docker/racknerd/**
+              - docker/photo-server/**
       - name: Step 4 - Create Config file
         if: steps.files.outputs.docker_any_changed == 'true'
         run: |
