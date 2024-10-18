@@ -75,14 +75,14 @@ certificatesResolvers:
       storage: /etc/traefik/certs/acme.json
       caServer: "https://acme-v02.api.letsencrypt.org/directory"
 #       -- (Optional) Remove this section, when using DNS Challenge
-      httpChallenge:
-        entryPoint: web
+#      httpChallenge:
+#        entryPoint: web
 #       -- (Optional) Configure DNS Challenge
-#       dnsChallenge:
-#         provider: your-resolver (e.g. cloudflare)
-#         resolvers:
-#           - "1.1.1.1:53"
-#           - "8.8.8.8:53"
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"
 
 # -- (Optional) Disable TLS Cert verification check
 # serversTransport:
