@@ -5,20 +5,14 @@ services:
     ports:
       - 80:80
       - 443:443
-      # -- (Optional) Enable Dashboard, don't do in production
-      # - 8080:8080
-    environment:
-      - TZ=America/Chicago
+    env_file:
+      - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
       - ./logs/:/var/log/traefik/
-    # -- (Optional) When using Cloudflare as Cert Resolver
-    # environment:
-    #   - CF_DNS_API_TOKEN=your-cloudflare-api-token
-    # -- (Optional) When using a custom network
     networks:
       adguard:
         ipv4_address: 172.18.0.2

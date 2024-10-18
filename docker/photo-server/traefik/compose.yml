@@ -3,8 +3,8 @@ services:
     image: traefik:v3.1.6
     container_name: traefik
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     env_file:
       - .env
     volumes:
@@ -19,19 +19,19 @@ services:
       mc:
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.local.jstockley.com`)"
-      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
-      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.local.jstockley.com`)"
-      - "traefik.http.routers.traefik-secure.tls=true"
-      - "traefik.http.routers.traefik-secure.tls.certresolver=production"
-      - "traefik.http.routers.traefik-secure.tls.domains[0].main=local.jstockley.com"
-      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com"
-      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.rule=Host(`traefik.local.jstockley.com`)
+      - traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.http.routers.traefik.middlewares=traefik-https-redirect
+      - traefik.http.routers.traefik-secure.entrypoints=websecure
+      - traefik.http.routers.traefik-secure.rule=Host(`traefik.local.jstockley.com`)
+      - traefik.http.routers.traefik-secure.tls=true
+      - traefik.http.routers.traefik-secure.tls.certresolver=production
+      - traefik.http.routers.traefik-secure.tls.domains[0].main=local.jstockley.com
+      - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com
+      - traefik.http.routers.traefik-secure.service=api@internal
     healthcheck:
       test:
         - CMD
