@@ -61,6 +61,7 @@ jobs:
               docker compose -f $file up -d --force-recreate --remove-orphans
             done            
             docker image prune -a -f
+            docker system prune -f
 
       #- name: Step 5 - Deploy containers (Photo Server)
       #  if: steps.files.outputs.docker_photo_server_any_changed == 'true'
@@ -83,3 +84,4 @@ jobs:
       #        docker compose -f $file up -d --force-recreate --remove-orphans
       #      done
       #      docker image prune -a -f
+      #      docker system prune -f
