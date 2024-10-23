@@ -3,8 +3,14 @@ services:
     image: syncthing/syncthing:1.28.0
     container_name: syncthing
     hostname: photo_server
-    ports:
-      - 8384:8384
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backup.entrypoints=websecure
+      - traefik.http.routers.backup.rule=Host(`backup.local.jstockley.com`)
+      - traefik.http.routers.backup.tls=true
+      - traefik.http.routers.backup.tls.certresolver=production
+      - traefik.http.routers.backup.service=syncthing
+      - traefik.http.services.backup.loadbalancer.server.port=8384
     networks:
       - internal
     environment:
