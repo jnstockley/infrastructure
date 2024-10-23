@@ -24,8 +24,15 @@ services:
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
-    ports:
-      - "8082:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.airflow.entrypoints=websecure
+      - traefik.http.routers.airflow.rule=Host(`airflow.local.jstockley.com`)
+      - traefik.http.routers.airflow.tls=true
+      - traefik.http.routers.airflow.tls.certresolver=production
+      - traefik.http.routers.airflow.service=pgadmin
+      - traefik.http.services.airflow.loadbalancer.server.port=8080
+      - traefik.docker.network=airflow
 
   airflow-scheduler:
     <<: *airflow-common
