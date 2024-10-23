@@ -17,6 +17,8 @@ services:
       immich:
       gitea:
       mc:
+      airflow:
+      postgres-external:
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -49,4 +51,8 @@ networks:
     external: true
     name: gitea
   mc:
+    external: true
+  airflow:
+    external: true
+  postgres-external:
     external: true

@@ -46,8 +46,6 @@ services:
       - traefik.http.routers.pgadmin.service=pgadmin
       - traefik.http.services.pgadmin.loadbalancer.server.port=80
       - traefik.docker.network=pgadmin
-    ports:
-      - "8081:80"
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:80/misc/ping || exit 1
       interval: 60s
