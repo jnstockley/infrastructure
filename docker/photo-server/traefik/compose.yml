@@ -19,6 +19,7 @@ services:
       mc:
       airflow:
       postgres-external:
+      mend:
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -56,3 +57,6 @@ networks:
     external: true
   postgres-external:
     external: true
+  mend:
+    external: true
+    name: mend
