@@ -7,3 +7,9 @@ services:
       - .env
     sysctls:
       net.ipv4.ping_group_range: "0 2147483647"
+    networks:
+      - twingate
+
+networks:
+  twingate:
+      external: true
