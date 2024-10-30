@@ -1,18 +1,14 @@
-x-airflow-common:
-  &airflow-common
-  image: jnstockley/airflow:8bffb6c71cd989d8078173670de61928bf2edce5
-  volumes:
-    - ./logs:/opt/airflow/logs
-    - ./data:/opt/airflow/data
-  env_file:
-    - .env
-  networks:
-    - airflow
-    - postgres-internal
-
 services:
   airflow-webserver:
-    <<: *airflow-common
+    image: jnstockley/airflow:62eefa7a590e36fe0fde78320df33ae0ce837164
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
     command: webserver
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
@@ -20,7 +16,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    restart: always
+    restart: unless-stopped
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
@@ -35,7 +31,15 @@ services:
       - traefik.docker.network=airflow
 
   airflow-scheduler:
-    <<: *airflow-common
+    image: jnstockley/airflow:62eefa7a590e36fe0fde78320df33ae0ce837164
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
     command: scheduler
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
@@ -49,13 +53,23 @@ services:
       - airflow-init
 
   airflow-init:
-    <<: *airflow-common
+    image: jnstockley/airflow:62eefa7a590e36fe0fde78320df33ae0ce837164
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
 
 networks:
   airflow:
+    name: airflow
     external: true
-  postgres-internal:
+  postgres:
+    name: postgres
     external: true
