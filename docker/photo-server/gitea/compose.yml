@@ -2,7 +2,7 @@ services:
   server:
     image: gitea/gitea:1.22.3
     container_name: gitea
-    restart: always
+    restart: unless-stopped
     env_file:
       - ./.env
     environment:
@@ -13,7 +13,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - gitea
-      - postgres-internal
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:3000/api/healthz" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     labels:
       - traefik.enable=true
       - traefik.http.routers.gitea.entrypoints=websecure
@@ -26,8 +32,8 @@ services:
 
 networks:
   gitea:
-    external: true
     name: gitea
-  postgres-internal:
     external: true
-    name: postgres-internal
+  postgres:
+    name: postgres
+    external: true
