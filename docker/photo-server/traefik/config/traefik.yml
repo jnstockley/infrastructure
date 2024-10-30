@@ -51,6 +51,10 @@ entryPoints:
   # custom:
   #   address: :8080
 
+  minecraft:
+    address: :25565/tcp
+
+
 ping:
   entryPoint: "ping"
 

@@ -5,10 +5,10 @@ services:
     restart: always
     environment:
         - TZ=America/Chicago
-    ports:
+#    ports:
     #    - "8443:8443" # HTTPS
     #    - "8123:8123" # DYNMAP
-        - "25500-25600:25500-25600" # MC SERV PORT RANGE
+    #    - "25500-25600:25500-25600" # MC SERV PORT RANGE
     networks:
         mc:
     labels:
@@ -22,6 +22,13 @@ services:
         - traefik.http.services.mc.loadbalancer.server.scheme=https
         - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
         - traefik.docker.network=mc
+
+        - traefik.tcp.routers.mc-server.entrypoints=minecraft
+        - traefik.tcp.routers.mc-server.rule=HostSNI(`*`)
+        - traefik.tcp.routers.mc-server.tls="false"
+        - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
+        - traefik.tcp.routers.mc-server.service=mc-server
+
     volumes:
         - ./backups:/crafty/backups
         - ./logs:/crafty/logs
