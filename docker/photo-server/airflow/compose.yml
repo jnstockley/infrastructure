@@ -9,6 +9,7 @@ services:
     networks:
       - airflow
       - postgres
+      - twingate
     command: webserver
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
@@ -40,6 +41,7 @@ services:
     networks:
       - airflow
       - postgres
+      - twingate
     command: scheduler
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
@@ -62,6 +64,7 @@ services:
     networks:
       - airflow
       - postgres
+      - twingate
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
@@ -72,4 +75,7 @@ networks:
     external: true
   postgres:
     name: postgres
+    external: true
+  twingate:
+    name: twingate
     external: true

@@ -19,6 +19,7 @@ services:
       - traefik.http.services.backup.loadbalancer.server.port=8384
     networks:
       - syncthing
+      - twingate
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -32,4 +33,7 @@ services:
 networks:
   syncthing:
     name: syncthing
+    external: true
+  twingate:
+    name: twingate
     external: true

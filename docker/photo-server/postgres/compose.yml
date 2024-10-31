@@ -4,6 +4,7 @@ services:
     container_name: postgres
     networks:
       - postgres
+      - twingate
     env_file:
       - .env
     volumes:
@@ -28,6 +29,7 @@ services:
     networks:
       - postgres
       - pgadmin
+      - twingate
     environment:
       - TZ=America/Chicago
     volumes:
@@ -55,4 +57,7 @@ networks:
     external: true
   pgadmin:
     name: pgadmin
+    external: true
+  twingate:
+    name: twingate
     external: true

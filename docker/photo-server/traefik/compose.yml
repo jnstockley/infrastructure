@@ -21,6 +21,7 @@ services:
       - airflow
       - postgres
       - mend
+      - twingate
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -61,4 +62,7 @@ networks:
     external: true
   mend:
     name: mend
+    external: true
+  twingate:
+    name: twingate
     external: true
