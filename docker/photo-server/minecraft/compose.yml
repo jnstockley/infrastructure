@@ -1,41 +1,36 @@
 services:
   crafty:
-    container_name: crafty_container
+    container_name: crafty
     image: arcadiatechnology/crafty-4:4.4.4
-    restart: always
+    restart: unless-stopped
     environment:
-        - TZ=America/Chicago
-#    ports:
-    #    - "8443:8443" # HTTPS
-    #    - "8123:8123" # DYNMAP
-    #    - "25500-25600:25500-25600" # MC SERV PORT RANGE
+      - TZ=America/Chicago
     networks:
-        mc:
+      - minecraft
     labels:
-        - traefik.enable=true
-        - traefik.http.routers.mc.entrypoints=websecure
-        - traefik.http.routers.mc.rule=Host(`mc.jstockley.com`)
-        - traefik.http.routers.mc.tls=true
-        - traefik.http.routers.mc.tls.certresolver=production
-        - traefik.http.routers.mc.service=mc
-        - traefik.http.services.mc.loadbalancer.server.port=8443
-        - traefik.http.services.mc.loadbalancer.server.scheme=https
-        - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
-        - traefik.docker.network=mc
-
-        - traefik.tcp.routers.mc-server.entrypoints=minecraft
-        - traefik.tcp.routers.mc-server.rule=HostSNI(`*`)
-        - traefik.tcp.routers.mc-server.tls="false"
-        - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
-        - traefik.tcp.routers.mc-server.service=mc-server
-
+      - traefik.enable=true
+      - traefik.http.routers.mc.entrypoints=websecure
+      - traefik.http.routers.mc.rule=Host(`mc.jstockley.com`)
+      - traefik.http.routers.mc.tls=true
+      - traefik.http.routers.mc.tls.certresolver=production
+      - traefik.http.routers.mc.service=mc
+      - traefik.http.services.mc.loadbalancer.server.port=8443
+      - traefik.http.services.mc.loadbalancer.server.scheme=https
+      - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
+      - traefik.docker.network=mc
+      - traefik.tcp.routers.mc-server.entrypoints=minecraft
+      - traefik.tcp.routers.mc-server.rule=HostSNI(`*`)
+      - traefik.tcp.routers.mc-server.tls="false"
+      - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
+      - traefik.tcp.routers.mc-server.service=mc-server
     volumes:
-        - ./backups:/crafty/backups
-        - ./logs:/crafty/logs
-        - ./servers:/crafty/servers
-        - ./config:/crafty/app/config
-        - ./import:/crafty/import
+      - ./backups:/crafty/backups
+      - ./logs:/crafty/logs
+      - ./servers:/crafty/servers
+      - ./config:/crafty/app/config
+      - ./import:/crafty/import
 
 networks:
-  mc:
+  minecraft:
+    name: minecraft
     external: true
