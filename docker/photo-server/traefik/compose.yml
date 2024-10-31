@@ -15,12 +15,15 @@ services:
       - ./config/certs/:/etc/traefik/certs/
       - ./logs/:/var/log/traefik/
     networks:
-      immich:
-      gitea:
-      mc:
-      airflow:
-      postgres-external:
-      mend:
+      - airflow
+      - gitea
+      - immich
+      - mend
+      - minecraft
+      - postgres
+      - syncthing
+      - uptime-kuma
+      - twingate
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -37,27 +40,37 @@ services:
       - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com
       - traefik.http.routers.traefik-secure.service=api@internal
     healthcheck:
-      test:
-        - CMD
-        - traefik
-        - healthcheck
+      test: traefik healthcheck
       interval: 60s
       retries: 5
       start_period: 20s
       timeout: 10s
 
 networks:
-  immich:
+  airflow:
+    name: airflow
     external: true
   gitea:
-    external: true
     name: gitea
-  mc:
     external: true
-  airflow:
-    external: true
-  postgres-external:
+  immich:
+    name: immich
     external: true
   mend:
-    external: true
     name: mend
+    external: true
+  minecraft:
+    name: minecraft
+    external: true
+  postgres:
+    name: postgres
+    external: true
+  syncthing:
+    name: syncthing
+    external: true
+  uptime-kuma:
+    name: uptime-kuma
+    external: true
+  twingate:
+    name: twingate
+    external: true

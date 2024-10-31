@@ -2,7 +2,13 @@ services:
   syncthing:
     image: syncthing/syncthing:1.28.0
     container_name: syncthing
-    hostname: photo_server
+    hostname: syncthing_photo_server
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8384/rest/noauth/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     labels:
       - traefik.enable=true
       - traefik.http.routers.backup.entrypoints=websecure
@@ -12,7 +18,8 @@ services:
       - traefik.http.routers.backup.service=syncthing
       - traefik.http.services.backup.loadbalancer.server.port=8384
     networks:
-      - internal
+      - syncthing
+      - twingate
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -24,5 +31,9 @@ services:
     restart: unless-stopped
 
 networks:
-  internal:
+  syncthing:
+    name: syncthing
+    external: true
+  twingate:
+    name: twingate
     external: true

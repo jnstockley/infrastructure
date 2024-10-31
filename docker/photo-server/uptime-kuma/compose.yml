@@ -13,7 +13,8 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
     networks:
-      - internal
+      - uptime-kuma
+      - twingate
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -22,5 +23,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
 
 networks:
-  internal:
+  uptime-kuma:
+    name: uptime-kuma
+    external: true
+  twingate:
+    name: twingate
     external: true
