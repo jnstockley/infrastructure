@@ -15,7 +15,7 @@ services:
       - traefik.http.routers.backup.rule=Host(`backup.local.jstockley.com`)
       - traefik.http.routers.backup.tls=true
       - traefik.http.routers.backup.tls.certresolver=production
-      - traefik.http.routers.backup.service=syncthing
+      - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
     networks:
       - syncthing
