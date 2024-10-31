@@ -1,5 +1,6 @@
 services:
   renovate-ce:
+    container_name: mend_renovate
     image: ghcr.io/mend/renovate-ce:8.5.0-full
     labels:
       - traefik.enable=true
