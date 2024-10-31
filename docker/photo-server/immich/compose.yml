@@ -5,6 +5,7 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
+      - /usr/bin/curl:/usr/bin/curl:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.photos.entrypoints=websecure
@@ -20,14 +21,14 @@ services:
       - redis
       - database
     restart: unless-stopped
-    healthcheck:
-      disable: true
     #healthcheck:
-    #  test: [ "CMD", "curl", "--fail", "http://localhost:2283/api/server/ping" ]
-    #  interval: 10s
-    #  timeout: 10s
-    #  retries: 5
-    #  start_period: 100s
+    #  disable: true
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:2283/api/server/ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     networks:
       - immich
       - immich_private
