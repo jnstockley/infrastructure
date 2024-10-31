@@ -15,12 +15,14 @@ services:
       - ./config/certs/:/etc/traefik/certs/
       - ./logs/:/var/log/traefik/
     networks:
-      - immich
-      - gitea
-      - minecraft
       - airflow
-      - postgres
+      - gitea
+      - immich
       - mend
+      - minecraft
+      - postgres
+      - syncthing
+      - uptime-kuma
       - twingate
     restart: unless-stopped
     labels:
@@ -45,23 +47,29 @@ services:
       timeout: 10s
 
 networks:
-  immich:
-    name: immich
+  airflow:
+    name: airflow
     external: true
   gitea:
     name: gitea
     external: true
+  immich:
+    name: immich
+    external: true
+  mend:
+    name: mend
+    external: true
   minecraft:
     name: minecraft
-    external: true
-  airflow:
-    name: airflow
     external: true
   postgres:
     name: postgres
     external: true
-  mend:
-    name: mend
+  syncthing:
+    name: syncthing
+    external: true
+  uptime-kuma:
+    name: uptime-kuma
     external: true
   twingate:
     name: twingate
