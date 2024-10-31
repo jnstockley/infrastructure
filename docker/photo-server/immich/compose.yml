@@ -5,7 +5,7 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
-      - /usr/bin/curl:/usr/bin/curl:ro
+       - ./healthcheck.js:/healthcheck/healthcheck.js
     labels:
       - traefik.enable=true
       - traefik.http.routers.photos.entrypoints=websecure
@@ -24,7 +24,7 @@ services:
     #healthcheck:
     #  disable: true
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:2283/api/server/ping" ]
+      test: [ "CMD", "node", "/healthcheck/healthcheck.js" ]
       interval: 10s
       timeout: 10s
       retries: 5
