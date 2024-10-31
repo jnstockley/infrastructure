@@ -2,7 +2,7 @@ FROM apache/airflow:slim-2.10.2-python3.12
 ENV PYTHONPATH "${PYTHONPATH}:/opt/airflow/plugins"
 USER root
 RUN apt-get update -y
-RUN apt-get install iputils-ping -y
+RUN apt-get install curl iputils-ping -y
 USER airflow
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
