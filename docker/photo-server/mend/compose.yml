@@ -1,6 +1,5 @@
 services:
   renovate-ce:
-    # Check latest version here: https://github.com/mend/renovate-ce-ee/pkgs/container/renovate-ce
     image: ghcr.io/mend/renovate-ce:8.5.0-full
     labels:
       - traefik.enable=true
@@ -14,16 +13,23 @@ services:
     volumes:
       - ./logs:/logs
       - ./certs:/certs
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     env_file:
       - .env
     networks:
-      - postgres-internal
       - mend
+      - postgres
+    restart: unless-stopped
 
 networks:
-  postgres-internal:
-    external: true
-    name: postgres-internal
   mend:
-    external: true
     name: mend
+    external: true
+  postgres:
+    name: postgres
+    external: true
