@@ -51,8 +51,8 @@ networks:
   uptime-kuma:
     name: uptime-kuma
     external: true
-  pg-admin:
-    name: pg-admin
+  pgadmin:
+    name: pgadmin
     external: true
   api:
     name: api
