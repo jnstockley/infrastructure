@@ -3,7 +3,7 @@ services:
     image: cloudflare/cloudflared:2024.10.1
     container_name: cloudflared
     env_file:
-      - ./.env
+      - .env
     environment:
       - TZ=America/Chicago
     networks:
@@ -14,16 +14,8 @@ services:
 
 networks:
   nextcloud-aio:
-    external: true
     name: nextcloud-aio
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.2.0/24
-  traefik:
     external: true
+  traefik:
     name: traefik
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.3.0/24
+    external: true

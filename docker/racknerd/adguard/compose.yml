@@ -3,8 +3,8 @@ services:
     container_name: adguard
     image: adguard/adguardhome:v0.107.53
     networks:
-      adguard:
-        ipv4_address: 172.18.0.4
+      - adguard
+      - wireguard
     restart: unless-stopped
     volumes:
       - ./conf:/opt/adguardhome/conf
@@ -12,7 +12,7 @@ services:
     environment:
       - TZ=America/Chicago
     ports:
-      - 53:53
+      - "53:53"
     cap_add:
       - NET_ADMIN
     labels:
@@ -37,9 +37,8 @@ services:
 
 networks:
   adguard:
-    external: true
     name: adguard
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.0.0/24
+    external: true
+  wireguard:
+    name: wireguard
+    external: true

@@ -1,18 +1,15 @@
-x-airflow-common:
-  &airflow-common
-  image: jnstockley/airflow:8bffb6c71cd989d8078173670de61928bf2edce5
-  volumes:
-    - ./logs:/opt/airflow/logs
-    - ./data:/opt/airflow/data
-  env_file:
-    - .env
-  networks:
-    - airflow
-    - postgres-internal
-
 services:
   airflow-webserver:
-    <<: *airflow-common
+    image: jnstockley/airflow:da8a366d937e8d4f8a76125b473b1e1054ba2a81
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
+      - wireguard
     command: webserver
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
@@ -20,7 +17,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    restart: always
+    restart: unless-stopped
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
@@ -35,7 +32,16 @@ services:
       - traefik.docker.network=airflow
 
   airflow-scheduler:
-    <<: *airflow-common
+    image: jnstockley/airflow:da8a366d937e8d4f8a76125b473b1e1054ba2a81
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
+      - wireguard
     command: scheduler
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
@@ -43,29 +49,33 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    restart: always
+    restart: unless-stopped
     container_name: airflow-scheduler
     depends_on:
       - airflow-init
 
   airflow-init:
-    <<: *airflow-common
+    image: jnstockley/airflow:da8a366d937e8d4f8a76125b473b1e1054ba2a81
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file:
+      .env
+    networks:
+      - airflow
+      - postgres
+      - wireguard
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
 
 networks:
   airflow:
-    external: true
     name: airflow
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.11.0/24
-  postgres-internal:
     external: true
-    name: postgres-internal
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.1.0/24
+  postgres:
+    name: postgres
+    external: true
+  wireguard:
+    name: wireguard
+    external: true

@@ -49,7 +49,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    restart: always
+    restart: unless-stopped
     container_name: airflow-scheduler
     depends_on:
       - airflow-init
