@@ -9,7 +9,7 @@ services:
     networks:
       - airflow
       - postgres
-      - twingate
+      - wireguard
     command: webserver
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
@@ -41,7 +41,7 @@ services:
     networks:
       - airflow
       - postgres
-      - twingate
+      - wireguard
     command: scheduler
     healthcheck:
       test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
