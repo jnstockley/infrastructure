@@ -64,7 +64,7 @@ services:
     networks:
       - airflow
       - postgres
-      - twingate
+      - wireguard
     command: version
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
@@ -76,6 +76,6 @@ networks:
   postgres:
     name: postgres
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true

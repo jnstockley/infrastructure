@@ -19,7 +19,7 @@ services:
       - traefik.http.services.backup.loadbalancer.server.port=8384
     networks:
       - syncthing
-      - twingate
+      - wireguard
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -34,6 +34,6 @@ networks:
   syncthing:
     name: syncthing
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true

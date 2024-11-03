@@ -29,7 +29,7 @@ services:
     networks:
       - postgres
       - pgadmin
-      - twingate
+      - wireguard
     environment:
       - TZ=America/Chicago
     volumes:
@@ -58,6 +58,6 @@ networks:
   pgadmin:
     name: pgadmin
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true
