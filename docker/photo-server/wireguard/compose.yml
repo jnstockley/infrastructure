@@ -12,12 +12,6 @@ services:
       - /lib/modules:/lib/modules #optional
     labels:
       - traefik.enable=true
-      #- traefik.udp.routers.wireguard.entrypoints=wireguard
-      #- traefik.udp.routers.wireguard.rule=HostSNI(`*`)
-      #- traefik.udp.routers.wireguard.tls="false"
-      #- traefik.udp.services.wireguard.loadbalancer.server.port=51820
-      #- traefik.udp.routers.wireguard.service=wireguard
-
       - traefik.udp.routers.wireguard.entrypoints=wireguard
       - traefik.udp.routers.wireguard.service=wireguard
       - traefik.udp.services.wireguard.loadbalancer.server.address=127.0.0.1:51820
