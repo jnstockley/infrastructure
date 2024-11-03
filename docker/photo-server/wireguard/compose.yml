@@ -11,11 +11,10 @@ services:
       - ./config:/config
       - /lib/modules:/lib/modules #optional
     labels:
+      - traefik.enable=true
       - traefik.udp.routers.wireguard.entrypoints=wireguard
-      - traefik.udp.routers.wireguard.rule=HostSNI(`*`)
-      - traefik.udp.routers.wireguard.tls="false"
-      - traefik.udp.services.wireguard.loadbalancer.server.port=51820
       - traefik.udp.routers.wireguard.service=wireguard
+      - traefik.udp.services.wireguard.loadbalancer.server.address=51820
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
