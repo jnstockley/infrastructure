@@ -23,7 +23,7 @@ services:
       - postgres
       - syncthing
       - uptime-kuma
-      - twingate
+      - wireguard
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -71,6 +71,6 @@ networks:
   uptime-kuma:
     name: uptime-kuma
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true

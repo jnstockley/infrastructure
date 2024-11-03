@@ -7,7 +7,7 @@ services:
       - TZ=America/Chicago
     networks:
       - minecraft
-      - twingate
+      - wireguard
     labels:
       - traefik.enable=true
       - traefik.http.routers.mc.entrypoints=websecure
@@ -35,6 +35,6 @@ networks:
   minecraft:
     name: minecraft
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true

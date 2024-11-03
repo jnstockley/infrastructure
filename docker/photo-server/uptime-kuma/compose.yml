@@ -14,7 +14,7 @@ services:
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
     networks:
       - uptime-kuma
-      - twingate
+      - wireguard
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -26,6 +26,6 @@ networks:
   uptime-kuma:
     name: uptime-kuma
     external: true
-  twingate:
-    name: twingate
+  wireguard:
+    name: wireguard
     external: true
