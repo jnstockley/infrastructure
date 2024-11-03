@@ -7,7 +7,7 @@ services:
       - .env
     environment:
       - TZ=America/Chicago
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./config.toml:/web-scrapper/config.toml
       - ./data/:/web-scrapper/data/

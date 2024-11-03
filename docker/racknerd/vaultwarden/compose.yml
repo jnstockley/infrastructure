@@ -2,13 +2,14 @@ services:
   vaultwarden:
     container_name: vaultwarden
     env_file:
-      - ./.env
+      - .env
     environment:
       - TZ=America/Chicago
     image: vaultwarden/server:1.32.3
     networks:
       - vaultwarden
-      - postgres-internal
+      - postgres
+      - wireguard
     restart: unless-stopped
     volumes:
       - ./data:/data
@@ -24,16 +25,11 @@ services:
 
 networks:
   vaultwarden:
-    external: true
     name: vaultwarden
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.1.0/24
-  postgres-internal:
     external: true
-    name: postgres-internal
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.1.0/24
+  postgres:
+    name: postgres
+    external: true
+  wireguard:
+    name: wireguard
+    external: true

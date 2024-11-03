@@ -15,7 +15,8 @@ services:
       - authentik
       - authentik-private
       - redis
-      - postgres-internal
+      - postgres
+      - wireguard
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.entrypoints=websecure
@@ -43,40 +44,22 @@ services:
     networks:
       - authentik-private
       - redis
-      - postgres-internal
-
-volumes:
-  database:
-    driver: local
-  redis:
-    driver: local
+      - postgres
+      - wireguard
 
 networks:
-  authentik-private:
-    external: true
-    name: authentik-private
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.0.0/24
   authentik:
     external: true
     name: authentik
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.10.0/24
-  postgres-internal:
+  authentik-private:
     external: true
-    name: postgres-internal
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.1.0/24
+    name: authentik-private
+  postgres:
+    name: postgres
+    external: true
   redis:
-    external: true
     name: redis
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.2.0/24
+    external: true
+  wireguard:
+    name: wireguard
+    external: true

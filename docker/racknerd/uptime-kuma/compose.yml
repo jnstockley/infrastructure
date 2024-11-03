@@ -6,8 +6,9 @@ services:
       - TZ=America/Chicago
     networks:
       - uptime-kuma
-      - postgres-internal
+      - postgres
       - redis
+      - wireguard
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -26,23 +27,14 @@ services:
 
 networks:
   uptime-kuma:
-    external: true
     name: uptime-kuma
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.4.0/24
-  postgres-internal:
     external: true
-    name: postgres-internal
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.1.0/24
+  postgres:
+    name: postgres
+    external: true
   redis:
     name: redis
     external: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.19.2.0/24
+  wireguard:
+    name: wireguard
+    external: true
