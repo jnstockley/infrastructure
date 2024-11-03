@@ -20,7 +20,7 @@ services:
       - nextcloud-aio
       - traefik
       - uptime-kuma
-      - pg-admin
+      - pgadmin
       - api
       - syncthing
       - authentik
