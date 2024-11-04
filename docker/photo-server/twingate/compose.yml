@@ -2,7 +2,7 @@ services:
   twingate_connector:
     container_name: photo-server-twingate-connector
     restart: unless-stopped
-    image: twingate/connector:1.70.0
+    image: twingate/connector:1.71.0
     env_file:
       - .env
     sysctls:
