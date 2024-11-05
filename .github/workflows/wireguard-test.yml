@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          sudo apt update
-          sudo apt install -y wireguard resolvconf
+          sudo apt-get update
+          sudo apt-get install -y wireguard resolvconf
           echo "${{ secrets.IOWA_HOME_PRIV_KEY }}" > privatekey
           sudo ip link add dev wg0 type wireguard
           sudo ip address add dev wg0 10.13.13.1 peer 10.13.13.5
@@ -18,4 +18,4 @@ jobs:
 
       - run: |
           curl -4 icanhazip.com
-          curl -vvv http://192.168.0.1
+          ping -c5 192.168.0.1
