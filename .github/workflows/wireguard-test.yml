@@ -17,3 +17,4 @@ jobs:
       - run: |
           curl -4 icanhazip.com
           ping -c5 192.168.0.1
+          ping -c5 photo-server.local.jstockley.com
