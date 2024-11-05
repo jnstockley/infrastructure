@@ -10,10 +10,11 @@ jobs:
       - run: |
           sudo apt update
           sudo apt install -y wireguard
-          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
+          echo "${{ secrets.IOWA_HOME_PRIV_KEY }}" > privkey
+          echo "${{ secrets.IOWA_HOME_PUB_KEY }}" > pubkey
           sudo ip link add dev wg0 type wireguard
           sudo ip address add dev wg0 10.13.13.1 peer 10.13.13.5
-          sudo wg setconf wg0 vpn.conf
+          sudo wg set wg0 listen-port 51820 private-key privkey peer pubkey allowed-ips 0.0.0.0/0 endpoint iowa.vpn.jstockley.com:51820
           sudo ip link set up dev wg0
 
       - run: |
