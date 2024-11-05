@@ -8,6 +8,4 @@
 3. Move poetry docker build to own repo
 4. Add check for sensitive services
 5. finish SSO setup
-6. Migrate Postgres to V17
-   - Photo Server
-   - Racknerd
+6. Migrate Postgres to V17 on Racknerd
