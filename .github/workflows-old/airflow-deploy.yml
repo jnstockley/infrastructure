@@ -9,7 +9,7 @@ on:
       - closed
     paths:
       - docker/images/airflow/**
-      - .github/workflows/airflow-deploy.yml
+      - /airflow-deploy.yml
 jobs:
   airflow_image_deploy:
     name: Push Docker image to multiple registries
