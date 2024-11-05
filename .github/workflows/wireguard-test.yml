@@ -1,0 +1,22 @@
+name: WireGuard test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  wireguard_example:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt install wireguard
+
+      - run: echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
+
+      - run: sudo ip link add dev wg0 type wireguard
+
+      - run: sudo ip address add dev wg0 10.13.13.4/32
+
+      - run: wg setconf wg0 vpn.conf
+
+      - run: sudo ip link set up dev wg0
+
+      - run: curl -vvv http://192.168.1.1
