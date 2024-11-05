@@ -21,7 +21,7 @@ services:
       - immich
       - mend
       - minecraft
-      - postgres
+      - pgadmin
       - syncthing
       - uptime-kuma
       - wireguard
@@ -63,8 +63,8 @@ networks:
   minecraft:
     name: minecraft
     external: true
-  postgres:
-    name: postgres
+  pgadmin:
+    name: pgadmin
     external: true
   syncthing:
     name: syncthing
