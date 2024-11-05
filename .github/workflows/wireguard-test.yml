@@ -7,16 +7,15 @@ jobs:
   wireguard_example:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install wireguard
+      - run: |
+          sudo apt update
+          sudo apt install -y wireguard
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
+          sudo ip link add dev wg0 type wireguard
+          sudo ip address add dev wg0 10.13.13.4/32
+          sudo wg setconf wg0 vpn.conf
+          sudo ip link set up dev wg0
 
-      - run: echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
-
-      - run: sudo ip link add dev wg0 type wireguard
-
-      - run: sudo ip address add dev wg0 10.13.13.4/32
-
-      - run: sudo wg setconf wg0 vpn.conf
-
-      - run: sudo ip link set up dev wg0
-
-      - run: curl -vvv http://192.168.0.1
+      - run: |
+          curl -4 icanhazip.com
+          curl -vvv http://192.168.0.1
