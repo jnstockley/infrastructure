@@ -9,7 +9,7 @@ on:
       - closed
     paths:
       - docker/images/poetry/**
-      - .github/workflows/poetry-deploy.yml
+      - /poetry-deploy.yml
 jobs:
   poetry_image_latest_deploy:
     name: Push Docker image to multiple registries

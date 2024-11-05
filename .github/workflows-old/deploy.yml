@@ -8,31 +8,28 @@ on:
     types:
       - closed
     paths:
-      - docker/racknerd/**/compose.yml
-      - docker/photo-server/**/compose.yml
+      - docker/racknerd/**
+      # - docker/photo-server/**
 
 jobs:
   deploy:
     name: Deploy new Docker Container
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
-
       - name: Step 2 - Set Timezone
         uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: "America/Chicago"
-
-      - name: Step 3 - WireGuard Connecton
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
-          sudo chmod 600 vpn.conf
-          sudo wg-quick up ./vpn.conf
-
+      #- name: Step 3 - Setup and Connect to Tailscale
+      #  uses: tailscale/github-action@v2
+      #  with:
+      #    oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+      #    oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+      #    tags: tag:github
       - name: Step 4 - Get Changes files
         id: files
         uses: tj-actions/changed-files@v45
@@ -66,25 +63,25 @@ jobs:
             docker image prune -a -f
             docker system prune -f
 
-      - name: Step 5 - Deploy containers (Photo Server)
-        if: steps.files.outputs.docker_photo_server_any_changed == 'true'
-        uses: appleboy/ssh-action@v1.1.0
-        env:
-          FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
-        with:
-          host: photo-server.local.jstockley.com
-          username: jackstockley
-          key: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
-          passphrase: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
-          envs: FILES
-          script: |
-            echo "Deploying Photo Server containers"
-            cd ~/infrastructure/
-            git reset --hard origin/main
-            git pull
-            for file in ${FILES}; do
-              echo "Deploying $file"
-              docker compose -f $file up -d --force-recreate --remove-orphans
-            done            
-            docker image prune -a -f
-            docker system prune -f
+      #- name: Step 5 - Deploy containers (Photo Server)
+      #  if: steps.files.outputs.docker_photo_server_any_changed == 'true'
+      #  uses: appleboy/ssh-action@v1
+      #  env:
+      #    FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
+      #  with:
+      #    host: ${{ secrets.PHOTO_SERVER_IP }}
+      #    username: jackstockley
+      #    key: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
+      #    passphrase: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
+      #    envs: FILES
+      #    script: |
+      #      echo "Deploying Photo Server containers"
+      #      cd ~/infrastructure/
+      #      git reset --hard origin/main
+      #      git pull
+      #      for file in ${FILES}; do
+      #        echo "Deploying $file"
+      #        docker compose -f $file up -d --force-recreate --remove-orphans
+      #      done
+      #      docker image prune -a -f
+      #      docker system prune -f
