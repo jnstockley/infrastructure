@@ -10,11 +10,9 @@ jobs:
       - run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.IOWA_HOME_PRIV_KEY }}" > privatekey
-          sudo ip link add dev wg0 type wireguard
-          sudo ip address add dev wg0 10.13.13.1 peer 10.13.13.5
-          sudo wg set wg0 listen-port 51820 private-key privatekey peer lcB3rrkkH0ndE8+js0JYjlf3A/7AMdcuK4hbnycW+Rw= allowed-ips 192.168.0.0/24 endpoint iowa.vpn.jstockley.com:51820
-          sudo ip link set up dev wg0
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
+          sudo chmod 600 vpn.conf
+          sudo wg-quick up ./vpn.conf
 
       - run: |
           curl -4 icanhazip.com
