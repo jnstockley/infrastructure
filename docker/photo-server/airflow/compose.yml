@@ -1,6 +1,6 @@
 services:
   airflow-webserver:
-    image: jnstockley/airflow:da8a366d937e8d4f8a76125b473b1e1054ba2a81
+    image: jnstockley/airflow:78bc748e01c17e87b6cc563e8f47cdaed9030091
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
