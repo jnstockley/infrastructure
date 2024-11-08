@@ -6,6 +6,8 @@ services:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
       - ./healthcheck.js:/healthcheck/healthcheck.js
+    ports:
+      - 2283:2283
     labels:
       - traefik.enable=true
       - traefik.http.routers.photos.entrypoints=websecure
