@@ -13,7 +13,7 @@ services:
     volumes:
       - ./config:/var/syncthing/config
       - /mnt/backup/:/var/syncthing/nextcloud
-      - /home/jackstockley/infrastructure/:/var/syncthing/home
+      - /home/jackstockley/infrastructure/docker/racknerd/:/var/syncthing/docker
     restart: unless-stopped
     labels:
       - traefik.enable=true
