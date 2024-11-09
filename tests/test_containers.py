@@ -22,6 +22,7 @@ class TestContainers:
     def test_container(self):
         if self.path is not None:
             try:
+                logger.info(f"Starting container from file: {self.path}")
                 image = get_docker_image_from_file(self.path)
             except Exception as e:
                 assert False, f"Unable to get docker image from file: {self.path}, {e}"
