@@ -7,7 +7,7 @@ from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_container_is_ready
 from . import logger
 
-containers = toml.load("resources/config.toml")['Docker']['files'].split(',')
+containers = toml.load("resources/config.toml")['Docker']['files'].split(' ')
 
 
 @pytest.mark.parametrize("container", containers)
@@ -16,7 +16,7 @@ class TestContainers:
     @pytest.fixture(scope='function', autouse=True)
     def setup_method(self, container: str):
         self.path = None
-        if container.endswith('.yml') and container.startswith('docker/racknerd/'):
+        if container.endswith('.yml') and (container.startswith('docker/racknerd/') or container.startswith('docker/photo-server/')):
             self.path = container
 
     def test_container(self):
