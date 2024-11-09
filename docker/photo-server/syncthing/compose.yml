@@ -27,7 +27,7 @@ services:
     volumes:
       - ./config:/var/syncthing/config
       - /mnt/photos/:/var/syncthing/photos
-      - /home/jackstockley/infrastructure/:/var/syncthing/home
+      - /home/jackstockley/infrastructure/docker/photo-server:/var/syncthing/docker
     restart: unless-stopped
 
 networks:

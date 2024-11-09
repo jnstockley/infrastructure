@@ -1,0 +1,14 @@
+http:
+  routers:
+    pikvm:
+      rule: "Host(`pikvm.jstockley.com`)"
+      entryPoints:
+        - websecure
+      service: pikvm
+      tls:
+        certResolver: production
+  services:
+    pikvm:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.0.24"
