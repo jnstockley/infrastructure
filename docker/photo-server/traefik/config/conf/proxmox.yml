@@ -1,0 +1,14 @@
+http:
+  routers:
+    proxmox:
+      rule: "Host(`proxmox.local.jstockley.com`)"
+      entryPoints:
+        - websecure
+      service: proxmox
+      tls:
+        certResolver: production
+  services:
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.0.18:8006"
