@@ -3,3 +3,5 @@ config/
 import/
 logs/
 servers/
+.stfolder/
+.stignore
