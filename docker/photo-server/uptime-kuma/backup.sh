@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the name of the Docker container
-CONTAINER_NAME="postgres"
+CONTAINER_NAME="uptime-kuma"
 
 # Location of the database file
 DATABASE_FILE="/app/data/kuma.db"
