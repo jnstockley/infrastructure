@@ -15,6 +15,7 @@ services:
     networks:
       - uptime-kuma
       - wireguard
+      - immich_private
     restart: unless-stopped
     volumes:
       - ./data:/app/data
@@ -28,4 +29,7 @@ networks:
     external: true
   wireguard:
     name: wireguard
+    external: true
+  immich_private:
+    name: immich_private
     external: true
