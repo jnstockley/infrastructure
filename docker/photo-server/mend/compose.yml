@@ -1,7 +1,7 @@
 services:
   renovate-ce:
     container_name: mend_renovate
-    image: ghcr.io/mend/renovate-ce:8.6.0-full
+    image: ghcr.io/mend/renovate-ce:8.7.0-full
     labels:
       - traefik.enable=true
       - traefik.http.routers.mend.entrypoints=websecure
