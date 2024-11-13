@@ -4,8 +4,9 @@ services:
     container_name: syncthing
     hostname: racknerd_syncthing
     networks:
-      - syncthing
-      - wireguard
+      syncthing:
+        ipv4_address: 172.18.8.4
+      wireguard:
     environment:
       - TZ=America/Chicago
       - PUID=0
@@ -29,6 +30,10 @@ networks:
   syncthing:
     name: syncthing
     external: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.8.0/24
   wireguard:
     name: wireguard
     external: true
