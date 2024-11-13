@@ -16,13 +16,12 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     networks:
-      tailscale:
-      syncthing:
-        ipv4_address: 172.18.8.3
-      uptime-kuma:
-      adguard:
-      vaultwarden:
-      postgres:
+      - tailscale
+      - syncthing
+      - uptime-kuma
+      - adguard
+      - vaultwarden
+      - postgres
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -39,12 +38,8 @@ networks:
     name: tailscale
     external: true
   syncthing:
-    external: true
     name: syncthing
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.8.0/24
+    external: true
   uptime-kuma:
     name: uptime-kuma
     external: true
