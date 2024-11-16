@@ -42,11 +42,12 @@ jobs:
       - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.x'
+          check-latest: true
 
       - name: Step 6 - Install Poetry and Dependencies
         run: |
-          pipx install poetry==1.8.4
+          pip3 install -r requirements.txt
           poetry install --no-root --only main,docker
 
       - name: Step 7 - Run Tests
