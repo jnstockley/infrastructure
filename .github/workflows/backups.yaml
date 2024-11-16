@@ -60,7 +60,7 @@ jobs:
 
       - name: Step 6 - Install Poetry and Dependencies
         run: |
-          pipx install poetry==1.8.4
+          pip3 install -r requirements.txt
           poetry install --no-root --only main
       - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_backups.py
