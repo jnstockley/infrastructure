@@ -1,6 +1,6 @@
 services:
   airflow-webserver:
-    image: jnstockley/airflow:78bc748e01c17e87b6cc563e8f47cdaed9030091
+    image: jnstockley/airflow:2024.11.18
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -32,7 +32,7 @@ services:
       - traefik.docker.network=airflow
 
   airflow-scheduler:
-    image: jnstockley/airflow:78bc748e01c17e87b6cc563e8f47cdaed9030091
+    image: jnstockley/airflow:2024.11.18
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -55,7 +55,7 @@ services:
       - airflow-init
 
   airflow-init:
-    image: jnstockley/airflow:78bc748e01c17e87b6cc563e8f47cdaed9030091
+    image: jnstockley/airflow:2024.11.18
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
