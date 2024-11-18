@@ -5,7 +5,7 @@ services:
       - .env
     environment:
       - TZ=America/Chicago
-    image: vaultwarden/server:1.32.4
+    image: vaultwarden/server:1.32.5
     networks:
       - vaultwarden
       - postgres
