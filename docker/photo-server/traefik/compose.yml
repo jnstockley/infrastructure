@@ -26,6 +26,7 @@ services:
       - uptime-kuma
       - wireguard
       - loki
+      - graynet
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -79,4 +80,8 @@ networks:
   loki:
     name: loki
     external: true
+  graynet:
+    name: graynet
+    external: true
+
 

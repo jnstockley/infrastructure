@@ -1,0 +1,79 @@
+services:
+  # Graylog stores configuration in MongoDB
+  mongo:
+    image: mongo:8.0.3
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - graynet
+    restart: unless-stopped
+
+  # The logs themselves are stored in Opensearch
+  opensearch:
+    image: opensearchproject/opensearch:2.18.0
+    container_name: opensearch
+    env_file:
+      - .env
+    volumes:
+      - log_data:/usr/share/opensearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200/tcp"
+    networks:
+      - graynet
+    restart: unless-stopped
+
+  graylog:
+    image: graylog/graylog:6.1.3
+    container_name: graylog
+    env_file:
+      - .env
+    entrypoint: /usr/bin/tini -- wait-for-it opensearch:9200 -- /docker-entrypoint.sh
+    volumes:
+      - .config/graylog.conf:/usr/share/graylog/config/graylog.conf
+      - graylog_data:/usr/share/graylog/data
+    networks:
+      - graynet
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.graylog.entrypoints=websecure
+      - traefik.http.routers.graylog.rule=Host(`grafana.jstockley.com`)
+      - traefik.http.routers.graylog.tls=true
+      - traefik.http.routers.graylog.tls.certresolver=production
+      - traefik.http.routers.graylog.service=graylog
+      - traefik.http.services.graylog.loadbalancer.server.port=9000
+      - traefik.docker.network=graynet
+    depends_on:
+      opensearch:
+        condition: service_started
+      mongo:
+        condition: service_started
+    ports:
+      - "9000:9000/tcp"   # Graylog web interface and REST API
+      - "1514:1514/tcp"   # Syslog
+      - "1514:1514/udp"   # Syslog
+      - "12201:12201/tcp" # GELF
+      - "12201:12201/udp" # GELF
+
+# This is how you persist data between container restarts
+volumes:
+  mongo_data:
+    driver: local
+  log_data:
+    driver: local
+  graylog_data:
+    driver: local
+
+
+networks:
+  graynet:
+    name: graynet
+    external: true
