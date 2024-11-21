@@ -25,6 +25,7 @@ services:
       - syncthing
       - uptime-kuma
       - wireguard
+      - loki
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -75,3 +76,7 @@ networks:
   wireguard:
     name: wireguard
     external: true
+  loki:
+    name: loki
+    external: true
+
