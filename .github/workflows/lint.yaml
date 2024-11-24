@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - beta
     paths:
       - .github/**/**.yaml
       - .github/**/**.yml
@@ -27,10 +28,17 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4
 
+      - name: Step 2 - Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+
       - name: Step 2 - Install Yaml Linter
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint
+          npm install --save-dev dclint
 
       - name: Step 3 - Lint Yaml Files
         run: yamllint -s .
+
+      - name: Step 4 - Lint Docker Compose Files
+        run: npx dclint .

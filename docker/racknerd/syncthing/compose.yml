@@ -1,3 +1,4 @@
+---
 services:
   syncthing:
     image: syncthing/syncthing:1.28.0

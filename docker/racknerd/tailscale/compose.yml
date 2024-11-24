@@ -1,3 +1,4 @@
+---
 services:
   tailscale:
     image: tailscale/tailscale:v1.76.6

@@ -1,3 +1,4 @@
+---
 services:
   renovate-ce:
     container_name: mend_renovate

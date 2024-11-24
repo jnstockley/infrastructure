@@ -1,3 +1,4 @@
+---
 services:
   nextcloud:
     image: nextcloud/all-in-one:20241017_085101

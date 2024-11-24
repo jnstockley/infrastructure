@@ -1,3 +1,4 @@
+---
 services:
   # Graylog stores configuration in MongoDB
   mongo:

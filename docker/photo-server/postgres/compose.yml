@@ -1,3 +1,4 @@
+---
 services:
   postgres-db:
     image: postgres:17.2

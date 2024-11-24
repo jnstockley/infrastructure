@@ -1,3 +1,4 @@
+---
 services:
   crafty:
     container_name: crafty
