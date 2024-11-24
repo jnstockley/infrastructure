@@ -36,10 +36,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint
-          npm install --save-dev dclint
 
       - name: Step 3 - Lint Yaml Files
         run: yamllint -s -d .yamlint .
 
       - name: Step 4 - Lint Docker Compose Files
-        run: dclint -r docker/
+        run: npx dclint -r docker/

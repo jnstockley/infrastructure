@@ -2,9 +2,6 @@ extends: default
 
 locale: en_US.UTF-8
 
-ignore:
-    - node_modules/
-
 rules:
     line-length: disable
     truthy:
