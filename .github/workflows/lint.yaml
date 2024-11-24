@@ -12,11 +12,11 @@ on:
   push:
     branches:
       - main
-      paths:
-        - .github/**/**.yaml
-        - .github/**/**.yml
-        - docker/**/**.yaml
-        - docker/**/**.yml
+    paths:
+      - .github/**/**.yaml
+      - .github/**/**.yml
+      - docker/**/**.yaml
+      - docker/**/**.yml
 
 jobs:
   lint:
