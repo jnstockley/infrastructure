@@ -2,6 +2,8 @@ services:
   wireguard:
     image: linuxserver/wireguard:1.0.20210914
     container_name: wireguard
+    ports:
+      - "51820:51820/udp"
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
