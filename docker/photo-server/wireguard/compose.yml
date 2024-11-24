@@ -6,7 +6,7 @@ services:
     container_name: wireguard
     volumes:
       - ./config:/config
-      - /lib/modules:/lib/modules # optional
+      - /lib/modules:/lib/modules  # optional
     env_file:
       - .env
     ports:
