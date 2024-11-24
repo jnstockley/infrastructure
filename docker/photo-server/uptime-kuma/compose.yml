@@ -1,10 +1,21 @@
 ---
+name: uptime-kuma
 services:
   uptime-kuma:
-    container_name: uptime-kuma
     image: louislam/uptime-kuma:1.23.15
+    container_name: uptime-kuma
+    volumes:
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ=America/Chicago
+    networks:
+      - uptime-kuma
+      - wireguard
+      - immich_private
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
@@ -13,16 +24,6 @@ services:
       - traefik.http.routers.uptime-kuma.tls.certresolver=production
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
-    networks:
-      - uptime-kuma
-      - wireguard
-      - immich_private
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
 
 networks:
   uptime-kuma:

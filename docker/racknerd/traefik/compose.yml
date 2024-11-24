@@ -1,19 +1,20 @@
 ---
+name: traefik
 services:
   traefik:
     image: traefik:v3.2.1
     container_name: traefik
-    ports:
-      - "80:80"
-      - "443:443"
-    env_file:
-      - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
       - ./logs/:/var/log/traefik/
+    env_file:
+      - .env
+    ports:
+      - '0.0.0.0:80:80'
+      - '0.0.0.0:443:443'
     networks:
       - adguard
       - vaultwarden

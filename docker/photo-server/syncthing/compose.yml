@@ -1,9 +1,21 @@
 ---
+name: syncthing
 services:
   syncthing:
     image: syncthing/syncthing:1.28.0
     container_name: syncthing
-    hostname: syncthing_photo_server
+    volumes:
+      - ./config:/var/syncthing/config
+      - /mnt/photos/:/var/syncthing/photos
+      - /home/jackstockley/infrastructure/docker/photo-server:/var/syncthing/docker
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - PGID=0
+    networks:
+      - syncthing
+      - wireguard
+    restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
       interval: 10s
@@ -18,18 +30,7 @@ services:
       - traefik.http.routers.backup.tls.certresolver=production
       - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
-    networks:
-      - syncthing
-      - wireguard
-    environment:
-      - TZ=America/Chicago
-      - PUID=0
-      - PGID=0
-    volumes:
-      - ./config:/var/syncthing/config
-      - /mnt/photos/:/var/syncthing/photos
-      - /home/jackstockley/infrastructure/docker/photo-server:/var/syncthing/docker
-    restart: unless-stopped
+    hostname: syncthing_photo_server
 
 networks:
   syncthing:

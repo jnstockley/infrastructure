@@ -1,19 +1,20 @@
 ---
+name: vaultwarden
 services:
   vaultwarden:
+    image: vaultwarden/server:1.32.5
     container_name: vaultwarden
-    env_file:
-      - .env
+    volumes:
+      - ./data:/data
     environment:
       - TZ=America/Chicago
-    image: vaultwarden/server:1.32.5
+    env_file:
+      - .env
     networks:
       - vaultwarden
       - postgres
       - wireguard
     restart: unless-stopped
-    volumes:
-      - ./data:/data
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.entrypoints=websecure

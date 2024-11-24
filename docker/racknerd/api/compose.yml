@@ -1,16 +1,17 @@
 ---
+name: api
 services:
   api:
-    container_name: api
     image: jnstockley/api:v0.0.44
-    env_file:
-      - .env
+    container_name: api
     environment:
       - TZ=America/Chicago
-    restart: unless-stopped
+    env_file:
+      - .env
     networks:
       - api
       - wireguard
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.entrypoints=websecure

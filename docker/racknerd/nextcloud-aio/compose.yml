@@ -1,22 +1,19 @@
 ---
+name: nextcloud
 services:
   nextcloud:
     image: nextcloud/all-in-one:20241017_085101
-    restart: unless-stopped
     container_name: nextcloud-aio-mastercontainer
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - nextcloud-aio
-      - wireguard
     environment:
       - APACHE_PORT=11000
       - APACHE_IP_BINDING=127.0.0.1
-
-volumes:
-  nextcloud_aio_mastercontainer:
-    name: nextcloud_aio_mastercontainer
+    networks:
+      - nextcloud-aio
+      - wireguard
+    restart: unless-stopped
 
 networks:
   nextcloud-aio:
@@ -25,3 +22,7 @@ networks:
   wireguard:
     name: wireguard
     external: true
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
