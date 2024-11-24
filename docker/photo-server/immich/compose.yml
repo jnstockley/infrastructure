@@ -8,7 +8,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./healthcheck.js:/healthcheck/healthcheck.js
     ports:
-      - 2283:2283
+      - "2283:2283"
     labels:
       - traefik.enable=true
       - traefik.http.routers.photos.entrypoints=websecure
@@ -24,10 +24,8 @@ services:
       - redis
       - database
     restart: unless-stopped
-    #healthcheck:
-    #  disable: true
     healthcheck:
-      test: [ "CMD", "node", "/healthcheck/healthcheck.js" ]
+      test: node /healthcheck/healthcheck.js
       interval: 10s
       timeout: 10s
       retries: 5
@@ -45,7 +43,7 @@ services:
       - .env
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "bash", "-c", "exec 5<>/dev/tcp/127.0.0.1/3003" ]
+      test: bash -c exec 5<>/dev/tcp/127.0.0.1/3003
       interval: 10s
       timeout: 10s
       retries: 5

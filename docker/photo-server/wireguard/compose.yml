@@ -12,7 +12,7 @@ services:
       - .env
     volumes:
       - ./config:/config
-      - /lib/modules:/lib/modules #optional
+      - /lib/modules:/lib/modules  # optional
     labels:
       - traefik.enable=true
       - traefik.udp.routers.wireguard.entrypoints=wireguard

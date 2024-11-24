@@ -16,7 +16,7 @@ services:
       - ./logs:/logs
       - ./certs:/certs
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
+      test: curl --fail http://localhost:8080/health || exit 1
       interval: 10s
       timeout: 10s
       retries: 5

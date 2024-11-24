@@ -5,7 +5,7 @@ services:
     container_name: syncthing
     hostname: syncthing_photo_server
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8384/rest/noauth/health" ]
+      test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
       interval: 10s
       timeout: 10s
       retries: 5

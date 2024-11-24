@@ -1,3 +1,4 @@
+---
 name: Backups
 
 on:
@@ -9,7 +10,7 @@ jobs:
   backup:
     name: Backup Status
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4

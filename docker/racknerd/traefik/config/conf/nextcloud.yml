@@ -1,3 +1,4 @@
+---
 http:
   routers:
     nextcloud:
@@ -14,7 +15,8 @@ http:
     nextcloud:
       loadBalancer:
         servers:
-          - url: "http://nextcloud-aio-apache:11000" # Use the host's IP address if Traefik runs outside the host network
+          # Use the host's IP address if Traefik runs outside the host network
+          - url: "http://nextcloud-aio-apache:11000"
 
   middlewares:
     nextcloud-secure-headers:

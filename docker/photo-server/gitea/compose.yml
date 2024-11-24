@@ -16,7 +16,7 @@ services:
       - gitea
       - postgres
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:3000/api/healthz" ]
+      test: curl --fail http://localhost:3000/api/healthz || exit 1
       interval: 10s
       timeout: 10s
       retries: 5

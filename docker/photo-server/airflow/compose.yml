@@ -13,7 +13,7 @@ services:
       - wireguard
     command: webserver
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      test: curl --fail http://localhost:8080/health || exit 1
       interval: 10s
       timeout: 10s
       retries: 5
@@ -45,7 +45,7 @@ services:
       - wireguard
     command: scheduler
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
+      test: curl --fail http://localhost:8974/health || exit 1
       interval: 10s
       timeout: 10s
       retries: 5
