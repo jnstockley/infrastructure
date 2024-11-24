@@ -54,10 +54,6 @@ entryPoints:
   minecraft:
     address: :25565/tcp
 
-  wireguard:
-    address: :51820/udp
-
-
 ping:
   entryPoint: "ping"
 
