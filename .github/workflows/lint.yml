@@ -42,4 +42,4 @@ jobs:
         run: yamllint -s -d .yamlint .
 
       - name: Step 4 - Lint Docker Compose Files
-        run: npx dclint .
+        run: dclint -r docker/
