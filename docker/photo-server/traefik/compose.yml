@@ -84,3 +84,6 @@ networks:
   graynet:
     name: graynet
     external: true
+  adguard:
+    name: adguard
+    external: true
