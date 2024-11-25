@@ -1,5 +1,5 @@
 # Statuses
-* Speedtest - [![Speedtest](https://github.com/jnstockley/infrastructure/actions/workflows/speedtest.yaml/badge.svg)](https://github.com/jnstockley/infrastructure/actions/workflows/speedtest.yaml)
+* Speedtest - [![Speedtest](https://github.com/jnstockley/infrastructure/actions/workflows/speedtest.yml/badge.svg)](https://github.com/jnstockley/infrastructure/actions/workflows/speedtest.yml)
 * Most Recent Deploy - [![Docker Deploy](https://github.com/jnstockley/infrastructure/actions/workflows/deploy.yml/badge.svg)](https://github.com/jnstockley/infrastructure/actions/workflows/deploy.yml)
 
 # TODO
