@@ -26,8 +26,6 @@ services:
       - syncthing
       - uptime-kuma
       - wireguard
-      - loki
-      - graynet
       - adguard
     restart: unless-stopped
     healthcheck:
@@ -78,12 +76,6 @@ networks:
     external: true
   wireguard:
     name: wireguard
-    external: true
-  loki:
-    name: loki
-    external: true
-  graynet:
-    name: graynet
     external: true
   adguard:
     name: adguard
