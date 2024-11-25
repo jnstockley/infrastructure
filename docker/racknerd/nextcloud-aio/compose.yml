@@ -2,7 +2,7 @@
 name: nextcloud
 services:
   nextcloud:
-    image: nextcloud/all-in-one:20241017_085101
+    image: nextcloud/all-in-one:latest
     container_name: nextcloud-aio-mastercontainer
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config

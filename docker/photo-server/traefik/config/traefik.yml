@@ -9,7 +9,6 @@ log:
   filePath: /var/log/traefik/traefik.log
 
 accesslog:
-  level: DEBUG
   format: common
   filePath: /var/log/traefik/access.log
 
