@@ -28,6 +28,7 @@ services:
       - wireguard
       - loki
       - graynet
+      - adguard
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
