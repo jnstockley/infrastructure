@@ -1,3 +1,4 @@
+---
 name: Docker Deploy
 
 on:
@@ -61,7 +62,7 @@ jobs:
             for file in ${FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
-            done            
+            done
             docker image prune -a -f
             docker system prune -f
 
@@ -84,6 +85,6 @@ jobs:
             for file in ${FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
-            done            
+            done
             docker image prune -a -f
             docker system prune -f

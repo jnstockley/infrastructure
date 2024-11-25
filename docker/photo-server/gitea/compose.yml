@@ -1,21 +1,23 @@
+---
+name: gitea
 services:
   server:
     image: gitea/gitea:1.22.3
     container_name: gitea
-    restart: unless-stopped
-    env_file:
-      - ./.env
-    environment:
-      - TZ=America/Chicago
     volumes:
       - ./data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=America/Chicago
+    env_file:
+      - ./.env
     networks:
       - gitea
       - postgres
+    restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:3000/api/healthz" ]
+      test: curl --fail http://localhost:3000/api/healthz || exit 1
       interval: 10s
       timeout: 10s
       retries: 5

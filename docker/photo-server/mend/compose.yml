@@ -1,7 +1,24 @@
+---
+name: mend
 services:
   renovate-ce:
-    container_name: mend_renovate
     image: ghcr.io/mend/renovate-ce:8.7.0-full
+    container_name: mend_renovate
+    volumes:
+      - ./logs:/logs
+      - ./certs:/certs
+    env_file:
+      - .env
+    networks:
+      - mend
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:8080/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     labels:
       - traefik.enable=true
       - traefik.http.routers.mend.entrypoints=websecure
@@ -11,21 +28,6 @@ services:
       - traefik.http.routers.mend.service=mend
       - traefik.http.services.mend.loadbalancer.server.port=8080
       - traefik.docker.network=mend
-    volumes:
-      - ./logs:/logs
-      - ./certs:/certs
-    healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8080/health" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    env_file:
-      - .env
-    networks:
-      - mend
-      - postgres
-    restart: unless-stopped
 
 networks:
   mend:

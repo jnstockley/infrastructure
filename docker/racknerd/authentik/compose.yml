@@ -1,22 +1,24 @@
+---
+name: authentik
 services:
   server:
     image: ghcr.io/goauthentik/server:2024.10.4
     container_name: authentik
-    restart: unless-stopped
-    command: server
     volumes:
       - ./media:/media
       - ./custom-templates:/templates
-    env_file:
-      - .env
     environment:
       - TZ=America/Chicago
+    env_file:
+      - .env
     networks:
       - authentik
       - authentik-private
       - redis
       - postgres
       - wireguard
+    command: server
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.entrypoints=websecure
@@ -29,23 +31,23 @@ services:
   worker:
     image: ghcr.io/goauthentik/server:2024.10.4
     container_name: authentik_worker
-    restart: unless-stopped
-    command: worker
-    user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./media:/media
       - ./certs:/certs
       - ./custom-templates:/templates
-    env_file:
-      - .env
     environment:
       - TZ=America/Chicago
+    env_file:
+      - .env
     networks:
       - authentik-private
       - redis
       - postgres
       - wireguard
+    command: worker
+    restart: unless-stopped
+    user: root
 
 networks:
   authentik:

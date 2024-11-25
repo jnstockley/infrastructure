@@ -1,21 +1,22 @@
+---
+name: syncthing
 services:
   syncthing:
     image: syncthing/syncthing:1.28.0
     container_name: syncthing
-    hostname: racknerd_syncthing
-    ports:
-      - "8384:8384"
-    networks:
-      - syncthing
-      - wireguard
-    environment:
-      - TZ=America/Chicago
-      - PUID=0
-      - PGID=0
     volumes:
       - ./config:/var/syncthing/config
       - /mnt/backup/:/var/syncthing/nextcloud
       - /home/jackstockley/infrastructure/docker/racknerd/:/var/syncthing/docker
+    environment:
+      - TZ=America/Chicago
+      - PUID=0
+      - PGID=0
+    ports:
+      - '0.0.0.0:8384:8384'
+    networks:
+      - syncthing
+      - wireguard
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -26,6 +27,7 @@ services:
       - traefik.http.routers.syncthing.service=syncthing
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
+    hostname: racknerd_syncthing
 
 networks:
   syncthing:

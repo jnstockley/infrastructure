@@ -1,20 +1,22 @@
+---
+name: tailscale
 services:
   tailscale:
     image: tailscale/tailscale:v1.76.6
     container_name: tailscale
-    hostname: racknerd
-    environment:
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container --advertise-routes=172.0.0.0/8
-      - TZ=America/Chicago
-      - TS_USERSPACE=false
-    env_file:
-      - .env
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ./data:/var/lib/tailscale
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container
+        --advertise-routes=172.0.0.0/8
+      - TZ=America/Chicago
+      - TS_USERSPACE=false
+    env_file:
+      - .env
     networks:
       - tailscale
       - syncthing
@@ -22,9 +24,6 @@ services:
       - adguard
       - vaultwarden
       - postgres
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
     restart: unless-stopped
     healthcheck:
       test: ping -c "3" racknerd
@@ -32,6 +31,10 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    hostname: racknerd
 
 networks:
   tailscale:

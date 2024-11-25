@@ -1,16 +1,18 @@
+---
+name: cloudflared
 services:
   cloudflared:
     image: cloudflare/cloudflared:2024.11.1
     container_name: cloudflared
-    env_file:
-      - .env
     environment:
       - TZ=America/Chicago
+    env_file:
+      - .env
     networks:
       - traefik
       - nextcloud-aio
-    restart: unless-stopped
     command: tunnel run
+    restart: unless-stopped
 
 networks:
   nextcloud-aio:

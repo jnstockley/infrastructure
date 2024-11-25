@@ -1,26 +1,62 @@
+---
+name: airflow
 services:
-  airflow-webserver:
+  airflow-init:
     image: jnstockley/airflow:2024.11.19
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
-    env_file:
-      .env
+    environment:
+      _AIRFLOW_DB_MIGRATE: 'true'
+    env_file: .env
+    networks:
+      - airflow
+      - postgres
+      - wireguard
+    command: version
+
+  airflow-scheduler:
+    image: jnstockley/airflow:2024.11.19
+    container_name: airflow-scheduler
+    depends_on:
+      - airflow-init
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file: .env
+    networks:
+      - airflow
+      - postgres
+      - wireguard
+    command: scheduler
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:8974/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+  airflow-webserver:
+    image: jnstockley/airflow:2024.11.19
+    container_name: airflow-webserver
+    depends_on:
+      - airflow-scheduler
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./data:/opt/airflow/data
+    env_file: .env
     networks:
       - airflow
       - postgres
       - wireguard
     command: webserver
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      test: curl --fail http://localhost:8080/health || exit 1
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 100s
-    restart: unless-stopped
-    container_name: airflow-webserver
-    depends_on:
-      - airflow-scheduler
     labels:
       - traefik.enable=true
       - traefik.http.routers.airflow.entrypoints=websecure
@@ -30,44 +66,6 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
-
-  airflow-scheduler:
-    image: jnstockley/airflow:2024.11.19
-    volumes:
-      - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data
-    env_file:
-      .env
-    networks:
-      - airflow
-      - postgres
-      - wireguard
-    command: scheduler
-    healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://localhost:8974/health" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    restart: unless-stopped
-    container_name: airflow-scheduler
-    depends_on:
-      - airflow-init
-
-  airflow-init:
-    image: jnstockley/airflow:2024.11.19
-    volumes:
-      - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data
-    env_file:
-      .env
-    networks:
-      - airflow
-      - postgres
-      - wireguard
-    command: version
-    environment:
-      _AIRFLOW_DB_MIGRATE: 'true'
 
 networks:
   airflow:

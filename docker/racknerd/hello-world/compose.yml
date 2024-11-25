@@ -1,4 +1,5 @@
-# Modified Jun 14 2024 8:36 PM CDT
+---
+name: hello-world
 services:
   hello-world:
     image: hello-world:linux

@@ -1,3 +1,4 @@
+---
 name: Speedtest
 
 on:
@@ -9,7 +10,7 @@ jobs:
   speedtest:
     name: Speedtest
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Step 1 - Checkout
         uses: actions/checkout@v4

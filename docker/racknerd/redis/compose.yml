@@ -1,9 +1,16 @@
+---
+name: redis
 services:
   redis:
     image: redis:7.4.1
+    container_name: redis
+    volumes:
+      - ./data/:/data
     environment:
       - TZ=America/Chicago
-    container_name: redis
+    networks:
+      - redis
+      - wireguard
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
     healthcheck:
@@ -12,11 +19,6 @@ services:
       interval: 30s
       retries: 5
       timeout: 3s
-    volumes:
-      - ./data/:/data
-    networks:
-      - redis
-      - wireguard
 
 networks:
   redis:

@@ -1,19 +1,21 @@
+---
+name: traefik
 services:
   traefik:
     image: traefik:v3.2.1
     container_name: traefik
-    ports:
-      - "80:80"
-      - "443:443"
-      - "25565:25565/tcp"
-    env_file:
-      - .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
       - ./logs/:/var/log/traefik/
+    env_file:
+      - .env
+    ports:
+      - '0.0.0.0:80:80'
+      - '0.0.0.0:443:443'
+      - '0.0.0.0:25565:25565/tcp'
     networks:
       - airflow
       - gitea
@@ -27,6 +29,12 @@ services:
       - loki
       - graynet
     restart: unless-stopped
+    healthcheck:
+      test: traefik healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik.entrypoints=web
@@ -41,12 +49,6 @@ services:
       - traefik.http.routers.traefik-secure.tls.domains[0].main=local.jstockley.com
       - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com
       - traefik.http.routers.traefik-secure.service=api@internal
-    healthcheck:
-      test: traefik healthcheck
-      interval: 60s
-      retries: 5
-      start_period: 20s
-      timeout: 10s
 
 networks:
   airflow:
@@ -82,5 +84,3 @@ networks:
   graynet:
     name: graynet
     external: true
-
-

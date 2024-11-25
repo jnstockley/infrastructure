@@ -1,13 +1,21 @@
+---
+name: minecraft
 services:
   crafty:
-    container_name: crafty
     image: arcadiatechnology/crafty-4:4.4.4
-    restart: unless-stopped
+    container_name: crafty
+    volumes:
+      - ./backups:/crafty/backups
+      - ./logs:/crafty/logs
+      - ./servers:/crafty/servers
+      - ./config:/crafty/app/config
+      - ./import:/crafty/import
     environment:
       - TZ=America/Chicago
     networks:
       - minecraft
       - wireguard
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.mc.entrypoints=websecure
@@ -24,12 +32,6 @@ services:
       - traefik.tcp.routers.mc-server.tls="false"
       - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
       - traefik.tcp.routers.mc-server.service=mc-server
-    volumes:
-      - ./backups:/crafty/backups
-      - ./logs:/crafty/logs
-      - ./servers:/crafty/servers
-      - ./config:/crafty/app/config
-      - ./import:/crafty/import
 
 networks:
   minecraft:

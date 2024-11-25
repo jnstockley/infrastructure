@@ -1,13 +1,15 @@
+---
+name: web-scrapper
 services:
   web-scrapper:
-    container_name: web_scrapper
     image: jnstockley/web-scrapper:2024.11.06
-    working_dir: /web-scrapper
-    env_file:
-      - .env
-    environment:
-      - TZ=America/Chicago
-    restart: unless-stopped
+    container_name: web_scrapper
     volumes:
       - ./config.toml:/web-scrapper/config.toml
       - ./data/:/web-scrapper/data/
+    environment:
+      - TZ=America/Chicago
+    env_file:
+      - .env
+    working_dir: /web-scrapper
+    restart: unless-stopped
