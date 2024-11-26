@@ -25,7 +25,6 @@ services:
       - pgadmin
       - syncthing
       - uptime-kuma
-      - wireguard
       - adguard
     restart: unless-stopped
     healthcheck:
@@ -73,9 +72,6 @@ networks:
     external: true
   uptime-kuma:
     name: uptime-kuma
-    external: true
-  wireguard:
-    name: wireguard
     external: true
   adguard:
     name: adguard
