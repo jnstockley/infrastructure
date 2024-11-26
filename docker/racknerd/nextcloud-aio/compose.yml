@@ -1,3 +1,4 @@
+# dclint disable service-image-require-explicit-tag
 ---
 name: nextcloud
 services:
