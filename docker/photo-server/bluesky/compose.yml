@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: .pds
+        source: pds
         target: /pds
     env_file:
       - .env
