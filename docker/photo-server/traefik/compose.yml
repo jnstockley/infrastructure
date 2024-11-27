@@ -27,6 +27,7 @@ services:
       - uptime-kuma
       - adguard
       - bluesky
+      - graynet
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -79,4 +80,7 @@ networks:
     external: true
   bluesky:
     name: bluesky
+    external: true
+  graynet:
+    name: graynet
     external: true
