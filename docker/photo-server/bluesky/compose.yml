@@ -2,17 +2,17 @@
 name: bluesky
 services:
   pds:
-    container_name: pds
     image: ghcr.io/bluesky-social/pds:0.4.74
-    networks:
-      - bluesky
-    restart: unless-stopped
+    container_name: pds
     volumes:
       - type: bind
         source: pds
         target: /pds
     env_file:
       - .env
+    networks:
+      - bluesky
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.bluesky.entrypoints=websecure
