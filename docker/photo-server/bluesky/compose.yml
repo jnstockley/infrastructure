@@ -1,0 +1,33 @@
+---
+name: bluesky
+services:
+  bluesky:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bluesky
+    environment:
+      - TZ=America/Chicago
+    #env_file:
+    #  - .env
+    networks:
+      - bluesky
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bluesky.entrypoints=web
+      - traefik.http.routers.bluesky.rule=Host(`bluesky.jstockley.com`)
+      - traefik.http.middlewares.bluesky-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.bluesky.middlewares=bluesky-https-redirect
+      - traefik.http.routers.bluesky-secure.entrypoints=websecure
+      - traefik.http.routers.bluesky-secure.rule=Host(`bluesky.jstockley.com`)
+      - traefik.http.routers.bluesky-secure.tls=true
+      - traefik.http.routers.bluesky-secure.tls.certresolver=production
+      - traefik.http.routers.bluesky-secure.service=bluesky
+      - traefik.http.services.bluesky.loadbalancer.server.port=80
+      - traefik.docker.network=bluesky
+
+networks:
+  bluesky:
+    name: bluesky
+    external: true
