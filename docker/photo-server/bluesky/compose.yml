@@ -3,7 +3,7 @@ name: bluesky
 services:
   pds:
     container_name: pds
-    image: ghcr.io/bluesky-social/pds:0.4
+    image: ghcr.io/bluesky-social/pds:0.4.74
     networks:
       - bluesky
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
       - traefik.http.routers.bluesky.tls=true
       - traefik.http.routers.bluesky.tls.certresolver=production
       - traefik.http.routers.bluesky.service=bluesky
-      - traefik.http.services.bluesky.loadbalancer.server.port=80
+      - traefik.http.services.bluesky.loadbalancer.server.port=2583
       - traefik.docker.network=bluesky
 
 networks:
