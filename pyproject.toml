@@ -12,20 +12,11 @@ toml = "^0.10.2"
 pytest = "^8.2.0"
 
 
-[tool.poetry.group.camera.dependencies]
-opencv-python = "^4.9.0.80"
-
-
 [tool.poetry.group.docker.dependencies]
 testcontainers = "^4.4.0"
 docker = "^7.0.0"
 pyyaml = "^6.0.1"
 
-
-[tool.poetry.group.hassio.dependencies]
-playwright = "^1.44.0"
-bitwardentools = "^1.0.57"
-pyotp = "^2.9.0"
 
 [build-system]
 requires = ["poetry-core"]
