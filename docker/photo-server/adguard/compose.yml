@@ -28,7 +28,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.adguard.entrypoints=web"
       - "traefik.http.routers.adguard.rule=Host(`dns.jstockley.com`)"
-      - "traefik.http.routers.adguard.middlewares=https-redirect@file"
+      - traefik.http.middlewares.adguard-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.adguard.middlewares=adguard-https-redirect
+#      - "traefik.http.routers.adguard.middlewares=https-redirect@file"
       - "traefik.http.routers.adguard-secure.entrypoints=websecure"
       - "traefik.http.routers.adguard-secure.rule=Host(`dns.jstockley.com`)"
       - "traefik.http.routers.adguard-secure.tls=true"
