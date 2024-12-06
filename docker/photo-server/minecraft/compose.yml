@@ -14,7 +14,7 @@ services:
       - TZ=America/Chicago
     networks:
       - minecraft
-      - wireguard
+#      - wireguard
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -37,6 +37,6 @@ networks:
   minecraft:
     name: minecraft
     external: true
-  wireguard:
-    name: wireguard
-    external: true
+#  wireguard:
+#    name: wireguard
+#    external: true
