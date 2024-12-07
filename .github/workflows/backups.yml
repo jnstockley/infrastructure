@@ -18,12 +18,20 @@ jobs:
         uses: szenius/set-timezone@v2.0
         with:
           timezoneLinux: "America/Chicago"
-      - name: Step 3 - Setup and Connect to Tailscale
-        uses: tailscale/github-action@v2
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:github
+
+      - name: Step 2 - WireGuard Connection
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard resolvconf
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > wg0.conf
+          echo "${{ secrets.CHICAGO_HOME_VPN_CONF }}" > wg1.conf
+          sudo chmod 600 wg0.conf
+          sudo chmod 600 wg1.conf
+          sudo cp wg0.conf /etc/wireguard/
+          sudo cp wg1.conf /etc/wireguard/
+          sudo wg-quick up wg0
+          sudo wg-quick up wg1
+
       - name: Step 4 - Create config file
         run: |
           mkdir resources
