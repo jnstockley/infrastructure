@@ -23,7 +23,7 @@ class TestBackups:
         outdated_interval = int(parameters['outdated_interval'])
         self.outdated_time = (datetime.datetime.now() - datetime.timedelta(hours=outdated_interval)).timestamp()
         headers = {"Authorization": f"Bearer {self.api_key}"}
-        self.client = httpx.Client(headers=headers, verify=False)
+        self.client = httpx.Client(headers=headers, verify=False, timeout=30)
 
     def test_health_check(self):
         url = f"{self.host}/rest/noauth/health"
