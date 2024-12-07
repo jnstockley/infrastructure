@@ -1,5 +1,5 @@
 ---
-name: Docker Deploy
+name: Multi-vpn
 
 on:
   workflow_dispatch:
