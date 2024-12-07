@@ -12,7 +12,6 @@ services:
     networks:
       - airflow
       - postgres
-      - wireguard
     command: version
 
   airflow-scheduler:
@@ -27,7 +26,6 @@ services:
     networks:
       - airflow
       - postgres
-      - wireguard
     command: scheduler
     restart: unless-stopped
     healthcheck:
@@ -48,7 +46,6 @@ services:
     networks:
       - airflow
       - postgres
-      - wireguard
     command: webserver
     restart: unless-stopped
     healthcheck:
@@ -73,7 +70,4 @@ networks:
     external: true
   postgres:
     name: postgres
-    external: true
-  wireguard:
-    name: wireguard
     external: true

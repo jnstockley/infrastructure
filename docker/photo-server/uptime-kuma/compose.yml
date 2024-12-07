@@ -13,7 +13,6 @@ services:
       - TZ=America/Chicago
     networks:
       - uptime-kuma
-      - wireguard
       - immich_private
     restart: unless-stopped
     labels:
@@ -28,9 +27,6 @@ services:
 networks:
   uptime-kuma:
     name: uptime-kuma
-    external: true
-  wireguard:
-    name: wireguard
     external: true
   immich_private:
     name: immich_private
