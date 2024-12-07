@@ -45,10 +45,6 @@ jobs:
           echo "url = '${{ secrets.RACKNERD }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.RACKNERD_API_KEY }}'"  >> resources/config.toml
           echo "outdated_interval = 6" >> resources/config.toml
-          echo "[Backups.Synology]"  >> resources/config.toml
-          echo "url = '${{ secrets.SYNOLOGY }}'"  >> resources/config.toml
-          echo "api_key = '${{ secrets.SYNOLOGY_API_KEY }}'"  >> resources/config.toml
-          echo "outdated_interval = 6" >> resources/config.toml
           echo "[Backups.Backup-Server]"  >> resources/config.toml
           echo "url = '${{ secrets.BACKUP_SERVER }}'"  >> resources/config.toml
           echo "api_key = '${{ secrets.BACKUP_SERVER_API_KEY }}'"  >> resources/config.toml
