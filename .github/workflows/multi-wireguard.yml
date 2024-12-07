@@ -25,6 +25,8 @@ jobs:
 
       - name: Step 3 - Ping Servers
         run: |
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn.conf
+          cat ./vpn.conf
           ping -c 5 192.168.0.107
           ping -c 5 192.168.1.83
           ping -c 5 google.com
