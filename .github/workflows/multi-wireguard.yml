@@ -32,4 +32,4 @@ jobs:
         run: |
           ping -c 5 192.168.0.107
           ping -c 5 192.168.1.1
-          ping -c 5 google.com
+          ping -c 5 backup.local.jstockley.com
