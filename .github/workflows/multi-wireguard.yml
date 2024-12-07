@@ -19,15 +19,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > vpn2.conf
-          echo "${{ secrets.WG_VPN }}" > vpn.conf
-          sudo chmod 600 vpn.conf
-          sudo wg-quick up ./vpn.conf
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > wg0.conf
+          sudo chmod 600 wg0.conf
+          sudo cp wg0.conf /etc/wireguard/
+          sudo wg-quick up wg0
 
       - name: Step 3 - Ping Servers
         run: |
-          
-          cat ./vpn2.conf
           ping -c 5 192.168.0.107
           ping -c 5 192.168.1.1
           ping -c 5 google.com
