@@ -19,9 +19,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.WG_VPN }}" > vpn.conf
+          echo "${{ secrets.WG_VPN }}" > /etc/wireguard/wg0.conf
           sudo chmod 600 vpn.conf
-          sudo wg-quick up ./vpn.conf
+          sudo wg-quick up wg0
 
       - name: Step 3 - Ping Servers
         run: |
