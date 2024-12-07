@@ -15,7 +15,6 @@ services:
     networks:
       - postgres
       - pgadmin
-      - wireguard
     restart: unless-stopped
     healthcheck:
       test: wget -nv -t 1 --spider http://localhost:80/misc/ping || exit 1
@@ -43,7 +42,6 @@ services:
       - .env
     networks:
       - postgres
-      - wireguard
     restart: unless-stopped
     healthcheck:
       test: pg_isready -U jackstockley
@@ -58,7 +56,4 @@ networks:
     external: true
   pgadmin:
     name: pgadmin
-    external: true
-  wireguard:
-    name: wireguard
     external: true

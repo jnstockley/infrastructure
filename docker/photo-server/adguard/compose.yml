@@ -15,7 +15,6 @@ services:
       - '0.0.0.0:53:53/udp'
     networks:
       - adguard
-      - wireguard
     restart: unless-stopped
     healthcheck:
       test: wget -nv -t 1 --spider --no-check-certificate https://localhost
@@ -45,7 +44,4 @@ services:
 networks:
   adguard:
     name: adguard
-    external: true
-  wireguard:
-    name: wireguard
     external: true

@@ -14,7 +14,6 @@ services:
       - PGID=0
     networks:
       - syncthing
-      - wireguard
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
@@ -35,7 +34,4 @@ services:
 networks:
   syncthing:
     name: syncthing
-    external: true
-  wireguard:
-    name: wireguard
     external: true

@@ -51,12 +51,6 @@ services:
     networks:
       - immich_private
     restart: unless-stopped
-    healthcheck:
-      test: bash -c exec 5<>/dev/tcp/127.0.0.1/3003
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
   immich-server:
     image: ghcr.io/immich-app/immich-server:v1.122.1
     container_name: immich_server
