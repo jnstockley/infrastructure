@@ -19,7 +19,7 @@ jobs:
         with:
           timezoneLinux: "America/Chicago"
 
-      - name: Step 2 - WireGuard Connection
+      - name: Step 3 - WireGuard Connection
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
