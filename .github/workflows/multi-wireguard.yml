@@ -1,0 +1,30 @@
+---
+name: Docker Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  multi-wireguard:
+    name: Multi-Wireguard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Set Timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "America/Chicago"
+
+      - name: Step 2 - WireGuard Connection
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard resolvconf
+          echo "${{ secrets.WG_VPN }}" > vpn.conf
+          sudo chmod 600 vpn.conf
+          sudo wg-quick up ./vpn.conf
+
+      - name: Step 3 - Ping Servers
+        run: |
+          ping -c 5 192.168.1.83
+          ping -c 5 192.168.0.107
+          ping -c 5 google.com
