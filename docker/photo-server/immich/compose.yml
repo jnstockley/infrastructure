@@ -42,7 +42,7 @@ services:
       start_period: 100s
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.122.1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.122.2
     container_name: immich_machine_learning
     volumes:
       - model-cache:/cache
