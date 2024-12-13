@@ -32,7 +32,7 @@ class TestBackups:
 
         try:
             with self.client as c:
-                logger.info(f"Sending request to: {url}")
+                logger.info(f"Sending request to: {url} -> {self.name}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
             logger.critical(f"Unable to connect to host: {self.name}")
@@ -48,7 +48,7 @@ class TestBackups:
 
         try:
             with self.client as c:
-                logger.info(f"Sending request to: {url}")
+                logger.info(f"Sending request to: {url} -> {self.name}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
             logger.critical(f"Unable to connect to host: {self.name}")
@@ -71,7 +71,7 @@ class TestBackups:
 
         try:
             with self.client as c:
-                logger.info(f"Sending request to: {url}")
+                logger.info(f"Sending request to: {url} -> {self.name}")
                 response = c.get(url)
         except httpx.ConnectTimeout as e:
             logger.critical(f"Unable to connect to host: {self.name}")
@@ -91,7 +91,7 @@ class TestBackups:
         response: Response
 
         try:
-            logger.info(f"Sending request to: {url}")
+            logger.info(f"Sending request to: {url} -> {self.name}")
             response = self.client.get(url)
         except httpx.ConnectTimeout as e:
             logger.critical(f"Unable to connect to host: {self.host}")
@@ -104,7 +104,7 @@ class TestBackups:
         for (folder, data) in folders.items():
             url = f"{self.host}/rest/folder/errors?folder={urllib.parse.quote_plus(folder)}"
             try:
-                logger.info(f"Sending request to: {url}")
+                logger.info(f"Sending request to: {url} -> {self.name}")
                 response = self.client.get(url)
             except httpx.ConnectTimeout as e:
                 logger.critical(f"Unable to connect to host: {self.host}")
