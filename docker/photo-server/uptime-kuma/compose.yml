@@ -1,9 +1,9 @@
 ---
 name: uptime-kuma
 services:
-  wireguard-client:
+  wireguard-uptime-kuma:
     image: linuxserver/wireguard:1.0.20210914
-    container_name: wireguard-client
+    container_name: wireguard-uptime-kuma
     env_file:
       - .env
     volumes:
