@@ -1,6 +1,26 @@
 ---
 name: airflow
 services:
+  wireguard-client:
+    image: linuxserver/wireguard:1.0.20210914
+    container_name: wireguard-client
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - ./config:/config/wg_confs
+      - /lib/modules:/lib/modules  # optional
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - airflow
+      - postgres
+
   airflow-init:
     image: jnstockley/airflow:2024.11.26
     volumes:
@@ -9,9 +29,7 @@ services:
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
     env_file: .env
-    networks:
-      - airflow
-      - postgres
+    network_mode: service:wireguard-client
     command: version
 
   airflow-scheduler:
@@ -23,9 +41,7 @@ services:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
     env_file: .env
-    networks:
-      - airflow
-      - postgres
+    network_mode: service:wireguard-client
     command: scheduler
     restart: unless-stopped
     healthcheck:
@@ -43,9 +59,7 @@ services:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
     env_file: .env
-    networks:
-      - airflow
-      - postgres
+    network_mode: service:wireguard-client
     command: webserver
     restart: unless-stopped
     healthcheck:
