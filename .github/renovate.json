@@ -1,8 +1,12 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "baseBranches": ["beta"],
-  "ignoreDeps": ["aiohttp"]
+  "baseBranches": [
+    "beta"
+  ],
+  "ignoreDeps": [
+    "aiohttp"
+  ]
 }
