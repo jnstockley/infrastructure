@@ -29,19 +29,22 @@ services:
     environment:
       _AIRFLOW_DB_MIGRATE: 'true'
     env_file: .env
-    network_mode: service:wireguard-client
+    network_mode: service:wireguard-airflow
+    depends_on:
+      - wireguard-airflow
     command: version
 
   airflow-scheduler:
     image: jnstockley/airflow:2024.11.26
     container_name: airflow-scheduler
     depends_on:
+      - wireguard-airflow
       - airflow-init
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
     env_file: .env
-    network_mode: service:wireguard-client
+    network_mode: service:wireguard-airflow
     command: scheduler
     restart: unless-stopped
     healthcheck:
@@ -54,12 +57,13 @@ services:
     image: jnstockley/airflow:2024.11.26
     container_name: airflow-webserver
     depends_on:
+      - wireguard-airflow
       - airflow-scheduler
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
     env_file: .env
-    network_mode: service:wireguard-client
+    network_mode: service:wireguard-airflow
     command: webserver
     restart: unless-stopped
     healthcheck:
