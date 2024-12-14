@@ -20,11 +20,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    labels:
-      - traefik.enable=true
-      - traefik.udp.routers.wireguard.entrypoints=wireguard
-      - traefik.udp.routers.wireguard.service=wireguard
-      - traefik.udp.services.wireguard.loadbalancer.server.address=127.0.0.1:51820
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

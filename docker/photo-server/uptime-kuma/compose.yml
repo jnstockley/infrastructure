@@ -1,6 +1,26 @@
 ---
 name: uptime-kuma
 services:
+  wireguard-client:
+    image: linuxserver/wireguard:1.0.20210914
+    container_name: wireguard-client
+    env_file:
+      - .env
+    volumes:
+      - ./config:/config/wg_confs
+      - /lib/modules:/lib/modules  # optional
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - uptime-kuma
+      - immich_private
+      - airflow
+      - postgres
+
   uptime-kuma:
     image: louislam/uptime-kuma:1.23.15
     container_name: uptime-kuma
@@ -11,12 +31,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ=America/Chicago
-    networks:
-      - uptime-kuma
-      - immich_private
-      - airflow
-      - postgres
+    network_mode: service:wireguard-client
     restart: unless-stopped
+    depends_on:
+      - wireguard-client
     labels:
       - traefik.enable=true
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
