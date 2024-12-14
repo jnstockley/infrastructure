@@ -1,9 +1,9 @@
 ---
 name: airflow
 services:
-  wireguard-client:
+  wireguard-airflow:
     image: linuxserver/wireguard:1.0.20210914
-    container_name: wireguard-client
+    container_name: wireguard-airflow
     environment:
       - PUID=1000
       - PGID=1000
