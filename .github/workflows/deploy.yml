@@ -25,20 +25,7 @@ jobs:
         with:
           timezoneLinux: "America/Chicago"
 
-      - name: Step 2 - WireGuard Connection
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > wg0.conf
-          echo "${{ secrets.CHICAGO_HOME_VPN_CONF }}" > wg1.conf
-          sudo chmod 600 wg0.conf
-          sudo chmod 600 wg1.conf
-          sudo cp wg0.conf /etc/wireguard/
-          sudo cp wg1.conf /etc/wireguard/
-          sudo wg-quick up wg0
-          sudo wg-quick up wg1
-
-      - name: Step 4 - Get Changes files
+      - name: Step 3 - Get Changes files
         id: files
         uses: tj-actions/changed-files@v45
         with:
@@ -48,7 +35,7 @@ jobs:
             docker_photo_server:
               - docker/photo-server/**/compose.yml
 
-      - name: Step 5 - Deploy containers (Racknerd)
+      - name: Step 4 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
         uses: appleboy/ssh-action@v1.2.0
         env:
@@ -71,7 +58,21 @@ jobs:
             docker image prune -a -f
             docker system prune -f
 
-      - name: Step 5 - Deploy containers (Photo Server)
+      - name: Step 5 - WireGuard Connection
+        if: steps.files.outputs.docker_photo_server_any_changed == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard resolvconf
+          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > wg0.conf
+          echo "${{ secrets.CHICAGO_HOME_VPN_CONF }}" > wg1.conf
+          sudo chmod 600 wg0.conf
+          sudo chmod 600 wg1.conf
+          sudo cp wg0.conf /etc/wireguard/
+          sudo cp wg1.conf /etc/wireguard/
+          sudo wg-quick up wg0
+          sudo wg-quick up wg1
+
+      - name: Step 6 - Deploy containers (Photo Server)
         if: steps.files.outputs.docker_photo_server_any_changed == 'true'
         uses: appleboy/ssh-action@v1.2.0
         env:
