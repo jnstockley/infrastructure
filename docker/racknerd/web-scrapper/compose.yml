@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper:
-    image: jnstockley/web-scrapper:v0.1.0
+    image: jnstockley/web-scrapper:v0.1.1
     container_name: web_scrapper
     volumes:
       - ./config.toml:/web-scrapper/config.toml
