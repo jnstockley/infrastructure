@@ -2,7 +2,7 @@
 name: airflow
 services:
   wireguard-airflow:
-    image: linuxserver/wireguard:1.0.20210914
+    image: linuxserver/wireguard:1.0.20210914@sha256:66c2f4fad2c66bba30ef3c043d9be6bbb70c17d2fd885b6824cab90c47e23672
     container_name: wireguard-airflow
     environment:
       - PUID=1000
