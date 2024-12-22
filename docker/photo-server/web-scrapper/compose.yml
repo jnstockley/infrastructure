@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper:
-    image: jnstockley/web-scrapper:v0.2.0
+    image: jnstockley/web-scrapper:v0.1.1
     container_name: web_scrapper
     volumes:
       - ./data/:/web-scrapper/data/
