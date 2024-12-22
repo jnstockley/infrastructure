@@ -2,7 +2,7 @@
 name: airflow
 services:
   wireguard-airflow:
-    image: linuxserver/wireguard:1.0.20210914
+    image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
     container_name: wireguard-airflow
     environment:
       - PUID=1000
@@ -22,7 +22,7 @@ services:
       - postgres
 
   airflow-init:
-    image: jnstockley/airflow:2024.12.15
+    image: jnstockley/airflow:2024.12.18
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -35,7 +35,7 @@ services:
     command: version
 
   airflow-scheduler:
-    image: jnstockley/airflow:2024.12.15
+    image: jnstockley/airflow:2024.12.18
     container_name: airflow-scheduler
     depends_on:
       - wireguard-airflow
@@ -54,7 +54,7 @@ services:
       retries: 5
       start_period: 100s
   airflow-webserver:
-    image: jnstockley/airflow:2024.12.15
+    image: jnstockley/airflow:2024.12.18
     container_name: airflow-webserver
     depends_on:
       - wireguard-airflow

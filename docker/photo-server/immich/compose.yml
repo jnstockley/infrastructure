@@ -42,7 +42,7 @@ services:
       start_period: 100s
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.122.3
+    image: ghcr.io/immich-app/immich-machine-learning:v1.123.0
     container_name: immich_machine_learning
     volumes:
       - model-cache:/cache
@@ -52,7 +52,7 @@ services:
       - immich_private
     restart: unless-stopped
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.122.3
+    image: ghcr.io/immich-app/immich-server:v1.123.0
     container_name: immich_server
     depends_on:
       - database

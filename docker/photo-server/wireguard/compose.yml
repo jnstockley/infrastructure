@@ -2,7 +2,7 @@
 name: wireguard
 services:
   wireguard:
-    image: linuxserver/wireguard:1.0.20210914
+    image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
     container_name: wireguard
     volumes:
       - ./config:/config
