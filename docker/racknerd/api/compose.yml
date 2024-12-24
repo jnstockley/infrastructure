@@ -2,7 +2,7 @@
 name: api
 services:
   api:
-    image: jnstockley/api:v0.0.50
+    image: jnstockley/api:v0.0.60
     container_name: api
     environment:
       - TZ=America/Chicago
@@ -10,6 +10,7 @@ services:
       - .env
     networks:
       - api
+      - postgres
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -24,4 +25,7 @@ services:
 networks:
   api:
     name: api
+    external: true
+  postgres:
+    name: postgres
     external: true
