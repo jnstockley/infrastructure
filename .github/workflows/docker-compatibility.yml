@@ -32,13 +32,10 @@ jobs:
               - docker/racknerd/**/compose.yml
               - docker/photo-server/**/compose.yml
 
-      - name: Step 4 - Create Config file
+      - name: Step 4 - Create Environment Variable
         if: steps.files.outputs.docker_any_changed == 'true'
         run: |
-          mkdir resources
-          touch resources/config.toml
-          echo "[Docker]"  >> resources/config.toml
-          echo "files = '${{ steps.files.outputs.docker_all_changed_files }}'"  >> resources/config.toml
+          echo "FILES=${{ steps.files.outputs.docker_all_changed_files }}" >> "$GITHUB_ENV"
 
       - name: Step 5 - Setup Python
         uses: actions/setup-python@v5
@@ -49,7 +46,7 @@ jobs:
       - name: Step 6 - Install Poetry and Dependencies
         run: |
           pip3 install -r requirements.txt
-          poetry install --no-root --only main,docker
+          poetry install
 
       - name: Step 7 - Run Tests
         run: poetry run pytest tests/test_containers.py

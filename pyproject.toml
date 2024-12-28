@@ -4,18 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["Jack Stockley <34308937+jnstockley@users.noreply.github.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
-httpx = "^0.28.0"
-toml = "^0.10.2"
-pytest = "^8.2.0"
-
-
-[tool.poetry.group.docker.dependencies]
-testcontainers = "^4.4.0"
-docker = "^7.0.0"
-pyyaml = "^6.0.1"
+python = "3.13.1"
+pytest = "8.3.4"
+testcontainers = "4.9.0"
+docker = "7.1.0"
+pyyaml = "6.0.2"
 
 
 [build-system]
