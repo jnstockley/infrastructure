@@ -1,13 +1,12 @@
 import os
 
 import pytest
-import toml
 import yaml
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_container_is_ready
 from . import logger
 
-containers = toml.load("resources/config.toml")['Docker']['files'].split(' ')
+containers = os.environ['FILES'].split(' ')
 
 
 @pytest.mark.parametrize("container", containers)
