@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 # Run linter
-yamllint -s -d .yamlint .
-npx dclint -r docker/
+yamllint -s .
+npx dclint -r --max-warnings 0 docker/

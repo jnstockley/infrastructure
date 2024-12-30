@@ -1,28 +1,10 @@
 ---
 name: airflow
 services:
-  wireguard-airflow:
-    image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
-    container_name: wireguard-airflow
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
-    volumes:
-      - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules  # optional
-    restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-    networks:
-      - airflow
-      - postgres
-
   airflow-init:
     image: jnstockley/airflow:2024.12.28
+    depends_on:
+      - wireguard-airflow
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -30,16 +12,14 @@ services:
       _AIRFLOW_DB_MIGRATE: 'true'
     env_file: .env
     network_mode: service:wireguard-airflow
-    depends_on:
-      - wireguard-airflow
     command: version
 
   airflow-scheduler:
     image: jnstockley/airflow:2024.12.28
     container_name: airflow-scheduler
     depends_on:
-      - wireguard-airflow
       - airflow-init
+      - wireguard-airflow
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -57,8 +37,8 @@ services:
     image: jnstockley/airflow:2024.12.28
     container_name: airflow-webserver
     depends_on:
-      - wireguard-airflow
       - airflow-scheduler
+      - wireguard-airflow
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -81,6 +61,25 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
+  wireguard-airflow:
+    image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
+    container_name: wireguard-airflow
+    volumes:
+      - ./config:/config/wg_confs
+      - /lib/modules:/lib/modules  # optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    networks:
+      - airflow
+      - postgres
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   airflow:
