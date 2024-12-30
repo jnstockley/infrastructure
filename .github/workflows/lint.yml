@@ -38,7 +38,7 @@ jobs:
           sudo apt-get install -y yamllint
 
       - name: Step 3 - Lint Yaml Files
-        run: yamllint -s -d .yamlint .
+        run: yamllint -s .
 
       - name: Step 4 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/

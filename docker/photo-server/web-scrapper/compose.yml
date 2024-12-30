@@ -1,20 +1,6 @@
 ---
 name: web-scrapper
 services:
-  web-scrapper-nacs:
-    image: jnstockley/web-scrapper:v0.3.2
-    container_name: web_scrapper_nacs
-    volumes:
-      - ./data/:/web-scrapper/data/
-    environment:
-      - TZ=America/Chicago
-      - SCRAPPER=text
-      - URL=https://www.tesla.com/NACS
-      - TEXT=Hyundai
-      - SLEEP_TIME_SEC=86400
-    env_file:
-      - .env
-    restart: unless-stopped
   web-scrapper-hyundai:
     image: jnstockley/web-scrapper:v0.3.2
     container_name: web_scrapper_hyundai
@@ -26,6 +12,20 @@ services:
       - URL=https://update.hyundai.com/US/EN/updateNoticeList
       - PERCENTAGE=5
       - SLEEP_TIME_SEC=21600
+    env_file:
+      - .env
+    restart: unless-stopped
+  web-scrapper-nacs:
+    image: jnstockley/web-scrapper:v0.3.2
+    container_name: web_scrapper_nacs
+    volumes:
+      - ./data/:/web-scrapper/data/
+    environment:
+      - TZ=America/Chicago
+      - SCRAPPER=text
+      - URL=https://www.tesla.com/NACS
+      - TEXT=Hyundai
+      - SLEEP_TIME_SEC=86400
     env_file:
       - .env
     restart: unless-stopped
