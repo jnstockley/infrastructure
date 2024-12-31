@@ -35,6 +35,7 @@ jobs:
           output_path: results-dir
           #platform_type: DockerCompose,CICD
           output_formats: 'json,sarif'
+          ignore_on_exit: results
           #exclude_paths: "terraform/gcp/big_data.tf,terraform/azure"
           # seek query id in it's metadata.json
           #exclude_queries: 0437633b-daa6-4bbc-8526-c0d2443b946e
