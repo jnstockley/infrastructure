@@ -1,6 +1,0 @@
----
-name: hello-world
-services:
-  hello-world:
-    image: hello-world:linux
-    container_name: hello-world
