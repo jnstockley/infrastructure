@@ -13,6 +13,12 @@ services:
       - TZ=America/Chicago
     network_mode: service:wireguard-uptime-kuma
     restart: unless-stopped
+    healthcheck:
+      test: cmd extra/healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
     labels:
       - traefik.enable=true
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
@@ -22,12 +28,6 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
       - traefik.docker.network=uptime-kuma
-    healthcheck:
-      test: cmd extra/healthcheck
-      interval: 60s
-      retries: 5
-      start_period: 180s
-      timeout: 30s
 
   wireguard-uptime-kuma:
     image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d

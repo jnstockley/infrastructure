@@ -15,7 +15,7 @@ services:
       - wireguard
     command: version
     healthcheck:
-      test: [ "CMD-SHELL", "exit 0" ]
+      test: ["CMD-SHELL", "exit 0"]
       interval: 10s
       timeout: 10s
       retries: 1

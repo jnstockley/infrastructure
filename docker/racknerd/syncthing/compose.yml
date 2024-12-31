@@ -18,6 +18,12 @@ services:
       - syncthing
       - wireguard
     restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     labels:
       - traefik.enable=true
       - traefik.http.routers.syncthing.entrypoints=websecure
@@ -28,12 +34,6 @@ services:
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
     hostname: racknerd_syncthing
-    healthcheck:
-      test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
 
 networks:
   syncthing:

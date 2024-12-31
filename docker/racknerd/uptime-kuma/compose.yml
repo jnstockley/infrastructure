@@ -15,6 +15,12 @@ services:
       - redis
       - wireguard
     restart: unless-stopped
+    healthcheck:
+      test: cmd extra/healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
     labels:
       - traefik.enable=true
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
@@ -24,12 +30,6 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
       - traefik.docker.network=uptime-kuma
-    healthcheck:
-      test: cmd extra/healthcheck
-      interval: 60s
-      retries: 5
-      start_period: 180s
-      timeout: 30s
 
 networks:
   uptime-kuma:
