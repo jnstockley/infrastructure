@@ -2,6 +2,10 @@
 name: Security Scan
 
 on:
+  workflow_dispatch:
+  # TODO Disable until fixing security issues
+  # schedule:
+  #   - cron: '0 0 * * *'
   pull_request:
     branches:
       - main
@@ -24,7 +28,6 @@ jobs:
           path: '.'
           token: ${{ secrets.KICS_TOKEN }}
           output_path: myResults/
-          #ignore_on_exit: results
           enable_comments: true
           enable_jobs_summary: true
           enable_annotations: true
