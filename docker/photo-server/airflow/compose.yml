@@ -86,6 +86,12 @@ services:
       - SYS_MODULE
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
+    healthcheck:
+      test: curl --fail https://google.com || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
 
 networks:
   airflow:
