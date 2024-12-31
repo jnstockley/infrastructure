@@ -12,7 +12,7 @@ services:
       - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container
         --advertise-routes=172.0.0.0/8
       - TZ=America/Chicago
-      - TS_USERSPACE=false
+      # - TS_USERSPACE=false
     env_file:
       - .env
     networks:
