@@ -15,7 +15,7 @@ on:
 
 jobs:
   lint:
-    name: Lint Yaml Files
+    name: Security Scan
     runs-on: ubuntu-latest
 
     steps:
