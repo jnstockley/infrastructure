@@ -7,8 +7,6 @@ services:
     volumes:
       - /dev/net/tun:/dev/net/tun
       - ./data:/var/lib/tailscale
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container
