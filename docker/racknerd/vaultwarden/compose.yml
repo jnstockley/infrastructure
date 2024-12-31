@@ -15,6 +15,12 @@ services:
       - postgres
       - wireguard
     restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:80/alive || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
     labels:
       - traefik.enable=true
       - traefik.http.routers.vaultwarden.entrypoints=websecure

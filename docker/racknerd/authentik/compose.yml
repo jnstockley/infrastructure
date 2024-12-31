@@ -19,6 +19,12 @@ services:
       - wireguard
     command: server
     restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:9000/-/health/ready/ || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
     labels:
       - traefik.enable=true
       - traefik.http.routers.auth.entrypoints=websecure
@@ -28,6 +34,7 @@ services:
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
       - traefik.docker.network=authentik
+
   worker:
     image: ghcr.io/goauthentik/server:2024.12.1
     container_name: authentik_worker
@@ -46,6 +53,12 @@ services:
       - wireguard
     command: worker
     restart: unless-stopped
+    healthcheck:
+      test: cmd ak healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
     user: root
 
 networks:

@@ -15,6 +15,12 @@ services:
       - nextcloud-aio
       - wireguard
     restart: unless-stopped
+    healthcheck:
+      test: nc -z 127.0.0.1 11000
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
 
 networks:
   nextcloud-aio:
