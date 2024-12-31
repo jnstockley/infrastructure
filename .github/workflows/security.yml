@@ -1,0 +1,26 @@
+---
+name: Security Scan
+
+on:
+  workflow_dispatch:
+  cron:
+    - '0 0 * * *'
+  pull_request:
+    branches:
+      - main
+      - beta
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint Yaml Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v4
+
+      - name: Step 2 - Run Kics Scan
+        run: docker run -t -v .:/infrastructure checkmarx/kics:alpine scan -p /infrastructure -o "/infrastructure/"
