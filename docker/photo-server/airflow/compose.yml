@@ -13,6 +13,12 @@ services:
     env_file: .env
     network_mode: service:wireguard-airflow
     command: version
+    healthcheck:
+      test: [ "CMD-SHELL", "exit 0" ]
+      interval: 10s
+      timeout: 10s
+      retries: 1
+      start_period: 0s
 
   airflow-scheduler:
     image: jnstockley/airflow:2024.12.28

@@ -28,6 +28,13 @@ services:
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
       - traefik.docker.network=authentik
+    healthcheck:
+      test: curl --fail http://localhost:9000/-/health/ready/ || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
+
   worker:
     image: ghcr.io/goauthentik/server:2024.12.1
     container_name: authentik_worker
@@ -47,6 +54,12 @@ services:
     command: worker
     restart: unless-stopped
     user: root
+    healthcheck:
+      test: cmd ak healthcheck
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
 
 networks:
   authentik:
