@@ -14,7 +14,7 @@ services:
     command: tunnel --metrics localhost:3333 run
     restart: unless-stopped
     healthcheck:
-      test: curl --fail http://localhost:3333 || exit 1
+      test: cloudflared tunnel --metrics 127.0.0.1:3333 ready
       interval: 10s
       timeout: 10s
       retries: 5
