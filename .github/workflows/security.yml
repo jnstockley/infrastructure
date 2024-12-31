@@ -22,7 +22,7 @@ jobs:
         uses: checkmarx/kics-github-action@v2.1.3
         with:
           path: '.'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.KICS_TOKEN }}
           output_path: myResults/
           ignore_on_exit: results
           enable_comments: true
