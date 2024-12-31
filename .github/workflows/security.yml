@@ -24,7 +24,7 @@ jobs:
           path: '.'
           token: ${{ secrets.KICS_TOKEN }}
           output_path: myResults/
-          ignore_on_exit: results
+          #ignore_on_exit: results
           enable_comments: true
           enable_jobs_summary: true
           enable_annotations: true
