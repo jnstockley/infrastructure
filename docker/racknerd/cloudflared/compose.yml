@@ -11,7 +11,7 @@ services:
     networks:
       - traefik
       - nextcloud-aio
-    command: tunnel run -metrics localhost:3333
+    command: tunnel --metrics localhost:3333 run
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:3333 || exit 1
