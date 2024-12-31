@@ -28,3 +28,6 @@ jobs:
           output_path: myResults/
           ignore_on_exit: results
           enable_comments: true
+          enable_jobs_summary: true
+          enable_annotations: true
+          comments_with_queries: true
