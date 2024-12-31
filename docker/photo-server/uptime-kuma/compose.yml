@@ -14,7 +14,7 @@ services:
     network_mode: service:wireguard-uptime-kuma
     restart: unless-stopped
     healthcheck:
-      test: cmd extra/healthcheck
+      test: node ./extra/healthcheck.js
       interval: 60s
       retries: 5
       start_period: 180s
