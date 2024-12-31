@@ -51,6 +51,13 @@ services:
     networks:
       - immich_private
     restart: unless-stopped
+    healthcheck:
+      test: python3 healthcheck.py
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+
   immich-server:
     image: ghcr.io/immich-app/immich-server:v1.123.0
     container_name: immich_server
@@ -69,7 +76,7 @@ services:
       - immich_private
     restart: unless-stopped
     healthcheck:
-      test: node /healthcheck/healthcheck.js
+      test: immich-healthcheck
       interval: 10s
       timeout: 10s
       retries: 5
