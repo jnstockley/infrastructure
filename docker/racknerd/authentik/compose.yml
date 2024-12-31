@@ -32,7 +32,6 @@ services:
     image: ghcr.io/goauthentik/server:2024.12.1
     container_name: authentik_worker
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./media:/media
       - ./certs:/certs
       - ./custom-templates:/templates
