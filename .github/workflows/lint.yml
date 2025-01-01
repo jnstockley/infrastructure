@@ -27,10 +27,10 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
 
       - name: Step 2 - Setup Node.js environment
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af
+        uses: actions/setup-node@48b90677b6048efbc723b11a94acb950d3f1ac36
 
       - name: Step 2 - Install Yaml Linter
         run: |

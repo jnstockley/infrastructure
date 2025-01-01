@@ -10,8 +10,8 @@ services:
       - ./servers:/crafty/servers
       - ./config:/crafty/app/config
       - ./import:/crafty/import
-      - ./healthcheck.py:/crafty
-      - ./healthcheck.sh:/crafty
+      - ./healthcheck.py:/crafty/healthcheck.py
+      - ./healthcheck.sh:/crafty/healthcheck.sh
     environment:
       - TZ=America/Chicago
     networks:
