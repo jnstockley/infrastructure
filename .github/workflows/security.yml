@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
       - name: Step 2 - Run KICS Scan
         uses: checkmarx/kics-github-action@94469746ec2c43de89a42fb9d2a80070f5d25b16
         with:
