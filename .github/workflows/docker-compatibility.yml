@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
 
       - name: Step 2 - Set Timezone
-        uses: szenius/set-timezone@1f9716b0f7120e344f0c62bb7b1ee98819aefd42
+        uses: szenius/set-timezone@eebc20b7dc3d0f0832339f7046227a6b32fb44c3
         with:
           timezoneLinux: "America/Chicago"
 
