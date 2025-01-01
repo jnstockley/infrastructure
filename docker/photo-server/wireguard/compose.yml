@@ -2,11 +2,11 @@
 name: wireguard
 services:
   wireguard:
-    image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
+    image: linuxserver/wireguard:1.0.20210914@sha256:d0a183ed666bb3ff0ccb55a3fc8de0aeaa7a264251e1bd8c7c8bbdbf4e750764
     container_name: wireguard
     volumes:
       - ./config:/config
-      - /lib/modules:/lib/modules  # optional
+      - /lib/modules:/lib/modules
     env_file:
       - .env
     ports:
@@ -23,6 +23,8 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    security_opt:
+      - no-new-privileges:true
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
 
