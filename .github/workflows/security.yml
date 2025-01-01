@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - name: Step 2 - Run KICS Scan
         uses: checkmarx/kics-github-action@94469746ec2c43de89a42fb9d2a80070f5d25b16
         with:
@@ -32,4 +32,4 @@ jobs:
           enable_jobs_summary: true
           enable_annotations: true
           comments_with_queries: true
-          exclude_queries: d6355c88-1e8d-49e9-b2f2-f8a1ca12c75b,1c1325ff-831d-43a1-973e-839ae57dfcc0,ce76b7d0-9e77-464d-b86f-c5c48e03e22d,bc2908f3-f73c-40a9-8793-c1b7d5544f79
+          exclude_queries: d6355c88-1e8d-49e9-b2f2-f8a1ca12c75b,1c1325ff-831d-43a1-973e-839ae57dfcc0,bc2908f3-f73c-40a9-8793-c1b7d5544f79,8c978947-0ff6-485c-b0c2-0bfca6026466

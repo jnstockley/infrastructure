@@ -19,6 +19,10 @@ services:
       interval: 30s
       retries: 5
       timeout: 3s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   redis:

@@ -28,13 +28,17 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
       - traefik.docker.network=uptime-kuma
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
   wireguard-uptime-kuma:
     image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
     container_name: wireguard-uptime-kuma
     volumes:
       - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules  # optional
+      - /lib/modules:/lib/modules
     env_file:
       - .env
     networks:
@@ -43,17 +47,21 @@ services:
       - airflow
       - postgres
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
     healthcheck:
       test: curl --fail https://google.com || exit 1
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 100s
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   uptime-kuma:

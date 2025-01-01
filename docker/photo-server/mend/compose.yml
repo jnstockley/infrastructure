@@ -28,6 +28,10 @@ services:
       - traefik.http.routers.mend.service=mend
       - traefik.http.services.mend.loadbalancer.server.port=8080
       - traefik.docker.network=mend
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   mend:
