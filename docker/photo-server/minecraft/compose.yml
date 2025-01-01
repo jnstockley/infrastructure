@@ -39,8 +39,6 @@ services:
       - traefik.tcp.routers.mc-server.tls="false"
       - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
       - traefik.tcp.routers.mc-server.service=mc-server
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 

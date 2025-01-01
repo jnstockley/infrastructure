@@ -19,8 +19,6 @@ services:
       timeout: 10s
       retries: 1
       start_period: 0s
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 
@@ -43,8 +41,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 
@@ -76,8 +72,6 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 
@@ -104,8 +98,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
     sysctls:

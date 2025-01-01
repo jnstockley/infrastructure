@@ -34,8 +34,6 @@ services:
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
       - traefik.docker.network=authentik
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 
@@ -64,8 +62,6 @@ services:
       start_period: 180s
       timeout: 30s
     user: root
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 

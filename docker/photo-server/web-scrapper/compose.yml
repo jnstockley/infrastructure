@@ -15,8 +15,6 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true
 
@@ -34,7 +32,5 @@ services:
     env_file:
       - .env
     restart: unless-stopped
-    cap_drop:
-      - ALL
     security_opt:
       - no-new-privileges:true

@@ -37,8 +37,6 @@ services:
       - traefik.docker.network=adguard
     cap_add:
       - NET_ADMIN
-    cap_drop:
-      - ALL
     expose:
       - '53'
     security_opt:
