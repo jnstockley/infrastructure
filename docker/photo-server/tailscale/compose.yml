@@ -26,8 +26,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    cap_drop:
-      - ALL
     hostname: tailscale_photo_server
     security_opt:
       - no-new-privileges:true

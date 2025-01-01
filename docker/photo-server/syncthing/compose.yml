@@ -32,8 +32,6 @@ services:
       - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
-    cap_drop:
-      - ALL
     hostname: syncthing_photo_server
     security_opt:
       - no-new-privileges:true

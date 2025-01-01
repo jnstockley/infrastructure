@@ -32,8 +32,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    cap_drop:
-      - ALL
     hostname: racknerd
     security_opt:
       - no-new-privileges:true
