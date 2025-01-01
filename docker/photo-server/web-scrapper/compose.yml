@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.2
+    image: jnstockley/web-scrapper:v0.3.3
     container_name: web_scrapper_hyundai
     volumes:
       - ./data/:/web-scrapper/data/
@@ -15,11 +15,17 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    healthcheck:
+      test: poetry run python3 src/main.py
+      interval: 60s
+      retries: 5
+      start_period: 60s
+      timeout: 30s
     security_opt:
       - no-new-privileges:true
 
   web-scrapper-nacs:
-    image: jnstockley/web-scrapper:v0.3.2
+    image: jnstockley/web-scrapper:v0.3.3
     container_name: web_scrapper_nacs
     volumes:
       - ./data/:/web-scrapper/data/
@@ -32,5 +38,11 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    healthcheck:
+      test: poetry run python3 src/main.py
+      interval: 60s
+      retries: 5
+      start_period: 60s
+      timeout: 30s
     security_opt:
       - no-new-privileges:true

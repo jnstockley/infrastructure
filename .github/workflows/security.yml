@@ -3,9 +3,8 @@ name: Security Scan
 
 on:
   workflow_dispatch:
-  # TODO Disable until fixing security issues
-  # schedule:
-  #   - cron: '0 0 * * *'
+  schedule:
+    - cron: '0 0 * * *'
   pull_request:
     branches:
       - main

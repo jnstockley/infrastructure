@@ -18,13 +18,13 @@ jobs:
 
     steps:
       - name: Step 1 - Set Timezone
-        uses: szenius/set-timezone@1f9716b0f7120e344f0c62bb7b1ee98819aefd42
+        uses: szenius/set-timezone@eebc20b7dc3d0f0832339f7046227a6b32fb44c3
         with:
           timezoneLinux: "America/Chicago"
 
       - name: Step 2 - Get Changes files
         id: files
-        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366
+        uses: tj-actions/changed-files@c1f82ce4baf9f73b1a68fb3d7a72951c2f196f12
         with:
           files_yaml: |
             docker_racknerd:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Step 3 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
-        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17
+        uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
         env:
           FILES: ${{ steps.files.outputs.docker_racknerd_all_changed_files }}
         with:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Step 5 - Deploy containers (Photo Server)
         if: steps.files.outputs.docker_photo_server_any_changed == 'true'
-        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17
+        uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
         env:
           FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
         with:
