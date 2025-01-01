@@ -16,16 +16,16 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Step 2 - Set Timezone
-        uses: szenius/set-timezone@v2.0
+        uses: szenius/set-timezone@1f9716b0f7120e344f0c62bb7b1ee98819aefd42
         with:
           timezoneLinux: "America/Chicago"
 
       - name: Step 3 - Get Changes files
         id: files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@bab30c2299617f6615ec02a68b9a40d10bd21366
         with:
           files_yaml: |
             docker:

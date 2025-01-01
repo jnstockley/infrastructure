@@ -30,6 +30,10 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
       - traefik.docker.network=uptime-kuma
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   uptime-kuma:

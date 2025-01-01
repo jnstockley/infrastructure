@@ -17,6 +17,12 @@ services:
     networks:
       - minecraft
     restart: unless-stopped
+    healthcheck:
+      test: /crafty/healthcheck.sh
+      interval: 60s
+      retries: 5
+      start_period: 180s
+      timeout: 30s
     labels:
       - traefik.enable=true
       - traefik.http.routers.mc.entrypoints=websecure
@@ -33,12 +39,10 @@ services:
       - traefik.tcp.routers.mc-server.tls="false"
       - traefik.tcp.services.mc-server.loadbalancer.server.port=25565
       - traefik.tcp.routers.mc-server.service=mc-server
-    healthcheck:
-      test: /crafty/healthcheck.sh
-      interval: 60s
-      retries: 5
-      start_period: 180s
-      timeout: 30s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   minecraft:

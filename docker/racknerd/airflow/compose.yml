@@ -15,11 +15,15 @@ services:
       - wireguard
     command: version
     healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
+      test: exit 0
       interval: 10s
       timeout: 10s
       retries: 1
       start_period: 0s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
   airflow-scheduler:
     image: jnstockley/airflow:2024.12.28
@@ -42,6 +46,11 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
   airflow-webserver:
     image: jnstockley/airflow:2024.12.28
     container_name: airflow-webserver
@@ -72,6 +81,10 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   airflow:

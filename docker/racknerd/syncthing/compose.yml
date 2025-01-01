@@ -33,7 +33,11 @@ services:
       - traefik.http.routers.syncthing.service=syncthing
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
+    cap_drop:
+      - ALL
     hostname: racknerd_syncthing
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   syncthing:

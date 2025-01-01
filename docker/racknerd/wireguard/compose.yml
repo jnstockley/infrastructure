@@ -6,7 +6,7 @@ services:
     container_name: wireguard
     volumes:
       - ./config:/config
-      - /lib/modules:/lib/modules  # optional
+      - /lib/modules:/lib/modules
     env_file:
       - .env
     ports:
@@ -28,6 +28,10 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
 

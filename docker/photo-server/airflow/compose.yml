@@ -14,11 +14,15 @@ services:
     network_mode: service:wireguard-airflow
     command: version
     healthcheck:
-      test: ["CMD-SHELL", "exit 0"]
+      test: exit 0
       interval: 10s
       timeout: 10s
       retries: 1
       start_period: 0s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
   airflow-scheduler:
     image: jnstockley/airflow:2024.12.28
@@ -39,6 +43,11 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
   airflow-webserver:
     image: jnstockley/airflow:2024.12.28
     container_name: airflow-webserver
@@ -67,12 +76,17 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
   wireguard-airflow:
     image: linuxserver/wireguard:1.0.20210914@sha256:5a0a72a7bc7f08b2989ad95174a4bba275c3fda7ffac47988cfe5e8c1d45096d
     container_name: wireguard-airflow
     volumes:
       - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules  # optional
+      - /lib/modules:/lib/modules
     environment:
       - PUID=1000
       - PGID=1000
@@ -81,17 +95,21 @@ services:
       - airflow
       - postgres
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
     healthcheck:
       test: curl --fail https://google.com || exit 1
       interval: 10s
       timeout: 10s
       retries: 5
       start_period: 100s
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   airflow:

@@ -31,6 +31,11 @@ services:
       - traefik.http.routers.pgadmin.service=pgadmin
       - traefik.http.services.pgadmin.loadbalancer.server.port=80
       - traefik.docker.network=pgadmin
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
   postgres-db:
     image: postgres:17.2-alpine3.21
     container_name: postgres
@@ -49,6 +54,10 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   postgres:

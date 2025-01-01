@@ -15,6 +15,11 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
   web-scrapper-nacs:
     image: jnstockley/web-scrapper:v0.3.2
     container_name: web_scrapper_nacs
@@ -29,3 +34,7 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
