@@ -48,6 +48,10 @@ services:
       - traefik.http.routers.traefik-secure.tls.domains[0].main=local.jstockley.com
       - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com
       - traefik.http.routers.traefik-secure.service=api@internal
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     security_opt:
       - no-new-privileges:true
 

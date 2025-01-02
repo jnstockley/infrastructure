@@ -37,6 +37,10 @@ services:
       - traefik.docker.network=adguard
     cap_add:
       - NET_ADMIN
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     expose:
       - '53'
     security_opt:

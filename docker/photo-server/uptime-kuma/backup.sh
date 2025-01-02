@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Define the name of the Docker container
 CONTAINER_NAME="uptime-kuma"

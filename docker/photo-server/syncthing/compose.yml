@@ -32,6 +32,10 @@ services:
       - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     hostname: syncthing_photo_server
     security_opt:
       - no-new-privileges:true
