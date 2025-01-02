@@ -28,6 +28,10 @@ services:
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
       - traefik.docker.network=uptime-kuma
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     security_opt:
       - no-new-privileges:true
 
