@@ -1,28 +1,18 @@
 ---
-name: Yaml Lint
+name: Lint
 
 on:
   pull_request:
     branches:
       - main
       - beta
-    paths:
-      - .github/**/**.yaml
-      - .github/**/**.yml
-      - docker/**/**.yaml
-      - docker/**/**.yml
   push:
     branches:
       - main
-    paths:
-      - .github/**/**.yaml
-      - .github/**/**.yml
-      - docker/**/**.yaml
-      - docker/**/**.yml
 
 jobs:
   lint:
-    name: Lint Yaml Files
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -42,3 +32,8 @@ jobs:
 
       - name: Step 4 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/
+
+      - name: Step 5 - Lint Shell Scripts
+        run: |
+          apt-get install shellcheck
+          find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) \| xargs shellcheck
