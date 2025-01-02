@@ -22,10 +22,10 @@ jobs:
       - name: Step 2 - Setup Node.js environment
         uses: actions/setup-node@48b90677b6048efbc723b11a94acb950d3f1ac36
 
-      - name: Step 2 - Install Yaml Linter
+      - name: Step 2 - Install Linters
         run: |
           sudo apt-get update
-          sudo apt-get install -y yamllint
+          sudo apt-get install -y yamllint shellcheck
 
       - name: Step 3 - Lint Yaml Files
         run: yamllint -s .
@@ -35,5 +35,4 @@ jobs:
 
       - name: Step 5 - Lint Shell Scripts
         run: |
-          apt-get install shellcheck
           find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) \| xargs shellcheck
