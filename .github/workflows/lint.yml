@@ -25,7 +25,7 @@ jobs:
       - name: Step 2 - Install Linters
         run: |
           sudo apt-get update
-          sudo apt-get install -y yamllint shellcheck
+          sudo apt-get install -y yamllint shellcheck shfmt
 
       - name: Step 3 - Lint Yaml Files
         run: yamllint -s .
