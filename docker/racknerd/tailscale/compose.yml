@@ -33,6 +33,10 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     hostname: racknerd
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     security_opt:
       - no-new-privileges:true
 
