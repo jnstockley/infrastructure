@@ -65,11 +65,11 @@ services:
       retries: 5
       start_period: 180s
       timeout: 30s
+    user: root
     deploy:
       resources:
         limits:
           memory: 256M
-    user: root
     security_opt:
       - no-new-privileges:true
 
