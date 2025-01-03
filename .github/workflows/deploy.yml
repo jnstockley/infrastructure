@@ -24,7 +24,7 @@ jobs:
 
       - name: Step 2 - Get Changes files
         id: files
-        uses: tj-actions/changed-files@7f28b2be82d24be06a22503ab3cc3b462ca18212
+        uses: tj-actions/changed-files@d6e91a2266cdb9d62096cebf1e8546899c6aa18f
         with:
           files_yaml: |
             docker_racknerd:
