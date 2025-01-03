@@ -10,4 +10,4 @@ CURRENT_DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 OUTPUT_FILE="${HOME}/infrastructure/docker/photo-server/postgres/backup/dump_${CURRENT_DATE}.sql.bz2"
 
 # Run the pg_dumpall command inside the Docker container and save the output to a file
-docker exec $CONTAINER_NAME pg_dumpall -U jackstockley -W | bzip2 > "$OUTPUT_FILE"
+docker exec $CONTAINER_NAME pg_dumpall -U jackstockley -W | bzip2 >"$OUTPUT_FILE"
