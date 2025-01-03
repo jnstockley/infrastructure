@@ -34,7 +34,7 @@ jobs:
 
       - name: Step 3 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
-        uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
+        uses: appleboy/ssh-action@49751ff51697f88206b6c7a0f60f83d1a880b26d
         env:
           FILES: ${{ steps.files.outputs.docker_racknerd_all_changed_files }}
         with:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Step 5 - Deploy containers (Photo Server)
         if: steps.files.outputs.docker_photo_server_any_changed == 'true'
-        uses: appleboy/ssh-action@66aa4d343bf909ac4fa0ac52f4e62a9adc354c95
+        uses: appleboy/ssh-action@49751ff51697f88206b6c7a0f60f83d1a880b26d
         env:
           FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
         with:
