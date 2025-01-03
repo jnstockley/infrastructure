@@ -20,6 +20,10 @@ services:
       timeout: 10s
       retries: 1
       start_period: 0s
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     security_opt:
       - no-new-privileges:true
 
@@ -44,6 +48,10 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     security_opt:
       - no-new-privileges:true
 
@@ -77,6 +85,10 @@ services:
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
       - traefik.docker.network=airflow
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     security_opt:
       - no-new-privileges:true
 

@@ -51,7 +51,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 512M
     security_opt:
       - no-new-privileges:true
 

@@ -32,6 +32,10 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    deploy:
+      resources:
+        limits:
+          memory: 128M
     hostname: racknerd
     security_opt:
       - no-new-privileges:true

@@ -35,7 +35,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 512M
     hostname: syncthing_photo_server
     security_opt:
       - no-new-privileges:true
