@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
+        uses: actions/checkout@v4.2.2
 
       - name: Step 2 - Setup Node.js environment
-        uses: actions/setup-node@48b90677b6048efbc723b11a94acb950d3f1ac36
+        uses: actions/setup-node@v4.1.0
 
       - name: Step 2 - Install Linters
         run: |
