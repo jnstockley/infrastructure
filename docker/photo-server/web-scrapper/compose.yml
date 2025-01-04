@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.3
+    image: jnstockley/web-scrapper:v0.3.4
     container_name: web_scrapper_hyundai
     volumes:
       - ./data/:/web-scrapper/data/
@@ -16,11 +16,11 @@ services:
       - .env
     restart: unless-stopped
     healthcheck:
-      test: poetry run python3 src/main.py
+      test: poetry run python3 src/healthcheck.py
       interval: 60s
-      retries: 5
-      start_period: 60s
-      timeout: 30s
+      retries: 3
+      start_period: 20s
+      timeout: 10s
     deploy:
       resources:
         limits:
@@ -29,7 +29,7 @@ services:
       - no-new-privileges:true
 
   web-scrapper-nacs:
-    image: jnstockley/web-scrapper:v0.3.3
+    image: jnstockley/web-scrapper:v0.3.4
     container_name: web_scrapper_nacs
     volumes:
       - ./data/:/web-scrapper/data/
@@ -43,11 +43,11 @@ services:
       - .env
     restart: unless-stopped
     healthcheck:
-      test: poetry run python3 src/main.py
+      test: poetry run python3 src/healthcheck.py
       interval: 60s
-      retries: 5
-      start_period: 60s
-      timeout: 30s
+      retries: 3
+      start_period: 20s
+      timeout: 10s
     deploy:
       resources:
         limits:
