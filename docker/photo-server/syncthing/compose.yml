@@ -2,7 +2,7 @@
 name: syncthing
 services:
   syncthing:
-    image: syncthing/syncthing:1.28.1
+    image: syncthing/syncthing:1.29.0
     container_name: syncthing
     volumes:
       - ./config:/var/syncthing/config
