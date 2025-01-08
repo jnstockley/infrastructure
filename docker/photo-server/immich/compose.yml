@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.124.0
+    image: ghcr.io/immich-app/immich-server:v1.124.1
     container_name: immich_server
     depends_on:
       - database
