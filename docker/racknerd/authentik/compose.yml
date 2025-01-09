@@ -2,7 +2,7 @@
 name: authentik
 services:
   server:
-    image: ghcr.io/goauthentik/server:2024.12.1
+    image: ghcr.io/goauthentik/server:2024.12.2
     container_name: authentik
     volumes:
       - ./media:/media
@@ -42,7 +42,7 @@ services:
       - no-new-privileges:true
 
   worker:
-    image: ghcr.io/goauthentik/server:2024.12.1
+    image: ghcr.io/goauthentik/server:2024.12.2
     container_name: authentik_worker
     volumes:
       - ./media:/media
