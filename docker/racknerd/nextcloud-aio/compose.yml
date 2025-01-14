@@ -11,6 +11,7 @@ services:
     environment:
       - APACHE_PORT=11000
       - APACHE_IP_BINDING=127.0.0.1
+      - WATCHTOWER_DOCKER_SOCKET_PATH=/var/run/docker.sock
     networks:
       - nextcloud-aio
       - wireguard
