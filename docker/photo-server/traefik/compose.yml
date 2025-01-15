@@ -26,7 +26,6 @@ services:
       - syncthing
       - uptime-kuma
       - adguard
-      - bluesky
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -82,7 +81,4 @@ networks:
     external: true
   adguard:
     name: adguard
-    external: true
-  bluesky:
-    name: bluesky
     external: true
