@@ -5,7 +5,7 @@ services:
     image: jnstockley/web-scrapper:v0.3.6
     container_name: web_scrapper_hyundai
     volumes:
-      - ./data/:/web-scrapper/data/
+      - ./hyundai-data/:/web-scrapper/data/
     environment:
       - TZ=America/Chicago
       - SCRAPPER=diff
@@ -29,28 +29,28 @@ services:
       - no-new-privileges:true
 
   web-scrapper-nacs:
-    image: jnstockley/web-scrapper:v0.3.6
-    container_name: web_scrapper_nacs
-    volumes:
-      - ./data/:/web-scrapper/data/
-    environment:
-      - TZ=America/Chicago
-      - SCRAPPER=diff
-      - URL=https://www.tesla.com/NACS
-      - PERCENTAGE=5
-      - SLEEP_TIME_SEC=86400
-    env_file:
-      - .env
-    restart: unless-stopped
-    healthcheck:
-      test: poetry run python3 src/healthcheck.py
-      interval: 60s
-      retries: 3
-      start_period: 20s
-      timeout: 10s
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
+   image: jnstockley/web-scrapper:v0.3.6
+   container_name: web_scrapper_nacs
+   volumes:
+     - ./nacs-data/:/web-scrapper/data/
+   environment:
+     - TZ=America/Chicago
+     - SCRAPPER=diff
+     - URL=https://www.tesla.com/NACS
+     - PERCENTAGE=5
+     - SLEEP_TIME_SEC=86400
+   env_file:
+     - .env
+   restart: unless-stopped
+   healthcheck:
+     test: poetry run python3 src/healthcheck.py
+     interval: 60s
+     retries: 3
+     start_period: 20s
+     timeout: 10s
+   deploy:
+     resources:
+       limits:
+         memory: 256M
+   security_opt:
+     - no-new-privileges:true
