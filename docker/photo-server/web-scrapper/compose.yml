@@ -35,9 +35,9 @@ services:
       - ./data/:/web-scrapper/data/
     environment:
       - TZ=America/Chicago
-      - SCRAPPER=text
+      - SCRAPPER=diff
       - URL=https://www.tesla.com/NACS
-      - TEXT=Hyundai
+      - PERCENTAGE=5
       - SLEEP_TIME_SEC=86400
     env_file:
       - .env
