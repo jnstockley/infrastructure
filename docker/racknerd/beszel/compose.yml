@@ -1,0 +1,20 @@
+---
+name: beszel
+services:
+  beszel-agent:
+    image: henrygd/beszel-agent:0.9.1
+    container_name: beszel-agent-photo-server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - .env
+    networks:
+      - wireguard
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  wireguard:
+    name: wireguard
+    external: true
