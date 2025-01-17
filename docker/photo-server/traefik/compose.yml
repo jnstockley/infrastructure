@@ -26,6 +26,7 @@ services:
       - syncthing
       - uptime-kuma
       - adguard
+      - beszel
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -81,4 +82,7 @@ networks:
     external: true
   adguard:
     name: adguard
+    external: true
+  beszel:
+    name: beszel
     external: true
