@@ -3,7 +3,7 @@ name: beszel
 services:
   beszel-agent:
     image: henrygd/beszel-agent:0.9.1
-    container_name: beszel-agent-photo-server
+    container_name: beszel-agent-racknerd
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     env_file:
