@@ -1,0 +1,42 @@
+---
+name: beszel
+services:
+  beszel:
+    image: henrygd/beszel:0.9.1
+    container_name: beszel
+    volumes:
+      - ./data:/beszel_data
+    networks:
+      - beszel
+    restart: unless-stopped
+    # extra_hosts:
+    #   - host.docker.internal:host-gateway
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.beszel.entrypoints=websecure
+      - traefik.http.routers.beszel.rule=Host(`stats.local.jstockley.com`)
+      - traefik.http.routers.beszel.tls=true
+      - traefik.http.routers.beszel.tls.certresolver=production
+      - traefik.http.routers.beszel.service=beszel
+      - traefik.http.services.beszel.loadbalancer.server.port=8090
+      - traefik.docker.network=beszel
+    security_opt:
+      - no-new-privileges:true
+
+  beszel-agent:
+    image: henrygd/beszel-agent:0.9.1
+    container_name: beszel-agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file:
+      - .env
+    networks:
+      - beszel
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  beszel:
+    name: beszel
+    external: true
