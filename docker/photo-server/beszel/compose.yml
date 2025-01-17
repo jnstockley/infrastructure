@@ -29,6 +29,7 @@ services:
     container_name: beszel-agent-photo-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/photos/.beszel:/extra-filesystems/sdb1:ro
     env_file:
       - .env
     networks:
