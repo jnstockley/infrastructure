@@ -6,12 +6,8 @@ services:
     container_name: beszel
     volumes:
       - ./data:/beszel_data
-    networks:
-      - beszel
-      - beszel-agent
+    network_mode: service:wireguard-beszel
     restart: unless-stopped
-    # extra_hosts:
-    #   - host.docker.internal:host-gateway
     labels:
       - traefik.enable=true
       - traefik.http.routers.beszel.entrypoints=websecure
@@ -29,6 +25,7 @@ services:
     container_name: beszel-agent-photo-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /mnt/photos/.beszel:/extra-filesystems/sdb1:ro
     env_file:
       - .env
     networks:
@@ -36,6 +33,36 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+
+  wireguard-beszel:
+    image: linuxserver/wireguard:1.0.20210914@sha256:5794900ef4b61cdeab20bb0061995eac7e79954f52d811130e7bd7a1455f4977
+    container_name: wireguard-beszel
+    volumes:
+      - ./config:/config/wg_confs
+      - /lib/modules:/lib/modules
+    env_file:
+      - .env
+    networks:
+      - beszel
+      - beszel-agent
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail https://google.com || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   beszel:
