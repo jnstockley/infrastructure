@@ -8,13 +8,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     env_file:
       - .env
-    networks:
-      - beszel
+    ports:
+      - '0.0.0.0:45876:45876'
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-
-networks:
-  beszel:
-    name: beszel
-    external: true
