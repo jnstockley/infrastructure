@@ -12,7 +12,6 @@ services:
     networks:
       - uptime-kuma
       - postgres
-      - redis
       - wireguard
     restart: unless-stopped
     healthcheck:
@@ -43,9 +42,6 @@ networks:
     external: true
   postgres:
     name: postgres
-    external: true
-  redis:
-    name: redis
     external: true
   wireguard:
     name: wireguard
