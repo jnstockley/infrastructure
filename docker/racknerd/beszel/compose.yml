@@ -11,5 +11,7 @@ services:
     ports:
       - '0.0.0.0:45876:45876'
     restart: unless-stopped
+    healthcheck:
+      test: exit 0
     security_opt:
       - no-new-privileges:true
