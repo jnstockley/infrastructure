@@ -48,7 +48,7 @@ services:
       - no-new-privileges:true
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.124.2
+    image: ghcr.io/immich-app/immich-machine-learning:v1.125.1
     container_name: immich_machine_learning
     volumes:
       - model-cache:/cache
@@ -71,7 +71,7 @@ services:
       - no-new-privileges:true
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.124.2
+    image: ghcr.io/immich-app/immich-server:v1.125.1
     container_name: immich_server
     depends_on:
       - database
@@ -110,7 +110,7 @@ services:
       - no-new-privileges:true
 
   redis:
-    image: docker.io/redis:6.2-alpine@sha256:eaba718fecd1196d88533de7ba49bf903ad33664a92debb24660a922ecd9cac8
+    image: docker.io/redis:6.2-alpine@sha256:905c4ee67b8e0aa955331960d2aa745781e6bd89afc44a8584bfd13bc890f0ae
     container_name: immich_redis
     networks:
       - immich_private
