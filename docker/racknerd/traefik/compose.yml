@@ -24,7 +24,6 @@ services:
       - pgadmin
       - api
       - syncthing
-      - authentik
       - airflow
       - tailscale
       - wireguard
@@ -67,9 +66,6 @@ networks:
   syncthing:
     external: true
     name: syncthing
-  authentik:
-    name: authentik
-    external: true
   airflow:
     name: airflow
     external: true
