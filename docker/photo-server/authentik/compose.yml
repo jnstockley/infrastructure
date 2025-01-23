@@ -16,7 +16,6 @@ services:
       - authentik-private
       - redis
       - postgres
-#      - wireguard
     command: server
     restart: unless-stopped
     healthcheck:
@@ -56,7 +55,6 @@ services:
       - authentik-private
       - redis
       - postgres
-#      - wireguard
     command: worker
     restart: unless-stopped
     healthcheck:
