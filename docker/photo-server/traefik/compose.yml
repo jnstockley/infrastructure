@@ -27,6 +27,7 @@ services:
       - uptime-kuma
       - adguard
       - beszel
+      - authentik
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -86,3 +87,6 @@ networks:
   beszel:
     name: beszel
     external: true
+  authentik:
+    external: true
+    name: authentik
