@@ -2,7 +2,7 @@
 name: airflow
 services:
   airflow-init:
-    image: jnstockley/airflow:2024.12.28
+    image: jnstockley/airflow:2025.01.23
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -29,7 +29,7 @@ services:
       - no-new-privileges:true
 
   airflow-scheduler:
-    image: jnstockley/airflow:2024.12.28
+    image: jnstockley/airflow:2025.01.23
     container_name: airflow-scheduler
     depends_on:
       - airflow-init
@@ -58,7 +58,7 @@ services:
       - no-new-privileges:true
 
   airflow-webserver:
-    image: jnstockley/airflow:2024.12.28
+    image: jnstockley/airflow:2025.01.23
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
