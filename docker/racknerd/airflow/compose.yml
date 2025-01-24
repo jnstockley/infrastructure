@@ -2,7 +2,7 @@
 name: airflow
 services:
   airflow-init:
-    image: jnstockley/airflow:2025.01.23
+    image: jnstockley/airflow:2025.01.24
     volumes:
       - ./logs:/opt/airflow/logs
       - ./data:/opt/airflow/data
@@ -13,6 +13,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: version
     healthcheck:
       test: exit 0
@@ -28,7 +29,7 @@ services:
       - no-new-privileges:true
 
   airflow-scheduler:
-    image: jnstockley/airflow:2025.01.23
+    image: jnstockley/airflow:2025.01.24
     container_name: airflow-scheduler
     depends_on:
       - airflow-init
@@ -40,6 +41,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: scheduler
     restart: unless-stopped
     healthcheck:
@@ -56,7 +58,7 @@ services:
       - no-new-privileges:true
 
   airflow-webserver:
-    image: jnstockley/airflow:2025.01.23
+    image: jnstockley/airflow:2025.01.24
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
@@ -68,6 +70,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: webserver
     restart: unless-stopped
     healthcheck:
@@ -101,4 +104,7 @@ networks:
     external: true
   wireguard:
     name: wireguard
+    external: true
+  redis:
+    name: redis
     external: true
