@@ -100,6 +100,7 @@ services:
     networks:
       - airflow
       - postgres
+      - redis
     restart: unless-stopped
     healthcheck:
       test: curl --fail https://google.com || exit 1
@@ -125,4 +126,7 @@ networks:
     external: true
   postgres:
     name: postgres
+    external: true
+  redis:
+    name: redis
     external: true

@@ -13,6 +13,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: version
     healthcheck:
       test: exit 0
@@ -40,6 +41,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: scheduler
     restart: unless-stopped
     healthcheck:
@@ -68,6 +70,7 @@ services:
       - airflow
       - postgres
       - wireguard
+      - redis
     command: webserver
     restart: unless-stopped
     healthcheck:
@@ -101,4 +104,7 @@ networks:
     external: true
   wireguard:
     name: wireguard
+    external: true
+  redis:
+    name: redis
     external: true
