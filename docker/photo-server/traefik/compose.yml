@@ -28,6 +28,7 @@ services:
       - adguard
       - beszel
       - authentik
+      - it-tools
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -90,3 +91,6 @@ networks:
   authentik:
     external: true
     name: authentik
+  it-tools:
+    external: true
+    name: it-tools
