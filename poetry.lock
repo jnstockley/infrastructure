@@ -2,14 +2,14 @@
 
 [[package]]
 name = "certifi"
-version = "2024.12.14"
+version = "2025.1.31"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "certifi-2024.12.14-py3-none-any.whl", hash = "sha256:1275f7a45be9464efc1173084eaa30f866fe2e47d389406136d332ed4967ec56"},
-    {file = "certifi-2024.12.14.tar.gz", hash = "sha256:b650d30f370c2b724812bee08008be0c4163b163ddaec3f2546c1caf65f191db"},
+    {file = "certifi-2025.1.31-py3-none-any.whl", hash = "sha256:ca78db4565a652026a4db2bcdf68f2fb589ea80d0be70e03929ed730746b84fe"},
+    {file = "certifi-2025.1.31.tar.gz", hash = "sha256:3d5da6925056f6f18f119200434a4780a94263f10d1c21d032a6f6b2baa20651"},
 ]
 
 [[package]]
@@ -357,14 +357,14 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "testcontainers"
-version = "4.9.0"
+version = "4.9.1"
 description = "Python library for throwaway instances of anything that can run in a Docker container"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "testcontainers-4.9.0-py3-none-any.whl", hash = "sha256:c6fee929990972c40bf6b91b7072c94064ff3649b405a14fde0274c8b2479d32"},
-    {file = "testcontainers-4.9.0.tar.gz", hash = "sha256:2cd6af070109ff68c1ab5389dc89c86c2dc3ab30a21ca734b2cb8f0f80ad479e"},
+    {file = "testcontainers-4.9.1-py3-none-any.whl", hash = "sha256:315fb94b42a383872df530aa45319745278ef0cc18b9cfcdc231a75d14afa5a0"},
+    {file = "testcontainers-4.9.1.tar.gz", hash = "sha256:37fe9a222549ddb788463935965b16f91809e9a8d654f437d6a59eac9b77f76f"},
 ]
 
 [package.dependencies]
@@ -531,4 +531,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "3.13.1"
-content-hash = "2646a10e9575a9e0c0db3f2a9119a1f5f7489e9e3629692d85350bb52bcc2708"
+content-hash = "3dba071309281acf606e97043a4f95855071ade77f82aa46441f8592febbb6bc"
