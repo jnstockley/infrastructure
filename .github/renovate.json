@@ -16,6 +16,6 @@
     }
   ],
   "terraform": {
-    "fileMatch": ["\\.tofu$"]
+    "fileMatch": ["\\.tf$", "\\.tofu$"]
   }
 }
