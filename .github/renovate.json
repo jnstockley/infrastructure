@@ -8,5 +8,14 @@
   ],
   "assignees": [
     "jnstockley"
-  ]
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["terraform-provider"],
+      "registryUrls": ["https://registry.opentofu.org"]
+    }
+  ],
+  "terraform": {
+    "fileMatch": ["\\.tf$", "\\.tofu$"]
+  }
 }
