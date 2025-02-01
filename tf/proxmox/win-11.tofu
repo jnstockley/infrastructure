@@ -1,7 +1,7 @@
 resource "proxmox_vm_qemu" "win-11" {
   name             = "win-11"
   target_node      = "proxmox"
-  vmid             = 100
+  vmid             = 101
   desc             = "Windows 11"
   bios             = "ovmf"
   onboot           = true
