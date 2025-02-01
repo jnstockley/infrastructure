@@ -8,6 +8,4 @@ resource "proxmox_vm_qemu" "debian-12" {
   startup          = "order=1"
   automatic_reboot = true
   qemu_os          = "l26"
-
-
 }
