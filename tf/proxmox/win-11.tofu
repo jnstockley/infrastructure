@@ -32,12 +32,12 @@ resource "proxmox_vm_qemu" "win-11-testing" {
 
   disks {
     sata {
-      sata0{
+      sata0 {
         cdrom {
           iso = "local:iso/Win11_21H2_English_x64.iso"
         }
       }
-      }
+    }
     virtio {
       virtio0 {
         passthrough {
