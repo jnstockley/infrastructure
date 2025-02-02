@@ -18,6 +18,10 @@
 ### 500 Internal Server Error, error status when using passthrough disks
 - Limitation in proxmox v8, must use the root user
 
+### Repeated invalid OTP code
+- Bug in proxmox provider, issue [!1150](https://github.com/Telmate/terraform-provider-proxmox/issues/1150)
+- Workaround, disable MFA for user
+
 ## Setup Terraform
 ### Create Role
 - Name: `Terraform`

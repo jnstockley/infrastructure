@@ -8,8 +8,6 @@ services:
       - ./data:/beszel_data
     network_mode: service:wireguard-beszel
     restart: unless-stopped
-    healthcheck:
-      test: ./beszel -v
     labels:
       - traefik.enable=true
       - traefik.http.routers.beszel.entrypoints=websecure
@@ -33,8 +31,6 @@ services:
     networks:
       - beszel-agent
     restart: unless-stopped
-    healthcheck:
-      test: ./agent -v
     security_opt:
       - no-new-privileges:true
 
