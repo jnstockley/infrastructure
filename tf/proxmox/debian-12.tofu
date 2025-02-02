@@ -1,14 +1,14 @@
-resource "proxmox_vm_qemu" "debian-12" {
-  name             = "debian-12"
+resource "proxmox_vm_qemu" "debian-12-testing" {
+  name             = "debian-12-testing"
   target_node      = "proxmox"
-  vmid             = 100
+  vmid             = 900
   desc             = "Debian 12"
   bios             = "ovmf"
   onboot           = true
-  startup          = "order=any"
+  startup          = "order=1"
   vm_state         = "running"
   protection       = true
-  boot             = "order:virtio1:virtio0"
+  boot             = "order=virtio0;sata0"
   agent            = 1
   qemu_os          = "l26"
   memory           = 24576
@@ -31,16 +31,17 @@ resource "proxmox_vm_qemu" "debian-12" {
   }
 
   disks {
-    virtio {
-      virtio0 {
+    sata {
+      sata0 {
         cdrom {
-          iso         = "local:iso/debian.iso"
-          passthrough = false
+          iso = "local:iso/debian-12.7.0-amd64-netinst.iso"
         }
       }
-      virtio1 {
+    }
+    virtio {
+      virtio0 {
         passthrough {
-          async     = "io_uring"
+          asyncio   = "io_uring"
           backup    = true
           cache     = "none"
           discard   = false
@@ -50,9 +51,9 @@ resource "proxmox_vm_qemu" "debian-12" {
           serial    = "S2R5NX0J414815P"
         }
       }
-      virtio2 {
+      virtio1 {
         passthrough {
-          async     = "io_uring"
+          asyncio   = "io_uring"
           backup    = true
           cache     = "none"
           discard   = false

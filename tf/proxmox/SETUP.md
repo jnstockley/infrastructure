@@ -15,6 +15,9 @@
 4. Ensure `GITHUB_TOKEN` is set in environment variables
     - If not, run `gh auth token` and set the token in environment variables in `nano ~/.zshrc` or `nano ~/.bashrc`
 
+### 500 Internal Server Error, error status when using passthrough disks
+- Limitation in proxmox v8, must use the root user
+
 ## Setup Terraform
 ### Create Role
 - Name: `Terraform`

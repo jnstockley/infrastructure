@@ -1,14 +1,14 @@
-resource "proxmox_vm_qemu" "win-11" {
-  name             = "win-11"
+resource "proxmox_vm_qemu" "win-11-testing" {
+  name             = "win-11-testing"
   target_node      = "proxmox"
-  vmid             = 101
+  vmid             = 901
   desc             = "Windows 11"
   bios             = "ovmf"
   onboot           = true
-  startup          = "order=any"
+  startup          = "order=2"
   vm_state         = "running"
   protection       = true
-  boot             = "order:virtio1:virtio0"
+  boot             = "order=virtio0;sata0"
   agent            = 1
   qemu_os          = "win11"
   memory           = 4096
@@ -31,16 +31,17 @@ resource "proxmox_vm_qemu" "win-11" {
   }
 
   disks {
-    virtio {
-      virtio0 {
+    sata {
+      sata0{
         cdrom {
-          iso         = "local:iso/win11.iso"
-          passthrough = false
+          iso = "local:iso/Win11_21H2_English_x64.iso"
         }
       }
-      virtio1 {
+      }
+    virtio {
+      virtio0 {
         passthrough {
-          async     = "io_uring"
+          asyncio   = "io_uring"
           backup    = true
           cache     = "none"
           discard   = false
@@ -50,9 +51,9 @@ resource "proxmox_vm_qemu" "win-11" {
           serial    = "HKQ01XRC"
         }
       }
-      virtio2 {
+      virtio1 {
         passthrough {
-          async     = "io_uring"
+          asyncio   = "io_uring"
           backup    = true
           cache     = "none"
           discard   = false
@@ -64,7 +65,7 @@ resource "proxmox_vm_qemu" "win-11" {
       }
       virtio3 {
         passthrough {
-          async     = "io_uring"
+          asyncio   = "io_uring"
           backup    = true
           cache     = "none"
           discard   = false
@@ -78,13 +79,11 @@ resource "proxmox_vm_qemu" "win-11" {
   }
 
   efidisk {
-    efitype           = "4m"
-    storage           = "local-lvm"
-    pre-enrolled-keys = 1
+    efitype = "4m"
+    storage = "local-lvm"
   }
   efidisk {
-    efitype = "4M"
+    efitype = "4m"
     storage = "local-lvm"
-    version = "v2.0"
   }
 }
