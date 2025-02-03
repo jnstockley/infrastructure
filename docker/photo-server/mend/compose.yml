@@ -2,7 +2,7 @@
 name: mend
 services:
   renovate-ce:
-    image: ghcr.io/mend/renovate-ce:9.3.0
+    image: ghcr.io/mend/renovate-ce:9.4.0
     container_name: mend_renovate
     volumes:
       - ./logs:/logs
