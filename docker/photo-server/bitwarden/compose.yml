@@ -2,8 +2,8 @@
 name: bitwarden
 services:
   bitwarden:
-    container_name: bitwarden
     image: bitwarden/self-host:2025.1.1-beta
+    container_name: bitwarden
     volumes:
       - ./data:/etc/bitwarden
       - ./logs:/var/log/bitwarden
