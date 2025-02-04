@@ -7,7 +7,7 @@ services:
     volumes:
       - ./data:/root
     ports:
-      - "0.0.0.0:21117:21117/tcp"
+      - '0.0.0.0:21117:21117/tcp'
     command: hbbr
     restart: unless-stopped
     security_opt:
@@ -20,8 +20,8 @@ services:
     volumes:
       - ./data:/root
     ports:
-      - "0.0.0.0:21115:21115/tcp"
-      - "0.0.0.0:21116:21116"
+      - '0.0.0.0:21115:21115/tcp'
+      - '0.0.0.0:21116:21116'
     command: hbbs
     restart: unless-stopped
     security_opt:
