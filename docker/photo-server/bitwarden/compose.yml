@@ -2,25 +2,28 @@
 name: bitwarden
 services:
   bitwarden:
+    image: bitwarden/self-host:2025.1.1-beta
+    volumes:
+      - ./data:/etc/bitwarden
+      - ./logs:/var/log/bitwarden
     env_file:
       - .env
-    image: bitwarden/self-host:2025.1.1-beta
+    networks:
+      - bitwarden
+      - postgres
     restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.bitwarden.entrypoints=websecure
-      - traefik.http.routers.bitwarden.rule=Host(`vault.local.jstockley.com`, `vault-test.local.jstockley.com`)
+      - traefik.http.routers.bitwarden.rule=Host(`vault.local.jstockley.com`,
+        `vault-test.local.jstockley.com`)
       - traefik.http.routers.bitwarden.tls=true
       - traefik.http.routers.bitwarden.tls.certresolver=production
       - traefik.http.routers.bitwarden.service=bitwarden
       - traefik.http.services.bitwarden.loadbalancer.server.port=80
       - traefik.docker.network=bitwarden
-    networks:
-      - bitwarden
-      - postgres
-    volumes:
-      - ./data:/etc/bitwarden
-      - ./logs:/var/log/bitwarden
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   bitwarden:
