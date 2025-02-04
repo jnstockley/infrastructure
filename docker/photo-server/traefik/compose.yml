@@ -29,6 +29,7 @@ services:
       - beszel
       - authentik
       - it-tools
+      - bitwarden
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -94,3 +95,6 @@ networks:
   it-tools:
     external: true
     name: it-tools
+  bitwarden:
+    external: true
+    name: bitwarden
