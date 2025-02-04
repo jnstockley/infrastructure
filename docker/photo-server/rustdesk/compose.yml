@@ -1,0 +1,28 @@
+---
+name: rustdesk
+services:
+  hbbr:
+    image: rustdesk/rustdesk-server:1.1.14
+    container_name: hbbr
+    volumes:
+      - ./data:/root
+    ports:
+      - "0.0.0.0:21117:21117/tcp"
+    command: hbbr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+  hbbs:
+    image: rustdesk/rustdesk-server:1.1.14
+    container_name: hbbs
+    depends_on:
+      - hbbr
+    volumes:
+      - ./data:/root
+    ports:
+      - "0.0.0.0:21115:21115/tcp"
+      - "0.0.0.0:21116:21116"
+    command: hbbs
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
