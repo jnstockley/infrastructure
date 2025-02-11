@@ -35,7 +35,7 @@ services:
     ports:
       - '0.0.0.0:8080:8080'
     networks:
-      - nextcloud-aio
+      - nextcloud
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://nextcloud-aio-apache:11000 || exit 1
