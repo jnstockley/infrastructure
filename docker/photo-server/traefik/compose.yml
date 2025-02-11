@@ -98,3 +98,6 @@ networks:
   bitwarden:
     external: true
     name: bitwarden
+  nextcloud:
+    name: nextcloud
+    external: true
