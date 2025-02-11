@@ -30,6 +30,7 @@ services:
       - authentik
       - it-tools
       - bitwarden
+      - nextcloud
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
