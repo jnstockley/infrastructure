@@ -4,7 +4,7 @@ http:
     nextcloud:
       rule: "Host(`nextcloud.jstockley.com`)"
       entrypoints:
-        - "https"
+        - "websecure"
       service: nextcloud
       middlewares:
         - nextcloud-chain
