@@ -8,6 +8,7 @@ services:
       - ./config:/var/syncthing/config
       - /mnt/photos/:/var/syncthing/photos
       - /home/jackstockley/infrastructure/docker/photo-server:/var/syncthing/docker
+      - /mnt/backup:/var/syncthing/backup
     environment:
       - TZ=America/Chicago
       - PUID=0
