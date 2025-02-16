@@ -115,9 +115,9 @@ services:
       - env/uid.env
       - env/mssql.override.env
     restart: always
-    stop_grace_period: 60s
     security_opt:
       - no-new-privileges:true
+    stop_grace_period: 60s
 
   nginx:
     image: bitwarden/nginx:2025.1.4
