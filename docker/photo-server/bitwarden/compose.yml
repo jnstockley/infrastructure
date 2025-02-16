@@ -59,15 +59,6 @@ services:
       - default
       - public
     restart: always
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.bitwarden.entrypoints=websecure
-      - traefik.http.routers.bitwarden.rule=Host(`vault.local.jstockley.com`)
-      - traefik.http.routers.bitwarden.tls=true
-      - traefik.http.routers.bitwarden.tls.certresolver=production
-      - traefik.http.routers.bitwarden.service=bitwarden
-      - traefik.http.services.bitwarden.loadbalancer.server.port=8080
-      - traefik.docker.network=bitwarden
 
   icons:
     image: bitwarden/icons:2025.1.4
@@ -157,6 +148,15 @@ services:
       - env/global.env
       - env/uid.env
     restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bitwarden.entrypoints=websecure
+      - traefik.http.routers.bitwarden.rule=Host(`vault.local.jstockley.com`)
+      - traefik.http.routers.bitwarden.tls=true
+      - traefik.http.routers.bitwarden.tls.certresolver=production
+      - traefik.http.routers.bitwarden.service=bitwarden
+      - traefik.http.services.bitwarden.loadbalancer.server.port=8080
+      - traefik.docker.network=bitwarden
 
 networks:
   default:
