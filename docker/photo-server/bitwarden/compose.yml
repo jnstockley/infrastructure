@@ -18,6 +18,8 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   api:
     image: bitwarden/api:2025.1.4
@@ -34,6 +36,8 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   attachments:
     image: bitwarden/attachments:2025.1.4
@@ -44,6 +48,8 @@ services:
       - env/global.env
       - env/uid.env
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   events:
     image: bitwarden/events:2025.1.4
@@ -59,6 +65,8 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   icons:
     image: bitwarden/icons:2025.1.4
@@ -73,6 +81,8 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   identity:
     image: bitwarden/identity:2025.1.4
@@ -90,6 +100,9 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
+
   mssql:
     image: bitwarden/mssql:2025.1.4
     container_name: bitwarden-mssql
@@ -102,6 +115,8 @@ services:
       - env/uid.env
       - env/mssql.override.env
     restart: always
+    security_opt:
+      - no-new-privileges:true
     stop_grace_period: 60s
 
   nginx:
@@ -132,6 +147,8 @@ services:
       - traefik.http.routers.bitwarden.service=bitwarden
       - traefik.http.services.bitwarden.loadbalancer.server.port=8080
       - traefik.docker.network=bitwarden
+    security_opt:
+      - no-new-privileges:true
 
   notifications:
     image: bitwarden/notifications:2025.1.4
@@ -147,6 +164,8 @@ services:
       - default
       - public
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
   web:
     image: bitwarden/web:2025.1.2
@@ -157,6 +176,8 @@ services:
       - env/global.env
       - env/uid.env
     restart: always
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   default:
