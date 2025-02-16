@@ -76,7 +76,6 @@ services:
     container_name: immich_server
     depends_on:
       - database
-      - redis
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - ./healthcheck.js:/healthcheck/healthcheck.js
