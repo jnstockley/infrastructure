@@ -62,7 +62,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   identity:
     image: bitwarden/identity:latest
@@ -79,7 +79,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   sso:
     image: bitwarden/sso:latest
@@ -96,7 +96,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   admin:
     image: bitwarden/admin:latest
@@ -114,7 +114,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   icons:
     image: bitwarden/icons:latest
@@ -128,7 +128,7 @@ services:
       - ./env/uid.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   notifications:
     image: bitwarden/notifications:latest
@@ -143,7 +143,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   events:
     image: bitwarden/events:latest
@@ -158,7 +158,7 @@ services:
       - ./env/global.override.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
   nginx:
     image: bitwarden/nginx:latest
@@ -188,7 +188,7 @@ services:
       - ./env/uid.env
     networks:
       - bw-internal
-      - public
+      - bitwarden
 
 
 networks:
