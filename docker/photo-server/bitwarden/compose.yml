@@ -2,7 +2,7 @@
 name: bitwarden
 services:
   bitwarden:
-    image: bitwarden/self-host:2025.1.3-beta
+    image: bitwarden/self-host:beta@sha256:ea8fddcad632d50232ba825d559592a6a9d331b3abe7bf7ee0d6c57a620a85c8
     container_name: bitwarden
     volumes:
       - ./data:/etc/bitwarden
