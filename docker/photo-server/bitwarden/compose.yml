@@ -20,9 +20,9 @@ services:
     restart: always
     stop_grace_period: 60s
     volumes:
-      - ../mssql/data:/var/opt/mssql/data
-      - ../logs/mssql:/var/opt/mssql/log
-      - ../mssql/backups:/etc/bitwarden/mssql/backups
+      - ./mssql/data:/var/opt/mssql/data
+      - ./logs/mssql:/var/opt/mssql/log
+      - ./mssql/backups:/etc/bitwarden/mssql/backups
     env_file:
       - mssql.env
       - ./env/uid.env
@@ -33,7 +33,7 @@ services:
     container_name: bitwarden-web
     restart: always
     volumes:
-      - ../web:/etc/bitwarden/web
+      - ./web:/etc/bitwarden/web
     env_file:
       - global.env
       - ./env/uid.env
@@ -43,7 +43,7 @@ services:
     container_name: bitwarden-attachments
     restart: always
     volumes:
-      - ../core/attachments:/etc/bitwarden/core/attachments
+      - ./core/attachments:/etc/bitwarden/core/attachments
     env_file:
       - global.env
       - ./env/uid.env
@@ -53,9 +53,9 @@ services:
     container_name: bitwarden-api
     restart: always
     volumes:
-      - ../core:/etc/bitwarden/core
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/api:/etc/bitwarden/logs
+      - ./core:/etc/bitwarden/core
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/api:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -69,10 +69,10 @@ services:
     container_name: bitwarden-identity
     restart: always
     volumes:
-      - ../identity:/etc/bitwarden/identity
-      - ../core:/etc/bitwarden/core
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/identity:/etc/bitwarden/logs
+      - ./identity:/etc/bitwarden/identity
+      - ./core:/etc/bitwarden/core
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/identity:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -86,10 +86,10 @@ services:
     container_name: bitwarden-sso
     restart: always
     volumes:
-      - ../identity:/etc/bitwarden/identity
-      - ../core:/etc/bitwarden/core
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/sso:/etc/bitwarden/logs
+      - ./identity:/etc/bitwarden/identity
+      - ./core:/etc/bitwarden/core
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/sso:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -105,9 +105,9 @@ services:
     depends_on:
       - mssql
     volumes:
-      - ../core:/etc/bitwarden/core
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/admin:/etc/bitwarden/logs
+      - ./core:/etc/bitwarden/core
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/admin:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -121,8 +121,8 @@ services:
     container_name: bitwarden-icons
     restart: always
     volumes:
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/icons:/etc/bitwarden/logs
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/icons:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -135,8 +135,8 @@ services:
     container_name: bitwarden-notifications
     restart: always
     volumes:
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/notifications:/etc/bitwarden/logs
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/notifications:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -150,8 +150,8 @@ services:
     container_name: bitwarden-events
     restart: always
     volumes:
-      - ../ca-certificates:/etc/bitwarden/ca-certificates
-      - ../logs/events:/etc/bitwarden/logs
+      - ./ca-certificates:/etc/bitwarden/ca-certificates
+      - ./logs/events:/etc/bitwarden/logs
     env_file:
       - global.env
       - ./env/uid.env
@@ -180,10 +180,10 @@ services:
       - traefik.http.services.bitwarden.loadbalancer.server.port=8080
       - traefik.docker.network=bitwarden
     volumes:
-      - ../nginx:/etc/bitwarden/nginx
-      - ../letsencrypt:/etc/letsencrypt
-      - ../ssl:/etc/ssl
-      - ../logs/nginx:/var/log/nginx
+      - ./nginx:/etc/bitwarden/nginx
+      - ./letsencrypt:/etc/letsencrypt
+      - ./ssl:/etc/ssl
+      - ./logs/nginx:/var/log/nginx
     env_file:
       - ./env/uid.env
     networks:
