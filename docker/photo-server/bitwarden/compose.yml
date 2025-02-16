@@ -1,18 +1,174 @@
----
-name: bitwarden
+#
+# Useful references:
+# https://docs.docker.com/reference/compose-file/
+# https://docs.docker.com/reference/cli/docker/compose/#use--f-to-specify-the-name-and-path-of-one-or-more-compose-files
+# https://docs.docker.com/compose/how-tos/environment-variables/envvars/
+#
+#########################################################################
+# WARNING: This file is generated. Do not make changes to this file.    #
+# They will be overwritten on update. If you want to make additions to  #
+# this file, you can create a `docker-compose.override.yml` file in the #
+# same directory and it will be merged into this file at runtime. You   #
+# can also manage various settings used in this file from the           #
+# ./bwdata/config.yml file for your installation.                       #
+#########################################################################
+
 services:
-  bitwarden:
-    image: bitwarden/self-host:beta@sha256:ea8fddcad632d50232ba825d559592a6a9d331b3abe7bf7ee0d6c57a620a85c8
-    container_name: bitwarden
+  mssql:
+    image: bitwarden/mssql:latest
+    container_name: bitwarden-mssql
+    restart: always
+    stop_grace_period: 60s
     volumes:
-      - ./data:/etc/bitwarden
-      - ./logs:/var/log/bitwarden
+      - ../mssql/data:/var/opt/mssql/data
+      - ../logs/mssql:/var/opt/mssql/log
+      - ../mssql/backups:/etc/bitwarden/mssql/backups
     env_file:
-      - .env
+      - mssql.env
+      - ./env/uid.env
+      - ./env/mssql.override.env
+
+  web:
+    image: bitwarden/web:latest
+    container_name: bitwarden-web
+    restart: always
+    volumes:
+      - ../web:/etc/bitwarden/web
+    env_file:
+      - global.env
+      - ./env/uid.env
+
+  attachments:
+    image: bitwarden/attachments:latest
+    container_name: bitwarden-attachments
+    restart: always
+    volumes:
+      - ../core/attachments:/etc/bitwarden/core/attachments
+    env_file:
+      - global.env
+      - ./env/uid.env
+
+  api:
+    image: bitwarden/api:latest
+    container_name: bitwarden-api
+    restart: always
+    volumes:
+      - ../core:/etc/bitwarden/core
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/api:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
     networks:
-      - bitwarden
-      - postgres
-    restart: unless-stopped
+      - bw-internal
+      - public
+
+  identity:
+    image: bitwarden/identity:latest
+    container_name: bitwarden-identity
+    restart: always
+    volumes:
+      - ../identity:/etc/bitwarden/identity
+      - ../core:/etc/bitwarden/core
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/identity:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
+    networks:
+      - bw-internal
+      - public
+
+  sso:
+    image: bitwarden/sso:latest
+    container_name: bitwarden-sso
+    restart: always
+    volumes:
+      - ../identity:/etc/bitwarden/identity
+      - ../core:/etc/bitwarden/core
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/sso:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
+    networks:
+      - bw-internal
+      - public
+
+  admin:
+    image: bitwarden/admin:latest
+    container_name: bitwarden-admin
+    restart: always
+    depends_on:
+      - mssql
+    volumes:
+      - ../core:/etc/bitwarden/core
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/admin:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
+    networks:
+      - bw-internal
+      - public
+
+  icons:
+    image: bitwarden/icons:latest
+    container_name: bitwarden-icons
+    restart: always
+    volumes:
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/icons:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+    networks:
+      - bw-internal
+      - public
+
+  notifications:
+    image: bitwarden/notifications:latest
+    container_name: bitwarden-notifications
+    restart: always
+    volumes:
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/notifications:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
+    networks:
+      - bw-internal
+      - public
+
+  events:
+    image: bitwarden/events:latest
+    container_name: bitwarden-events
+    restart: always
+    volumes:
+      - ../ca-certificates:/etc/bitwarden/ca-certificates
+      - ../logs/events:/etc/bitwarden/logs
+    env_file:
+      - global.env
+      - ./env/uid.env
+      - ./env/global.override.env
+    networks:
+      - bw-internal
+      - public
+
+  nginx:
+    image: bitwarden/nginx:latest
+    container_name: bitwarden-nginx
+    restart: always
+    depends_on:
+      - web
+      - admin
+      - api
+      - identity
     labels:
       - traefik.enable=true
       - traefik.http.routers.bitwarden.entrypoints=websecure
@@ -23,13 +179,24 @@ services:
       - traefik.http.routers.bitwarden.service=bitwarden
       - traefik.http.services.bitwarden.loadbalancer.server.port=8080
       - traefik.docker.network=bitwarden
-    security_opt:
-      - no-new-privileges:true
+    volumes:
+      - ../nginx:/etc/bitwarden/nginx
+      - ../letsencrypt:/etc/letsencrypt
+      - ../ssl:/etc/ssl
+      - ../logs/nginx:/var/log/nginx
+    env_file:
+      - ./env/uid.env
+    networks:
+      - bw-internal
+      - public
+
 
 networks:
+  bw-internal:
+    internal: true
   bitwarden:
-    external: true
     name: bitwarden
+    external: true
   postgres:
     name: postgres
     external: true
