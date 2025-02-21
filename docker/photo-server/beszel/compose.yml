@@ -8,6 +8,15 @@ services:
       - ./data:/beszel_data
     network_mode: service:wireguard-beszel
     restart: unless-stopped
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
+        keep-file: "true"
+        mode: "non-blocking"
     labels:
       - traefik.enable=true
       - traefik.http.routers.beszel.entrypoints=websecure
@@ -31,6 +40,15 @@ services:
     networks:
       - beszel-agent
     restart: unless-stopped
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
+        keep-file: "true"
+        mode: "non-blocking"
     security_opt:
       - no-new-privileges:true
 
@@ -52,6 +70,15 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
+        keep-file: "true"
+        mode: "non-blocking"
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

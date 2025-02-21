@@ -24,5 +24,14 @@ services:
       - '0.0.0.0:21116:21116'
     command: hbbs
     restart: unless-stopped
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
+        keep-file: "true"
+        mode: "non-blocking"
     security_opt:
       - no-new-privileges:true
