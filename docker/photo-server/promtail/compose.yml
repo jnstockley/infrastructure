@@ -6,7 +6,7 @@ services:
     volumes:
       - ./config/config.yml:/mnt/config/config.yml:ro
       - /var/log:/var/log:ro
-      - ../traefik/logs/:/var/log/traefik:ro
+      - ../traefik/logs/:/var/traefik:ro
     command: "-config.file=/mnt/config/config.yml"
     restart: unless-stopped
     security_opt:
