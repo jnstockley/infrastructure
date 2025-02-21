@@ -3,6 +3,7 @@ name: airflow
 services:
   airflow-init:
     image: jnstockley/airflow:2025.02.10
+    container_name: airflow-init
     depends_on:
       - wireguard-airflow
     volumes:
