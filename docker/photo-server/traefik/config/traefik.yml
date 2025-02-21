@@ -31,18 +31,30 @@ entryPoints:
       trustedIPs:
         - "127.0.0.1/32"
         - "172.0.0.0/8"
+        - "172.64.0.0/13"
   ping:
     address: :8082
     forwardedHeaders:
       trustedIPs:
         - "127.0.0.1/32"
         - "172.0.0.0/8"
+        - "172.64.0.0/13"
 
   websecure:
     address: :443
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.0.0.0/8"
+        - "172.64.0.0/13"
 
   minecraft:
     address: :25565/tcp
+    forwardedHeaders:
+      trustedIPs:
+        - "127.0.0.1/32"
+        - "172.0.0.0/8"
+        - "172.64.0.0/13"
 
 ping:
   entryPoint: "ping"
