@@ -1,0 +1,34 @@
+---
+name: loki
+services:
+  loki:
+    image: grafana/loki:3.4.2
+    container_name: loki
+    volumes:
+      - ./config/config.yaml:/etc/loki/config.yaml:ro
+      - data_loki:/loki:rw
+    networks:
+      - loki
+    command: "-config.file=/etc/loki/config.yml"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.loki.loadbalancer.server.port=3100
+      - traefik.http.routers.loki.entrypoints=websecure
+      - traefik.http.routers.loki.rule=Host(`loki.local.jstockley.com`)
+      - traefik.http.routers.loki.tls=true
+      - traefik.http.routers.loki.tls.certresolver=production
+      - traefik.http.routers.loki.service=loki
+      # -- (Optional) Authentication
+      # - traefik.http.routers.loki.middlewares=authentik-middleware@file
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  loki:
+    name: loki
+    external: true
+
+volumes:
+  data_loki:
+    driver: local
