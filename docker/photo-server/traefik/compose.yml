@@ -102,3 +102,6 @@ networks:
   nextcloud:
     name: nextcloud
     external: true
+  loki:
+    name: loki
+    external: true
