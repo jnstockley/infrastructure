@@ -3,6 +3,15 @@ name: airflow
 services:
   airflow-init:
     image: jnstockley/airflow:2025.02.10
+    logging:
+      driver: loki
+      options:
+        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+        loki-retries: 2
+        loki-max-backoff: 800ms
+        loki-timeout: 1s
+        keep-file: "true"
+        mode: "non-blocking"
     depends_on:
       - wireguard-airflow
     volumes:
