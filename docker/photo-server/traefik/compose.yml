@@ -31,6 +31,7 @@ services:
       - it-tools
       - bitwarden
       - nextcloud
+      - loki
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
