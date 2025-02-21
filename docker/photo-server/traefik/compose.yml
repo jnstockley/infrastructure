@@ -32,6 +32,7 @@ services:
       - bitwarden
       - nextcloud
       - loki
+      - grafana
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -105,4 +106,7 @@ networks:
     external: true
   loki:
     name: loki
+    external: true
+  grafana:
+    name: grafana
     external: true
