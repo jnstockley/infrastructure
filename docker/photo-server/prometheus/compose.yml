@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.services.prometheus.loadbalancer.server.port=9000
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
       - traefik.http.routers.prometheus.entrypoints=websecure
       - traefik.http.routers.prometheus.rule=Host(`prometheus.local.jstockley.com`)
       - traefik.http.routers.prometheus.tls=true
