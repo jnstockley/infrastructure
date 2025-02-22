@@ -9,7 +9,6 @@ services:
       - prometheus-data:/prometheus
     networks:
       - prometheus
-      - immich_private
     command: "--config.file=/etc/prometheus/prometheus.yml"
     restart: unless-stopped
     labels:
@@ -27,9 +26,7 @@ networks:
   prometheus:
     name: prometheus
     external: true
-  immich_private:
-    name: immich_private
-    external: true
+
 volumes:
   prometheus-data:
     driver: local
