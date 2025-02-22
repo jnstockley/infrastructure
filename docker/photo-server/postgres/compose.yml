@@ -48,7 +48,7 @@ services:
       - no-new-privileges:true
 
   postgres-db:
-    image: postgres:17.3-alpine3.21
+    image: postgres:17.4-alpine3.21
     container_name: postgres
     volumes:
       - ./postgres:/var/lib/postgresql/data
