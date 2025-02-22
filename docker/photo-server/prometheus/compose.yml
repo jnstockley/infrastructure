@@ -1,0 +1,31 @@
+---
+name: prometheus
+services:
+  prometheus:
+    image: docker.io/prom/prometheus:v3.1.0
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.prometheus.loadbalancer.server.port=9000
+      - traefik.http.routers.prometheus.entrypoints=websecure
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.local.jstockley.com`)
+      - traefik.http.routers.prometheus.tls=true
+      - traefik.http.routers.prometheus.tls.certresolver=production
+      - traefik.http.routers.prometheus.service=prometheus
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  prometheus:
+    name: prometheus
+    external: true
+volumes:
+  prometheus-data:
+    driver: local

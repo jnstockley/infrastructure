@@ -33,6 +33,7 @@ services:
       - nextcloud
       - loki
       - grafana
+      - prometheus
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -118,4 +119,7 @@ networks:
     external: true
   grafana:
     name: grafana
+    external: true
+  prometheus:
+    name: prometheus
     external: true

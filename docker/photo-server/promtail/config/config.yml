@@ -25,4 +25,3 @@ scrape_configs:
       labels:
         job: treafik
         __path__: /traefik/*log
-
