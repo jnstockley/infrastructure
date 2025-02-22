@@ -20,8 +20,8 @@ scrape_configs:
 
   - job_name: treafik
     static_configs:
-    - targets:
-        - treafik
-      labels:
-        job: treafik
-        __path__: /traefik/*log
+      - targets:
+          - treafik
+        labels:
+          job: treafik
+          __path__: /traefik/*log

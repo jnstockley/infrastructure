@@ -2,7 +2,7 @@
 name: prometheus
 services:
   prometheus:
-    image: docker.io/prom/prometheus:v3.1.0
+    image: docker.io/prom/prometheus:v3.2.0
     container_name: prometheus
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.services.prometheus.loadbalancer.server.port=9000
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
       - traefik.http.routers.prometheus.entrypoints=websecure
       - traefik.http.routers.prometheus.rule=Host(`prometheus.local.jstockley.com`)
       - traefik.http.routers.prometheus.tls=true
