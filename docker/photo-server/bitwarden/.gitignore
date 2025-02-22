@@ -2,3 +2,5 @@ identity/
 mssql/
 core/
 logs/
+*.crt
+*.key
