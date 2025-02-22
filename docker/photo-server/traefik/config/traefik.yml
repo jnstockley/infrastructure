@@ -3,15 +3,6 @@ global:
   checkNewVersion: false
   sendAnonymousUsage: false
 
-#log:
-#  level: DEBUG
-#  format: common
-#  filePath: /var/log/traefik/traefik.log
-
-#accesslog:
-#  format: common
-#  filePath: /var/log/traefik/access.log
-
 accessLog:
   filePath: "/var/log/traefik/access.log"
   format: json
