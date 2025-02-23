@@ -14,9 +14,9 @@ git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/In
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 
-sh <(curl -L https://nixos.org/nix/install)
+sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 
-"$SHELL"
+exec "$SHELL"
 
 nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 
