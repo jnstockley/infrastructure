@@ -38,8 +38,10 @@
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."macbook-pro" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
       modules = [ configuration ];
     };
+
+    darwinPackages = self.darwinConfigurations."macbook".pkgs;
   };
 }
