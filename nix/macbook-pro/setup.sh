@@ -16,6 +16,8 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 
 # Download and install Nix
 #sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+  sh -s -- install
 
 # Source the Nix environment in the current shell
 #. /nix/var/nix/profiles/default/etc/profile\.d/nix-daemon\.sh
