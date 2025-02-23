@@ -1,9 +1,9 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-sudo xcode-select --install &> /dev/null
+sudo xcode-select --install &>/dev/null
 
-until xcode-select --print-path &> /dev/null; do
-  sleep 5;
+until xcode-select --print-path &>/dev/null; do
+    sleep 5
 done
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
