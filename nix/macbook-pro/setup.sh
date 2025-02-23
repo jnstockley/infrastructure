@@ -25,9 +25,11 @@ cd ~/.config/nix || exit 1
 
 #nix flake init -t nix-darwin --extra-experimental-features "nix-command flakes"
 
+#rm -rf ~/.config/nix/flake.nix
+
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 
-nix run nix-darwwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix/flake.nix#macbook-pro
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix/flake.nix#macbook-pro
 
 #nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 darwin-rebuild switch --flake ~/.config/nix#macbook-pro
