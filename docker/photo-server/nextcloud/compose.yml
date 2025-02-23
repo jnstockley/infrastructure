@@ -32,17 +32,23 @@ services:
       # TALK_PORT: 3478 # This allows to adjust the port that the talk container is using which is exposed on the host. See https://github.com/nextcloud/all-in-one#how-to-adjust-the-talk-port
       # WATCHTOWER_DOCKER_SOCKET_PATH: /var/run/docker.sock # Needs to be specified if the docker socket on the host is not located in the default '/var/run/docker.sock'. Otherwise mastercontainer updates will fail. For macos it needs to be '/var/run/docker.sock'
       # security_opt: ["label:disable"] # Is needed when using SELinux
-    ports:
-      - '0.0.0.0:8080:8080'
     networks:
       - nextcloud
     restart: unless-stopped
-    #    healthcheck:
-    #      test: curl --fail http://nextcloud-aio-apache:11000 || exit 1
-    #      interval: 60s
-    #      retries: 5
-    #      start_period: 20s
-    #      timeout: 10s
+    healthcheck:
+      test: curl --fail http://nextcloud-aio-apache:11000 || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nextcloud-aio.loadbalancer.server.port=8080
+      - traefik.http.routers.nextcloud-aio.entrypoints=websecure
+      - traefik.http.routers.nextcloud-aio.rule=Host(`nextcloud-aio.local.jstockley.com`)
+      - traefik.http.routers.nextcloud-aio.tls=true
+      - traefik.http.routers.nextcloud-aio.tls.certresolver=production
+      - traefik.http.routers.nextcloud-aio.service=nextcloud-aio
     init: true
     security_opt:
       - no-new-privileges:true
@@ -53,6 +59,5 @@ networks:
     external: true
 
 volumes:
-  # If you want to store the data on a different drive, see https://github.com/nextcloud/all-in-one#how-to-store-the-filesinstallation-on-a-separate-drive
   nextcloud_aio_mastercontainer:
     name: nextcloud_aio_mastercontainer
