@@ -21,4 +21,4 @@ sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 
 nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 
-darwin-rebuild switch
+nix run nix-darwwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix/flake.nix#macbook-pro

@@ -14,6 +14,8 @@
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ pkgs.vim
+          pkgs.gh
+          pkgs.raycast
         ];
 
       # Necessary for using flakes on this system.
@@ -36,7 +38,7 @@
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."simple" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."macbook-pro" = nix-darwin.lib.darwinSystem {
       modules = [ configuration ];
     };
   };
