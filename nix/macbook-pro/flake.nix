@@ -12,6 +12,9 @@
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
+
+      nixpkgs.config.allowUnfree = true;
+
       environment.systemPackages =
         [ pkgs.vim
           pkgs.gh
