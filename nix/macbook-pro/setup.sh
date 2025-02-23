@@ -16,7 +16,8 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 
 sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 
-exec "$SHELL"
+# Source the Nix environment in the current shell
+. /nix/var/nix/profiles/default/etc/profile\.d/nix-daemon\.sh
 
 nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 
