@@ -20,7 +20,7 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
   sh -s -- install
 
 # Source the Nix environment in the current shell
-#. /nix/var/nix/profiles/default/etc/profile\.d/nix-daemon\.sh
+. /nix/var/nix/profiles/default/etc/profile\.d/nix-daemon\.sh
 
 # nix flake init -t nix-darwin/master --extra-experimental-features "nix-command flakes"
 
