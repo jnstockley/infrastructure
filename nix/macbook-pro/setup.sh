@@ -16,6 +16,8 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 
 sh <(curl -L https://nixos.org/nix/install)
 
+"$SHELL"
+
 nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 
 darwin-rebuild switch
