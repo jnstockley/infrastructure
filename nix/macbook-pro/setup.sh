@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-sh <(curl -L https://nixos.org/nix/install)
+sudo xcode-select --install
 
-# Download flake.nix file
-
-nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
+mkdir -p ~/Documents/GitHub/Infrastructure/
 
 mkdir -p ~/.config/nix
 
-curl -o ~/.config/nix/flake.nix https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/main/nix/macbook-pro/flake.nix
+git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+
+ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
+
+sh <(curl -L https://nixos.org/nix/install)
+
+nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 
 darwin-rebuild switch
