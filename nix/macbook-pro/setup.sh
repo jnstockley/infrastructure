@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-sudo xcode-select --install
+sudo xcode-select --install &> /dev/null
+
+until xcode-select --print-path &> /dev/null; do
+  sleep 5;
+done
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
