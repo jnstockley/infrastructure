@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    #nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
   outputs =
@@ -13,7 +13,7 @@
       self,
       nix-darwin,
       nixpkgs,
-      #nix-homebrew,
+      nix-homebrew,
     }:
     let
       configuration =
@@ -51,20 +51,20 @@
             #pkgs.ghostty
           ];
 
-          #homebrew = {
-          #  enable = true;
-          #  casks = [
-          #    "balenaetcher"
-          #    "malwarebytes"
-          #    "steam"
-          #    "visual-studio-code"
-          #    "vnc-server"
-          #    "docker"
-          #    "roblox"
-          #    "termius"
-          #    "minecraft"
-          #    "jetbrains-toolbox"
-          #  ];
+          homebrew = {
+            enable = true;
+            casks = [
+              "balenaetcher"
+              "malwarebytes"
+              "steam"
+              "visual-studio-code"
+              "vnc-server"
+              "docker"
+              "roblox"
+              "termius"
+              "minecraft"
+              "jetbrains-toolbox"
+            ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
             #  "Hidden Bar" = 1452453066;
@@ -122,14 +122,14 @@
       darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-         # nix-homebrew.darwinModules.nix-homebrew
-         # {
-         #   nix-homebrew = {
-         #     enable = true;
-         #     enableRosetta = true;
-         #     user = "jackstockley";
-         #   };
-         # }
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = true;
+              user = "jackstockley";
+            };
+          }
         ];
       };
 
