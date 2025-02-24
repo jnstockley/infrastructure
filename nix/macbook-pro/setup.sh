@@ -3,8 +3,9 @@
 sudo xcode-select --install &>/dev/null
 
 # Download and install Nix
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix |
-    sudo sh -s -- install
+sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+#curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix |
+#    sudo sh -s -- install
 
 # Source the Nix environment in the current shell
 # shellcheck disable=SC1091
@@ -22,8 +23,6 @@ mkdir -p ~/.config/nix
 git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
-
-#sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 
 # nix flake init -t nix-darwin/master --extra-experimental-features "nix-command flakes"
 
