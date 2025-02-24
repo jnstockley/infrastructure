@@ -51,20 +51,20 @@
             pkgs.ghostty
           ];
 
-          homebrew = {
-            enable = true;
-            casks = [
-              "balenaetcher"
-              "malwarebytes"
-              "steam"
-              "visual-studio-code"
-              "vnc-server"
-              "docker"
-              "roblox"
-              "termius"
-              "minecraft"
-              "jetbrains-toolbox"
-            ];
+          #homebrew = {
+          #  enable = true;
+          #  casks = [
+          #    "balenaetcher"
+          #    "malwarebytes"
+          #    "steam"
+          #    "visual-studio-code"
+          #    "vnc-server"
+          #    "docker"
+          #    "roblox"
+          #    "termius"
+          #    "minecraft"
+          #    "jetbrains-toolbox"
+          #  ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
             #  "Hidden Bar" = 1452453066;
@@ -75,8 +75,8 @@
             #  "Word" = 462054704;
             #  "OneDrive" = 823766827;
             #};
-            onActivation.cleanup = "zap";
-          };
+            #onActivation.cleanup = "zap";
+          #};
 
 #          system.activationScripts.applications.text =
 #            let
@@ -122,14 +122,14 @@
       darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = true;
-              user = "jackstockley";
-            };
-          }
+         # nix-homebrew.darwinModules.nix-homebrew
+         # {
+         #   nix-homebrew = {
+         #     enable = true;
+         #     enableRosetta = true;
+         #     user = "jackstockley";
+         #   };
+         # }
         ];
       };
 
