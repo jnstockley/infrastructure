@@ -37,13 +37,13 @@
             pkgs.yamllint
             pkgs.discord
             pkgs.firefox
-            pkgs.jetbrains-toolbox
-            pkgs.minecraft
+            #pkgs.jetbrains-toolbox
+            #pkgs.minecraft
             pkgs.nextcloud-client
             pkgs.postman
             pkgs.rustdesk
             pkgs.tailscale
-            pkgs.termius
+            #pkgs.termius
             pkgs.utm
             pkgs.realvnc-vnc-viewer
             pkgs.mkalias
@@ -61,6 +61,9 @@
               "vnc-server"
               "docker"
               "roblox"
+              "termius"
+              "minecraft"
+              "jetbrains-toolbox"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
