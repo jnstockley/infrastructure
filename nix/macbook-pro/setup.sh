@@ -24,7 +24,7 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 
 # nix flake init -t nix-darwin/master --extra-experimental-features "nix-command flakes"
 
-nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook # --impure
 
 #nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
 darwin-rebuild switch --flake ~/.config/nix#macbook
