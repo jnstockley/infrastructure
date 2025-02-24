@@ -35,20 +35,20 @@
             pkgs.shfmt
             pkgs.uv
             pkgs.yamllint
-            pkgs.discord
-            pkgs.firefox
-            #pkgs.jetbrains-toolbox
-            #pkgs.minecraft
-            pkgs.nextcloud-client
-            pkgs.postman
-            pkgs.rustdesk
-            pkgs.tailscale
-            #pkgs.termius
-            pkgs.utm
-            pkgs.realvnc-vnc-viewer
-            pkgs.mkalias
-            pkgs.nerd-fonts.jetbrains-mono
-            pkgs.ghostty
+            #pkgs.discord
+            #pkgs.firefox
+            ##pkgs.jetbrains-toolbox
+            ##pkgs.minecraft
+            #pkgs.nextcloud-client
+            #pkgs.postman
+            #pkgs.rustdesk
+            #pkgs.tailscale
+            ##pkgs.termius
+            #pkgs.utm
+            #pkgs.realvnc-vnc-viewer
+            #pkgs.mkalias
+            #pkgs.nerd-fonts.jetbrains-mono
+            #pkgs.ghostty
           ];
 
           #homebrew = {
