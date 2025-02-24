@@ -29,4 +29,4 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
 
 #nix --extra-experimental-features "nix-command flakes" run nix-darwin/master#darwin-rebuild -- switch
-darwin-rebuild switch --flake ~/.config/nix#macbook
+#darwin-rebuild switch --flake ~/.config/nix#macbook
