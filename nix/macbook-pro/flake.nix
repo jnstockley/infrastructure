@@ -119,7 +119,6 @@
       darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
-          nix-homebrew
           nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {
