@@ -76,7 +76,7 @@
             #  "OneDrive" = 823766827;
             #};
             #onActivation.cleanup = "zap";
-          #};
+          };
 
 #          system.activationScripts.applications.text =
 #            let
@@ -115,7 +115,7 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
         };
-    in
+        in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#macbook
