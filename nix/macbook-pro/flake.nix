@@ -35,20 +35,13 @@
             pkgs.shfmt
             pkgs.uv
             pkgs.yamllint
-            #pkgs.discord
-            #pkgs.firefox
-            ##pkgs.jetbrains-toolbox
-            ##pkgs.minecraft
-            #pkgs.nextcloud-client
-            #pkgs.postman
-            #pkgs.rustdesk
-            #pkgs.tailscale
-            ##pkgs.termius
-            #pkgs.utm
-            #pkgs.realvnc-vnc-viewer
-            #pkgs.mkalias
-            #pkgs.nerd-fonts.jetbrains-mono
-            #pkgs.ghostty
+            pkgs.discord
+            pkgs.postman
+            pkgs.tailscale
+            pkgs.utm
+            pkgs.realvnc-vnc-viewer
+            pkgs.mkalias
+            pkgs.nerd-fonts.jetbrains-mono
           ];
 
           homebrew = {
@@ -64,6 +57,10 @@
               "termius"
               "minecraft"
               "jetbrains-toolbox"
+              "firefox"
+              "nextcloud"
+              "rustdesk"
+              "ghostty"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
