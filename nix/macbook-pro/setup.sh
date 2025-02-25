@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Checking Command Line Tools for Xcode"
 # Only run if the tools are not installed yet
