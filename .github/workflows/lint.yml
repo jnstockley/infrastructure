@@ -28,18 +28,29 @@ jobs:
           sudo apt-get install -y yamllint shellcheck shfmt
           ./tf/install.sh
 
-      - name: Step 3 - Lint Yaml Files
+      - name: Step 3 - Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Step 4 - Install nixfmt
+        run: nix-env -iA nixpkgs.nixfmt-rfc-style
+
+      - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
 
-      - name: Step 4 - Lint Docker Compose Files
+      - name: Step 6 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/
 
-      - name: Step 5 - Lint Shell Scripts
+      - name: Step 7 - Lint Shell Scripts
         run: |
           find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) -print0 | xargs -0 shellcheck -x -S style
           shfmt -d -i 4 -ci .
 
-      - name: Step 6 - Lint/Validate OpenTofu files
+      - name: Step 8 - Lint/Validate OpenTofu files
         run: |
           tofu validate
           tofu fmt -recursive -check
+
+      - name: Step 9 - Lint nix files
+        run: nixfmt --check .
