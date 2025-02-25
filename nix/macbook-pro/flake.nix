@@ -122,7 +122,7 @@
             };
           };
         };
-                            in
+    in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#macbook
