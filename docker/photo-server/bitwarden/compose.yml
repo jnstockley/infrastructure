@@ -151,7 +151,7 @@ services:
       - no-new-privileges:true
 
   notifications:
-    image: bitwarden/notifications:2025.1.4
+    image: bitwarden/notifications:2025.2.0
     container_name: bitwarden-notifications
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -168,7 +168,7 @@ services:
       - no-new-privileges:true
 
   web:
-    image: bitwarden/web:2025.1.2
+    image: bitwarden/web:2025.2.1
     container_name: bitwarden-web
     volumes:
       - ./web:/etc/bitwarden/web
