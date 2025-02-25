@@ -11,7 +11,7 @@ on:
     paths:
       - nix/**/*.nix
       - nix/**/*.sh
-      - github/workflows/nix.yml
+      - .github/workflows/nix.yml
   push:
     branches:
       - main
@@ -19,7 +19,7 @@ on:
     paths:
       - nix/**/*.nix
       - nix/**/*.sh
-      - github/workflows/nix.yml
+      - .github/workflows/nix.yml
 
 jobs:
   nix_install:
