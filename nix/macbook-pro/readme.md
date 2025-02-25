@@ -13,3 +13,11 @@ curl https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/main
 ```bash
 curl https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/beta/nix/macbook-pro/setup.sh | zsh
 ```
+
+## TODO
+- [ ] Setup Oh My ZSH
+- [ ] Add ⌘ + Space hotkey to Raycast
+- [ ] Install PyCharm and IntelliJ (maybe through toolbox?)
+- [ ] Copy existing settings to flake.nix file
+  - TODO Determine list of settings to copy
+- [ ] CI/CD Tests for install script and flake.nix
