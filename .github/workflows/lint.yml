@@ -22,24 +22,33 @@ jobs:
       - name: Step 2 - Setup Node.js environment
         uses: actions/setup-node@v4.2.0
 
-      - name: Step 2 - Install Linters
+      - name: Step 3 - Install Nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Step 4 - Install Linters
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint shellcheck shfmt
           ./tf/install.sh
 
-      - name: Step 3 - Lint Yaml Files
+      - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
 
-      - name: Step 4 - Lint Docker Compose Files
+      - name: Step 6 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/
 
-      - name: Step 5 - Lint Shell Scripts
+      - name: Step 7 - Lint Shell Scripts
         run: |
           find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) -print0 | xargs -0 shellcheck -x -S style
           shfmt -d -i 4 -ci .
 
-      - name: Step 6 - Lint/Validate OpenTofu files
+      - name: Step 8 - Lint/Validate OpenTofu files
         run: |
           tofu validate
           tofu fmt -recursive -check
+
+      - name: Step 9 - Lint Nix files
+        run: |
+          cp nix/macbook-pro/flake.nix /tmp/flake.nix
+          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
+          diff /tmp/flake.nix nix/macbook-pro/flake.nix
