@@ -32,4 +32,5 @@ jobs:
       - name: Step 2 - Run Nix Setup Script
         run: |
           chmod +x ./nix/macbook-pro/setup.sh
+          export GITHUB_ACTION=1
           ./nix/macbook-pro/setup.sh

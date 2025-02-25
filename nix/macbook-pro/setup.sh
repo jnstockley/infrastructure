@@ -21,11 +21,16 @@ sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 # shellcheck disable=SC1091
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-mkdir -p ~/Documents/GitHub/Infrastructure/
 
 mkdir -p ~/.config/nix
 
-git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+# Check if GITHUB_ACTION is set and equals 1
+if [ "${GITHUB_ACTION}" != "1" ]; then
+    mkdir -p ~/Documents/GitHub/Infrastructure/
+    git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+else
+    ls -s $GITHUB_WORKSPACE ~/Documents/GitHub/Infrastructure/
+fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 # ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.lock ~/.config/nix/flake.lock
