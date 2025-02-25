@@ -48,4 +48,7 @@ jobs:
           tofu fmt -recursive -check
 
       - name: Step 9 - Lint Nix files
-        run: nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
+        run: |
+          cp nix/macbook-pro/flake.nix /tmp/flake.nix
+          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
+          diff /tmp/flake.nix nix/macbook-pro/flake.nix
