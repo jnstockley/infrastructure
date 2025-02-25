@@ -9,17 +9,17 @@ on:
     branches:
       - main
     paths:
-      - ./nix/**/*.nix
-      - ./nix/**/*.sh
-      - ./github/workflows/nix.yml
+      - nix/**/*.nix
+      - nix/**/*.sh
+      - github/workflows/nix.yml
   push:
     branches:
       - main
       - beta
     paths:
-      - ./nix/**/*.nix
-      - ./nix/**/*.sh
-      - ./github/workflows/nix.yml
+      - nix/**/*.nix
+      - nix/**/*.sh
+      - github/workflows/nix.yml
 
 jobs:
   nix_install:
