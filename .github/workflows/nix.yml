@@ -24,7 +24,7 @@ on:
 jobs:
   nix_install:
     name: Nix Install
-    runs-on: mac-latest
+    runs-on: macos-latest
 
     steps:
       - name: Step 1 - Checkout code
