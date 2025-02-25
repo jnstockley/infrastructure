@@ -5,20 +5,19 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-  on:
-    pull_request:
-      branches:
-        - main
-      paths:
-        - ./nix/**/*.nix
-        - ./nix/**/*.sh
-    push:
-      branches:
-        - main
-        - beta
-      paths:
-        - ./nix/**/*.nix
-        - ./nix/**/*.sh
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ./nix/**/*.nix
+      - ./nix/**/*.sh
+  push:
+    branches:
+      - main
+      - beta
+    paths:
+      - ./nix/**/*.nix
+      - ./nix/**/*.sh
 
 jobs:
   nix_install:
