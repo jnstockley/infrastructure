@@ -51,4 +51,6 @@ jobs:
           tofu fmt -recursive -check
 
       - name: Step 9 - Lint Nix files
-        run: nix fmt ./nix/macbook-pro/flake.nix
+        run: |
+            cd ./nix/macbook-pro
+            nix fmt ./nix/macbook-pro/flake.nix
