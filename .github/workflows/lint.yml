@@ -34,7 +34,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Step 4 - Install nixfmt
-        run: nix-env -iA nixpkgs.nixfmt-rfc-style
+        run: nix-shell -p nixfmt-rfc-style
 
       - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
