@@ -30,7 +30,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y yamllint shellcheck shfmt
           ./tf/install.sh
-          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
 
       - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
@@ -48,6 +47,5 @@ jobs:
           tofu validate
           tofu fmt -recursive -check
 
-      #- name: Step 9 - Lint Nix files
-      #  run: |
-      #    nix fmt ./nix/macbook-pro/flake.nix
+      - name: Step 9 - Lint Nix files
+        run: nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
