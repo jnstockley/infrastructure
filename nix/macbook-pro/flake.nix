@@ -76,6 +76,22 @@
             onActivation.cleanup = "zap";
           };
 
+          # Disable Spotlight keyboard shortcut
+          system.defaults.CustomUserPreferences = {
+            "com.apple.symbolichotkeys" = {
+              AppleSymbolicHotKeys = {
+                # Disable 'Cmd + Space' for Spotlight Search
+                "64" = {
+                  enabled = false;
+                };
+                # Disable 'Cmd + Alt + Space' for Finder search window
+                "65" = {
+                  enabled = false;
+                };
+              };
+            };
+          };
+
           system.activationScripts.applications.text =
             let
               env = pkgs.buildEnv {
@@ -113,22 +129,6 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
-
-          # Disable Spotlight keyboard shortcut
-          system.defaults.CustomUserPreferences = {
-              "com.apple.symbolichotkeys" = {
-                AppleSymbolicHotKeys = {
-                  # Disable 'Cmd + Space' for Spotlight Search
-                  "64" = {
-                    enabled = false;
-                  };
-                  # Disable 'Cmd + Alt + Space' for Finder search window
-                  "65" = {
-                    enabled = false;
-                  };
-                };
-              };
-            };
         };
     in
     {
