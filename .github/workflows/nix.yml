@@ -33,4 +33,5 @@ jobs:
         run: |
           chmod +x ./nix/macbook-pro/setup.sh
           export GITHUB_ACTION=1
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           ./nix/macbook-pro/setup.sh

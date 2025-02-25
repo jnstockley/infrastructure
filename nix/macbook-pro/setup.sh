@@ -31,6 +31,8 @@ if [ "${GITHUB_ACTION}" != "1" ]; then
     git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
 else
     ls -s $GITHUB_WORKSPACE ~/Documents/GitHub/Infrastructure/
+    # Set GITHUB_TOKEN for authenticated git commands
+    export GITHUB_TOKEN=${GITHUB_TOKEN}
 fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
