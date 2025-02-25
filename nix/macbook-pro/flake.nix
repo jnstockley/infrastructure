@@ -42,6 +42,7 @@
             pkgs.realvnc-vnc-viewer
             pkgs.mkalias
             pkgs.nerd-fonts.jetbrains-mono
+            pkgs.nixfmt-rfc-style
           ];
 
           homebrew = {
@@ -98,7 +99,6 @@
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
-          # TODO Fix `download-buffer-size` error
           nix.settings.download-buffer-size = 10485760; # 10MB buffer
 
           # Enable alternative shell support in nix-darwin.
@@ -113,10 +113,17 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
+
+          # Disable Spotlight keyboard shortcut
+          programs.spotlight = {
+            enable = true;
+            keyBindings = {
+              showSpotlight = null;
+            };
+          };
         };
-        in
+    in
     {
-      # TODO Fix Rosetta Error
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#macbook
       darwinConfigurations."macbook" = nix-darwin.lib.darwinSystem {
