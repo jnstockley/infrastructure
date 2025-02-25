@@ -72,7 +72,7 @@
             #  "Word" = 462054704;
             #  "OneDrive" = 823766827;
             #};
-            #onActivation.cleanup = "zap";
+            onActivation.cleanup = "zap";
           };
 
           system.activationScripts.applications.text =
@@ -98,6 +98,8 @@
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
+          # TODO Fix `download-buffer-size` error
+          nix.settings.download-buffer-size = 10485760; # 10MB buffer
 
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
@@ -124,7 +126,7 @@
           {
             nix-homebrew = {
               enable = true;
-              enableRosetta = true;
+              enableRosetta = false;
               user = "jackstockley";
             };
           }

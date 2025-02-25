@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
-sudo xcode-select --install &>/dev/null
+echo "Checking Command Line Tools for Xcode"
+# Only run if the tools are not installed yet
+# To check that try to print the SDK path
+
+if ! xcode-select -p &> /dev/null; then
+  echo "Command Line Tools for Xcode not found. Installing from softwareupdate…"
+# This temporary file prompts the 'softwareupdate' utility to list the Command Line Tools
+  touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress;
+  PROD=$(softwareupdate -l | grep "\*.*Command Line" | tail -n 1 | sed 's/^[^C]* //')
+  softwareupdate -i "$PROD" --verbose;
+else
+  echo "Command Line Tools for Xcode have been installed."
+fi
 
 # Download and install Nix
 sh <(curl -L https://nixos.org/nix/install) --daemon --yes
@@ -8,11 +20,6 @@ sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 # Source the Nix environment in the current shell
 # shellcheck disable=SC1091
 . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
-echo "Waiting for xcode-select to complete..."
-until xcode-select --print-path &>/dev/null; do
-    sleep 5
-done
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
@@ -24,3 +31,5 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 # ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.lock ~/.config/nix/flake.lock
 
 nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
+
+exec $SHELL
