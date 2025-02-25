@@ -52,5 +52,5 @@ jobs:
 
       - name: Step 9 - Lint Nix files
         run: |
-            cd ./nix/macbook-pro
-            nix fmt ./nix/macbook-pro/flake.nix
+          cd ./nix/macbook-pro
+          nix fmt --check ./flake.nix
