@@ -32,4 +32,4 @@ ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/
 
 nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
 
-exec $SHELL
+exec "$SHELL"
