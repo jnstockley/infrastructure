@@ -52,7 +52,7 @@ services:
       - no-new-privileges:true
 
   events:
-    image: bitwarden/events:2025.1.4
+    image: bitwarden/events:2025.2.0
     container_name: bitwarden-events
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
