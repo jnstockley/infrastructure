@@ -2,7 +2,7 @@
 name: bitwarden
 services:
   admin:
-    image: bitwarden/admin:2025.1.4
+    image: bitwarden/admin:2025.2.0
     container_name: bitwarden-admin
     depends_on:
       - mssql
@@ -22,7 +22,7 @@ services:
       - no-new-privileges:true
 
   api:
-    image: bitwarden/api:2025.1.4
+    image: bitwarden/api:2025.2.0
     container_name: bitwarden-api
     volumes:
       - ./core:/etc/bitwarden/core
@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   attachments:
-    image: bitwarden/attachments:2025.1.4
+    image: bitwarden/attachments:2025.2.0
     container_name: bitwarden-attachments
     volumes:
       - ./core/attachments:/etc/bitwarden/core/attachments
@@ -52,7 +52,7 @@ services:
       - no-new-privileges:true
 
   events:
-    image: bitwarden/events:2025.1.4
+    image: bitwarden/events:2025.2.0
     container_name: bitwarden-events
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -69,7 +69,7 @@ services:
       - no-new-privileges:true
 
   icons:
-    image: bitwarden/icons:2025.1.4
+    image: bitwarden/icons:2025.2.0
     container_name: bitwarden-icons
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -85,7 +85,7 @@ services:
       - no-new-privileges:true
 
   identity:
-    image: bitwarden/identity:2025.1.4
+    image: bitwarden/identity:2025.2.0
     container_name: bitwarden-identity
     volumes:
       - ./identity:/etc/bitwarden/identity

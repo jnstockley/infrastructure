@@ -76,8 +76,12 @@
             onActivation.cleanup = "zap";
           };
 
+          system.activationScripts.postUserActivation.text = ''
+            # Following line should allow us to avoid a logout/login cycle when changing settings
+            /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+          '';
+
           system.defaults = {
-            # Disable Spotlight keyboard shortcut
             CustomUserPreferences = {
               "com.apple.symbolichotkeys" = {
                 AppleSymbolicHotKeys = {
