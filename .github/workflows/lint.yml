@@ -22,19 +22,17 @@ jobs:
       - name: Step 2 - Setup Node.js environment
         uses: actions/setup-node@v4.2.0
 
-      - name: Step 2 - Install Linters
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y yamllint shellcheck shfmt
-          ./tf/install.sh
-
       - name: Step 3 - Install Nix
         uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Step 4 - Install nixfmt
-        run: nix-shell -p nixfmt-rfc-style
+      - name: Step 4 - Install Linters
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y yamllint shellcheck shfmt
+          ./tf/install.sh
+          nix-shell -p nixfmt-rfc-style
 
       - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
@@ -52,5 +50,5 @@ jobs:
           tofu validate
           tofu fmt -recursive -check
 
-      - name: Step 9 - Lint nix files
-        run: nixfmt --check .
+      - name: Step 9 - Lint Nix files
+        run: nix fmt --check .
