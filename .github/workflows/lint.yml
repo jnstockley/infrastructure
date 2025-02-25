@@ -30,7 +30,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y yamllint shellcheck shfmt
           ./tf/install.sh
-          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt-rfc-style ./nix/macbook-pro/flake.nix"
+          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
 
       - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
