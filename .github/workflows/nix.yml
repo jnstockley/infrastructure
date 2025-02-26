@@ -4,27 +4,27 @@ name: Nix Install
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * WED'
   pull_request:
     branches:
       - main
     paths:
-      - ./nix/**/*.nix
-      - ./nix/**/*.sh
-      - ./github/workflows/nix.yml
+      - nix/**/*.nix
+      - nix/**/*.sh
+      - .github/workflows/nix.yml
   push:
     branches:
       - main
       - beta
     paths:
-      - ./nix/**/*.nix
-      - ./nix/**/*.sh
-      - ./github/workflows/nix.yml
+      - nix/**/*.nix
+      - nix/**/*.sh
+      - .github/workflows/nix.yml
 
 jobs:
   nix_install:
     name: Nix Install
-    runs-on: mac-latest
+    runs-on: macos-latest
 
     steps:
       - name: Step 1 - Checkout code
@@ -32,4 +32,6 @@ jobs:
       - name: Step 2 - Run Nix Setup Script
         run: |
           chmod +x ./nix/macbook-pro/setup.sh
+          export GITHUB_ACTION=1
+          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           ./nix/macbook-pro/setup.sh

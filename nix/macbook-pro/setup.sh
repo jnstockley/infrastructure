@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Checking Command Line Tools for Xcode"
 # Only run if the tools are not installed yet
@@ -25,7 +26,15 @@ mkdir -p ~/Documents/GitHub/Infrastructure/
 
 mkdir -p ~/.config/nix
 
-git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+# Check if GITHUB_ACTION is set and doesn't equals 1
+if [ "${GITHUB_ACTION}" != "1" ]; then
+    git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+else
+    echo $GITHUB_WORKSPACE
+    ls -s ~/Documents/GitHub/Infrastructure/ $GITHUB_WORKSPACE
+    # Set GITHUB_TOKEN for authenticated git commands
+    export GITHUB_TOKEN=${GITHUB_TOKEN}
+fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 # ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.lock ~/.config/nix/flake.lock
