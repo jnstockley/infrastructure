@@ -30,10 +30,11 @@ mkdir -p ~/.config/nix
 if [ "${GITHUB_ACTION}" != "1" ]; then
     git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
 else
-    echo "$GITHUB_WORKSPACE"
     ls -s ~/Documents/GitHub/Infrastructure/ "$GITHUB_WORKSPACE"
     # Set GITHUB_TOKEN for authenticated git commands
-    export GITHUB_TOKEN=${GITHUB_TOKEN}
+    #export GITHUB_TOKEN=${GITHUB_TOKEN}
+    # create file with content
+    echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
 fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix

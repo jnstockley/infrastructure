@@ -21,3 +21,4 @@ curl https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/beta
 - [ ] Copy existing settings to flake.nix file
   - TODO Determine list of settings to copy
 - [ ] CI/CD Tests for install script and flake.nix
+- [ ] Update folder list on left side in finder
