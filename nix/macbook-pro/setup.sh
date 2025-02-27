@@ -30,7 +30,8 @@ mkdir -p ~/.config/nix
 if [ "${GITHUB_ACTION}" != "1" ]; then
     git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
 else
-    ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub/
+    rm -rf ~/Documents/GitHub/Infrastructure/
+    ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
     # Set GITHUB_TOKEN for authenticated git commands
     #export GITHUB_TOKEN=${GITHUB_TOKEN}
     # create file with content
