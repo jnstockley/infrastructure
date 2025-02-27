@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4.2.2
       - name: Step 2 - Run Nix Setup Script
         run: |
+          sudo rm -rf /Library/Developer/CommandLineTools
           chmod +x ./nix/macbook-pro/setup.sh
           export GITHUB_ACTION=1
           export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
