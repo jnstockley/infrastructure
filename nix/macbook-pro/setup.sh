@@ -16,11 +16,11 @@ else
 fi
 
 # Download and install Nix
-#sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+sh <(curl -L https://nixos.org/nix/install) --daemon --yes
 
 # Source the Nix environment in the current shell
 # shellcheck disable=SC1091
-#. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
@@ -32,20 +32,12 @@ if [ "${GITHUB_ACTION}" != "1" ]; then
 else
     rm -rf ~/Documents/GitHub/Infrastructure/
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
-    # Set GITHUB_TOKEN for authenticated git commands
-    #export GITHUB_TOKEN=${GITHUB_TOKEN}
     # create file with content
     echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
 fi
-echo "GitHub Workspace"
-ls "$GITHUB_WORKSPACE"
 
-echo "Documents"
-ls ~/Documents/GitHub/Infrastructure/
+ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 
-#ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
-# ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.lock ~/.config/nix/flake.lock
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
 
-#nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
-
-#exec "$SHELL"
+exec "$SHELL"
