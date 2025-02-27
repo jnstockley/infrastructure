@@ -4,14 +4,7 @@ name: Nix Install
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * WED'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - nix/**/*.nix
-      - nix/**/*.sh
-      - .github/workflows/nix.yml
+    - cron: '0 0 * * 4'
   push:
     branches:
       - main
