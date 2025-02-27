@@ -63,16 +63,16 @@
               "rustdesk"
               "ghostty"
             ];
-            #masApps = {
-            #  "Bitwarden" = 1352778147;
-            #  "Hidden Bar" = 1452453066;
-            #  "Windows App" = 1295203466;
-            #  "Wireguard" = 1441195209;
-            #  "Excel" = 62058435;
-            #  "Powerpoint" = 462062816;
-            #  "Word" = 462054704;
-            #  "OneDrive" = 823766827;
-            #};
+            masApps = {
+              "Bitwarden" = 1352778147;
+              "Hidden Bar" = 1452453066;
+              "Windows App" = 1295203466;
+              "Wireguard" = 1441195209;
+              "Excel" = 62058435;
+              "Powerpoint" = 462062816;
+              "Word" = 462054704;
+              "OneDrive" = 823766827;
+            };
             onActivation.cleanup = "zap";
           };
 
@@ -149,6 +149,8 @@
               enable = true;
               enableRosetta = false;
               user = "jackstockley";
+              # Used to make work when running in GitHub Actions
+              autoMigrate = true;
             };
           }
         ];
