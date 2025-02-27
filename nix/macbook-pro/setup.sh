@@ -37,6 +37,9 @@ else
     echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
 fi
 
+ls "$GITHUB_WORKSPACE"
+ls ~/Documents/GitHub/Infrastructure/
+
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 # ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.lock ~/.config/nix/flake.lock
 
