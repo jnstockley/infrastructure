@@ -21,17 +21,6 @@
         {
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
-
-          nixpkgs.config.allowUnfree = true;
-
-          programs.zsh = {
-            enable = true;
-            ohMyZsh = {
-                enable = true;
-                plugins = [ "git" "python" ];
-            };
-          };
-
           users.users.USER.shell = pkgs.zsh;
 
 
@@ -138,7 +127,7 @@
           
 
           # Enable alternative shell support in nix-darwin.
-          # programs.fish.enable = true;
+          programs.zsh.enable = true;
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
