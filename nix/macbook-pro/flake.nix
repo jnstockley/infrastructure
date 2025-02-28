@@ -43,6 +43,7 @@
             pkgs.mkalias
             pkgs.nerd-fonts.jetbrains-mono
             pkgs.nixfmt-rfc-style
+            pkgs.oh-my-zsh
           ];
 
           homebrew = {
