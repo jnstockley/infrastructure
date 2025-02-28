@@ -127,22 +127,6 @@
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
 
-          programs.zsh = {
-          enable = true;
-          enableCompletion = true;
-          enableBashCompletion = true;
-          promptInit = "";
-          oh-my-zsh = {
-            enable = true;
-            theme = "robbyrussell";  # You can change this to your preferred theme
-            plugins = [
-              "git"
-              "docker"
-              "python"
-            ];
-          };
-};
-
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
@@ -174,5 +158,21 @@
       };
 
       darwinPackages = self.darwinConfigurations."macbook".pkgs;
+
+      programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      enableBashCompletion = true;
+      promptInit = "";
+      oh-my-zsh = {
+        enable = true;
+        theme = "robbyrussell";
+        plugins = [
+          "git"
+          "docker"
+          "python"
+        ];
+      };
+    };
     };
 }
