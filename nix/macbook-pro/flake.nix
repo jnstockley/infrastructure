@@ -127,6 +127,12 @@
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
 
+          programs.zsh.ohMyZsh = {
+            enable = true;
+            plugins = [ "git" ];
+            theme = "robbyrussell";
+          };
+
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
 
