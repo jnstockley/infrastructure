@@ -6,6 +6,10 @@
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    # Home Manager
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -14,8 +18,10 @@
       nix-darwin,
       nixpkgs,
       nix-homebrew,
+      home-manager,
     }:
     let
+      username = "jackstockley";
       configuration =
         { pkgs, config, ... }:
         {
@@ -23,6 +29,8 @@
           # $ nix-env -qaP | grep wget
 
           nixpkgs.config.allowUnfree = true;
+
+          users.users.USER.shell = pkgs.zsh;
 
           environment.systemPackages = [
             pkgs.vim
@@ -46,6 +54,11 @@
             pkgs.oh-my-zsh
           ];
 
+           users.users.jackstockley = {
+            name = username;
+            home = "/Users/jackstockley";
+          };
+
           homebrew = {
             enable = true;
             casks = [
@@ -64,16 +77,16 @@
               "rustdesk"
               "ghostty"
             ];
-            masApps = {
-              "Bitwarden" = 1352778147;
-              "Hidden Bar" = 1452453066;
-              "Windows App" = 1295203466;
-              "Wireguard" = 1441195209;
-              "Excel" = 62058435;
-              "Powerpoint" = 462062816;
-              "Word" = 462054704;
-              "OneDrive" = 823766827;
-            };
+            #masApps = {
+            #  "Bitwarden" = 1352778147;
+            #  "Hidden Bar" = 1452453066;
+            #  "Windows App" = 1295203466;
+            #  "Wireguard" = 1441195209;
+            #  "Excel" = 62058435;
+            #  "Powerpoint" = 462062816;
+            #  "Word" = 462054704;
+            #  "OneDrive" = 823766827;
+            #};
             onActivation.cleanup = "zap";
           };
 
@@ -125,7 +138,7 @@
           nix.settings.download-buffer-size = 10485760; # 10MB buffer
 
           # Enable alternative shell support in nix-darwin.
-          # programs.fish.enable = true;
+          programs.zsh.enable = true;
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -153,6 +166,14 @@
               # Used to make work when running in GitHub Actions
               autoMigrate = true;
             };
+          }
+
+          home-manager.darwinModules.home-manager
+          {
+            # `home-manager` config
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.jackstockley = import ./home.nix;
           }
         ];
       };
