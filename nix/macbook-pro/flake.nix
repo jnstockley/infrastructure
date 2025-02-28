@@ -6,6 +6,10 @@
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    # Home Manager
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   outputs =
@@ -14,8 +18,10 @@
       nix-darwin,
       nixpkgs,
       nix-homebrew,
+      home-manager,
     }:
     let
+      username = "jackstockley";
       configuration =
         { pkgs, config, ... }:
         {
@@ -25,7 +31,6 @@
           nixpkgs.config.allowUnfree = true;
 
           users.users.USER.shell = pkgs.zsh;
-
 
           environment.systemPackages = [
             pkgs.vim
@@ -48,6 +53,11 @@
             pkgs.nixfmt-rfc-style
             pkgs.oh-my-zsh
           ];
+
+           users.users.jackstockley = {
+            name = username;
+            home = "/Users/jackstockley";
+          };
 
           homebrew = {
             enable = true;
@@ -127,8 +137,6 @@
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 10485760; # 10MB buffer
 
-          
-
           # Enable alternative shell support in nix-darwin.
           programs.zsh.enable = true;
 
@@ -159,25 +167,17 @@
               autoMigrate = true;
             };
           }
+
+          home-manager.darwinModules.home-manager
+          {
+            # `home-manager` config
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.jackstockley = import ./home.nix;
+          }
         ];
       };
 
       darwinPackages = self.darwinConfigurations."macbook".pkgs;
-
-      programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      enableBashCompletion = true;
-      promptInit = "";
-      oh-my-zsh = {
-        enable = true;
-        theme = "robbyrussell";
-        plugins = [
-          "git"
-          "docker"
-          "python"
-        ];
-      };
-    };
     };
 }
