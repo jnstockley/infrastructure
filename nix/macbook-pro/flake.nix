@@ -132,7 +132,7 @@
           enableCompletion = true;
           enableBashCompletion = true;
           promptInit = "";
-          ohMyZsh = {
+          oh-my-zsh = {
             enable = true;
             theme = "robbyrussell";  # You can change this to your preferred theme
             plugins = [
