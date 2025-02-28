@@ -24,6 +24,17 @@
 
           nixpkgs.config.allowUnfree = true;
 
+          programs.zsh = {
+            enable = true;
+            ohMyZsh = {
+                enable = true;
+                plugins = [ "git" "python" ];
+            };
+          };
+
+          users.users.USER.shell = pkgs.zsh;
+
+
           environment.systemPackages = [
             pkgs.vim
             pkgs.gh
@@ -123,6 +134,8 @@
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
           nix.settings.download-buffer-size = 10485760; # 10MB buffer
+
+          
 
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
