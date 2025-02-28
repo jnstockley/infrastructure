@@ -2,7 +2,7 @@
 name: postgres
 services:
   pg-admin:
-    image: dpage/pgadmin4:9.0.0
+    image: dpage/pgadmin4:9.1.0
     container_name: pgadmin
     depends_on:
       - postgres-db
