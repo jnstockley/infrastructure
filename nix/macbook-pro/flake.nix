@@ -65,6 +65,9 @@
 
           homebrew = {
             enable = true;
+            formulae = [
+              "nvm"
+            ];
             casks = [
               "balenaetcher"
               "malwarebytes"
