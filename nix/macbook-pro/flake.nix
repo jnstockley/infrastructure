@@ -54,7 +54,7 @@
             pkgs.oh-my-zsh
           ];
 
-           users.users.jackstockley = {
+          users.users.jackstockley = {
             name = username;
             home = "/Users/jackstockley";
           };
