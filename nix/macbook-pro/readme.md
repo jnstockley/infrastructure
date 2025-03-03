@@ -16,7 +16,7 @@ curl https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/beta
 
 ## TODO
 - [X] Setup Oh My ZSH
-  - Need to setup and learn home-manager
+  - [X] Need to setup and learn home-manager
 - [ ] Add ⌘ + Space hotkey to Raycast
 - [ ] Install PyCharm and IntelliJ (maybe through toolbox?)
 - [ ] Copy existing settings to flake.nix file
