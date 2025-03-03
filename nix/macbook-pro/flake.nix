@@ -52,6 +52,10 @@
             pkgs.nerd-fonts.jetbrains-mono
             pkgs.nixfmt-rfc-style
             pkgs.oh-my-zsh
+            # Pyenv dependencies
+            pkgs.openssl
+            pkgs.readline
+            pkgs.xz
           ];
 
           users.users.jackstockley = {
