@@ -8,8 +8,8 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     # Home Manager
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -52,6 +52,10 @@
             pkgs.nerd-fonts.jetbrains-mono
             pkgs.nixfmt-rfc-style
             pkgs.oh-my-zsh
+            # Pyenv dependencies
+            pkgs.openssl
+            pkgs.readline
+            pkgs.xz
           ];
 
           users.users.jackstockley = {
@@ -61,6 +65,9 @@
 
           homebrew = {
             enable = true;
+            brews = [
+              "nvm"
+            ];
             casks = [
               "balenaetcher"
               "malwarebytes"
