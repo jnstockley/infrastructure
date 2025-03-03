@@ -6,7 +6,7 @@
 }: {
   enable = true;
   history.size = 10000;
-  #history.path = "${config.xdg.dataHome}/zsh/history";
+  history.path = "${config.xdg.dataHome}/zsh/history";
   oh-my-zsh = {
     enable = true;
     plugins = [
