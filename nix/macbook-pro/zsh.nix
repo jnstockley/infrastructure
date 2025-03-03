@@ -9,6 +9,7 @@
   history.path = "${config.xdg.dataHome}/zsh/history";
   oh-my-zsh = {
     enable = true;
+    theme = "robbyrussell";
     plugins = [
       "git"
       "docker"
