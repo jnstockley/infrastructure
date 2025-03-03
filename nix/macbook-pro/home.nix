@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-in {
+in
+{
   programs.home-manager.enable = true;
 
   home.username = "jackstockley";
