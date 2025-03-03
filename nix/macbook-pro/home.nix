@@ -16,7 +16,7 @@ in
 
   #xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/elliott/.dotfiles/.config/nvim";
 
-  #home.stateVersion = "23.11";
+  home.stateVersion = "23.11";
 
   #programs = {
   #  tmux = import ../home/tmux.nix {inherit pkgs;};
