@@ -65,7 +65,7 @@
 
           homebrew = {
             enable = true;
-            formulae = [
+            brews = [
               "nvm"
             ];
             casks = [
