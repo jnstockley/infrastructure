@@ -9,7 +9,7 @@
   history.path = "${config.xdg.dataHome}/zsh/history";
   shellAliases = {
     ls = "ls -la --color";
-    update = "nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure";
+    update = "nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake ~/.config/nix#macbook --impure";
   };
   initExtra = ''
     export PATH="/Users/jackstockley/.local/bin:$PATH"
