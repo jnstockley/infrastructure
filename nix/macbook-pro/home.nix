@@ -12,6 +12,7 @@ in
 
   home.username = "jackstockley";
   home.homeDirectory = "/Users/jackstockley";
+  home.enableNixpkgsReleaseCheck = false;
   xdg.enable = true;
 
   #xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/elliott/.dotfiles/.config/nvim";
