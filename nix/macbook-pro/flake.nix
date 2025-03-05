@@ -102,6 +102,9 @@
             /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
           '';
 
+          settings = import ./settings.nix { inherit config pkgs lib; };
+
+
           system.activationScripts.applications.text =
             let
               env = pkgs.buildEnv {
