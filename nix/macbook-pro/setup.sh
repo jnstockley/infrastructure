@@ -15,12 +15,14 @@ else
     echo "Command Line Tools for Xcode have been installed."
 fi
 
-# Download and install Nix
-sh <(curl -L https://nixos.org/nix/install) --daemon --yes
-
-# Source the Nix environment in the current shell
-# shellcheck disable=SC1091
-. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+# Check if Nix is already installed
+if ! command -v nix &>/dev/null; then
+    # Download and install Nix
+    sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+    # Source the Nix environment in the current shell
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
@@ -39,6 +41,11 @@ else
     echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
     sed -i '' 's/jackstockley/'"$(whoami)"'/g' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+fi
+
+# Remove existing symlink if it exists
+if [ -L ~/.config/nix/flake.nix ]; then
+    rm ~/.config/nix/flake.nix
 fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix

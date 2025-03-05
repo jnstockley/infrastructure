@@ -1,4 +1,3 @@
-Format!
 {
   config,
   pkgs,
