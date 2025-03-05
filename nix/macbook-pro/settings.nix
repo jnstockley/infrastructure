@@ -9,6 +9,8 @@
     NSGlobalDomain = {
         AppleShowAllExtensions = true;
         NSTableViewDefaultSizeMode = 2;
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
     };
     finder = {
         FXRemoveOldTrashItems = true;
