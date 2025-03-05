@@ -17,7 +17,7 @@
         ShowPathbar = true;
         ShowStatusBar = true;
         _FXShowPosixPathInTitle = true;
-        FXPreferredViewStyle = "clmv";
+        FXPreferredViewStyle = "Nlsv";
         _FXSortFoldersFirst = true;
         FXDefaultSearchScope = "SCcf";
         #SidebarLists = {
