@@ -101,11 +101,7 @@
           system.activationScripts.postUserActivation.text = ''
             # Following line should allow us to avoid a logout/login cycle when changing settings
             /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-          '';
 
-          system.defaults = import ./settings.nix { inherit config pkgs; };
-
-          system.activationScripts.extraUserActivation.text = ''
             # Clear all Finder favorites
             sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
 
@@ -121,6 +117,8 @@
 
             mysides add Nextcloud file:///Users/jackstockley/Nextcloud
           '';
+
+          system.defaults = import ./settings.nix { inherit config pkgs; };
 
           system.activationScripts.applications.text =
             let
