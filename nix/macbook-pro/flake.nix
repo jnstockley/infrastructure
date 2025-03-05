@@ -106,6 +106,7 @@
           system.defaults = import ./settings.nix { inherit config pkgs; };
 
           system.activationScripts.userScript.text = ''
+            #!/usr/bin/env bash
             # Clear all Finder favorites
             sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
 
