@@ -6,7 +6,26 @@
 }:
 {
   system.defaults = {
+    NSGlobalDomain = {
+        AppleShowAllExtensions = true;
+        NSTableViewDefaultSizeMode = 2;
+    };
+    finder = {
+        FXRemoveOldTrashItems = true;
+        NewWindowTarget = "Home";
+        ShowExternalHardDrivesOnDesktop = true;
+        ShowPathbar = true;
+        ShowStatusBar = true;
+        _FXShowPosixPathInTitle = true;
+        FXPreferredViewStyle = "clmv";
+        _FXSortFoldersFirst = true;
+        FXDefaultSearchScope = "SCcf";
+    };
     CustomUserPreferences = {
+      NSGlobalDomain = {
+        # Add a context menu item for showing the Web Inspector in web views
+        WebKitDeveloperExtras = true;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Disable 'Cmd + Space' for Spotlight Search
@@ -19,6 +38,17 @@
           };
         };
       };
+      "com.apple.SoftwareUpdate" = {
+        AutomaticCheckEnabled = true;
+        # Check for software updates daily, not just once per week
+        ScheduleFrequency = 1;
+        # Download newly available updates in background
+        AutomaticDownload = 1;
+        # Install System data files & security updates
+        CriticalUpdateInstall = 1;
+      };
+      # Turn on app auto-update
+      "com.apple.commerce".AutoUpdate = true;
     };
   };
 }
