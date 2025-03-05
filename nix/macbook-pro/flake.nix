@@ -102,8 +102,7 @@
             /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
           '';
 
-          settings = import ./settings.nix { inherit config pkgs; };
-
+          system.defaults = import ./settings.nix { inherit config pkgs; };
 
           system.activationScripts.applications.text =
             let
