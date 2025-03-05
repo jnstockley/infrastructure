@@ -83,6 +83,7 @@
               "nextcloud"
               "rustdesk"
               "ghostty"
+              "mysides"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
@@ -109,16 +110,16 @@
             sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
 
             # Add Finder favorites
-            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Applications/
-            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Downloads/
-            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Documents/
-            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/
+            mysides add Applications file:///Users/jackstockley/Applications/
+            mysides add Downloads file:///Users/jackstockley/Downloads/
+            mysides add Documents file:///Users/jackstockley/Documents/
+            mysides add Home file:///Users/jackstockley/
 
             if [ ! -d /Users/jackstockley/Nextcloud ]; then
                 mkdir /Users/jackstockley/Nextcloud
             fi
 
-            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Nextcloud
+            mysides add Nextcloud file:///Users/jackstockley/Nextcloud
           '';
 
           system.activationScripts.applications.text =
