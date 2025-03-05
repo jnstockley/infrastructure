@@ -9,6 +9,7 @@
         NSTableViewDefaultSizeMode = 2;
         AppleInterfaceStyle = "Dark";
         AppleInterfaceStyleSwitchesAutomatically = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
     };
     finder = {
         FXRemoveOldTrashItems = true;
