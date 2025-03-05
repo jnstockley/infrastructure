@@ -2,7 +2,7 @@
 name: airflow
 services:
   airflow-init:
-    image: jnstockley/airflow:2025.02.10
+    image: jnstockley/airflow:2025.03.05
     container_name: airflow-init
     depends_on:
       - wireguard-airflow
@@ -37,7 +37,7 @@ services:
       - no-new-privileges:true
 
   airflow-scheduler:
-    image: jnstockley/airflow:2025.02.10
+    image: jnstockley/airflow:2025.03.05
     container_name: airflow-scheduler
     depends_on:
       - airflow-init
@@ -72,7 +72,7 @@ services:
       - no-new-privileges:true
 
   airflow-webserver:
-    image: jnstockley/airflow:2025.02.10
+    image: jnstockley/airflow:2025.03.05
     container_name: airflow-webserver
     depends_on:
       - airflow-scheduler
