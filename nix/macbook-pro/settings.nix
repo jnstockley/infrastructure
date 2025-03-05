@@ -21,16 +21,6 @@
         FXPreferredViewStyle = "Nlsv";
         _FXSortFoldersFirst = true;
         FXDefaultSearchScope = "SCcf";
-        SidebarListItems = {
-            favorites = [
-            "file:///Users/jackstockley"
-            "file:///Users/jackstockley/Downloads"
-            "file:///Users/jackstockley/Documents"
-            "file:///Users/jackstockley/Desktop"
-            "file:///Users/jackstockley/Applications"
-            #"file:///Users/jackstockley/Nextcloud"
-            ];
-        };
     };
     CustomUserPreferences = {
       NSGlobalDomain = {
