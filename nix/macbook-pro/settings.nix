@@ -4,7 +4,6 @@
   ...
 }:
 {
-  system.defaults = {
     NSGlobalDomain = {
         AppleShowAllExtensions = true;
         NSTableViewDefaultSizeMode = 2;
@@ -61,5 +60,4 @@
       # Turn on app auto-update
       "com.apple.commerce".AutoUpdate = true;
     };
-  };
 }
