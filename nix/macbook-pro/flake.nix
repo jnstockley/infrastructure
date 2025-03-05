@@ -104,6 +104,23 @@
 
           system.defaults = import ./settings.nix { inherit config pkgs; };
 
+          system.activationScripts.finderCustomization.text = ''
+            # Clear all Finder favorites
+            sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
+
+            # Add Finder favorites
+            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Applications/
+            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Downloads/
+            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Documents/
+            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/
+
+            if [ ! -d /Users/jackstockley/Nextcloud ]; then
+                mkdir /Users/jackstockley/Nextcloud
+            fi
+
+            sfltool add-item com.apple.LSSharedFileList.FavoriteItems file:///Users/jackstockley/Nextcloud
+          '';
+
           system.activationScripts.applications.text =
             let
               env = pkgs.buildEnv {

@@ -37,6 +37,9 @@
         # Add a context menu item for showing the Web Inspector in web views
         WebKitDeveloperExtras = true;
       };
+      "com.apple.finder" = {
+         ShowRecentTags = false;
+      };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
           # Disable 'Cmd + Space' for Spotlight Search
