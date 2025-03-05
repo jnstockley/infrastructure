@@ -83,6 +83,7 @@
               "nextcloud"
               "rustdesk"
               "ghostty"
+              "mysides"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
@@ -101,6 +102,8 @@
             # Following line should allow us to avoid a logout/login cycle when changing settings
             /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
           '';
+
+          system.defaults = import ./settings.nix { inherit config pkgs; };
 
           system.activationScripts.applications.text =
             let
@@ -121,6 +124,21 @@
                 echo "copying $src" >&2
                 ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
               done
+
+              # Clear all Finder favorites
+              sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
+
+              # Add Finder favorites
+              mysides add Applications file:///Users/jackstockley/Applications/
+              mysides add Downloads file:///Users/jackstockley/Downloads/
+              mysides add Documents file:///Users/jackstockley/Documents/
+              mysides add Home file:///Users/jackstockley/
+
+              if [ ! -d /Users/jackstockley/Nextcloud ]; then
+                  mkdir /Users/jackstockley/Nextcloud
+              fi
+
+              mysides add Nextcloud file:///Users/jackstockley/Nextcloud
             '';
 
           # Necessary for using flakes on this system.

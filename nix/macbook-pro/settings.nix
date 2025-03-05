@@ -1,14 +1,15 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 {
-  system.defaults = {
     NSGlobalDomain = {
         AppleShowAllExtensions = true;
         NSTableViewDefaultSizeMode = 2;
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
     };
     finder = {
         FXRemoveOldTrashItems = true;
@@ -17,7 +18,7 @@
         ShowPathbar = true;
         ShowStatusBar = true;
         _FXShowPosixPathInTitle = true;
-        FXPreferredViewStyle = "clmv";
+        FXPreferredViewStyle = "Nlsv";
         _FXSortFoldersFirst = true;
         FXDefaultSearchScope = "SCcf";
     };
@@ -25,6 +26,9 @@
       NSGlobalDomain = {
         # Add a context menu item for showing the Web Inspector in web views
         WebKitDeveloperExtras = true;
+      };
+      "com.apple.finder" = {
+         ShowRecentTags = false;
       };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
@@ -50,5 +54,4 @@
       # Turn on app auto-update
       "com.apple.commerce".AutoUpdate = true;
     };
-  };
 }

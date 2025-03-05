@@ -10,7 +10,7 @@ package-mode = false
 requires-python = "<4.0,>=3.13"
 dependencies = [
     "pytest ==8.3.5",
-    "testcontainers ==4.9.1",
+    "testcontainers ==4.9.2",
     "docker ==7.1.0",
     "pyyaml ==6.0.2"
 ]
