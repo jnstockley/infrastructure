@@ -30,7 +30,13 @@ mkdir -p ~/.config/nix
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
-    git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+    if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
+        git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+    else
+        cd ~/Documents/GitHub/Infrastructure/ || exit
+        git pull
+        cd ~
+    fi
     if system_profiler SPHardwareDataType | grep -q "VirtualMac"; then
         sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
