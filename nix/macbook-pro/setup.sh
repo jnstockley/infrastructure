@@ -63,6 +63,12 @@ if [ -L ~/.config/nix/flake.nix ]; then
     rm ~/.config/nix/flake.nix
 fi
 
+# Check if ~/.ssh folder exists
+if [ ! -d ~/.ssh ]; then
+    mkdir ~/.ssh
+    chmod 700 ~/.ssh
+fi
+
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
 
 nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
