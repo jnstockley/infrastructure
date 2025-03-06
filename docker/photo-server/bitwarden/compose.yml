@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   attachments:
-    image: bitwarden/attachments:2025.2.0
+    image: bitwarden/attachments:2025.2.3
     container_name: bitwarden-attachments
     volumes:
       - ./core/attachments:/etc/bitwarden/core/attachments
