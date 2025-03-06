@@ -129,16 +129,16 @@
               sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
 
               # Add Finder favorites
-              mysides add Applications file:///Users/jackstockley/Applications/
-              mysides add Downloads file:///Users/jackstockley/Downloads/
-              mysides add Documents file:///Users/jackstockley/Documents/
-              mysides add Home file:///Users/jackstockley/
+              /usr/local/bin/mysides add Applications file:///Users/jackstockley/Applications/
+              /usr/local/bin/mysides add Downloads file:///Users/jackstockley/Downloads/
+              /usr/local/bin/mysides add Documents file:///Users/jackstockley/Documents/
+              /usr/local/bin/mysides add Home file:///Users/jackstockley/
 
               if [ ! -d /Users/jackstockley/Nextcloud ]; then
                   mkdir /Users/jackstockley/Nextcloud
               fi
 
-              mysides add Nextcloud file:///Users/jackstockley/Nextcloud
+              /usr/local/bin/mysides add Nextcloud file:///Users/jackstockley/Nextcloud
             '';
 
           # Necessary for using flakes on this system.
