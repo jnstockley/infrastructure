@@ -72,6 +72,7 @@
             enable = true;
             brews = [
               "nvm"
+              "mas"
             ];
             casks = [
               "balenaetcher"
@@ -89,7 +90,6 @@
               "rustdesk"
               "ghostty"
               "mysides"
-              "mas"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
