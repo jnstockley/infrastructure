@@ -2,7 +2,7 @@
 name: bitwarden
 services:
   admin:
-    image: bitwarden/admin:2025.2.0
+    image: bitwarden/admin:2025.2.3
     container_name: bitwarden-admin
     depends_on:
       - mssql
