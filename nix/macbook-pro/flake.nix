@@ -56,6 +56,11 @@
             pkgs.openssl
             pkgs.readline
             pkgs.xz
+            pkgs.sqlite
+            pkgs.zlib
+            pkgs.libb2
+            pkgs.tcl
+            pkgs.tclPackages.tclx
           ];
 
           users.users.jackstockley = {
@@ -139,6 +144,8 @@
               fi
 
               /usr/local/bin/mysides add Nextcloud file:///Users/jackstockley/Nextcloud
+
+              killall Finder
             '';
 
           # Necessary for using flakes on this system.
