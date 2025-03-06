@@ -22,7 +22,7 @@ services:
       - no-new-privileges:true
 
   api:
-    image: bitwarden/api:2025.2.0
+    image: bitwarden/api:2025.2.3
     container_name: bitwarden-api
     volumes:
       - ./core:/etc/bitwarden/core
