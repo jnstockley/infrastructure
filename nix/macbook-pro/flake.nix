@@ -157,7 +157,6 @@
           programs.zsh.enableBashCompletion = true;
           programs.zsh.enableCompletion = true;
           programs.zsh.enableFastSyntaxHighlighting = true;
-          programs.zsh.enableSyntaxHighlighting = true;
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
