@@ -2,7 +2,7 @@
 name: immich
 services:
   database:
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52
     container_name: immich_postgres
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
@@ -57,7 +57,7 @@ services:
       - no-new-privileges:true
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.128.0
+    image: ghcr.io/immich-app/immich-machine-learning:v1.129.0
     container_name: immich_machine_learning
     volumes:
       - model-cache:/cache
@@ -90,7 +90,7 @@ services:
       - no-new-privileges:true
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.128.0
+    image: ghcr.io/immich-app/immich-server:v1.129.0
     container_name: immich_server
     depends_on:
       - database
