@@ -135,16 +135,16 @@
               sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
 
               # Add Finder favorites
-              /usr/local/bin/mysides add Applications file://$HOME/Applications/
-              /usr/local/bin/mysides add Downloads file://$HOME/Downloads/
-              /usr/local/bin/mysides add Documents file://$HOME/Documents/
-              /usr/local/bin/mysides add Home file://$HOME
+              /usr/local/bin/mysides add Applications file://"$HOME"/Applications/
+              /usr/local/bin/mysides add Downloads file://"$HOME"/Downloads/
+              /usr/local/bin/mysides add Documents file://"$HOME"/Documents/
+              /usr/local/bin/mysides add Home file://"$HOME"
 
-              if [ ! -d /Users/jackstockley/Nextcloud ]; then
-                  mkdir $HOME/Nextcloud
+              if [ ! -d "$HOME"/Nextcloud ]; then
+                  mkdir "$HOME"/Nextcloud
               fi
 
-              /usr/local/bin/mysides add Nextcloud file://$HOME/Nextcloud
+              /usr/local/bin/mysides add Nextcloud file://"$HOME"/Nextcloud
 
               killall Finder
             '';
