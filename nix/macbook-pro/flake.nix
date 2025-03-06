@@ -89,6 +89,7 @@
               "rustdesk"
               "ghostty"
               "mysides"
+              "mas"
             ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
@@ -179,7 +180,7 @@
           {
             nix-homebrew = {
               enable = true;
-              enableRosetta = false;
+              enableRosetta = true;
               user = "jackstockley";
               # Used to make work when running in GitHub Actions
               autoMigrate = true;
