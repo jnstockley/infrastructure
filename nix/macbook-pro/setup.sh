@@ -15,6 +15,15 @@ else
     echo "Command Line Tools for Xcode have been installed."
 fi
 
+# Check if Rosetta 2 is installed
+if ! /usr/sbin/sysctl -n sysctl.proc_translated &>/dev/null; then
+    echo "Rosetta 2 is not installed. Installing Rosetta 2…"
+    # Installing Rosetta 2
+    softwareupdate --install-rosetta --agree-to-license
+else
+    echo "Rosetta 2 is installed."
+fi
+
 # Check if Nix is already installed
 if ! command -v nix &>/dev/null; then
     # Download and install Nix
