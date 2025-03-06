@@ -6,10 +6,6 @@
 }:
 {
   enable = true;
-  enableBashCompletion = true;
-  enableCompletion = true;
-  enableFastSyntaxHighlighting = true;
-  enableSyntaxHighlighting = true;
   history.size = 10000;
   history.path = "${config.xdg.dataHome}/zsh/history";
   shellAliases = {
