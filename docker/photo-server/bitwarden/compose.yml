@@ -85,7 +85,7 @@ services:
       - no-new-privileges:true
 
   identity:
-    image: bitwarden/identity:2025.2.0
+    image: bitwarden/identity:2025.2.3
     container_name: bitwarden-identity
     volumes:
       - ./identity:/etc/bitwarden/identity
