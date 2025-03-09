@@ -168,7 +168,7 @@ services:
       - no-new-privileges:true
 
   web:
-    image: bitwarden/web:2025.2.1
+    image: bitwarden/web:2025.2.2
     container_name: bitwarden-web
     volumes:
       - ./web:/etc/bitwarden/web
