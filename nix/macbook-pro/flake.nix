@@ -132,10 +132,10 @@
             #  done
             ''
               # Clear all Finder favorites
-              sudo sfltool clear com.apple.LSSharedFileList.FavoriteItems
+              /usr/local/bin/mysides remove all
 
               # Add Finder favorites
-              /usr/local/bin/mysides add Applications file://"$HOME"/Applications/
+              /usr/local/bin/mysides add Applications file:///System/Applications
               /usr/local/bin/mysides add Downloads file://"$HOME"/Downloads/
               /usr/local/bin/mysides add Documents file://"$HOME"/Documents/
               /usr/local/bin/mysides add Home file://"$HOME"
