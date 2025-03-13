@@ -54,7 +54,7 @@ else
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
     # create file with content
     echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
-    sed -i '' 's/jackstockley/'"$(whoami)"'/g' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+    find ~/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
     sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
 fi
 
