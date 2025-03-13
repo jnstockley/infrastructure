@@ -24,4 +24,5 @@ curl https://raw.githubusercontent.com/jnstockley/infrastructure/refs/heads/beta
 - [X] CI/CD Tests for install script and flake.nix
 - [X] Update folder list on left side in finder
   - [ ] Fix folder paths
+- [ ] Fix automatic updates
 - [X] Make script repeatable i.e. check if nix installed, check if files exist, etc.
