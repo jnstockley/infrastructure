@@ -20,15 +20,49 @@ jobs:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
 
-      #- name: Step 2 - Get Changes files
-      #  id: files
-      #  uses: tj-actions/changed-files@v45.0.7
-      #  with:
-      #    files_yaml: |
-      #      docker_racknerd:
-      #        - docker/racknerd/**/compose.yml
-      #      docker_photo_server:
-      #        - docker/photo-server/**/compose.yml
+      - name: Step 2 - Get changed files between branches
+        id: changed-files
+        run: |
+          # For pull requests, compare base branch (target) with head branch (source)
+          BASE_BRANCH="${{ github.base_ref }}"
+          HEAD_BRANCH="${{ github.head_ref }}"
+
+          echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
+          
+          # Ensure branches exist in local git
+          git fetch origin $BASE_BRANCH:$BASE_BRANCH || echo "Could not fetch base branch"
+          git fetch origin $HEAD_BRANCH:$HEAD_BRANCH || echo "Could not fetch head branch"
+          
+          # Get the most recent commit SHA from each branch
+          BASE_SHA=$(git rev-parse origin/$BASE_BRANCH 2>/dev/null || git rev-parse $BASE_BRANCH 2>/dev/null || echo "")
+          HEAD_SHA=$(git rev-parse HEAD)
+          
+          if [ -z "$BASE_SHA" ]; then
+            echo "Warning: Could not find base branch '$BASE_BRANCH'. Using default branch."
+            BASE_SHA=$(git rev-parse origin/beta 2>/dev/null || git rev-parse origin/main 2>/dev/null || git rev-parse origin/master)
+          fi
+          
+          echo "Base branch commit: $BASE_SHA"
+          echo "Head branch commit: $HEAD_SHA"
+
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
+
+          # Filter for Docker compose files if needed
+          RACKNERD_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(photo-server)/.*/compose\.yml' || echo "")
+          PHOTO_SERVER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(photo-server)/.*/compose\.yml' || echo "")
+
+          echo "RACKNERD_FILES<<EOF" >> $GITHUB_ENV
+          echo "RACKNERD_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          echo "PHOTO_SERVER_FILES<<EOF" >> $GITHUB_ENV
+          echo "RACKNERD_FILESPHOTO_SERVER_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "Docker compose files:"
+          echo "RACKNERD_FILES"
+          echo "PHOTO_SERVER_FILES"
 
       - name: Step 3 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
@@ -40,13 +74,13 @@ jobs:
           username: jackstockley
           key: ${{ secrets.RACKNERD_SSH_KEY }}
           passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
-          envs: FILES
+          envs: RACKNERD_FILES
           script: |
             echo "Deploying Racknerd containers"
             cd ~/infrastructure/
             git reset --hard origin/main
             git pull
-            for file in ${FILES}; do
+            for file in ${RACKNERD_FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
             done
@@ -77,13 +111,13 @@ jobs:
           username: jackstockley
           key: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
           passphrase: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
-          envs: FILES
+          envs: PHOTO_SERVER_FILES
           script: |
             echo "Deploying Photo Server containers"
             cd ~/infrastructure/
             git reset --hard origin/main
             git pull
-            for file in ${FILES}; do
+            for file in ${PHOTO_SERVER_FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
             done
