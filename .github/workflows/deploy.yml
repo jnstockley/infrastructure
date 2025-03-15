@@ -18,19 +18,17 @@ jobs:
 
     steps:
       - name: Step 1 - Set Timezone
-        uses: szenius/set-timezone@v2.0
-        with:
-          timezoneLinux: "America/Chicago"
+        run: sudo timedatectl set-timezone America/Chicago
 
-      - name: Step 2 - Get Changes files
-        id: files
-        uses: tj-actions/changed-files@v45.0.7
-        with:
-          files_yaml: |
-            docker_racknerd:
-              - docker/racknerd/**/compose.yml
-            docker_photo_server:
-              - docker/photo-server/**/compose.yml
+      #- name: Step 2 - Get Changes files
+      #  id: files
+      #  uses: tj-actions/changed-files@v45.0.7
+      #  with:
+      #    files_yaml: |
+      #      docker_racknerd:
+      #        - docker/racknerd/**/compose.yml
+      #      docker_photo_server:
+      #        - docker/photo-server/**/compose.yml
 
       - name: Step 3 - Deploy containers (Racknerd)
         if: steps.files.outputs.docker_racknerd_any_changed == 'true'
