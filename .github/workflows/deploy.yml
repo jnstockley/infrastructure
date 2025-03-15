@@ -12,20 +12,19 @@ on:
       - docker/photo-server/**/compose.yml
 
 jobs:
-  deploy:
-    name: Deploy new Docker Container
+  get_changed_files:
+    name: Get changed files
     runs-on: ubuntu-latest
-
     steps:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
 
-      - name: Step 1 - Checkout code
+      - name: Step 2 - Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 0
 
-      - name: Step 2 - Get changed files between branches
+      - name: Step 3 - Get changed files between branches
         id: changed-files
         run: |
           # For pull requests, compare base branch (target) with head branch (source)
@@ -54,45 +53,89 @@ jobs:
           CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
 
           # Filter for Docker compose files if needed
-          RACKNERD_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(photo-server)/.*/compose\.yml' || echo "")
-          PHOTO_SERVER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(photo-server)/.*/compose\.yml' || echo "")
+          RACKNERD_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/racknerd/.*/compose\.yml' || echo "")
+          PHOTO_SERVER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/photo-server/.*/compose\.yml' || echo "")
 
           echo "RACKNERD_FILES<<EOF" >> $GITHUB_ENV
           echo "RACKNERD_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
           echo "PHOTO_SERVER_FILES<<EOF" >> $GITHUB_ENV
-          echo "RACKNERD_FILESPHOTO_SERVER_FILES" >> $GITHUB_ENV
+          echo "PHOTO_SERVER_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
           echo "Docker compose files:"
           echo "RACKNERD_FILES"
           echo "PHOTO_SERVER_FILES"
 
-      - name: Step 3 - Deploy containers (Racknerd)
-        if: steps.files.outputs.docker_racknerd_any_changed == 'true'
-        uses: appleboy/ssh-action@v1.2.2
+  racknerd_deploy:
+    name: Deploy new Docker Container to Racknerd
+    runs-on: ubuntu-latest
+    environment: racknerd
+    needs: get_changed_files
+    if: RACKNERD_FILES != ''
+    steps:
+      - name: Set up SSH and deploy to Photo Server
         env:
-          FILES: ${{ steps.files.outputs.docker_racknerd_all_changed_files }}
-        with:
-          host: ${{ secrets.RACKNERD_IP }}
-          username: jackstockley
-          key: ${{ secrets.RACKNERD_SSH_KEY }}
-          passphrase: ${{ secrets.RACKNERD_SSH_PASSWORD }}
-          envs: RACKNERD_FILES
-          script: |
-            echo "Deploying Racknerd containers"
+          SSH_HOST: ${{ secrets.RACKNERD_IP }}
+          SSH_USER: jackstockley
+          SSH_KEY: ${{ secrets.RACKNERD_SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.RACKNERD_SSH_PASSWORD }}
+          SSH_COMMANDS: |
             cd ~/infrastructure/
             git reset --hard origin/main
             git pull
-            for file in ${RACKNERD_FILES}; do
+            for file in ${PHOTO_SERVER_FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
             done
             docker image prune -a -f
             docker system prune -f
+        run: |
+          # Create SSH directory if it doesn't exist
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
 
-      - name: Step 4 - WireGuard Connection
+          # Write SSH key to file
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Create SSH config to avoid host key verification
+          cat > ~/.ssh/config << EOF
+          Host *
+              StrictHostKeyChecking no
+              UserKnownHostsFile=/dev/null
+          EOF
+          chmod 600 ~/.ssh/config
+
+          # Install expect for handling SSH passphrase
+          sudo apt-get update && sudo apt-get install -y expect
+
+          # Use expect script for handling passphrase
+          cat > /tmp/ssh_script.exp << EOF
+          #!/usr/bin/expect -f
+          set timeout -1
+          spawn ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST "$SSH_COMMANDS"
+          expect "Enter passphrase for key"
+          send "$SSH_PASSPHRASE\r"
+          expect eof
+          EOF
+          chmod +x /tmp/ssh_script.exp
+
+          # Execute expect script
+          /tmp/ssh_script.exp
+
+          # Clean up
+          rm -f ~/.ssh/id_rsa /tmp/ssh_script.exp
+
+  photo_server_deploy:
+    name: Deploy new Docker Container to Photo Server
+    runs-on: ubuntu-latest
+    environment: photo-server
+    needs: get_changed_files
+    if: PHOTO_SERVER_FILES != ''
+    steps:
+      - name: WireGuard Connection
         if: steps.files.outputs.docker_photo_server_any_changed == 'true'
         run: |
           sudo apt-get update
@@ -106,19 +149,13 @@ jobs:
           sudo wg-quick up wg0
           sudo wg-quick up wg1
 
-      - name: Step 5 - Deploy containers (Photo Server)
-        if: steps.files.outputs.docker_photo_server_any_changed == 'true'
-        uses: appleboy/ssh-action@v1.2.2
+      - name: Set up SSH and deploy to Photo Server
         env:
-          FILES: ${{ steps.files.outputs.docker_photo_server_all_changed_files }}
-        with:
-          host: photo-server.local.jstockley.com
-          username: jackstockley
-          key: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
-          passphrase: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
-          envs: PHOTO_SERVER_FILES
-          script: |
-            echo "Deploying Photo Server containers"
+          SSH_HOST: photo-server.local.jstockley.com
+          SSH_USER: jackstockley
+          SSH_KEY: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
+          SSH_COMMANDS: |
             cd ~/infrastructure/
             git reset --hard origin/main
             git pull
@@ -128,3 +165,39 @@ jobs:
             done
             docker image prune -a -f
             docker system prune -f
+        run: |
+          # Create SSH directory if it doesn't exist
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          # Write SSH key to file
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Create SSH config to avoid host key verification
+          cat > ~/.ssh/config << EOF
+          Host *
+              StrictHostKeyChecking no
+              UserKnownHostsFile=/dev/null
+          EOF
+          chmod 600 ~/.ssh/config
+
+          # Install expect for handling SSH passphrase
+          sudo apt-get update && sudo apt-get install -y expect
+
+          # Use expect script for handling passphrase
+          cat > /tmp/ssh_script.exp << EOF
+          #!/usr/bin/expect -f
+          set timeout -1
+          spawn ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST "$SSH_COMMANDS"
+          expect "Enter passphrase for key"
+          send "$SSH_PASSPHRASE\r"
+          expect eof
+          EOF
+          chmod +x /tmp/ssh_script.exp
+
+          # Execute expect script
+          /tmp/ssh_script.exp
+
+          # Clean up
+          rm -f ~/.ssh/id_rsa /tmp/ssh_script.exp
