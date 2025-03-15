@@ -17,37 +17,56 @@ jobs:
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v4.2.2
-
-      - name: Step 2 - Set Timezone
-        uses: szenius/set-timezone@v2.0
         with:
-          timezoneLinux: "America/Chicago"
+          fetch-depth: 0
 
-      - name: Step 3 - Get Changes files
-        id: files
-        uses: tj-actions/changed-files@v45.0.7
-        with:
-          files_yaml: |
-            docker:
-              - docker/racknerd/**/compose.yml
-              - docker/photo-server/**/compose.yml
-
-      - name: Step 4 - Create Environment Variable
-        if: steps.files.outputs.docker_any_changed == 'true'
+      - name: Step 2 - Get changed files between branches
+        id: changed-files
         run: |
-          echo "FILES=${{ steps.files.outputs.docker_all_changed_files }}" >> "$GITHUB_ENV"
+          # For pull requests, compare base branch (target) with head branch (source)
+          BASE_BRANCH="${{ github.base_ref }}"
+          HEAD_BRANCH="${{ github.head_ref }}"
+          
+          echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
+          
+          # Get the most recent commit on the base branch
+          BASE_COMMIT=$(git rev-parse origin/$BASE_BRANCH)
+          
+          echo "Most recent commit on $BASE_BRANCH: $BASE_COMMIT"
+          echo "Current branch: $HEAD_BRANCH"
+          
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only $BASE_COMMIT $HEAD_BRANCH --)
+          
+          # Filter for Docker compose files if needed
+          DOCKER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(racknerd|photo-server)/.*/compose\.yml' || echo "")
+          
+          # Set output for use in other steps
+          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          echo "DOCKER_FILES<<EOF" >> $GITHUB_ENV
+          echo "$DOCKER_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # Display changed files for debugging
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          
+          echo "Docker compose files:"
+          echo "$DOCKER_FILES"
 
-      - name: Step 5 - Setup Python
+      - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
           check-latest: true
 
-      - name: Step 6 - Install Poetry and Dependencies
+      - name: Step 4 - Install Poetry and Dependencies
         run: |
           pip3 install -r requirements.txt
           poetry lock
           poetry install --no-root
 
-      - name: Step 7 - Run Tests
+      - name: Step 5 - Run Tests
         run: poetry run pytest tests/test_containers.py
