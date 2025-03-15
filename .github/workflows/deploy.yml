@@ -20,6 +20,11 @@ jobs:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
 
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+
       - name: Step 2 - Get changed files between branches
         id: changed-files
         run: |
