@@ -136,7 +136,6 @@ jobs:
     if: PHOTO_SERVER_FILES != ''
     steps:
       - name: WireGuard Connection
-        if: steps.files.outputs.docker_photo_server_any_changed == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
