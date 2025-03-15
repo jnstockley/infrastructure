@@ -147,6 +147,8 @@
               /usr/local/bin/mysides add Nextcloud file://"$HOME"/Nextcloud
 
               killall Finder
+
+              sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool TRUE
             '';
 
           # Necessary for using flakes on this system.
