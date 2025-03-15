@@ -14,6 +14,7 @@
     finder = {
         FXRemoveOldTrashItems = true;
         NewWindowTarget = "Home";
+        ShowHardDrivesOnDesktop = true;
         ShowExternalHardDrivesOnDesktop = true;
         ShowPathbar = true;
         ShowStatusBar = true;
@@ -22,6 +23,7 @@
         _FXSortFoldersFirst = true;
         FXDefaultSearchScope = "SCcf";
     };
+    WindowManager.EnableStandardClickToShowDesktop = false;
     CustomUserPreferences = {
       NSGlobalDomain = {
         # Add a context menu item for showing the Web Inspector in web views
