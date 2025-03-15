@@ -48,15 +48,15 @@ jobs:
           CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
 
           # Filter for Docker compose files if needed
-          DOCKER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(racknerd|photo-server)/.*/compose\.yml' || echo "")
+          FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(racknerd|photo-server)/.*/compose\.yml' || echo "")
 
           # Set output for use in other steps
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
           echo "$CHANGED_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-          echo "DOCKER_FILES<<EOF" >> $GITHUB_ENV
-          echo "$DOCKER_FILES" >> $GITHUB_ENV
+          echo "FILES<<EOF" >> $GITHUB_ENV
+          echo "$FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
           # Display changed files for debugging
@@ -64,7 +64,7 @@ jobs:
           echo "$CHANGED_FILES"
 
           echo "Docker compose files:"
-          echo "$DOCKER_FILES"
+          echo "$FILES"
 
       - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
