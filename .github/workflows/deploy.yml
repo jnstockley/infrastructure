@@ -20,6 +20,11 @@ jobs:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
 
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+
       - name: Step 2 - Get changed files between branches
         id: changed-files
         run: |
@@ -28,20 +33,20 @@ jobs:
           HEAD_BRANCH="${{ github.head_ref }}"
 
           echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
-          
+
           # Ensure branches exist in local git
           git fetch origin $BASE_BRANCH:$BASE_BRANCH || echo "Could not fetch base branch"
           git fetch origin $HEAD_BRANCH:$HEAD_BRANCH || echo "Could not fetch head branch"
-          
+
           # Get the most recent commit SHA from each branch
           BASE_SHA=$(git rev-parse origin/$BASE_BRANCH 2>/dev/null || git rev-parse $BASE_BRANCH 2>/dev/null || echo "")
           HEAD_SHA=$(git rev-parse HEAD)
-          
+
           if [ -z "$BASE_SHA" ]; then
             echo "Warning: Could not find base branch '$BASE_BRANCH'. Using default branch."
             BASE_SHA=$(git rev-parse origin/beta 2>/dev/null || git rev-parse origin/main 2>/dev/null || git rev-parse origin/master)
           fi
-          
+
           echo "Base branch commit: $BASE_SHA"
           echo "Head branch commit: $HEAD_SHA"
 
@@ -55,7 +60,7 @@ jobs:
           echo "RACKNERD_FILES<<EOF" >> $GITHUB_ENV
           echo "RACKNERD_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
           echo "PHOTO_SERVER_FILES<<EOF" >> $GITHUB_ENV
           echo "RACKNERD_FILESPHOTO_SERVER_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
