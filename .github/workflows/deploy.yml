@@ -77,10 +77,10 @@ jobs:
     steps:
       - name: Set up SSH and deploy to Photo Server
         env:
-          SSH_HOST: ${{ secrets.RACKNERD_IP }}
+          SSH_HOST: ${{ secrets.IP }}
           SSH_USER: jackstockley
-          SSH_KEY: ${{ secrets.RACKNERD_SSH_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.RACKNERD_SSH_PASSWORD }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
           SSH_COMMANDS: |
             cd ~/infrastructure/
             git reset --hard origin/main
@@ -140,21 +140,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.IOWA_HOME_VPN_CONF }}" > wg0.conf
-          echo "${{ secrets.CHICAGO_HOME_VPN_CONF }}" > wg1.conf
+          echo "${{ secrets.VPN }}" > wg0.conf
           sudo chmod 600 wg0.conf
-          sudo chmod 600 wg1.conf
           sudo cp wg0.conf /etc/wireguard/
-          sudo cp wg1.conf /etc/wireguard/
           sudo wg-quick up wg0
-          sudo wg-quick up wg1
 
       - name: Set up SSH and deploy to Photo Server
         env:
           SSH_HOST: photo-server.local.jstockley.com
           SSH_USER: jackstockley
-          SSH_KEY: ${{ secrets.PHOTO_SERVER_SSH_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.PHOTO_SERVER_SSH_PASSWORD }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
           SSH_COMMANDS: |
             cd ~/infrastructure/
             git reset --hard origin/main
