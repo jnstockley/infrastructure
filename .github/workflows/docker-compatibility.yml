@@ -1,4 +1,3 @@
----
 name: Docker Compatibility
 
 on:
@@ -26,34 +25,44 @@ jobs:
           # For pull requests, compare base branch (target) with head branch (source)
           BASE_BRANCH="${{ github.base_ref }}"
           HEAD_BRANCH="${{ github.head_ref }}"
-          
+
           echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
           
-          # Get the most recent commit on the base branch
-          BASE_COMMIT=$(git rev-parse origin/$BASE_BRANCH)
+          # Ensure branches exist in local git
+          git fetch origin $BASE_BRANCH:$BASE_BRANCH || echo "Could not fetch base branch"
+          git fetch origin $HEAD_BRANCH:$HEAD_BRANCH || echo "Could not fetch head branch"
           
-          echo "Most recent commit on $BASE_BRANCH: $BASE_COMMIT"
-          echo "Current branch: $HEAD_BRANCH"
+          # Get the most recent commit SHA from each branch
+          BASE_SHA=$(git rev-parse origin/$BASE_BRANCH 2>/dev/null || git rev-parse $BASE_BRANCH 2>/dev/null || echo "")
+          HEAD_SHA=$(git rev-parse HEAD)
           
+          if [ -z "$BASE_SHA" ]; then
+            echo "Warning: Could not find base branch '$BASE_BRANCH'. Using default branch."
+            BASE_SHA=$(git rev-parse origin/beta 2>/dev/null || git rev-parse origin/main 2>/dev/null || git rev-parse origin/master)
+          fi
+          
+          echo "Base branch commit: $BASE_SHA"
+          echo "Head branch commit: $HEAD_SHA"
+
           # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only $BASE_COMMIT $HEAD_BRANCH --)
-          
+          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
+
           # Filter for Docker compose files if needed
           DOCKER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(racknerd|photo-server)/.*/compose\.yml' || echo "")
-          
+
           # Set output for use in other steps
           echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
           echo "$CHANGED_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
           echo "DOCKER_FILES<<EOF" >> $GITHUB_ENV
           echo "$DOCKER_FILES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          
+
           # Display changed files for debugging
           echo "Changed files:"
           echo "$CHANGED_FILES"
-          
+
           echo "Docker compose files:"
           echo "$DOCKER_FILES"
 
