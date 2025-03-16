@@ -42,32 +42,22 @@ jobs:
     needs: get_changed_files
     if: ${{ needs.get_changed_files.outputs.racknerd_file_changes != '' }}
     steps:
-      - name: Set up SSH and deploy to Photo Server
+      - name: Set up SSH and deploy to Racknerd
         env:
           RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
           SSH_HOST: ${{ secrets.IP }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
-          SSH_COMMANDS: |
-            cd ~/infrastructure/
-            git reset --hard origin/main
-            git pull
-            for file in ${RACKNERD_SERVER_FILES}; do
-              echo "Deploying $file"
-              docker compose -f $file up -d --force-recreate --remove-orphans
-            done
-            docker image prune -a -f
-            docker system prune -f
         run: |
           # Create SSH directory if it doesn't exist
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-
+      
           # Write SSH key to file
           echo "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-
+      
           # Create SSH config to avoid host key verification
           cat > ~/.ssh/config << EOF
           Host *
@@ -75,10 +65,20 @@ jobs:
               UserKnownHostsFile=/dev/null
           EOF
           chmod 600 ~/.ssh/config
-
+      
           # Install expect for handling SSH passphrase
           sudo apt-get update && sudo apt-get install -y expect
-
+      
+          # Process files and create commands
+          PROCESSED_FILES=$(echo "$RACKNERD_SERVER_FILES" | tr ',' ' ')
+          SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
+          
+          for file in $PROCESSED_FILES; do
+            SSH_COMMANDS="$SSH_COMMANDS && echo \"Deploying $file\" && docker compose -f $file up -d --force-recreate --remove-orphans"
+          done
+          
+          SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
+      
           # Use expect script for handling passphrase
           cat > /tmp/ssh_script.exp << EOF
           #!/usr/bin/expect -f
@@ -89,13 +89,12 @@ jobs:
           expect eof
           EOF
           chmod +x /tmp/ssh_script.exp
-
+      
           # Execute expect script
           /tmp/ssh_script.exp
-
+      
           # Clean up
           rm -f ~/.ssh/id_rsa /tmp/ssh_script.exp
-
   photo_server_deploy:
     name: Deploy new Docker Container to Photo Server
     runs-on: ubuntu-latest
