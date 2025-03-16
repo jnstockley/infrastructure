@@ -83,13 +83,20 @@ fi
 
 # Create expect script
 EXPECT_SCRIPT="$SSH_DIR/ssh_script.exp"
-cat > "$EXPECT_SCRIPT" << EOF
+cat > "$EXPECT_SCRIPT" << 'EOF'
 #!/usr/bin/expect -f
 set timeout -1
-spawn ssh -i $KEY_PATH -F $SSH_DIR/config $SSH_USER@$SSH_HOST "$SSH_COMMANDS"
+# Get variables from environment
+set ssh_key [lindex $argv 0]
+set ssh_config [lindex $argv 1]
+set ssh_user [lindex $argv 2]
+set ssh_host [lindex $argv 3]
+set ssh_commands [lindex $argv 4]
+
+spawn ssh -i $ssh_key -F $ssh_config $ssh_user@$ssh_host $ssh_commands
 expect {
     "Enter passphrase for key" {
-        send "$SSH_PASSPHRASE\r"
+        send "$env(SSH_PASSPHRASE)\r"
         exp_continue
     }
     eof
@@ -97,8 +104,12 @@ expect {
 EOF
 chmod 700 "$EXPECT_SCRIPT"
 
-# Execute expect script
-"$EXPECT_SCRIPT"
+# Pass SSH commands as a file
+echo "$SSH_COMMANDS" > "$SSH_DIR/commands.sh"
+chmod +x "$SSH_DIR/commands.sh"
 
+# Execute expect script, passing the SSH passphrase via environment
+export SSH_PASSPHRASE
+"$EXPECT_SCRIPT" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "bash -s" < "$SSH_DIR/commands.sh"
 # Clean up
 rm -rf "$SSH_DIR"
