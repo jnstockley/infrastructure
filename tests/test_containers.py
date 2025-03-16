@@ -6,16 +6,18 @@ from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_container_is_ready
 from . import logger
 
-containers = os.environ['FILES'].split(' ')
+containers = os.environ["FILES"].split(" ")
 
 
 @pytest.mark.parametrize("container", containers)
 class TestContainers:
-
-    @pytest.fixture(scope='function', autouse=True)
+    @pytest.fixture(scope="function", autouse=True)
     def setup_method(self, container: str):
         self.path = None
-        if container.endswith('.yml') and (container.startswith('docker/racknerd/') or container.startswith('docker/photo-server/')):
+        if container.endswith(".yml") and (
+            container.startswith("docker/racknerd/")
+            or container.startswith("docker/photo-server/")
+        ):
             self.path = container
 
     def test_container(self):
@@ -41,8 +43,8 @@ def get_docker_image_from_file(path: str) -> str | None:
         data: list[dict] = [yaml.load(f, Loader=yaml.SafeLoader)]
         while data:
             d = data.pop()
-            if 'image' in d:
-                return d['image']
+            if "image" in d:
+                return d["image"]
             for k, v in d.items():
                 if isinstance(v, dict):
                     data.append(v)
@@ -53,7 +55,7 @@ def get_docker_image_from_file(path: str) -> str | None:
 
 def start_container(image: str):
     if image is None:
-        logger.error(f"Image can't be none")
+        logger.error("Image can't be none")
         raise Exception("Image can't be none")
 
     try:
