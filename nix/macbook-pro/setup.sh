@@ -63,7 +63,7 @@ if [ -L ~/.config/nix/flake.nix ]; then
     rm ~/.config/nix/flake.nix
 fi
 
-# Check if ~/.ssh folder exists
+# Check if ~/.ssh.sh folder exists
 if [ ! -d ~/.ssh ]; then
     mkdir ~/.ssh
     chmod 700 ~/.ssh
