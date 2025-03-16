@@ -70,7 +70,7 @@ jobs:
           ./scripts/ssh.sh \
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
-            -p "${{ secrets.SSH_PASSWORD }}" \
+            -p "${{ secrets.SSH_PW }}" \
             -h "${{ secrets.IP }}" \
             -c "$SSH_COMMANDS"
 
@@ -109,6 +109,6 @@ jobs:
           ./scripts/ssh.sh \
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
-            -p "${{ secrets.SSH_PASSWORD }}" \
+            -p "${{ secrets.SSH_PW }}" \
             -h "photo-server.local.jstockley.com" \
             -c "$SSH_COMMANDS"
