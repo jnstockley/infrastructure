@@ -15,6 +15,9 @@ jobs:
   get_changed_files:
     name: Get changed files
     runs-on: ubuntu-latest
+    outputs:
+      racknerd_file_changes: ${{ steps.racknerd-changes.outputs.changed_files }}
+      photo_server_file_changes: ${{ steps.photo-server-changes.outputs.changed_files }}
     steps:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
@@ -24,59 +27,24 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Step 3 - Get changed files between branches
-        id: changed-files
-        run: |
-          # For pull requests, compare base branch (target) with head branch (source)
-          BASE_BRANCH="${{ github.base_ref }}"
-          HEAD_BRANCH="${{ github.head_ref }}"
+      - name: Step 3 - Get changed files between branches for Racknerd
+        id: racknerd-changes
+        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/racknerd"
 
-          echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
-
-          # Ensure branches exist in local git
-          git fetch origin $BASE_BRANCH:$BASE_BRANCH || echo "Could not fetch base branch"
-          git fetch origin $HEAD_BRANCH:$HEAD_BRANCH || echo "Could not fetch head branch"
-
-          # Get the most recent commit SHA from each branch
-          BASE_SHA=$(git rev-parse origin/$BASE_BRANCH 2>/dev/null || git rev-parse $BASE_BRANCH 2>/dev/null || echo "")
-          HEAD_SHA=$(git rev-parse HEAD)
-
-          if [ -z "$BASE_SHA" ]; then
-            echo "Warning: Could not find base branch '$BASE_BRANCH'. Using default branch."
-            BASE_SHA=$(git rev-parse origin/beta 2>/dev/null || git rev-parse origin/main 2>/dev/null || git rev-parse origin/master)
-          fi
-
-          echo "Base branch commit: $BASE_SHA"
-          echo "Head branch commit: $HEAD_SHA"
-
-          # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
-
-          # Filter for Docker compose files if needed
-          RACKNERD_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/racknerd/.*/compose\.yml' || echo "")
-          PHOTO_SERVER_FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/photo-server/.*/compose\.yml' || echo "")
-
-          echo "RACKNERD_FILES<<EOF" >> $GITHUB_ENV
-          echo "RACKNERD_FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          echo "PHOTO_SERVER_FILES<<EOF" >> $GITHUB_ENV
-          echo "PHOTO_SERVER_FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          echo "Docker compose files:"
-          echo "RACKNERD_FILES"
-          echo "PHOTO_SERVER_FILES"
+      - name: Step 4 - Get changed files between branches for Photo Server
+        id: photo-server-changes
+        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/photo-server"
 
   racknerd_deploy:
     name: Deploy new Docker Container to Racknerd
     runs-on: ubuntu-latest
     environment: racknerd
     needs: get_changed_files
-    if: ${{ env.RACKNERD_FILES != '' }}
+    if: ${{ needs.get_changed_files.outputs.racknerd_file_changes != '' }}
     steps:
       - name: Set up SSH and deploy to Photo Server
         env:
+          RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
           SSH_HOST: ${{ secrets.IP }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -85,7 +53,7 @@ jobs:
             cd ~/infrastructure/
             git reset --hard origin/main
             git pull
-            for file in ${PHOTO_SERVER_FILES}; do
+            for file in ${RACKNERD_SERVER_FILES}; do
               echo "Deploying $file"
               docker compose -f $file up -d --force-recreate --remove-orphans
             done
@@ -133,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: photo-server
     needs: get_changed_files
-    if: ${{ env.PHOTO_SERVER_FILES != '' }}
+    if: ${{ needs.get_changed_files.outputs.photo_server_file_changes != '' }}
     steps:
       - name: WireGuard Connection
         run: |
@@ -146,6 +114,7 @@ jobs:
 
       - name: Set up SSH and deploy to Photo Server
         env:
+          PHOTO_SERVER_FILES: ${{ needs.get_changed_files.outputs.photo_server_file_changes }}
           SSH_HOST: photo-server.local.jstockley.com
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
