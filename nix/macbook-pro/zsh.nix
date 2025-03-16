@@ -70,8 +70,8 @@
       "poetry"
       "pyenv"
       "python"
-      "ssh"
-      "ssh-agent"
+      "ssh.sh"
+      "ssh.sh-agent"
       "sudo"
     ];
   };

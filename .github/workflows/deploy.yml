@@ -42,33 +42,17 @@ jobs:
     needs: get_changed_files
     if: ${{ needs.get_changed_files.outputs.racknerd_file_changes != '' }}
     steps:
-      - name: Set up SSH and deploy to Racknerd
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Step 2 - Deploy to Racknerd Server
         env:
           RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
-          SSH_HOST: ${{ secrets.IP }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
+          SSH_HOST: ${{ secrets.IP }}
         run: |
-          # Create SSH directory if it doesn't exist
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-      
-          # Write SSH key to file
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-      
-          # Create SSH config to avoid host key verification
-          cat > ~/.ssh/config << EOF
-          Host *
-              StrictHostKeyChecking no
-              UserKnownHostsFile=/dev/null
-          EOF
-          chmod 600 ~/.ssh/config
-      
-          # Install expect for handling SSH passphrase
-          sudo apt-get update && sudo apt-get install -y expect
-      
           # Process files and create commands
           PROCESSED_FILES=$(echo "$RACKNERD_SERVER_FILES" | tr ',' ' ')
           SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
@@ -78,23 +62,13 @@ jobs:
           done
           
           SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
-      
-          # Use expect script for handling passphrase
-          cat > /tmp/ssh_script.exp << EOF
-          #!/usr/bin/expect -f
-          set timeout -1
-          spawn ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST "$SSH_COMMANDS"
-          expect "Enter passphrase for key"
-          send "$SSH_PASSPHRASE\r"
-          expect eof
-          EOF
-          chmod +x /tmp/ssh_script.exp
-      
-          # Execute expect script
-          /tmp/ssh_script.exp
-      
-          # Clean up
-          rm -f ~/.ssh/id_rsa /tmp/ssh_script.exp
+          
+          # Install expect
+          sudo apt-get update && sudo apt-get install -y expect
+          
+          # Execute the SSH script
+          ./scripts/ssh.sh -u "$SSH_USER" -k "$SSH_KEY" -p "$SSH_PASSPHRASE" -h "$SSH_HOST" -c "$SSH_COMMANDS"
+
   photo_server_deploy:
     name: Deploy new Docker Container to Photo Server
     runs-on: ubuntu-latest
@@ -102,65 +76,29 @@ jobs:
     needs: get_changed_files
     if: ${{ needs.get_changed_files.outputs.photo_server_file_changes != '' }}
     steps:
-      - name: WireGuard Connection
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wireguard resolvconf
-          echo "${{ secrets.VPN }}" > wg0.conf
-          sudo chmod 600 wg0.conf
-          sudo cp wg0.conf /etc/wireguard/
-          sudo wg-quick up wg0
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
-      - name: Set up SSH and deploy to Photo Server
+      - name: Step 2 - Deploy to Photo Server
         env:
-          PHOTO_SERVER_FILES: ${{ needs.get_changed_files.outputs.photo_server_file_changes }}
-          SSH_HOST: photo-server.local.jstockley.com
+          RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
-          SSH_COMMANDS: |
-            cd ~/infrastructure/
-            git reset --hard origin/main
-            git pull
-            for file in ${PHOTO_SERVER_FILES}; do
-              echo "Deploying $file"
-              docker compose -f $file up -d --force-recreate --remove-orphans
-            done
-            docker image prune -a -f
-            docker system prune -f
+          SSH_HOST: photo-server.local.jstockley.com
         run: |
-          # Create SSH directory if it doesn't exist
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-
-          # Write SSH key to file
-          echo "$SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          # Create SSH config to avoid host key verification
-          cat > ~/.ssh/config << EOF
-          Host *
-              StrictHostKeyChecking no
-              UserKnownHostsFile=/dev/null
-          EOF
-          chmod 600 ~/.ssh/config
-
-          # Install expect for handling SSH passphrase
+          # Process files and create commands
+          PROCESSED_FILES=$(echo "$RACKNERD_SERVER_FILES" | tr ',' ' ')
+          SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
+          
+          for file in $PROCESSED_FILES; do
+            SSH_COMMANDS="$SSH_COMMANDS && echo \"Deploying $file\" && docker compose -f $file up -d --force-recreate --remove-orphans"
+          done
+          
+          SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
+          
+          # Install expect
           sudo apt-get update && sudo apt-get install -y expect
-
-          # Use expect script for handling passphrase
-          cat > /tmp/ssh_script.exp << EOF
-          #!/usr/bin/expect -f
-          set timeout -1
-          spawn ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_HOST "$SSH_COMMANDS"
-          expect "Enter passphrase for key"
-          send "$SSH_PASSPHRASE\r"
-          expect eof
-          EOF
-          chmod +x /tmp/ssh_script.exp
-
-          # Execute expect script
-          /tmp/ssh_script.exp
-
-          # Clean up
-          rm -f ~/.ssh/id_rsa /tmp/ssh_script.exp
+          
+          # Execute the SSH script
+          ./scripts/ssh.sh -u "$SSH_USER" -k "$SSH_KEY" -p "$SSH_PASSPHRASE" -h "$SSH_HOST" -c "$SSH_COMMANDS"
