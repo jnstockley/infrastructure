@@ -1,21 +1,14 @@
 [project]
 name = "infrastructure"
 version = "0.1.0"
-description = ""
+description = "Contains docker compose files, for infrastructure running on-prem/off-prem"
 authors = [
     {name = "Jack Stockley", email = "jack@jstockley.com"}
 ]
 readme = "README.md"
-package-mode = false
-requires-python = "<4.0,>=3.13"
+requires-python = ">=3.13"
 dependencies = [
-    "pytest ==8.3.5",
-    "testcontainers ==4.9.2",
-    "docker ==7.1.0",
-    "pyyaml ==6.0.2"
+    "pytest>=8.3.5",
+    "pyyaml>=6.0.2",
+    "testcontainers>=4.9.2",
 ]
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
