@@ -3,6 +3,9 @@
 # Exit on error
 set -e
 
+# Enable debug mode to see what's happening
+set -x
+
 # Function to show usage
 function show_usage() {
     echo "Usage: $0 -u USERNAME -k SSH_KEY -p SSH_PASSPHRASE -h HOSTNAME -c \"COMMANDS\""
@@ -29,9 +32,23 @@ while getopts "u:k:p:h:c:" opt; do
     esac
 done
 
+# Debug output - print what was received (masking sensitive data)
+echo "Received arguments:"
+echo "  User: $SSH_USER"
+echo "  Host: $SSH_HOST"
+echo "  Key length: ${#SSH_KEY} characters"
+echo "  Passphrase length: ${#SSH_PASSPHRASE} characters"
+echo "  Command length: ${#SSH_COMMANDS} characters"
+
 # Check if all required arguments are provided
 if [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PASSPHRASE" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_COMMANDS" ]; then
     echo "Error: Missing required arguments."
+    # Show which arguments are missing
+    [ -z "$SSH_USER" ] && echo "Missing: SSH_USER"
+    [ -z "$SSH_KEY" ] && echo "Missing: SSH_KEY"
+    [ -z "$SSH_PASSPHRASE" ] && echo "Missing: SSH_PASSPHRASE"
+    [ -z "$SSH_HOST" ] && echo "Missing: SSH_HOST"
+    [ -z "$SSH_COMMANDS" ] && echo "Missing: SSH_COMMANDS"
     show_usage
 fi
 
