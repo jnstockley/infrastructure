@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: racknerd
     needs: get_changed_files
-    if: RACKNERD_FILES != ''
+    if: env.RACKNERD_FILES != ''
     steps:
       - name: Set up SSH and deploy to Photo Server
         env:
@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: photo-server
     needs: get_changed_files
-    if: PHOTO_SERVER_FILES != ''
+    if: env.PHOTO_SERVER_FILES != ''
     steps:
       - name: WireGuard Connection
         run: |
