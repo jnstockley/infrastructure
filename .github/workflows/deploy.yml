@@ -23,7 +23,7 @@ jobs:
         run: sudo timedatectl set-timezone America/Chicago
 
       - name: Step 2 - Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
         with:
           fetch-depth: 0
 
@@ -43,7 +43,7 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.racknerd_file_changes != '' }}
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
 
       - name: Step 2 - Deploy to Racknerd Server
         env:
@@ -77,7 +77,7 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.photo_server_file_changes != '' }}
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@85e6279cec87321a52edac9c87bce653a07cf6c2
 
       - name: Step 2 - Deploy to Photo Server
         env:
