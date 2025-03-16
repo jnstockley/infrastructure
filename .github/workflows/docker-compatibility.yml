@@ -72,11 +72,11 @@ jobs:
         with:
           check-latest: true
 
-      - name: Step 4 - Install Poetry and Dependencies
-        run: |
-          pip3 install -r requirements.txt
-          poetry lock
-          poetry install --no-root
+      - name: Step 3 - Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Step 4 - Install Packages
+        run: uv sync --frozen
 
       - name: Step 5 - Run Tests
-        run: poetry run pytest tests/test_containers.py
+        run: uv run pytest tests/test_containers.py
