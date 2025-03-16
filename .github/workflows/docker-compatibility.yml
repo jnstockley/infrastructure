@@ -13,6 +13,8 @@ jobs:
   docker_compatibility:
     name: Test Docker Images compatibility
     runs-on: ubuntu-latest
+    outputs:
+      changed_files: ${{ steps.get-changes.outputs.changed_files }}
 
     steps:
       - name: Step 1 - Checkout code
@@ -21,51 +23,8 @@ jobs:
           fetch-depth: 0
 
       - name: Step 2 - Get changed files between branches
-        id: changed-files
-        run: |
-          # For pull requests, compare base branch (target) with head branch (source)
-          BASE_BRANCH="${{ github.base_ref }}"
-          HEAD_BRANCH="${{ github.head_ref }}"
-
-          echo "Comparing changes between '$BASE_BRANCH' and '$HEAD_BRANCH'..."
-
-          # Ensure branches exist in local git
-          git fetch origin $BASE_BRANCH:$BASE_BRANCH || echo "Could not fetch base branch"
-          git fetch origin $HEAD_BRANCH:$HEAD_BRANCH || echo "Could not fetch head branch"
-
-          # Get the most recent commit SHA from each branch
-          BASE_SHA=$(git rev-parse origin/$BASE_BRANCH 2>/dev/null || git rev-parse $BASE_BRANCH 2>/dev/null || echo "")
-          HEAD_SHA=$(git rev-parse HEAD)
-
-          if [ -z "$BASE_SHA" ]; then
-            echo "Warning: Could not find base branch '$BASE_BRANCH'. Using default branch."
-            BASE_SHA=$(git rev-parse origin/beta 2>/dev/null || git rev-parse origin/main 2>/dev/null || git rev-parse origin/master)
-          fi
-
-          echo "Base branch commit: $BASE_SHA"
-          echo "Head branch commit: $HEAD_SHA"
-
-          # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA --)
-
-          # Filter for Docker compose files if needed
-          FILES=$(echo "$CHANGED_FILES" | grep -E 'docker/(racknerd|photo-server)/.*/compose\.yml' || echo "")
-
-          # Set output for use in other steps
-          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
-          echo "$CHANGED_FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          echo "FILES<<EOF" >> $GITHUB_ENV
-          echo "$FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
-          # Display changed files for debugging
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-
-          echo "Docker compose files:"
-          echo "$FILES"
+        id: get-changes
+        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/racknerd|docker/photo-server"
 
       - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
@@ -79,4 +38,6 @@ jobs:
         run: uv sync --frozen
 
       - name: Step 5 - Run Tests
+        env:
+          FILES: ${{ steps.get-changes.outputs.changed_files }}
         run: uv run pytest tests/test_containers.py
