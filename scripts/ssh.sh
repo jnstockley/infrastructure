@@ -3,9 +3,6 @@
 # Exit on error
 set -e
 
-# Enable debug mode to see what's happening
-set -x
-
 # Function to show usage
 function show_usage() {
     echo "Usage: $0 -u USERNAME -k SSH_KEY -p SSH_PASSPHRASE -h HOSTNAME -c \"COMMANDS\""
@@ -20,30 +17,29 @@ function show_usage() {
     exit 1
 }
 
+# Initialize variables
+SSH_USER=""
+SSH_KEY=""
+SSH_PASSPHRASE=""
+SSH_HOST=""
+SSH_COMMANDS=""
+
 # Parse arguments
-while getopts "u:k:p:h:c:" opt; do
+while getopts ":u:k:p:h:c:" opt; do
     case $opt in
         u) SSH_USER="$OPTARG" ;;
         k) SSH_KEY="$OPTARG" ;;
         p) SSH_PASSPHRASE="$OPTARG" ;;
         h) SSH_HOST="$OPTARG" ;;
         c) SSH_COMMANDS="$OPTARG" ;;
-        *) show_usage ;;
+        \?) echo "Invalid option: -$OPTARG" >&2; show_usage ;;
+        :) echo "Option -$OPTARG requires an argument." >&2; show_usage ;;
     esac
 done
-
-# Debug output - print what was received (masking sensitive data)
-echo "Received arguments:"
-echo "  User: $SSH_USER"
-echo "  Host: $SSH_HOST"
-echo "  Key length: ${#SSH_KEY} characters"
-echo "  Passphrase length: ${#SSH_PASSPHRASE} characters"
-echo "  Command length: ${#SSH_COMMANDS} characters"
 
 # Check if all required arguments are provided
 if [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PASSPHRASE" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_COMMANDS" ]; then
     echo "Error: Missing required arguments."
-    # Show which arguments are missing
     [ -z "$SSH_USER" ] && echo "Missing: SSH_USER"
     [ -z "$SSH_KEY" ] && echo "Missing: SSH_KEY"
     [ -z "$SSH_PASSPHRASE" ] && echo "Missing: SSH_PASSPHRASE"
@@ -56,12 +52,8 @@ fi
 SSH_DIR=$(mktemp -d)
 KEY_PATH="$SSH_DIR/id_rsa"
 
-# Check if SSH_KEY is a file path or key content
-if [ -f "$SSH_KEY" ]; then
-    cp "$SSH_KEY" "$KEY_PATH"
-else
-    echo "$SSH_KEY" > "$KEY_PATH"
-fi
+# Save the key content to the key file
+echo "$SSH_KEY" > "$KEY_PATH"
 
 # Set proper permissions
 chmod 700 "$SSH_DIR"
@@ -75,41 +67,51 @@ Host *
 EOF
 chmod 600 "$SSH_DIR/config"
 
-# Check if expect is installed
-if ! command -v expect &>/dev/null; then
-    echo "Error: 'expect' is not installed. Please install it first."
-    exit 1
-fi
+# Create a script with the commands to run
+COMMAND_FILE="$SSH_DIR/commands.sh"
+echo "$SSH_COMMANDS" > "$COMMAND_FILE"
+chmod +x "$COMMAND_FILE"
 
-# Create expect script
-EXPECT_SCRIPT="$SSH_DIR/ssh_script.exp"
-cat > "$EXPECT_SCRIPT" << 'EOF'
+# Create expect script that sends the password correctly
+cat > "$SSH_DIR/ssh_expect.exp" << 'EOF'
 #!/usr/bin/expect -f
-set timeout -1
-# Get variables from environment
-set ssh_key [lindex $argv 0]
-set ssh_config [lindex $argv 1]
-set ssh_user [lindex $argv 2]
-set ssh_host [lindex $argv 3]
-set ssh_commands [lindex $argv 4]
 
-spawn ssh -i $ssh_key -F $ssh_config $ssh_user@$ssh_host $ssh_commands
+if {[llength $argv] < 5} {
+    puts "Usage: $argv0 KEY_PATH CONFIG_PATH USER HOST PASSPHRASE COMMANDS_FILE"
+    exit 1
+}
+
+set KEY_PATH [lindex $argv 0]
+set CONFIG_PATH [lindex $argv 1]
+set USER [lindex $argv 2]
+set HOST [lindex $argv 3]
+set PASSPHRASE [lindex $argv 4]
+set COMMANDS_FILE [lindex $argv 5]
+
+set timeout 300
+set COMMANDS [exec cat $COMMANDS_FILE]
+
+spawn ssh -i $KEY_PATH -F $CONFIG_PATH $USER@$HOST "$COMMANDS"
+
 expect {
     "Enter passphrase for key" {
-        send "$env(SSH_PASSPHRASE)\r"
+        send "$PASSPHRASE\r"
         exp_continue
+    }
+    timeout {
+        puts "Connection timed out"
+        exit 1
     }
     eof
 }
+
+catch wait result
+exit [lindex $result 3]
 EOF
-chmod 700 "$EXPECT_SCRIPT"
+chmod 700 "$SSH_DIR/ssh_expect.exp"
 
-# Pass SSH commands as a file
-echo "$SSH_COMMANDS" > "$SSH_DIR/commands.sh"
-chmod +x "$SSH_DIR/commands.sh"
+# Execute the expect script
+expect "$SSH_DIR/ssh_expect.exp" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "$SSH_PASSPHRASE" "$COMMAND_FILE"
 
-# Execute expect script, passing the SSH passphrase via environment
-export SSH_PASSPHRASE
-"$EXPECT_SCRIPT" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "bash -s" < "$SSH_DIR/commands.sh"
 # Clean up
 rm -rf "$SSH_DIR"
