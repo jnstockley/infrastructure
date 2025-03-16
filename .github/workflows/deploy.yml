@@ -56,18 +56,18 @@ jobs:
           # Process files and create commands
           PROCESSED_FILES=$(echo "$RACKNERD_SERVER_FILES" | tr ',' ' ')
           SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
-          
+
           for file in $PROCESSED_FILES; do
             SSH_COMMANDS="$SSH_COMMANDS && echo \"Deploying $file\" && docker compose -f $file up -d --force-recreate --remove-orphans"
           done
-          
+
           SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
-          
+
           # Install expect
           sudo apt-get update && sudo apt-get install -y expect
           
-          # Execute the SSH script
-          ./scripts/ssh.sh -u "$SSH_USER" -k "$SSH_KEY" -p "$SSH_PASSPHRASE" -h "$SSH_HOST" -c "$SSH_COMMANDS"
+          # Execute the SSH script with properly quoted arguments
+          ./scripts/ssh.sh -u "${SSH_USER}" -k "${SSH_KEY}" -p "${SSH_PASSPHRASE}" -h "${SSH_HOST}" -c "${SSH_COMMANDS}"
 
   photo_server_deploy:
     name: Deploy new Docker Container to Photo Server
@@ -100,5 +100,5 @@ jobs:
           # Install expect
           sudo apt-get update && sudo apt-get install -y expect
           
-          # Execute the SSH script
-          ./scripts/ssh.sh -u "$SSH_USER" -k "$SSH_KEY" -p "$SSH_PASSPHRASE" -h "$SSH_HOST" -c "$SSH_COMMANDS"
+          # Execute the SSH script with properly quoted arguments
+          ./scripts/ssh.sh -u "${SSH_USER}" -k "${SSH_KEY}" -p "${SSH_PASSPHRASE}" -h "${SSH_HOST}" -c "${SSH_COMMANDS}"
