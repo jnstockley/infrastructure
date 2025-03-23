@@ -90,7 +90,6 @@ jobs:
             sudo apt-get install -y wireguard resolvconf
             echo "${{ secrets.VPN }}" > wg0.conf
             sudo chmod 600 wg0.conf
-            sudo chmod 600 wg1.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
 
