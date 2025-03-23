@@ -32,8 +32,14 @@ while getopts ":u:k:p:h:c:" opt; do
         p) SSH_PASSPHRASE="$OPTARG" ;;
         h) SSH_HOST="$OPTARG" ;;
         c) SSH_COMMANDS="$OPTARG" ;;
-        \?) echo "Invalid option: -$OPTARG" >&2; show_usage ;;
-        :) echo "Option -$OPTARG requires an argument." >&2; show_usage ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            show_usage
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            show_usage
+            ;;
     esac
 done
 
@@ -53,14 +59,14 @@ SSH_DIR=$(mktemp -d)
 KEY_PATH="$SSH_DIR/id_rsa"
 
 # Save the key content to the key file
-echo "$SSH_KEY" > "$KEY_PATH"
+echo "$SSH_KEY" >"$KEY_PATH"
 
 # Set proper permissions
 chmod 700 "$SSH_DIR"
 chmod 600 "$KEY_PATH"
 
 # Configure SSH to skip host verification
-cat > "$SSH_DIR/config" << EOF
+cat >"$SSH_DIR/config" <<EOF
 Host *
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
@@ -69,11 +75,11 @@ chmod 600 "$SSH_DIR/config"
 
 # Create a script with the commands to run
 COMMAND_FILE="$SSH_DIR/commands.sh"
-echo "$SSH_COMMANDS" > "$COMMAND_FILE"
+echo "$SSH_COMMANDS" >"$COMMAND_FILE"
 chmod +x "$COMMAND_FILE"
 
 # Create expect script that sends the password correctly
-cat > "$SSH_DIR/ssh_expect.exp" << 'EOF'
+cat >"$SSH_DIR/ssh_expect.exp" <<'EOF'
 #!/usr/bin/expect -f
 
 if {[llength $argv] < 5} {

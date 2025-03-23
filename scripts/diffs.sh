@@ -53,4 +53,4 @@ fi
 # Output the FILES variable in GitHub Actions format
 # Convert newlines to comma-separated string for GitHub Actions
 FILES_CSV=$(echo "$FILES" | tr '\n' ',' | sed 's/,$//')
-echo "changed_files=$FILES_CSV" >> "$GITHUB_OUTPUT"
+echo "changed_files=$FILES_CSV" >>"$GITHUB_OUTPUT"
