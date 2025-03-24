@@ -99,7 +99,7 @@ jobs:
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
-          SSH_HOST: photo-server.local.jstockley.com
+          SSH_HOST: photo-server.internal.jstockley.com
         run: |
           # Process files and create commands
           PROCESSED_FILES=$(echo "$RACKNERD_SERVER_FILES" | tr ',' ' ')
