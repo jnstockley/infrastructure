@@ -115,5 +115,5 @@ jobs:
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
             -p "${{ secrets.SSH_PW }}" \
-            -h "photo-server.internal.jstockley.comcom" \
+            -h "photo-server.internal.jstockley.com" \
             -c "$SSH_COMMANDS"
