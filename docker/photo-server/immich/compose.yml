@@ -57,7 +57,7 @@ services:
       - no-new-privileges:true
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.130.0
+    image: ghcr.io/immich-app/immich-machine-learning:v1.130.1
     container_name: immich_machine_learning
     volumes:
       - model-cache:/cache
