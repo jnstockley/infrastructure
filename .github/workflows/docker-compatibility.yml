@@ -24,7 +24,7 @@ jobs:
 
       - name: Step 2 - Get changed files between branches
         id: get-changes
-        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/racknerd|docker/photo-server"
+        run: ./scripts/diffs-no-merge.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/racknerd|docker/photo-server"
 
       - name: Step 3 - Setup Python
         uses: actions/setup-python@v5
