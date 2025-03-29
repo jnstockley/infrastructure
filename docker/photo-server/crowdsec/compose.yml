@@ -11,7 +11,7 @@ services:
       CROWDSEC_BOUNCER_API_KEY: some-api-key
       CROWDSEC_AGENT_HOST: crowdsec:8080
     networks:
-      - crowdsec
+      - proxy
     restart: unless-stopped
   crowdsec:
     image: crowdsecurity/crowdsec:v1.6.8

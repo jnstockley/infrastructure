@@ -27,5 +27,5 @@ services:
 
 networks:
   proxy:
-    name: it-tools
+    name: proxy
     external: true
