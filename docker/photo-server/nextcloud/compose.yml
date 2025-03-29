@@ -11,7 +11,7 @@ services:
     environment:
       - APACHE_PORT=11000
       - APACHE_IP_BINDING=127.0.0.1
-      - APACHE_ADDITIONAL_NETWORK=proxy
+      # APACHE_ADDITIONAL_NETWORK=proxy
       # AIO_DISABLE_BACKUP_SECTION: false # Setting this to true allows to hide the backup section in the AIO interface. See https://github.com/nextcloud/all-in-one#how-to-disable-the-backup-section
       # AIO_COMMUNITY_CONTAINERS: # With this variable, you can add community containers very easily. See https://github.com/nextcloud/all-in-one/tree/main/community-containers#community-containers
       # BORG_RETENTION_POLICY: --keep-within=7d --keep-weekly=4 --keep-monthly=6 # Allows to adjust borgs retention policy. See https://github.com/nextcloud/all-in-one#how-to-adjust-borgs-retention-policy
