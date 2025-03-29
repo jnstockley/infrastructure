@@ -16,7 +16,7 @@ services:
     ports:
       - '0.0.0.0:8384:8384'
     networks:
-      - syncthing
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
@@ -51,6 +51,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  syncthing:
-    name: syncthing
+  proxy:
+    name: proxy
     external: true

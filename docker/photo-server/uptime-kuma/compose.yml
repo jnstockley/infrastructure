@@ -53,9 +53,8 @@ services:
     env_file:
       - .env
     networks:
-      - uptime-kuma
+      - proxy
       - immich_private
-      - airflow
       - postgres
     restart: unless-stopped
     healthcheck:
@@ -77,14 +76,11 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
-  uptime-kuma:
-    name: uptime-kuma
+  proxy:
+    name: proxy
     external: true
   immich_private:
     name: immich_private
-    external: true
-  airflow:
-    name: airflow
     external: true
   postgres:
     name: postgres

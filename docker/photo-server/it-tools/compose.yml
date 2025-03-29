@@ -5,7 +5,7 @@ services:
     image: corentinth/it-tools:2024.10.22-7ca5933
     container_name: it-tools
     networks:
-      - it-tools
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: curl -f http://localhost
@@ -26,6 +26,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  it-tools:
+  proxy:
     name: it-tools
     external: true

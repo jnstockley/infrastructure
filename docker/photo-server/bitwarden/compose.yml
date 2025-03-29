@@ -136,7 +136,7 @@ services:
     networks:
       - default
       - public
-      - bitwarden
+      - proxy
     restart: always
     labels:
       - traefik.enable=true
@@ -184,6 +184,6 @@ networks:
     internal: true
   public:
     internal: false
-  bitwarden:
+  proxy:
     external: true
-    name: bitwarden
+    name: proxy

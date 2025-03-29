@@ -126,7 +126,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     networks:
-      - airflow
+      - proxy
       - postgres
       - redis
     restart: unless-stopped
@@ -158,8 +158,8 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
-  airflow:
-    name: airflow
+  proxy:
+    name: proxy
     external: true
   postgres:
     name: postgres

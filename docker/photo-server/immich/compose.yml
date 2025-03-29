@@ -102,7 +102,7 @@ services:
     ports:
       - '0.0.0.0:2283:2283'
     networks:
-      - immich
+      - proxy
       - immich_private
       - redis
     restart: unless-stopped
@@ -138,8 +138,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  immich:
-    name: immich
+  proxy:
+    name: proxy
     external: true
   immich_private:
     name: immich_private
