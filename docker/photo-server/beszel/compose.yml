@@ -31,7 +31,6 @@ services:
       - traefik.http.routers.beszel.tls.certresolver=production
       - traefik.http.routers.beszel.service=beszel
       - traefik.http.services.beszel.loadbalancer.server.port=8090
-      - traefik.docker.network=beszel
     security_opt:
       - no-new-privileges:true
 

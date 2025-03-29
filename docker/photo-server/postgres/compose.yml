@@ -39,7 +39,6 @@ services:
       - traefik.http.routers.pgadmin.tls.certresolver=production
       - traefik.http.routers.pgadmin.service=pgadmin
       - traefik.http.services.pgadmin.loadbalancer.server.port=80
-      - traefik.docker.network=pgadmin
     deploy:
       resources:
         limits:

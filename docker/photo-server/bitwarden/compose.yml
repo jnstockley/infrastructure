@@ -146,7 +146,6 @@ services:
       - traefik.http.routers.bitwarden.tls.certresolver=production
       - traefik.http.routers.bitwarden.service=bitwarden
       - traefik.http.services.bitwarden.loadbalancer.server.port=8080
-      - traefik.docker.network=bitwarden
     security_opt:
       - no-new-privileges:true
 
