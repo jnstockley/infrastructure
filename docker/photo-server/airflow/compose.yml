@@ -107,7 +107,6 @@ services:
       - traefik.http.routers.airflow.tls.certresolver=production
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
-      - traefik.docker.network=airflow
     deploy:
       resources:
         limits:

@@ -41,7 +41,6 @@ services:
       - traefik.http.routers.backup.tls.certresolver=production
       - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
-      - traefik.docker.network=syncthing
     deploy:
       resources:
         limits:

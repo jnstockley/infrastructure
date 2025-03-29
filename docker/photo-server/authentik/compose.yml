@@ -41,7 +41,6 @@ services:
       - traefik.http.routers.auth.tls.certresolver=production
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
-      - traefik.docker.network=authentik
     deploy:
       resources:
         limits:

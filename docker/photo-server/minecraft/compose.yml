@@ -42,7 +42,6 @@ services:
       - traefik.http.services.mc.loadbalancer.server.port=8443
       - traefik.http.services.mc.loadbalancer.server.scheme=https
       - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
-      - traefik.docker.network=minecraft
       - traefik.tcp.routers.mc-server.entrypoints=minecraft
       - traefik.tcp.routers.mc-server.rule=HostSNI(`*`)
       - traefik.tcp.routers.mc-server.tls="false"
