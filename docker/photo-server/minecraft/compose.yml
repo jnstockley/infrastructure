@@ -15,7 +15,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - minecraft
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: /crafty/healthcheck.sh
@@ -52,6 +52,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  minecraft:
-    name: minecraft
+  proxy:
+    name: proxy
     external: true

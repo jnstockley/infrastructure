@@ -9,7 +9,7 @@ services:
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
-      - ./logs/:/var/log/traefik/
+      - traefik-logs:/var/log/traefik/
     env_file:
       - .env
     ports:
@@ -17,20 +17,7 @@ services:
       - '0.0.0.0:443:443'
       - '0.0.0.0:25565:25565/tcp'
     networks:
-      - airflow
-      - gitea
-      - immich
-      - mend
-      - minecraft
-      - pgadmin
-      - syncthing
-      - uptime-kuma
-      - adguard
-      - beszel
-      - authentik
-      - it-tools
-      - bitwarden
-      - nextcloud
+      - proxy
       - loki
       - grafana
       - prometheus
@@ -72,47 +59,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  airflow:
-    name: airflow
-    external: true
-  gitea:
-    name: gitea
-    external: true
-  immich:
-    name: immich
-    external: true
-  mend:
-    name: mend
-    external: true
-  minecraft:
-    name: minecraft
-    external: true
-  pgadmin:
-    name: pgadmin
-    external: true
-  syncthing:
-    name: syncthing
-    external: true
-  uptime-kuma:
-    name: uptime-kuma
-    external: true
-  adguard:
-    name: adguard
-    external: true
-  beszel:
-    name: beszel
-    external: true
-  authentik:
-    external: true
-    name: authentik
-  it-tools:
-    external: true
-    name: it-tools
-  bitwarden:
-    external: true
-    name: bitwarden
-  nextcloud:
-    name: nextcloud
+  proxy:
+    name: proxy
     external: true
   loki:
     name: loki
@@ -123,3 +71,6 @@ networks:
   prometheus:
     name: prometheus
     external: true
+
+volumes:
+  traefik-logs:

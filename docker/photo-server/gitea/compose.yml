@@ -11,7 +11,7 @@ services:
     env_file:
       - ./.env
     networks:
-      - gitea
+      - proxy
       - postgres
     restart: unless-stopped
     healthcheck:
@@ -46,8 +46,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  gitea:
-    name: gitea
+  proxy:
+    name: proxy
     external: true
   postgres:
     name: postgres

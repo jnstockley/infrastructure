@@ -10,7 +10,7 @@ services:
     env_file:
       - .env
     networks:
-      - mend
+      - proxy
       - postgres
     restart: unless-stopped
     healthcheck:
@@ -45,8 +45,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  mend:
-    name: mend
+  proxy:
+    name: proxy
     external: true
   postgres:
     name: postgres
