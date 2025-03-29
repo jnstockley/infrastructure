@@ -36,7 +36,7 @@ services:
       - traefik.http.routers.mend.tls.certresolver=production
       - traefik.http.routers.mend.service=mend
       - traefik.http.services.mend.loadbalancer.server.port=8080
-      - traefik.docker.network=mend
+      - traefik.docker.network=proxy
     deploy:
       resources:
         limits:
