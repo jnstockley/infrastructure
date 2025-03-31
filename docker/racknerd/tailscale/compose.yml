@@ -2,7 +2,7 @@
 name: tailscale
 services:
   tailscale:
-    image: tailscale/tailscale:v1.80.3
+    image: tailscale/tailscale:v1.82.0
     container_name: tailscale
     volumes:
       - /dev/net/tun:/dev/net/tun
