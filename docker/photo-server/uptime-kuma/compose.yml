@@ -53,8 +53,7 @@ services:
       - .env
     networks:
       - proxy
-      - immich_private
-      - postgres
+      - private
     restart: unless-stopped
     healthcheck:
       test: curl --fail https://google.com || exit 1
@@ -78,9 +77,7 @@ networks:
   proxy:
     name: proxy
     external: true
-  immich_private:
-    name: immich_private
-    external: true
-  postgres:
-    name: postgres
+  private:
+    name: private
+    internal: true
     external: true

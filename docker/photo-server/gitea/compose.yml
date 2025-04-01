@@ -12,7 +12,7 @@ services:
       - ./.env
     networks:
       - proxy
-      - postgres
+      - private
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:3000/api/healthz || exit 1
@@ -48,6 +48,7 @@ networks:
   proxy:
     name: proxy
     external: true
-  postgres:
-    name: postgres
+  private:
+    name: private
+    internal: true
     external: true

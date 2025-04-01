@@ -18,9 +18,8 @@ services:
       - '0.0.0.0:25565:25565/tcp'
     networks:
       - proxy
-      - loki
-      - grafana
-      - prometheus
+      - private
+      - nextcloud
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -62,14 +61,12 @@ networks:
   proxy:
     name: proxy
     external: true
-  loki:
-    name: loki
+  private:
+    name: private
+    internal: true
     external: true
-  grafana:
-    name: grafana
-    external: true
-  prometheus:
-    name: prometheus
+  nextcloud:
+    name: nextcloud
     external: true
 
 volumes:

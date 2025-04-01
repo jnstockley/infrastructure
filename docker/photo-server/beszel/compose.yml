@@ -6,7 +6,9 @@ services:
     container_name: beszel
     volumes:
       - ./data:/beszel_data
-    network_mode: service:wireguard-beszel
+    networks:
+      - proxy
+      - beszel-agent
     restart: unless-stopped
     healthcheck:
       test: [ 'CMD', '/beszel', 'health', '--url', 'http://localhost:8090' ]
@@ -62,45 +64,6 @@ services:
         mode: "non-blocking"
     security_opt:
       - no-new-privileges:true
-
-  wireguard-beszel:
-    image: linuxserver/wireguard:1.0.20210914@sha256:0dfaeb571eb3cf438d5c34508d49d7bf29df938d408a92da0448a9e8328a7819
-    container_name: wireguard-beszel
-    volumes:
-      - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules
-    env_file:
-      - .env
-    networks:
-      - proxy
-      - beszel-agent
-    restart: unless-stopped
-    healthcheck:
-      test: curl --fail https://google.com || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   proxy:

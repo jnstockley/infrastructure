@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: ${DB_DATABASE_NAME}
       POSTGRES_INITDB_ARGS: '--data-checksums'
     networks:
-      - immich_private
+      - private
     command:
       [
         "postgres",
@@ -64,8 +64,7 @@ services:
     env_file:
       - .env
     networks:
-      - immich_private
-      - redis
+      - private
     restart: unless-stopped
     healthcheck:
       test: python3 healthcheck.py
@@ -103,8 +102,7 @@ services:
       - '0.0.0.0:2283:2283'
     networks:
       - proxy
-      - immich_private
-      - redis
+      - private
     restart: unless-stopped
     healthcheck:
       test: immich-healthcheck
@@ -140,11 +138,9 @@ networks:
   proxy:
     name: proxy
     external: true
-  immich_private:
-    name: immich_private
-    external: true
-  redis:
-    name: redis
+  private:
+    name: private
+    internal: true
     external: true
 
 volumes:
