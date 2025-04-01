@@ -13,9 +13,7 @@ services:
       - .env
     networks:
       - proxy
-      - authentik-private
-      - redis
-      - postgres
+      - private
     command: server
     restart: unless-stopped
     healthcheck:
@@ -60,9 +58,7 @@ services:
     env_file:
       - .env
     networks:
-      - authentik-private
-      - redis
-      - postgres
+      - private
     command: worker
     restart: unless-stopped
     healthcheck:
@@ -92,15 +88,7 @@ networks:
   proxy:
     external: true
     name: proxy
-  authentik-private:
-    name: authentik-private
-    external: true
-  postgres:
-    name: postgres
-    external: true
-  redis:
-    name: redis
-    external: true
-  wireguard:
-    name: wireguard
+  private:
+    name: private
+    internal: true
     external: true
