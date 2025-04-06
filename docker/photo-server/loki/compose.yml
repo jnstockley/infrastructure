@@ -8,7 +8,7 @@ services:
       - ./config/config.yml:/etc/loki/config.yml:ro
       - data_loki:/loki:rw
     networks:
-      - loki
+      - proxy
     command: "-config.file=/etc/loki/config.yml"
     restart: unless-stopped
     labels:
@@ -25,8 +25,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  loki:
-    name: loki
+  proxy:
+    name: proxy
     external: true
 
 volumes:

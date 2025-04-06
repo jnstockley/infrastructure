@@ -7,8 +7,7 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     networks:
-      - grafana
-      - loki
+      - proxy
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -22,11 +21,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  grafana:
-    name: grafana
-    external: true
-  loki:
-    name: loki
+  proxy:
+    name: proxy
     external: true
 
 volumes:
