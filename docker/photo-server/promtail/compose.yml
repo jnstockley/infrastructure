@@ -2,7 +2,7 @@
 name: promtail
 services:
   promtail:
-    image: grafana/promtail:3.4.2
+    image: grafana/promtail:3.4.3
     volumes:
       - ./config/config.yml:/mnt/config/config.yml:ro
       - /var/log:/var/log:ro
