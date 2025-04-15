@@ -2,7 +2,7 @@
 name: prometheus
 services:
   prometheus:
-    image: docker.io/prom/prometheus:v3.2.1
+    image: docker.io/prom/prometheus:v3.3.0
     container_name: prometheus
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
