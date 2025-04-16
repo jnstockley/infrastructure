@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.98
+    image: jnstockley/web-scrapper:v0.3.99
     container_name: web_scrapper_hyundai
     volumes:
       - ./hyundai-data/:/web-scrapper/data/
@@ -38,7 +38,7 @@ services:
       - no-new-privileges:true
 
   web-scrapper-nacs:
-    image: jnstockley/web-scrapper:v0.3.98
+    image: jnstockley/web-scrapper:v0.3.99
     container_name: web_scrapper_nacs
     volumes:
       - ./nacs-data/:/web-scrapper/data/
