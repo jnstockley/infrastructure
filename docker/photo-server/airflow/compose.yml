@@ -1,104 +1,47 @@
 ---
+x-airflow-common: &airflow-common
+  image: jnstockley/airflow:2025.04.24
+  network_mode: service:wireguard-airflow
+  env_file:
+    - .env
+  environment:
+    - AIRFLOW__WEBSERVER__BASE_URL=https://airflow.local.jstockley.com
+    - TZ=America/Chicago
+    - AIRFLOW__CORE__DEFAULT_TIMEZONE=America/Chicago
+    - AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE=America/Chicago
+    - AIRFLOW__CORE__EXECUTION_API_SERVER_URL=http://airflow-apiserver:8080/execution/
+    - AIRFLOW_VAR_ENV=prod
+    - REDIS_URI=redis://redis:6379/0
+    - AUTHENTIK_APP_NANE=airflow-internal
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./plugins:/opt/airflow/plugins
+  logging:
+    driver: loki
+    options:
+      loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
+      loki-retries: 2
+      loki-max-backoff: 800ms
+      loki-timeout: 1s
+      keep-file: "true"
+      mode: "non-blocking"
+
 name: airflow
 services:
-  airflow-init:
-    image: jnstockley/airflow:2025.03.09
-    container_name: airflow-init
+  api-server:
+    container_name: airflow-api-server
     depends_on:
-      - wireguard-airflow
-    volumes:
-      - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data
-    environment:
-      _AIRFLOW_DB_MIGRATE: 'true'
-    env_file: .env
-    network_mode: service:wireguard-airflow
-    command: version
+      init:
+        condition: service_completed_successfully
+    command: api-server
+    restart: always
     healthcheck:
-      test: exit 0
-      interval: 10s
-      timeout: 10s
-      retries: 1
-      start_period: 0s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
-
-  airflow-scheduler:
-    image: jnstockley/airflow:2025.03.09
-    container_name: airflow-scheduler
-    depends_on:
-      - airflow-init
-      - wireguard-airflow
-    volumes:
-      - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data
-    env_file: .env
-    network_mode: service:wireguard-airflow
-    command: scheduler
-    restart: unless-stopped
-    healthcheck:
-      test: curl --fail http://localhost:8974/health || exit 1
-      interval: 10s
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/version"]
+      interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 100s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-    security_opt:
-      - no-new-privileges:true
-
-  airflow-webserver:
-    image: jnstockley/airflow:2025.03.09
-    container_name: airflow-webserver
-    depends_on:
-      - airflow-scheduler
-      - wireguard-airflow
-    volumes:
-      - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data
-    env_file: .env
-    network_mode: service:wireguard-airflow
-    command: webserver
-    restart: unless-stopped
-    healthcheck:
-      test: curl --fail http://localhost:8080/health || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
+      start_period: 30s
     labels:
       - traefik.enable=true
       - traefik.http.routers.airflow.entrypoints=websecure
@@ -107,12 +50,73 @@ services:
       - traefik.http.routers.airflow.tls.certresolver=production
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
+    <<: *airflow-common
+
+  dag-processor:
+    container_name: airflow-dag-processor
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    command: dag-processor
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'airflow jobs check --job-type DagProcessorJob --hostname
+            "$${HOSTNAME}"'
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    <<: *airflow-common
+
+  init:
+    container_name: airflow-init
+    volumes:
+      - .:/sources
+    environment:
+      _AIRFLOW_DB_MIGRATE: 'true'
+    env_file:
+      - .env
+    command: version
+    <<: *airflow-common
+
+  scheduler:
+    container_name: airflow-scheduler
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    command: scheduler
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    <<: *airflow-common
+
+  triggerer:
+    container_name: airflow-triggerer
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    command: triggerer
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          'airflow jobs check --job-type TriggererJob --hostname
+            "$${HOSTNAME}"'
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    <<: *airflow-common
 
   wireguard-airflow:
     image: linuxserver/wireguard:1.0.20210914@sha256:b5010a1c2eca2cde4f287d65d31e6562032399c59d06c3ac2487d06586b6c10f
@@ -146,10 +150,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true
     sysctls:
