@@ -14,9 +14,7 @@ x-airflow-common: &airflow-common
     - REDIS_URI=redis://redis:6379/0
     - AUTHENTIK_APP_NANE=airflow-internal
   volumes:
-    - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
   logging:
     driver: loki
     options:
