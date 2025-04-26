@@ -4,33 +4,34 @@ x-airflow-common: &airflow-common
   network_mode: service:wireguard-airflow
   env_file:
     - .env
-  environment:
-    - AIRFLOW__WEBSERVER__BASE_URL=https://airflow.local.jstockley.com
-    - TZ=America/Chicago
-    - AIRFLOW__CORE__DEFAULT_TIMEZONE=America/Chicago
-    - AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE=America/Chicago
-    - AIRFLOW__CORE__EXECUTION_API_SERVER_URL=http://airflow-apiserver:8080/execution/
-    - AIRFLOW_VAR_ENV=prod
-    - REDIS_URI=redis://redis:6379/0
-    - AUTHENTIK_APP_NANE=airflow-internal
+  environment: &airflow-common-env
+    AIRFLOW__WEBSERVER__BASE_URL: https://airflow.local.jstockley.com
+    TZ: America/Chicago
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Chicago
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: America/Chicago
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/
+    AIRFLOW_VAR_ENV: dev
+    REDIS_URI: redis://redis:6379/0
+    AUTHENTIK_APP_NANE: airflow-internal
+    AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+    AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ./logs:/opt/airflow/logs
-  logging:
-    driver: loki
-    options:
-      loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-      loki-retries: 2
-      loki-max-backoff: 800ms
-      loki-timeout: 1s
-      keep-file: "true"
-      mode: "non-blocking"
+    - ./config:/opt/airflow/config
+    - ./data:/opt/airflow/data
+  depends_on: &airflow-common-depends-on
+    redis:
+      condition: service_healthy
+    postgres:
+      condition: service_healthy
 
 name: airflow
 services:
-  api-server:
+  airflow-apiserver:
     container_name: airflow-api-server
     depends_on:
-      init:
+      <<: *airflow-common-depends-on
+      airflow-init:
         condition: service_completed_successfully
     command: api-server
     restart: always
@@ -50,10 +51,11 @@ services:
       - traefik.http.services.airflow.loadbalancer.server.port=8080
     <<: *airflow-common
 
-  dag-processor:
+  airflow-dag-processor:
     container_name: airflow-dag-processor
     depends_on:
-      init:
+      <<: *airflow-common-depends-on
+      airflow-init:
         condition: service_completed_successfully
     command: dag-processor
     restart: always
@@ -70,21 +72,21 @@ services:
       start_period: 30s
     <<: *airflow-common
 
-  init:
+  airflow-init:
     container_name: airflow-init
-    volumes:
-      - .:/sources
     environment:
+      <<: *airflow-common-env
       _AIRFLOW_DB_MIGRATE: 'true'
     env_file:
       - .env
     command: version
     <<: *airflow-common
 
-  scheduler:
+  airflow-scheduler:
     container_name: airflow-scheduler
     depends_on:
-      init:
+      <<: *airflow-common-depends-on
+      airflow-init:
         condition: service_completed_successfully
     command: scheduler
     restart: always
@@ -96,10 +98,11 @@ services:
       start_period: 30s
     <<: *airflow-common
 
-  triggerer:
+  airflow-triggerer:
     container_name: airflow-triggerer
     depends_on:
-      init:
+      <<: *airflow-common-depends-on
+      airflow-init:
         condition: service_completed_successfully
     command: triggerer
     restart: always
