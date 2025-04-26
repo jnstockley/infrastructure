@@ -17,7 +17,7 @@ x-airflow-common: &airflow-common
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ./logs:/opt/airflow/logs
-    - ./config:/opt/airflow/config
+    - ./af-config:/opt/airflow/config
     - ./data:/opt/airflow/data
   depends_on: &airflow-common-depends-on
     redis:
