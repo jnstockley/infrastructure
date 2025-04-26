@@ -10,14 +10,14 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Chicago
     AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: America/Chicago
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/
-    AIRFLOW_VAR_ENV: dev
+    AIRFLOW_VAR_ENV: prod
     REDIS_URI: redis://redis:6379/0
     AUTHENTIK_APP_NANE: airflow-internal
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
   volumes:
     - ./logs:/opt/airflow/logs
-    - ./af-config:/opt/airflow/config
+    - airflow-config:/opt/airflow/config
     - ./data:/opt/airflow/data
 
 name: airflow
@@ -155,3 +155,7 @@ networks:
     name: private
     internal: true
     external: true
+
+volumes:
+  airflow-config:
+    name: airflow-config
