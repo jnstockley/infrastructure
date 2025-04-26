@@ -19,18 +19,12 @@ x-airflow-common: &airflow-common
     - ./logs:/opt/airflow/logs
     - ./af-config:/opt/airflow/config
     - ./data:/opt/airflow/data
-  depends_on: &airflow-common-depends-on
-    redis:
-      condition: service_healthy
-    postgres:
-      condition: service_healthy
 
 name: airflow
 services:
   airflow-apiserver:
     container_name: airflow-api-server
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     command: api-server
@@ -54,7 +48,6 @@ services:
   airflow-dag-processor:
     container_name: airflow-dag-processor
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     command: dag-processor
@@ -85,7 +78,6 @@ services:
   airflow-scheduler:
     container_name: airflow-scheduler
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     command: scheduler
@@ -101,7 +93,6 @@ services:
   airflow-triggerer:
     container_name: airflow-triggerer
     depends_on:
-      <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
     command: triggerer
