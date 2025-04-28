@@ -104,7 +104,7 @@ services:
       - no-new-privileges:true
 
   mssql:
-    image: ghcr.io/bitwarden/mssql:2025.2.3
+    image: ghcr.io/bitwarden/mssql:2025.4.2
     container_name: bitwarden-mssql
     volumes:
       - ./mssql/data:/var/opt/mssql/data
