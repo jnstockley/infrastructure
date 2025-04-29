@@ -36,7 +36,7 @@ fi
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
 sudo mkdir -p /etc/nix-darwin
-sudo chown jackstockley:staff /etc/nix-darwin
+sudo chown $USER:staff /etc/nix-darwin
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
