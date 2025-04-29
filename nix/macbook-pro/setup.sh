@@ -70,7 +70,7 @@ if [ ! -d ~/.ssh ]; then
     chmod 700 ~/.ssh
 fi
 
-sudo ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix /etc/nix-darwin/flake.nix
+ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix /etc/nix-darwin/flake.nix
 
 nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake /etc/nix-darwin#macbook --impure
 
