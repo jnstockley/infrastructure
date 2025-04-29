@@ -69,8 +69,8 @@ if [ ! -d ~/.ssh ]; then
     chmod 700 ~/.ssh
 fi
 
-ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix ~/.config/nix/flake.nix
+ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix /etc/nix-darwin/flake.nix
 
-nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/nix#macbook --impure
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake /etc/nix-darwin#macbook --impure
 
 exec "$SHELL"
