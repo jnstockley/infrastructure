@@ -33,44 +33,44 @@ if ! command -v nix &>/dev/null; then
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
-mkdir -p "$HOME"/Documents/GitHub/Infrastructure/
+mkdir -p /Users/"$USER"/Documents/GitHub/Infrastructure/
 
-mkdir -p "$HOME"/.config/nix
+mkdir -p /Users/"$USER"/.config/nix
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
-    if [ ! -d "$HOME"/Documents/GitHub/Infrastructure/.git ]; then
-        git clone https://github.com/jnstockley/infrastructure.git "$HOME"/Documents/GitHub/Infrastructure/
+    if [ ! -d /Users/"$USER"/Documents/GitHub/Infrastructure/.git ]; then
+        git clone https://github.com/jnstockley/infrastructure.git /Users/"$USER"/Documents/GitHub/Infrastructure/
     else
-        cd "$HOME"/Documents/GitHub/Infrastructure/ || exit
+        cd /Users/"$USER"/Documents/GitHub/Infrastructure/ || exit
         git pull
-        cd "$HOME"
+        cd /Users/"$USER"
     fi
     if system_profiler SPHardwareDataType | grep -q "VirtualMac"; then
-        sed -i '' '/masApps = {/,/};/d' "$HOME"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+        sed -i '' '/masApps = {/,/};/d' /Users/"$USER"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
 else
-    rm -rf "$HOME"/Documents/GitHub/Infrastructure/
-    ln -s "$GITHUB_WORKSPACE" "$HOME"/Documents/GitHub
+    rm -rf /Users/"$USER"/Documents/GitHub/Infrastructure/
+    ln -s "$GITHUB_WORKSPACE" /Users/"$USER"/Documents/GitHub
     # create file with content
-    echo "access-tokens = github.com=${GITHUB_TOKEN}" >"$HOME"/.config/nix/nix.conf
-    find "$HOME"/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
-    sed -i '' '/masApps = {/,/};/d' "$HOME"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+    echo "access-tokens = github.com=${GITHUB_TOKEN}" >/Users/"$USER"/.config/nix/nix.conf
+    find /Users/"$USER"/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
+    sed -i '' '/masApps = {/,/};/d' /Users/"$USER"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
 fi
 
 # Remove existing symlink if it exists
-if [ -L "$HOME"/.config/nix/flake.nix ]; then
-    rm "$HOME"/.config/nix/flake.nix
+if [ -L /Users/"$USER"/.config/nix/flake.nix ]; then
+    rm /Users/"$USER"/.config/nix/flake.nix
 fi
 
-# Check if "$HOME"/.ssh.sh folder exists
-if [ ! -d "$HOME"/.ssh ]; then
-    mkdir "$HOME"/.ssh
-    chmod 700 "$HOME"/.ssh
+# Check if /Users/"$USER"/.ssh.sh folder exists
+if [ ! -d /Users/"$USER"/.ssh ]; then
+    mkdir /Users/"$USER"/.ssh
+    chmod 700 /Users/"$USER"/.ssh
 fi
 
-ln -s "$HOME"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix "$HOME"/.config/nix/flake.nix
+ln -s /Users/"$USER"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix /Users/"$USER"/.config/nix/flake.nix
 
-nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake "$HOME"/.config/nix#macbook --impure
+nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake /Users/"$USER"/.config/nix#macbook --impure
 
 exec "$SHELL"
