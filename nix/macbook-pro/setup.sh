@@ -35,9 +35,8 @@ fi
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
-mkdir -p ~/.config/nix
-
 sudo mkdir -p /etc/nix-darwin
+sudo chown $USER:staff /etc/nix-darwin
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
@@ -55,7 +54,7 @@ else
     rm -rf ~/Documents/GitHub/Infrastructure/
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
     # create file with content
-    echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
+    echo "access-tokens = github.com=${GITHUB_TOKEN}" >/etc/nix-darwin/nix.conf
     find ~/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
     sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
 fi
