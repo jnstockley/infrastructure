@@ -33,40 +33,40 @@ if ! command -v nix &>/dev/null; then
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
-mkdir -p /Users/"$USER"/Documents/GitHub/Infrastructure/
+mkdir -p ~/Documents/GitHub/Infrastructure/
 
-mkdir -p /Users/"$USER"/.config/nix
+mkdir -p ~/.config/nix
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
-    if [ ! -d /Users/"$USER"/Documents/GitHub/Infrastructure/.git ]; then
-        git clone https://github.com/jnstockley/infrastructure.git /Users/"$USER"/Documents/GitHub/Infrastructure/
+    if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
+        git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
     else
-        cd /Users/"$USER"/Documents/GitHub/Infrastructure/ || exit
+        cd ~/Documents/GitHub/Infrastructure/ || exit
         git pull
-        cd /Users/"$USER"
+        cd ~
     fi
     if system_profiler SPHardwareDataType | grep -q "VirtualMac"; then
-        sed -i '' '/masApps = {/,/};/d' /Users/"$USER"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+        sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
 else
-    rm -rf /Users/"$USER"/Documents/GitHub/Infrastructure/
-    ln -s "$GITHUB_WORKSPACE" /Users/"$USER"/Documents/GitHub
+    rm -rf ~/Documents/GitHub/Infrastructure/
+    ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
     # create file with content
-    echo "access-tokens = github.com=${GITHUB_TOKEN}" >/Users/"$USER"/.config/nix/nix.conf
-    find /Users/"$USER"/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
-    sed -i '' '/masApps = {/,/};/d' /Users/"$USER"/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+    echo "access-tokens = github.com=${GITHUB_TOKEN}" >~/.config/nix/nix.conf
+    find ~/Documents/GitHub/Infrastructure/ -name "*.nix" -type f -exec sed -i '' "s/jackstockley/$(whoami)/g" {} \;
+    sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
 fi
 
 # Remove existing symlink if it exists
-if [ -L /Users/"$USER"/.config/nix/flake.nix ]; then
-    rm /Users/"$USER"/.config/nix/flake.nix
+if [ -L ~/.config/nix/flake.nix ]; then
+    rm ~/.config/nix/flake.nix
 fi
 
-# Check if /Users/"$USER"/.ssh.sh folder exists
-if [ ! -d /Users/"$USER"/.ssh ]; then
-    mkdir /Users/"$USER"/.ssh
-    chmod 700 /Users/"$USER"/.ssh
+# Check if ~/.ssh.sh folder exists
+if [ ! -d ~/.ssh ]; then
+    mkdir ~/.ssh
+    chmod 700 ~/.ssh
 fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
