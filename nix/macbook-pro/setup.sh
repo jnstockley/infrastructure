@@ -35,7 +35,7 @@ fi
 
 mkdir -p ~/Documents/GitHub/Infrastructure/
 
-mkdir -p ~/.config/nix
+mkdir -p /etc/nix-darwin
 
 # Check if GITHUB_ACTION is set and doesn't equals 1
 if [ "${GITHUB_ACTION}" != "1" ]; then
