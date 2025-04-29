@@ -10,7 +10,7 @@
   history.path = "${config.xdg.dataHome}/zsh/history";
   shellAliases = {
     ls = "ls -la --color";
-    nix-update = "nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake \"$HOME\"/.config/nix#macbook --impure";
+    nix-update = "nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake /Users/\"$USER\"/.config/nix#macbook --impure";
   };
   profileExtra = ''
     # pyenv
