@@ -134,19 +134,17 @@
               # Clear all Finder favorites
               /usr/local/bin/mysides remove all
 
-              export USERNAME=jackstockley
-
               # Add Finder favorites
               /usr/local/bin/mysides add Applications file:///Applications/
               /usr/local/bin/mysides add Downloads file:///Users/jackstockley/Downloads/
-              /usr/local/bin/mysides add Documents file://Users/jackstockley/Documents/
-              /usr/local/bin/mysides add Home file://Users/jackstockley/
+              /usr/local/bin/mysides add Documents file:///Users/jackstockley/Documents/
+              /usr/local/bin/mysides add Home file:///Users/jackstockley/
 
-              if [ ! -d /Users/"$USERNAME"/Nextcloud ]; then
-                  mkdir "/Users/"$USERNAME"/Nextcloud
+              if [ ! -d /Users/jackstockley"/Nextcloud ]; then
+                  mkdir "/Users/jackstockley/Nextcloud
               fi
 
-              /usr/local/bin/mysides add Nextcloud file://Users/"$USERNAME"/Nextcloud
+              /usr/local/bin/mysides add Nextcloud file:///Users/jackstockley/Nextcloud
 
               killall Finder
 
