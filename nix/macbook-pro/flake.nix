@@ -111,7 +111,7 @@
 
           system.defaults = import ./settings.nix { inherit config pkgs; };
 
-          system.activationScripts.applications.text = import ./finder.nix { inherit config pkgs; };
+          system.activationScripts.applications = import ./finder.nix { inherit config pkgs; };
             #let
             #  env = pkgs.buildEnv {
             #    name = "system-applications";

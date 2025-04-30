@@ -4,7 +4,7 @@
   ...
 }:
 {
-system.activationScripts.applications.text = ''
+text = ''
 # Clear all Finder favorites
 /usr/local/bin/mysides remove all
 
