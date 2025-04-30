@@ -8,7 +8,7 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
     # Home Manager
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -25,9 +25,6 @@
       configuration =
         { pkgs, config, ... }:
         {
-          # List packages installed in system profile. To search by name, run:
-          # $ nix-env -qaP | grep wget
-
           nixpkgs.config.allowUnfree = true;
 
           users.users.USER.shell = pkgs.zsh;
@@ -63,9 +60,9 @@
             pkgs.tclPackages.tclx
           ];
 
-          users.users.jackstockley = {
+          users.users.${username} = {
             name = username;
-            home = "/Users/jackstockley";
+            home = "/Users/${username}";
           };
 
           homebrew = {
@@ -135,16 +132,16 @@
               /usr/local/bin/mysides remove all
 
               # Add Finder favorites
-              /usr/local/bin/mysides add Applications file:///System/Applications
-              /usr/local/bin/mysides add Downloads file://"$HOME"/Downloads/
-              /usr/local/bin/mysides add Documents file://"$HOME"/Documents/
-              /usr/local/bin/mysides add Home file://"$HOME"
+              /usr/local/bin/mysides add Applications file:///Applications/
+              /usr/local/bin/mysides add Downloads file:///Users/${username}/Downloads/
+              /usr/local/bin/mysides add Documents file:///Users/${username}/Documents/
+              /usr/local/bin/mysides add Home file:///Users/${username}/
 
-              if [ ! -d "$HOME"/Nextcloud ]; then
-                  mkdir "$HOME"/Nextcloud
+              if [ ! -d /Users/${username}/Nextcloud ]; then
+                  mkdir /Users/${username}/Nextcloud
               fi
 
-              /usr/local/bin/mysides add Nextcloud file://"$HOME"/Nextcloud
+              /usr/local/bin/mysides add Nextcloud file:///Users/${username}/Nextcloud
 
               killall Finder
 
@@ -183,7 +180,7 @@
             nix-homebrew = {
               enable = true;
               enableRosetta = false;
-              user = "jackstockley";
+              user = username;
               # Used to make work when running in GitHub Actions
               autoMigrate = true;
             };
@@ -194,7 +191,7 @@
             # `home-manager` config
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.jackstockley = import ./home.nix;
+            home-manager.users.${username} = import ./home.nix;
           }
         ];
       };

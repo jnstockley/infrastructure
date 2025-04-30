@@ -34,7 +34,7 @@
     [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" # This loads nvm
     [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
   '';
-  initExtra = ''
+  initContent = ''
     export PATH="/Users/jackstockley/.local/bin:$PATH"
 
     export LDFLAGS="-L/opt/homebrew/opt/libpq/lib"
@@ -70,8 +70,8 @@
       "poetry"
       "pyenv"
       "python"
-      "ssh.sh"
-      "ssh.sh-agent"
+      #"ssh.sh"
+      #"ssh.sh-agent"
       "sudo"
     ];
   };
