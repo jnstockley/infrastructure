@@ -52,7 +52,6 @@
             pkgs.nerd-fonts.jetbrains-mono
             pkgs.nixfmt-rfc-style
             pkgs.oh-my-zsh
-            pkgs.rustdesk
             # Pyenv dependencies
             pkgs.openssl
             pkgs.readline
@@ -88,6 +87,7 @@
               "jetbrains-toolbox"
               "firefox"
               "nextcloud"
+              "rustdesk"
               "ghostty"
               "mysides"
             ];
