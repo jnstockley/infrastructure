@@ -136,7 +136,7 @@
 
               # Add Finder favorites
               /usr/local/bin/mysides add Applications file:///Applications/
-              /usr/local/bin/mysides add Downloads file:///Users/jackstockley/Downloads/
+              /usr/local/bin/mysides add Downloads file:///Users/${username}/Downloads/
               /usr/local/bin/mysides add Documents file:///Users/jackstockley/Documents/
               /usr/local/bin/mysides add Home file:///Users/jackstockley/
 
