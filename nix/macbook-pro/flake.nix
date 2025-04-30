@@ -179,6 +179,11 @@
           {
             nix-homebrew = {
               enable = true;
+              onActivation = {
+                autoUpdate = true;
+                cleanup = "uninstall";
+                upgrade = true;
+             };
               enableRosetta = false;
               user = username;
               # Used to make work when running in GitHub Actions
