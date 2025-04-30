@@ -35,6 +35,9 @@
     [ -s "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm" # This loads nvm bash_completion
   '';
   initContent = ''
+    # Homebrew Analytics
+    export HOMEBREW_NO_ANALYTICS=1
+
     export PATH="/Users/jackstockley/.local/bin:$PATH"
 
     export LDFLAGS="-L/opt/homebrew/opt/libpq/lib"
