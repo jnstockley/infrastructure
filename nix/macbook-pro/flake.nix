@@ -98,7 +98,11 @@
             #  "Word" = 462054704;
             #  "OneDrive" = 823766827;
             #};
-            onActivation.cleanup = "zap";
+            onActivation = {
+                autoUpdate = true;
+                cleanup = "uninstall";
+                upgrade = true;
+                };
           };
 
           system.activationScripts.postUserActivation.text = ''
@@ -179,11 +183,6 @@
           {
             nix-homebrew = {
               enable = true;
-              onActivation = {
-                autoUpdate = true;
-                cleanup = "uninstall";
-                upgrade = true;
-             };
               enableRosetta = false;
               user = username;
               # Used to make work when running in GitHub Actions
