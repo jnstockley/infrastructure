@@ -138,12 +138,12 @@
 
               # Add Finder favorites
               /usr/local/bin/mysides add Applications file:///Applications/
-              /usr/local/bin/mysides add Downloads file:///Users/"$USERNAME"/Downloads/
-              /usr/local/bin/mysides add Documents file://Users/"$USERNAME"/Documents/
-              /usr/local/bin/mysides add Home file://Users/"$USERNAME"/
+              /usr/local/bin/mysides add Downloads file:///Users/jackstockley/Downloads/
+              /usr/local/bin/mysides add Documents file://Users/jackstockley/Documents/
+              /usr/local/bin/mysides add Home file://Users/jackstockley/
 
-              if [ ! -d Users/"$USERNAME"/Nextcloud ]; then
-                  mkdir "Users/"$USERNAME"/Nextcloud
+              if [ ! -d /Users/"$USERNAME"/Nextcloud ]; then
+                  mkdir "/Users/"$USERNAME"/Nextcloud
               fi
 
               /usr/local/bin/mysides add Nextcloud file://Users/"$USERNAME"/Nextcloud
