@@ -143,6 +143,8 @@
 
               if [ ! -d /Users/${username}/Nextcloud ]; then
                   mkdir /Users/${username}/Nextcloud
+                  chown ${username}:staff /Users/${username}/Nextcloud
+                  chmod 700 /Users/${username}/Nextcloud
               fi
 
               /usr/local/bin/mysides add Nextcloud file:///Users/${username}/Nextcloud
