@@ -134,7 +134,7 @@
               # Clear all Finder favorites
               /usr/local/bin/mysides remove all
 
-              export USERNAME=${username}
+              export USERNAME=jackstockley
 
               # Add Finder favorites
               /usr/local/bin/mysides add Applications file:///Applications/
