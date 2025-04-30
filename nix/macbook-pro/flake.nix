@@ -152,6 +152,11 @@
               killall Finder
 
               sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool TRUE
+
+              # Login Items
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Nextcloud.app", hidden:true}'
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/JetBrains Toolbox.app", hidden:true}'
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Steam.app", hidden:true}'
             '';
 
           # Necessary for using flakes on this system.
