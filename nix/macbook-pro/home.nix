@@ -16,7 +16,7 @@ in
   xdg.enable = true;
 
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "24.11";
 
   programs = {
     zsh = import ./zsh.nix { inherit config pkgs lib; };
