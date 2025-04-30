@@ -63,9 +63,9 @@
             pkgs.tclPackages.tclx
           ];
 
-          users.users.jackstockley = {
+          users.users.${username} = {
             name = username;
-            home = "/Users/jackstockley";
+            home = "/Users/${username}";
           };
 
           homebrew = {
@@ -183,7 +183,7 @@
             nix-homebrew = {
               enable = true;
               enableRosetta = false;
-              user = "jackstockley";
+              user = username;
               # Used to make work when running in GitHub Actions
               autoMigrate = true;
             };
@@ -194,7 +194,7 @@
             # `home-manager` config
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.jackstockley = import ./home.nix;
+            home-manager.users.${username} = import ./home.nix;
           }
         ];
       };
