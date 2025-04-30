@@ -2,7 +2,7 @@
 name: beszel
 services:
   beszel:
-    image: henrygd/beszel:0.11.0
+    image: henrygd/beszel:0.11.1
     container_name: beszel
     volumes:
       - ./data:/beszel_data
