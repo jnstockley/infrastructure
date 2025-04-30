@@ -140,8 +140,8 @@
               /usr/local/bin/mysides add Documents file:///Users/jackstockley/Documents/
               /usr/local/bin/mysides add Home file:///Users/jackstockley/
 
-              if [ ! -d /Users/jackstockley"/Nextcloud ]; then
-                  mkdir "/Users/jackstockley/Nextcloud
+              if [ ! -d /Users/jackstockley/Nextcloud ]; then
+                  mkdir /Users/jackstockley/Nextcloud
               fi
 
               /usr/local/bin/mysides add Nextcloud file:///Users/jackstockley/Nextcloud
