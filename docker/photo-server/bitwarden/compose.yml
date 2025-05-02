@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   attachments:
-    image: ghcr.io/bitwarden/attachments:2025.4.2
+    image: ghcr.io/bitwarden/attachments:2025.4.3
     container_name: bitwarden-attachments
     volumes:
       - ./core/attachments:/etc/bitwarden/core/attachments
