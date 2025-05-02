@@ -99,10 +99,10 @@
             #  "OneDrive" = 823766827;
             #};
             onActivation = {
-                autoUpdate = true;
-                cleanup = "uninstall";
-                upgrade = true;
-                };
+              autoUpdate = true;
+              cleanup = "uninstall";
+              upgrade = true;
+            };
           };
 
           system.activationScripts.postUserActivation.text = ''
