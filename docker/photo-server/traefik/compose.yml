@@ -20,6 +20,7 @@ services:
       - proxy
       - private
       - nextcloud
+      - bitwarden
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -67,6 +68,9 @@ networks:
     external: true
   nextcloud:
     name: nextcloud
+    external: true
+  bitwarden:
+    name: bitwarden
     external: true
 
 volumes:
