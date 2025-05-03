@@ -45,8 +45,6 @@ services:
     env_file:
       - env/global.env
       - env/uid.env
-    networks:
-      - bitwarden
     restart: always
     security_opt:
       - no-new-privileges:true
@@ -111,8 +109,6 @@ services:
       - env/mssql.env
       - env/uid.env
       - env/mssql.override.env
-    networks:
-      - bitwarden
     restart: always
     security_opt:
       - no-new-privileges:true
@@ -171,8 +167,6 @@ services:
     env_file:
       - env/global.env
       - env/uid.env
-    networks:
-      - bitwarden
     restart: always
     security_opt:
       - no-new-privileges:true
@@ -181,6 +175,10 @@ networks:
   bitwarden:
     internal: true
     name: bitwarden
+  #default:
+  #  internal: true
+  #public:
+  #  internal: false
   proxy:
     external: true
     name: proxy
