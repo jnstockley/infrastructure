@@ -1,0 +1,37 @@
+---
+http:
+  routers:
+    bitwarden:
+      rule: "Host(`vault.jstockley.com`)"
+      entrypoints:
+        - "websecure"
+      service: bitwarden
+      middlewares:
+        - bitwarden-chain
+      tls:
+        certresolver: "production"
+
+  services:
+    bitwarden:
+      loadBalancer:
+        servers:
+          - url: "http://bitwarden-nginx:8080"
+        passHostHeader: true
+
+  middlewares:
+    bitwarden-secure-headers:
+      headers:
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        referrerPolicy: "same-origin"
+
+    https-redirect:
+      redirectscheme:
+        scheme: https
+
+    bitwarden-chain:
+      chain:
+        middlewares:
+          # - ... (e.g. rate limiting middleware)
+          - https-redirect
+          - bitwarden-secure-headers
