@@ -2,7 +2,7 @@
 name: redis
 services:
   redis:
-    image: redis:7.4.1-alpine3.20
+    image: redis:8.0.0-alpine
     container_name: redis
     volumes:
       - ./data/:/data
