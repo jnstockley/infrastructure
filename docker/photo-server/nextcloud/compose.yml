@@ -41,15 +41,15 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-    labels:
-      - traefik.enable=true
-      - traefik.http.services.nextcloud-aio.loadbalancer.server.port=8080
-      - traefik.http.services.nextcloud-aio.loadbalancer.server.scheme=https
-      - traefik.http.routers.nextcloud-aio.entrypoints=websecure
-      - traefik.http.routers.nextcloud-aio.rule=Host(`nextcloud-aio.local.jstockley.com`)
-      - traefik.http.routers.nextcloud-aio.tls=true
-      - traefik.http.routers.nextcloud-aio.tls.certresolver=production
-      - traefik.http.routers.nextcloud-aio.service=nextcloud-aio
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.services.nextcloud-aio.loadbalancer.server.port=8080
+    #   - traefik.http.services.nextcloud-aio.loadbalancer.server.scheme=https
+    #   - traefik.http.routers.nextcloud-aio.entrypoints=websecure
+    #   - traefik.http.routers.nextcloud-aio.rule=Host(`nextcloud-aio.local.jstockley.com`)
+    #   - traefik.http.routers.nextcloud-aio.tls=true
+    #   - traefik.http.routers.nextcloud-aio.tls.certresolver=production
+    #   - traefik.http.routers.nextcloud-aio.service=nextcloud-aio
     init: true
     security_opt:
       - no-new-privileges:true
