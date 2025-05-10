@@ -10,6 +10,16 @@ http:
         - nextcloud-chain
       tls:
         certresolver: "production"
+    nextcloud-aio:
+      rule: "Host(`nextcloud-aio.local.jstockley.com`)"
+      entrypoints:
+        - "websecure"
+      service: nextcloud-aio
+      middlewares:
+        - nextcloud-chain
+      tls:
+        certresolver: "production"
+
 
   services:
     nextcloud:
@@ -17,6 +27,12 @@ http:
         servers:
           - url: "http://nextcloud-aio-apache:11000"
           # Adjust to match APACHE_PORT and APACHE_IP_BINDING. See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#adapting-the-sample-web-server-configurations-below
+        passHostHeader: true
+    nextcloud-aio:
+      loadBalancer:
+        servers:
+          - url: "https://nextcloud-aio-mastercontainer:8080"
+
         passHostHeader: true
 
   middlewares:
