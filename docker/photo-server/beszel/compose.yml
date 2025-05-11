@@ -25,14 +25,14 @@ services:
         loki-timeout: 1s
         keep-file: "true"
         mode: "non-blocking"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.beszel.entrypoints=websecure
-      - traefik.http.routers.beszel.rule=Host(`stats.local.jstockley.com`)
-      - traefik.http.routers.beszel.tls=true
-      - traefik.http.routers.beszel.tls.certresolver=production
-      - traefik.http.routers.beszel.service=beszel
-      - traefik.http.services.beszel.loadbalancer.server.port=8090
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.routers.beszel.entrypoints=websecure
+    #   - traefik.http.routers.beszel.rule=Host(`stats.local.jstockley.com`)
+    #   - traefik.http.routers.beszel.tls=true
+    #   - traefik.http.routers.beszel.tls.certresolver=production
+    #   - traefik.http.routers.beszel.service=beszel
+    #   - traefik.http.services.beszel.loadbalancer.server.port=8090
     security_opt:
       - no-new-privileges:true
 

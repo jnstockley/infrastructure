@@ -1,0 +1,37 @@
+---
+http:
+  routers:
+    beszel:
+      rule: "Host(`stats.local.jstockley.com`)"
+      entrypoints:
+        - "websecure"
+      service: beszel
+      middlewares:
+        - beszel-chain
+      tls:
+        certresolver: "production"
+
+  services:
+    beszel:
+      loadBalancer:
+        servers:
+          - url: "http://beszel:8090"
+        passHostHeader: true
+
+  middlewares:
+    beszel-secure-headers:
+      headers:
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        referrerPolicy: "same-origin"
+
+    https-redirect:
+      redirectscheme:
+        scheme: https
+
+    beszel-chain:
+      chain:
+        middlewares:
+          # - ... (e.g. rate limiting middleware)
+          - https-redirect
+          - beszel-secure-headers
