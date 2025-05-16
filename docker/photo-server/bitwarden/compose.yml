@@ -120,7 +120,7 @@ services:
     stop_grace_period: 60s
 
   nginx:
-    image: ghcr.io/bitwarden/nginx:2025.4.3
+    image: ghcr.io/bitwarden/nginx:2025.5.0
     container_name: bitwarden-nginx
     depends_on:
       - admin
@@ -150,7 +150,7 @@ services:
       - no-new-privileges:true
 
   notifications:
-    image: ghcr.io/bitwarden/notifications:2025.4.3
+    image: ghcr.io/bitwarden/notifications:2025.5.0
     container_name: bitwarden-notifications
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -167,7 +167,7 @@ services:
       - no-new-privileges:true
 
   web:
-    image: ghcr.io/bitwarden/web:2025.4.1
+    image: ghcr.io/bitwarden/web:2025.5.0
     container_name: bitwarden-web
     volumes:
       - ./web:/etc/bitwarden/web
