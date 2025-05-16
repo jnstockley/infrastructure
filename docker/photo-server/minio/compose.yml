@@ -12,8 +12,8 @@ services:
       - .env
     networks:
       - proxy
-    restart: always
     command: 'server /data --console-address ":9001"'
+    restart: always
     healthcheck:
       test: curl --fail http://localhost:9000/minio/health/live || exit 1
       interval: 10s
