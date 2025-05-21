@@ -15,6 +15,7 @@ x-airflow-common: &airflow-common
     AUTHENTIK_APP_NANE: airflow-internal
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    AIRFLOW__LOG_RETENTION_DAYS: 7
   volumes:
     - ./logs:/opt/airflow/logs
     - ./af-config:/opt/airflow/config
@@ -73,6 +74,15 @@ services:
     env_file:
       - .env
     command: version
+    <<: *airflow-common
+
+  airflow-log-groomer:
+    container_name: airflow-log-groomer
+    environment:
+      <<: *airflow-common-env
+    command:
+      - bash
+      - /clean-logs
     <<: *airflow-common
 
   airflow-scheduler:

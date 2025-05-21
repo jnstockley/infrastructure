@@ -69,7 +69,7 @@ services:
       - no-new-privileges:true
 
   icons:
-    image: ghcr.io/bitwarden/icons:2025.5.0
+    image: ghcr.io/bitwarden/icons:2025.5.1
     container_name: bitwarden-icons
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -85,7 +85,7 @@ services:
       - no-new-privileges:true
 
   identity:
-    image: ghcr.io/bitwarden/identity:2025.5.0
+    image: ghcr.io/bitwarden/identity:2025.5.1
     container_name: bitwarden-identity
     volumes:
       - ./identity:/etc/bitwarden/identity
