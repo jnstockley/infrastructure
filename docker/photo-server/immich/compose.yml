@@ -15,7 +15,11 @@ services:
       - private
     restart: always
     healthcheck:
-      disable: true
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE_NAME}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
     logging:
       driver: loki
       options:
@@ -25,16 +29,15 @@ services:
         loki-timeout: 1s
         keep-file: "true"
         mode: "non-blocking"
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true
 
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:v1.133.0
     container_name: immich_machine_learning
+    depends_on:
+      database:
+        condition: service_healthy
     volumes:
       - model-cache:/cache
     env_file:
@@ -68,7 +71,8 @@ services:
     image: ghcr.io/immich-app/immich-server:v1.133.0
     container_name: immich_server
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - ./healthcheck.js:/healthcheck/healthcheck.js
