@@ -11,11 +11,18 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["terraform-provider"],
-      "registryUrls": ["https://registry.opentofu.org"]
+      "matchDatasources": [
+        "terraform-provider"
+      ],
+      "registryUrls": [
+        "https://registry.opentofu.org"
+      ]
     }
   ],
   "terraform": {
-    "fileMatch": ["\\.tf$", "\\.tofu$"]
+    "managerFilePatterns": [
+      "/\\.tf$/",
+      "/\\.tofu$/"
+    ]
   }
 }
