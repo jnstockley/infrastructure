@@ -2,7 +2,7 @@
 name: bitwarden
 services:
   admin:
-    image: ghcr.io/bitwarden/admin:2025.5.1
+    image: ghcr.io/bitwarden/admin:2025.5.3
     container_name: bitwarden-admin
     depends_on:
       - mssql
@@ -22,7 +22,7 @@ services:
       - no-new-privileges:true
 
   api:
-    image: ghcr.io/bitwarden/api:2025.5.1
+    image: ghcr.io/bitwarden/api:2025.5.3
     container_name: bitwarden-api
     volumes:
       - ./core:/etc/bitwarden/core
@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
 
   attachments:
-    image: ghcr.io/bitwarden/attachments:2025.5.1
+    image: ghcr.io/bitwarden/attachments:2025.5.3
     container_name: bitwarden-attachments
     volumes:
       - ./core/attachments:/etc/bitwarden/core/attachments
@@ -52,7 +52,7 @@ services:
       - no-new-privileges:true
 
   events:
-    image: ghcr.io/bitwarden/events:2025.5.1
+    image: ghcr.io/bitwarden/events:2025.5.3
     container_name: bitwarden-events
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -69,7 +69,7 @@ services:
       - no-new-privileges:true
 
   icons:
-    image: ghcr.io/bitwarden/icons:2025.5.1
+    image: ghcr.io/bitwarden/icons:2025.5.3
     container_name: bitwarden-icons
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -85,7 +85,7 @@ services:
       - no-new-privileges:true
 
   identity:
-    image: ghcr.io/bitwarden/identity:2025.5.1
+    image: ghcr.io/bitwarden/identity:2025.5.3
     container_name: bitwarden-identity
     volumes:
       - ./identity:/etc/bitwarden/identity
@@ -104,7 +104,7 @@ services:
       - no-new-privileges:true
 
   mssql:
-    image: ghcr.io/bitwarden/mssql:2025.5.1
+    image: ghcr.io/bitwarden/mssql:2025.5.3
     container_name: bitwarden-mssql
     volumes:
       - ./mssql/data:/var/opt/mssql/data
@@ -120,7 +120,7 @@ services:
     stop_grace_period: 60s
 
   nginx:
-    image: ghcr.io/bitwarden/nginx:2025.5.1
+    image: ghcr.io/bitwarden/nginx:2025.5.3
     container_name: bitwarden-nginx
     depends_on:
       - admin
@@ -150,7 +150,7 @@ services:
       - no-new-privileges:true
 
   notifications:
-    image: ghcr.io/bitwarden/notifications:2025.5.1
+    image: ghcr.io/bitwarden/notifications:2025.5.3
     container_name: bitwarden-notifications
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
@@ -167,7 +167,7 @@ services:
       - no-new-privileges:true
 
   web:
-    image: ghcr.io/bitwarden/web:2025.5.0
+    image: ghcr.io/bitwarden/web:2025.5.1
     container_name: bitwarden-web
     volumes:
       - ./web:/etc/bitwarden/web
