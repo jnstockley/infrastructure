@@ -16,7 +16,6 @@ in
   xdg.enable = true;
 
   targets.darwin.defaults = {
-    enable = true;
     settingsFile = import ./settings.nix { inherit config pkgs; };
   };
 
