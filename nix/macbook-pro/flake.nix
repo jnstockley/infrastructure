@@ -65,29 +65,31 @@
             home = "/Users/${username}";
           };
 
-          #homebrew = {
-          #  enable = true;
-          #  brews = [
-          #    "nvm"
-          #    "mas"
-          #  ];
-          #  casks = [
-          #    "balenaetcher"
-          #    "malwarebytes"
-          #    "steam"
-          #    "visual-studio-code"
-          #    "vnc-server"
-          #    "docker"
-          #    "roblox"
-          #    "termius"
-          #    "minecraft"
-          #    "jetbrains-toolbox"
-          #    "firefox"
-          #    "nextcloud"
-          #    "rustdesk"
-          #    "ghostty"
-          #    "mysides"
-          #  ];
+          system.primaryUser = "${username}";
+
+          homebrew = {
+            enable = true;
+            brews = [
+              "nvm"
+              "mas"
+            ];
+            casks = [
+              "balenaetcher"
+              "malwarebytes"
+              "steam"
+              "visual-studio-code"
+              "vnc-server"
+              "docker"
+              "roblox"
+              "termius"
+              "minecraft"
+              "jetbrains-toolbox"
+              "firefox"
+              "nextcloud"
+              "rustdesk"
+              "ghostty"
+              "mysides"
+            ];
             #masApps = {
             #  "Bitwarden" = 1352778147;
             #  "Hidden Bar" = 1452453066;
@@ -105,10 +107,10 @@
             };
           };
 
-          #system.activationScripts.postUserActivation.text = ''
-          #  # Following line should allow us to avoid a logout/login cycle when changing settings
-          #  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-          #'';
+          system.activationScripts.postUserActivation.text = ''
+            # Following line should allow us to avoid a logout/login cycle when changing settings
+            /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+          '';
 
           #system.defaults = import ./settings.nix { inherit config pkgs; };
 
