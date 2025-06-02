@@ -94,6 +94,8 @@ fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
 
+sudo chmod -R 755 /etc/nix/
+
 sudo nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/macbook-pro#macbook --impure
 
 exec "$SHELL"
