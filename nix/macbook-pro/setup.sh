@@ -69,11 +69,11 @@ else
                 sudo sed -i '' "s|access-tokens.*|access-tokens = github.com=${GITHUB_TOKEN}|" /etc/nix/nix.conf
             else
                 # Append the access-tokens line
-                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a /etc/nix/nix.conf > /dev/null
+                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a /etc/nix/nix.conf >/dev/null
             fi
         else
             # Create the file with the access-tokens line
-            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee /etc/nix/nix.conf > /dev/null
+            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee /etc/nix/nix.conf >/dev/null
         fi
     fi
 

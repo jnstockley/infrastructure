@@ -110,7 +110,7 @@
             /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
           '';
 
-          system.defaults = import ./settings.nix { inherit config pkgs; };
+          #system.defaults = import ./settings.nix { inherit config pkgs; };
 
           system.activationScripts.applications.text =
             #let
@@ -203,6 +203,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.${username} = import ./home.nix;
+            home-manager.users.${username}.system.defaults = import ./settings.nix;
           }
         ];
       };
