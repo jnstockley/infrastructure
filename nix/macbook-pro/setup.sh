@@ -51,6 +51,7 @@ if [ "${GITHUB_ACTION}" != "1" ]; then
         sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
 else
+  export NIX_CONF_DIR=~/.config/nix/nix.conf
     rm -rf ~/Documents/GitHub/Infrastructure/
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
 
