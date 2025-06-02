@@ -51,7 +51,9 @@ if [ "${GITHUB_ACTION}" != "1" ]; then
         sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
 else
-  export NIX_CONF_DIR=~/.config/nix/nix.conf
+    sudo mkdir -p /var/root/nix
+
+    export NIX_CONF_DIR=/var/root/nix/nix.conf
     rm -rf ~/Documents/GitHub/Infrastructure/
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
 
@@ -62,15 +64,15 @@ else
         # Check if the file exists
         if [ -f ~/.config/nix/nix.conf ]; then
             # Check if access-tokens line already exists and update it
-            if grep -q "access-tokens" ~/.config/nix/nix.conf; then
-                sudo sed -i '' "s|access-tokens.*|access-tokens = github.com=${GITHUB_TOKEN}|" ~/.config/nix/nix.conf
+            if grep -q "access-tokens" /var/root/nix/nix.conf; then
+                sudo sed -i '' "s|access-tokens.*|access-tokens = github.com=${GITHUB_TOKEN}|" /var/root/nix/nix.conf
             else
                 # Append the access-tokens line
-                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a ~/.config/nix/nix.conf >/dev/null
+                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a /var/root/nix/nix.conf >/dev/null
             fi
         else
             # Create the file with the access-tokens line
-            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee ~/.config/nix/nix.conf >/dev/null
+            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee /var/root/nix/nix.conf >/dev/null
         fi
     fi
 
