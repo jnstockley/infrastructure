@@ -105,10 +105,10 @@
             };
           };
 
-          system.activationScripts.postUserActivation.text = ''
-            # Following line should allow us to avoid a logout/login cycle when changing settings
-            /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-          '';
+          #system.activationScripts.postUserActivation.text = ''
+          #  # Following line should allow us to avoid a logout/login cycle when changing settings
+          #  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+          #'';
 
           #system.defaults = import ./settings.nix { inherit config pkgs; };
 

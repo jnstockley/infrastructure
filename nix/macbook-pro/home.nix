@@ -15,8 +15,8 @@ in
   home.enableNixpkgsReleaseCheck = false;
   xdg.enable = true;
 
-  targets.darwin.defaults = {
-    settingsFile = import ./settings.nix { inherit config pkgs; };
+  targets.darwin = {
+    defaults = import ./settings.nix { inherit config pkgs; };
   };
 
   home.stateVersion = "24.11";
