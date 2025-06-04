@@ -60,7 +60,7 @@ else
     # Create or update the root nix.conf file with the GitHub token
     if [ -n "$GITHUB_TOKEN" ]; then
         echo "Adding GitHub token to root nix.conf..."
-        
+
         # Check if the file exists
         if [ -f ~/.config/nix/nix.conf ]; then
             # Check if access-tokens line already exists and update it
