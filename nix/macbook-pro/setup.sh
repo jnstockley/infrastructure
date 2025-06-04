@@ -51,29 +51,28 @@ if [ "${GITHUB_ACTION}" != "1" ]; then
         sed -i '' '/masApps = {/,/};/d' ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
     fi
 else
+    sudo mkdir -p /var/root/nix
+
+    export NIX_CONF_DIR=/var/root/nix/nix.conf
     rm -rf ~/Documents/GitHub/Infrastructure/
     ln -s "$GITHUB_WORKSPACE" ~/Documents/GitHub
 
     # Create or update the root nix.conf file with the GitHub token
     if [ -n "$GITHUB_TOKEN" ]; then
         echo "Adding GitHub token to root nix.conf..."
-        # Check if /etc/nix directory exists, create if not (might require sudo)
-        if [ ! -d /etc/nix ]; then
-            sudo mkdir -p /etc/nix
-        fi
 
         # Check if the file exists
-        if [ -f /etc/nix/nix.conf ]; then
+        if [ -f ~/.config/nix/nix.conf ]; then
             # Check if access-tokens line already exists and update it
-            if grep -q "access-tokens" /etc/nix/nix.conf; then
-                sudo sed -i '' "s|access-tokens.*|access-tokens = github.com=${GITHUB_TOKEN}|" /etc/nix/nix.conf
+            if grep -q "access-tokens" /var/root/nix/nix.conf; then
+                sudo sed -i '' "s|access-tokens.*|access-tokens = github.com=${GITHUB_TOKEN}|" /var/root/nix/nix.conf
             else
                 # Append the access-tokens line
-                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a /etc/nix/nix.conf > /dev/null
+                echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee -a /var/root/nix/nix.conf >/dev/null
             fi
         else
             # Create the file with the access-tokens line
-            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee /etc/nix/nix.conf > /dev/null
+            echo "access-tokens = github.com=${GITHUB_TOKEN}" | sudo tee /var/root/nix/nix.conf >/dev/null
         fi
     fi
 
@@ -93,6 +92,8 @@ if [ ! -d ~/.ssh ]; then
 fi
 
 ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
+
+sudo chmod -R 755 /etc/nix/
 
 sudo nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/macbook-pro#macbook --impure
 
