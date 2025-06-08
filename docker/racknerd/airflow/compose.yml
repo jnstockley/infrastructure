@@ -20,10 +20,10 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
     AIRFLOW__LOG_RETENTION_DAYS: 7
-    AIRFLOW__WEBSERVER__EXPOSE_HOSTNAME: False
+    AIRFLOW__WEBSERVER__EXPOSE_HOSTNAME: true
   volumes:
     - ./logs:/opt/airflow/logs
-    - ./af-config:/opt/airflow/config
+    - ./config:/opt/airflow/config
     - ./data:/opt/airflow/data
 
 name: airflow
