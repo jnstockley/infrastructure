@@ -131,8 +131,8 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     networks:
-      - airflow
-      - postgres
+      - proxy
+      - private
     restart: unless-stopped
     healthcheck:
       test: curl --fail https://google.com || exit 1
@@ -158,9 +158,10 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
-  airflow:
-    name: airflow
+  proxy:
+    name: proxy
     external: true
-  postgres:
-    name: postgres
+  private:
+    name: private
+    internal: true
     external: true
