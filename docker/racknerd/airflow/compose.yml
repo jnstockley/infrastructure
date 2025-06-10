@@ -13,7 +13,6 @@ x-airflow-common: &airflow-common
     TZ: America/Chicago
     AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Chicago
     AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: America/Chicago
-    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://localhost:8080/execution/
     AIRFLOW_VAR_ENV: prod
     REDIS_URI: redis://redis:6379/0
     AUTHENTIK_APP_NANE: airflow
