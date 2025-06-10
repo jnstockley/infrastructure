@@ -1,6 +1,6 @@
 ---
 x-airflow-common: &airflow-common
-  image: jnstockley/airflow:2025.06.08
+  image: jnstockley/airflow:2025.06.10
   network_mode: service:wireguard-airflow
   env_file:
     - .env
