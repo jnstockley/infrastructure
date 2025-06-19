@@ -151,7 +151,7 @@ jobs:
           SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
         run: |
           # Process files and create commands
-          PROCESSED_FILES=$(echo "CHICAGO_RPI_FILES" | tr ',' ' ')
+          PROCESSED_FILES=$(echo "$CHICAGO_RPI_FILES" | tr ',' ' ')
           SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
 
           for file in $PROCESSED_FILES; do
