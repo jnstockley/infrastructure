@@ -9,19 +9,12 @@ services:
       - ./data:/var/lib/tailscale
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
-      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-tags=tag:container
-        --advertise-routes=172.0.0.0/8
+      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-routes=192.168.0.0/24
       - TZ=America/Chicago
-      # - TS_USERSPACE=false
     env_file:
       - .env
     networks:
       - tailscale
-      - syncthing
-      - uptime-kuma
-      - adguard
-      - vaultwarden
-      - postgres
     restart: unless-stopped
     healthcheck:
       test: ping -c "3" racknerd
@@ -43,19 +36,4 @@ services:
 networks:
   tailscale:
     name: tailscale
-    external: true
-  syncthing:
-    name: syncthing
-    external: true
-  uptime-kuma:
-    name: uptime-kuma
-    external: true
-  adguard:
-    name: adguard
-    external: true
-  vaultwarden:
-    name: vaultwarden
-    external: true
-  postgres:
-    name: postgres
     external: true
