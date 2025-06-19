@@ -7,6 +7,8 @@ services:
     volumes:
       - ./config:/config
       - /lib/modules:/lib/modules
+    environment:
+      - TZ=America/Chicago
     env_file:
       - .env
     ports:
