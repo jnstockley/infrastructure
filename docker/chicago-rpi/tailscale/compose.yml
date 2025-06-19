@@ -17,7 +17,7 @@ services:
       - tailscale
     restart: unless-stopped
     healthcheck:
-      test: ping -c "3" racknerd
+      test: ping -c "3" chicago-rpi
       interval: 60s
       retries: 5
       start_period: 20s
@@ -25,10 +25,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    deploy:
-      resources:
-        limits:
-          memory: 128M
     hostname: chicago-rpi
     security_opt:
       - no-new-privileges:true
