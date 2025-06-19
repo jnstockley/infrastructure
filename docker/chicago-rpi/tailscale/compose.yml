@@ -29,7 +29,7 @@ services:
       resources:
         limits:
           memory: 128M
-    hostname: racknerd
+    hostname: chicago-rpi
     security_opt:
       - no-new-privileges:true
 
