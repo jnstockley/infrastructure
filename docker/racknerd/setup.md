@@ -5,24 +5,24 @@
 4. Install nala `apt install nala`
 5. Reconnect as jackstockley
 6. Add alias 
-```bash
-export PATH=/usr/bin:/usr/sbin:$PATH
-
-# Nala
-apt() {
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command doas nala "$@"
-  else
-    command doas "$@"
-  fi
-}
-
-alias reboot='sudo systemctl reboot'
-```
+    ```bash
+    export PATH=/usr/bin:/usr/sbin:$PATH
+    
+    # Nala
+    apt() {
+      command nala "$@"
+    }
+    sudo() {
+      if [ "$1" = "apt" ]; then
+        shift
+        command doas nala "$@"
+      else
+        command doas "$@"
+      fi
+    }
+    
+    alias reboot='sudo systemctl reboot'
+    ```
 7. Reboot
 8. Copy ssh keys `ssh-copy-id -i ~/.ssh/id_ed25519.pub jackstockley@172.245.131.22`
 9. Disable root and password ssh `sudo nano /etc/ssh/sshd_config` and `PermitRootLogin no` and 
