@@ -10,6 +10,7 @@ on:
     paths:
       - docker/racknerd/**/compose.yml
       - docker/photo-server/**/compose.yml
+      - docker/chicago-rpi/**/compose.yml
 
 jobs:
   get_changed_files:
@@ -18,6 +19,7 @@ jobs:
     outputs:
       racknerd_file_changes: ${{ steps.racknerd-changes.outputs.changed_files }}
       photo_server_file_changes: ${{ steps.photo-server-changes.outputs.changed_files }}
+      chicago_rpi_file_changes: ${{ steps.chicago-rpi-changes.outputs.changed_files }}
     steps:
       - name: Step 1 - Set Timezone
         run: sudo timedatectl set-timezone America/Chicago
@@ -34,6 +36,10 @@ jobs:
       - name: Step 4 - Get changed files between branches for Photo Server
         id: photo-server-changes
         run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/photo-server"
+
+      - name: Step 4 - Get changed files between branches for Chicago RPI
+        id: chicago-rpi-changes
+        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/chicago-rpi"
 
   racknerd_deploy:
     name: Deploy new Docker Container to Racknerd
@@ -116,4 +122,48 @@ jobs:
             -k "${{ secrets.SSH_KEY }}" \
             -p "${{ secrets.SSH_PW }}" \
             -h "photo-server.internal.jstockley.com" \
+            -c "$SSH_COMMANDS"
+
+  chicago_rpi_deploy:
+    name: Deploy new Docker Container to Chicago RPI
+    runs-on: ubuntu-latest
+    environment: chicago-rpi
+    needs: get_changed_files
+    if: ${{ needs.get_changed_files.outputs.chicago_rpi_file_changes != '' }}
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@09d2acae674a48949e3602304ab46fd20ae0c42f
+
+      - name: Step 2 - WireGuard Connection
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y wireguard resolvconf expect
+            echo "${{ secrets.VPN }}" > wg0.conf
+            sudo chmod 600 wg0.conf
+            sudo cp wg0.conf /etc/wireguard/
+            sudo wg-quick up wg0
+
+      - name: Step 3 - Deploy to Chicago RPI
+        env:
+          CHICAGO_RPI_FILES: ${{ needs.get_changed_files.outputs.chicago_rpi_file_changes }}
+          SSH_USER: jackstockley
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          # Process files and create commands
+          PROCESSED_FILES=$(echo "CHICAGO_RPI_FILES" | tr ',' ' ')
+          SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
+
+          for file in $PROCESSED_FILES; do
+            SSH_COMMANDS="$SSH_COMMANDS && echo \"Deploying $file\" && docker compose -f $file up -d --force-recreate --remove-orphans"
+          done
+
+          SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
+
+          # Execute the SSH script with properly quoted arguments
+          ./scripts/ssh.sh \
+            -u "jackstockley" \
+            -k "${{ secrets.SSH_KEY }}" \
+            -p "${{ secrets.SSH_PW }}" \
+            -h "192.168.1.83" \
             -c "$SSH_COMMANDS"
