@@ -6,15 +6,8 @@ services:
     container_name: cloudflared
     environment:
       - TZ=America/Chicago
-    env_file:
-      - .env
-    ports:
-      - '127.0.0.1:53:53/tcp'
+    network_mode: 'host'
     command: proxy-dns --upstream https://dns.jstockley.com/dns-query --upstream https://security.cloudflare-dns.com/dns-query run
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 128M
     security_opt:
       - no-new-privileges:true
