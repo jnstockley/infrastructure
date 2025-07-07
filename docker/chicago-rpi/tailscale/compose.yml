@@ -1,0 +1,35 @@
+---
+name: tailscale
+services:
+  tailscale:
+    image: tailscale/tailscale:v1.84.2
+    container_name: tailscale
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+      - ./data:/var/lib/tailscale
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--advertise-exit-node --advertise-routes=192.168.1.0/24
+      - TZ=America/Chicago
+    env_file:
+      - .env
+    networks:
+      - tailscale
+    restart: unless-stopped
+    healthcheck:
+      test: ping -c "3" chicago-rpi
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    hostname: chicago-rpi
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  tailscale:
+    name: tailscale
+    external: true
