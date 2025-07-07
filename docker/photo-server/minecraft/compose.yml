@@ -2,7 +2,7 @@
 name: minecraft
 services:
   crafty:
-    image: arcadiatechnology/crafty-4:4.4.9
+    image: arcadiatechnology/crafty-4:4.4.11
     container_name: crafty
     volumes:
       - ./backups:/crafty/backups
