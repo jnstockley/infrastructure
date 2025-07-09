@@ -11,7 +11,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - TZ=America/Chicago
-    network_mode: service:wireguard-uptime-kuma
+    networks:
+      - private
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: node ./extra/healthcheck.js
@@ -42,36 +44,6 @@ services:
           memory: 256M
     security_opt:
       - no-new-privileges:true
-
-  wireguard-uptime-kuma:
-    image: linuxserver/wireguard:1.0.20210914@sha256:039aab5f3c0eb584c9195f0d5414104a6521855c5e5e9812777a8ce61d56b2c6
-    container_name: wireguard-uptime-kuma
-    volumes:
-      - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules
-    env_file:
-      - .env
-    networks:
-      - proxy
-      - private
-    restart: unless-stopped
-    healthcheck:
-      test: curl --fail https://google.com || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    deploy:
-      resources:
-        limits:
-          memory: 256M
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   proxy:
