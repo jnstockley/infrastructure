@@ -45,6 +45,11 @@ entryPoints:
 
   websecure:
     address: :443
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
+        writeTimeout: 600s
     forwardedHeaders:
       trustedIPs:
         - "127.0.0.1/32"
