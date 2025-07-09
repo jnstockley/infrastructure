@@ -2,7 +2,7 @@
 http:
   routers:
     homeassistant:
-      rule: "Host(`iowa-home.jstockley.com`)"
+      rule: "Host(`home.jstockley.com`)"
       entryPoints:
         - websecure
       service: homeassistant
