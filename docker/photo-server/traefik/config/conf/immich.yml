@@ -1,0 +1,37 @@
+---
+http:
+  routers:
+    immich:
+      rule: "Host(`photos.jstockley.com`)"
+      entrypoints:
+        - "websecure"
+      service: immich
+      middlewares:
+        - immich-chain
+      tls:
+        certresolver: "production"
+
+  services:
+    immich:
+      loadBalancer:
+        servers:
+          - url: "http://immich_server:2283"
+        passHostHeader: true
+
+  middlewares:
+    immich-secure-headers:
+      headers:
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        referrerPolicy: "same-origin"
+
+    https-redirect:
+      redirectscheme:
+        scheme: https
+
+    immich-chain:
+      chain:
+        middlewares:
+          # - ... (e.g. rate limiting middleware)
+          - https-redirect
+          - immich-secure-headers

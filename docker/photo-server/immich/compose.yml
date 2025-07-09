@@ -99,14 +99,14 @@ services:
         loki-timeout: 1s
         keep-file: "true"
         mode: "non-blocking"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.photos.entrypoints=websecure
-      - traefik.http.routers.photos.rule=Host(`photos.jstockley.com`)
-      - traefik.http.routers.photos.tls=true
-      - traefik.http.routers.photos.tls.certresolver=production
-      - traefik.http.routers.photos.service=photos
-      - traefik.http.services.photos.loadbalancer.server.port=2283
+    #labels:
+    #  - traefik.enable=true
+    #  - traefik.http.routers.photos.entrypoints=websecure
+    #  - traefik.http.routers.photos.rule=Host(`photos.jstockley.com`)
+    #  - traefik.http.routers.photos.tls=true
+    #  - traefik.http.routers.photos.tls.certresolver=production
+    #  - traefik.http.routers.photos.service=photos
+    #  - traefik.http.services.photos.loadbalancer.server.port=2283
     deploy:
       resources:
         limits:
