@@ -1,15 +1,15 @@
 ---
 http:
   routers:
-    homeassistant:
+    unifi:
       rule: "Host(`unifi.local.jstockley.com`)"
       entryPoints:
         - websecure
-      service: homeassistant
+      service: unifi
       tls:
         certResolver: production
   services:
-    homeassistant:
+    unifi:
       loadBalancer:
         servers:
           - url: "https://192.168.1.142:8443"
