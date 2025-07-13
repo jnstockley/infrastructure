@@ -78,8 +78,6 @@ services:
       - ./healthcheck.js:/healthcheck/healthcheck.js
     env_file:
       - .env
-    ports:
-      - '0.0.0.0:2283:2283'
     networks:
       - proxy
       - private
