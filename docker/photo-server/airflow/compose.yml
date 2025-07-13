@@ -1,7 +1,9 @@
 ---
 x-airflow-common: &airflow-common
   image: jnstockley/airflow:2025.06.10
-  network_mode: service:wireguard-airflow
+  networks:
+    - private
+    - proxy
   env_file:
     - .env
   environment: &airflow-common-env
@@ -120,43 +122,6 @@ services:
       retries: 5
       start_period: 30s
     <<: *airflow-common
-
-  wireguard-airflow:
-    image: linuxserver/wireguard:1.0.20210914@sha256:039aab5f3c0eb584c9195f0d5414104a6521855c5e5e9812777a8ce61d56b2c6
-    container_name: wireguard-airflow
-    volumes:
-      - ./config:/config/wg_confs
-      - /lib/modules:/lib/modules
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
-    networks:
-      - proxy
-      - private
-    restart: unless-stopped
-    healthcheck:
-      test: curl --fail https://google.com || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    security_opt:
-      - no-new-privileges:true
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
   proxy:
