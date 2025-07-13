@@ -14,7 +14,7 @@ services:
       - proxy
     restart: unless-stopped
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.8
+    image: crowdsecurity/crowdsec:v1.6.10
     container_name: crowdsec
     volumes:
       - ./config/acquis.yaml:/etc/crowdsec/acquis.yaml
