@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-bh-photo-video:
-    image: jnstockley/web-scrapper:v0.3.103
+    image: jnstockley/web-scrapper:v0.3.104
     container_name: web_scrapper_bh_photo_video
     volumes:
       - ./bh-photo-video-data/:/web-scrapper/data/
