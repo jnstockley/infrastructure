@@ -1,16 +1,16 @@
 ---
 name: web-scrapper
 services:
-  web-scrapper-hyundai:
+  web-scrapper-bh-photo-video:
     image: jnstockley/web-scrapper:v0.3.104
-    container_name: web_scrapper_hyundai
+    container_name: web_scrapper_bh_photo_video
     volumes:
-      - ./hyundai-data/:/web-scrapper/data/
+      - ./bh-photo-video-data/:/web-scrapper/data/
     environment:
       - TZ=America/Chicago
       - SCRAPPER=diff
-      - URL=https://update.hyundai.com/US/EN/updateNoticeList
-      - PERCENTAGE=5
+      - URL=https://www.bhphotovideo.com/c/product/1884945-REG/ubiquiti_networks_ucg_fiber_cloud_gateway_fiber.html
+      - PERCENTAGE=10
       - SLEEP_TIME_SEC=21600
     env_file:
       - .env
@@ -37,15 +37,15 @@ services:
     security_opt:
       - no-new-privileges:true
 
-  web-scrapper-bh-photo-video:
-    image: jnstockley/web-scrapper:v0.3.103
-    container_name: web_scrapper_bh_photo_video
+  web-scrapper-hyundai:
+    image: jnstockley/web-scrapper:v0.3.104
+    container_name: web_scrapper_hyundai
     volumes:
-      - ./bh-photo-video-data/:/web-scrapper/data/
+      - ./hyundai-data/:/web-scrapper/data/
     environment:
       - TZ=America/Chicago
       - SCRAPPER=diff
-      - URL=https://www.bhphotovideo.com/c/product/1884945-REG/ubiquiti_networks_ucg_fiber_cloud_gateway_fiber.html
+      - URL=https://update.hyundai.com/US/EN/updateNoticeList
       - PERCENTAGE=5
       - SLEEP_TIME_SEC=21600
     env_file:

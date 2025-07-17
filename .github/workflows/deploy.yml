@@ -10,7 +10,7 @@ on:
     paths:
       - docker/racknerd/**/compose.yml
       - docker/photo-server/**/compose.yml
-      - docker/chicago-rpi/**/compose.yml
+      #  - docker/chicago-rpi/**/compose.yml
 
 jobs:
   get_changed_files:
@@ -37,9 +37,9 @@ jobs:
         id: photo-server-changes
         run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/photo-server"
 
-      - name: Step 4 - Get changed files between branches for Chicago RPI
-        id: chicago-rpi-changes
-        run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/chicago-rpi"
+        # - name: Step 4 - Get changed files between branches for Chicago RPI
+        #   id: chicago-rpi-changes
+        #   run: ./scripts/diffs.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/chicago-rpi"
 
   racknerd_deploy:
     name: Deploy new Docker Container to Racknerd
