@@ -11,10 +11,7 @@ services:
       - TZ=America/Chicago
     env_file:
       - .env
-    ports:
-      - '0.0.0.0:51820:51820/udp'
-    networks:
-      - wireguard
+    network_mode: 'host'
     restart: unless-stopped
     healthcheck:
       test: curl --fail https://google.com || exit 1
@@ -27,10 +24,3 @@ services:
       - SYS_MODULE
     security_opt:
       - no-new-privileges:true
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
-
-networks:
-  wireguard:
-    name: wireguard
-    external: true
