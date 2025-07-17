@@ -10,7 +10,7 @@ services:
       - TZ=America/Chicago
       - SCRAPPER=diff
       - URL=https://www.bhphotovideo.com/c/product/1884945-REG/ubiquiti_networks_ucg_fiber_cloud_gateway_fiber.html
-      - PERCENTAGE=5
+      - PERCENTAGE=10
       - SLEEP_TIME_SEC=21600
     env_file:
       - .env
