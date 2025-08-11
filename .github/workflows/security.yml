@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5.0.0
       - name: Step 2 - Run KICS Scan
         uses: Checkmarx/kics-github-action@v2.1.12
         with:
