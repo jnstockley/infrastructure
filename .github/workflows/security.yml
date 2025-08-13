@@ -22,7 +22,7 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v5
       - name: Step 2 - Run KICS Scan
-        uses: Checkmarx/kics-github-action@v2.1.12
+        uses: Checkmarx/kics-github-action@v2.1.13
         with:
           path: '.'
           token: ${{ secrets.GITHUB_TOKEN }}
