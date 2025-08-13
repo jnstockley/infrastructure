@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
       - name: Step 2 - Run Nix Setup Script
         run: |
           sudo rm -rf /Library/Developer/CommandLineTools
