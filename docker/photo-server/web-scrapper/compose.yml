@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-bh-photo-video:
-    image: jnstockley/web-scrapper:v0.3.106
+    image: jnstockley/web-scrapper:v0.3.107
     container_name: web_scrapper_bh_photo_video
     volumes:
       - ./bh-photo-video-data/:/web-scrapper/data/
@@ -38,7 +38,7 @@ services:
       - no-new-privileges:true
 
   web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.106
+    image: jnstockley/web-scrapper:v0.3.107
     container_name: web_scrapper_hyundai
     volumes:
       - ./hyundai-data/:/web-scrapper/data/
