@@ -33,7 +33,7 @@ services:
       - no-new-privileges:true
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.138.1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.139.2
     container_name: immich_machine_learning
     depends_on:
       database:
@@ -68,7 +68,7 @@ services:
       - no-new-privileges:true
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.138.1
+    image: ghcr.io/immich-app/immich-server:v1.139.2
     container_name: immich_server
     depends_on:
       database:
