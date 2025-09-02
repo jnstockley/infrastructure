@@ -128,9 +128,6 @@ networks:
   postgres:
     name: postgres
     external: true
-#  wireguard:
-#    name: wireguard
-#    external: true
   redis:
     name: redis
     external: true
