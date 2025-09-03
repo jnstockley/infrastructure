@@ -10,7 +10,7 @@ services:
       - .env
     ports:
       - '0.0.0.0:45876:45876'
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ['CMD', '/agent', 'health']
       start_period: 5s
