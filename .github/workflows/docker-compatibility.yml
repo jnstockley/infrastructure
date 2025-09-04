@@ -27,7 +27,7 @@ jobs:
         run: ./scripts/diffs-no-merge.sh ${{ github.base_ref }} ${{ github.head_ref }} "docker/racknerd|docker/photo-server"
 
       - name: Step 3 - Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           check-latest: true
 
