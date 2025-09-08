@@ -167,7 +167,7 @@ services:
       - no-new-privileges:true
 
   web:
-    image: ghcr.io/bitwarden/web:2025.8.2
+    image: ghcr.io/bitwarden/web:2025.8.3
     container_name: bitwarden-web
     volumes:
       - ./web:/etc/bitwarden/web
