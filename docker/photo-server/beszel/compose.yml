@@ -16,15 +16,6 @@ services:
       interval: 120s
       timeout: 10s
       retries: 5
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
     # labels:
     #   - traefik.enable=true
     #   - traefik.http.routers.beszel.entrypoints=websecure
@@ -53,15 +44,6 @@ services:
       interval: 120s
       timeout: 10s
       retries: 5
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
     security_opt:
       - no-new-privileges:true
 
