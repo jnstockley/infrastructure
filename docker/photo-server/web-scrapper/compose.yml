@@ -21,15 +21,6 @@ services:
       retries: 3
       start_period: 20s
       timeout: 10s
-    logging:
-      driver: loki
-      options:
-        loki-url: "https://loki.local.jstockley.com/loki/api/v1/push"
-        loki-retries: 2
-        loki-max-backoff: 800ms
-        loki-timeout: 1s
-        keep-file: "true"
-        mode: "non-blocking"
     deploy:
       resources:
         limits:
