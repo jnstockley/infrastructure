@@ -25,6 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -n "$GITHUB_TOKEN" ]; then
   export NIX_CONFIG="access-tokens = github.com=${GITHUB_TOKEN}"
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
+  ls -s "$SCRIPT_DIR" ~/.config/
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
@@ -35,8 +36,13 @@ else # Not run in GitHub Actions
     cd ~/Documents/GitHub/Infrastructure/ || exit
     git pull
     cd "$CURRENT_DIR" || exit
+    ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
   fi
 fi
+
+sudo nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/macbook-pro#macbook --impure
+
+exec "$SHELL"
 
 ## Check if GITHUB_ACTION is set and doesn't equals 1
 #if [ "${GITHUB_ACTION}" != "1" ]; then
@@ -91,9 +97,4 @@ fi
 #    chmod 700 ~/.ssh
 #fi
 
-ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
-
 #sudo chmod -R 755 /etc/nix/
-sudo nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/macbook-pro#macbook --impure
-
-exec "$SHELL"
