@@ -6,7 +6,7 @@
 }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-in
+in rec
 {
   programs.home-manager.enable = true;
 
