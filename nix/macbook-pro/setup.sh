@@ -24,7 +24,7 @@ bash "$SCRIPT_DIR/../scripts/nix-install.sh"
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
   export NIX_CONFIG="access-tokens = github.com=${GITHUB_TOKEN}"
-  bash "$SCRIPT_DIR/../scripts/mas-disable.sh flake.nix"
+  bash "$SCRIPT_DIR/../scripts/mas-disable.sh $SCRIPT_DIR/flake.nix"
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
