@@ -25,6 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -n "$GITHUB_TOKEN" ]; then
   sudo rm -rf /var/root/.config/nix
   LINE="access-tokens = github.com=${GITHUB_TOKEN}"
+  sudo mkdir -p /var/root/.config
   echo "$LINE" | sudo tee "/var/root/.config/nix" >/dev/null
   sudo chown root:wheel "/var/root/.config/nix" || true
   sudo chmod 600 "/var/root/.config/nix"
