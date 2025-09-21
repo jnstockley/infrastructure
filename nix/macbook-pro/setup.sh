@@ -28,6 +28,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/flake.nix
   sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/home.nix
+  # shellcheck disable=SC2016
+  sed -i '' 's|home.homeDirectory = "/Users/${home.username}";|home.homeDirectory = "/var/root";|' nix/macbook-pro/home.nix
   cp -r "$SCRIPT_DIR/" ~/.config/macbook-pro
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
