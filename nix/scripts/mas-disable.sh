@@ -12,8 +12,6 @@ fi
 
 file="${1}"
 
-echo "Processing file: $file"
-
 # Expand leading tilde if present
 if [[ "$file" == ~* ]]; then
   file="${file/#\~/$HOME}"
