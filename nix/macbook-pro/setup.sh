@@ -35,6 +35,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   #
+  echo ~
   mkdir -p ~/.config/
   cp -r "$SCRIPT_DIR/" ~/.config/
   ls /Users/runner/.config/macbook-pro
