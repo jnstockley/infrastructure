@@ -15,6 +15,7 @@ mkdir -p ~/.config/
 if [ -n "$GITHUB_TOKEN" ]; then
   # Remove existing root config if it exists
   sudo rm -rf /var/root/.config/nix
+  sudo touch /var/root/.config/nix/nix.conf
   # Set current GitHub Access Token for root user
   LINE="access-tokens = github.com=${GITHUB_TOKEN}"
   sudo mkdir -p /var/root/.config
