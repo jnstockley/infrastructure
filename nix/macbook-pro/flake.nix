@@ -21,7 +21,7 @@
       home-manager,
     }:
     let
-      username = jackstockley;
+      username = "jackstockley";
       configuration =
         { pkgs, config, ... }:
         {

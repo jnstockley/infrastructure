@@ -26,7 +26,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   sudo chmod 600 "/var/root/.config/nix/nix.conf"
   # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
-  sed -i '' "s/^\(\s*username\s*=\s*\).*;/\1${USER};/" nix/macbook-pro/flake.nix
+  sed -i '' "s/^\(\s*username\s*=\s*\).*;/\1\"${USER}\";/" nix/macbook-pro/flake.nix
   cp -r "$SCRIPT_DIR/" ~/.config/macbook-pro
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
