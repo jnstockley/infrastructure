@@ -192,7 +192,7 @@
           {
             nix-homebrew = {
               enable = true;
-              enableRosetta = false;
+              enableRosetta = true;
               user = username;
               # Used to make work when running in GitHub Actions
               autoMigrate = true;
