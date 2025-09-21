@@ -21,7 +21,7 @@
       home-manager,
     }:
     let
-      username = builtins.getEnv "USER";
+      username = jackstockley;
       configuration =
         { pkgs, config, ... }:
         {
