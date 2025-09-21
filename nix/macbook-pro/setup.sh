@@ -1,27 +1,30 @@
 #!/usr/bin/env bash
 set -e
 
-../scripts/xcode-cli-install.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-../scripts/rosetta-install.sh
+bash "$SCRIPT_DIR/../scripts/xcode-cli-install.sh"
 
+bash "$SCRIPT_DIR/../scripts/rosetta-install.sh"
+
+bash "$SCRIPT_DIR/../scripts/nix-install.sh"
 # Check if Nix is already installed
-if ! command -v nix &>/dev/null; then
-    # Download and install Nix
-    sh <(curl -L https://nixos.org/nix/install) --daemon --yes
-    # Source the Nix environment in the current shell
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
+#if ! command -v nix &>/dev/null; then
+#    # Download and install Nix
+#    sh <(curl -L https://nixos.org/nix/install) --daemon --yes
+#    # Source the Nix environment in the current shell
+#    # shellcheck disable=SC1091
+#    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+#fi
 
-mkdir -p ~/Documents/GitHub/Infrastructure/
+#mkdir -p ~/Documents/GitHub/Infrastructure/
 
-mkdir -p ~/.config/nix
+#mkdir -p ~/.config/nix
 
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
   export NIX_CONFIG="access-tokens = github.com=${GITHUB_TOKEN}"
-  ../scripts/mas-disable.sh ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix
+  bash "$SCRIPT_DIR/../scripts/mas-disable.sh ~/Documents/GitHub/Infrastructure/nix/macbook-pro/flake.nix"
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
