@@ -23,7 +23,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
-  sudo sh -c 'export NIX_CONFIG="access-tokens = github.com=${GITHUB_TOKEN}"'
+  sudo rm -rf /var/root/.config/nix
+  LINE="access-tokens = github.com=${GITHUB_TOKEN}"
+  echo "$LINE" | sudo tee "/var/root/.config/nix" >/dev/null
+  sudo chown root:wheel "/var/root/.config/nix" || true
+  sudo chmod 600 "/var/root/.config/nix"
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   ln -s "$SCRIPT_DIR/" ~/.config/
 else # Not run in GitHub Actions
