@@ -23,14 +23,20 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
+  # Remove existing root config if it exists
   sudo rm -rf /var/root/.config/nix
+  # Set current GitHub Access Token for root user
   LINE="access-tokens = github.com=${GITHUB_TOKEN}"
   sudo mkdir -p /var/root/.config
   echo "$LINE" | sudo tee "/var/root/.config/nix" >/dev/null
+  # Set correct permissions
   sudo chown root:wheel "/var/root/.config/nix" || true
   sudo chmod 600 "/var/root/.config/nix"
+  # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
-  ln -s "$SCRIPT_DIR/" ~/.config/
+  #
+  cp -r "$SCRIPT_DIR/*" ~/.config/
+  ls /Users/runner/.config/macbook-pro
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
