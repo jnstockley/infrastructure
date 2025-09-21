@@ -21,6 +21,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   echo "$LINE" | sudo tee "/var/root/.config/nix" >/dev/null
   # Set correct permissions
   sudo chown root:wheel "/var/root/.config/nix" || true
+  sudo cp /var/root/.config/nix ~/.config/
   sudo chmod 600 "/var/root/.config/nix"
   # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
