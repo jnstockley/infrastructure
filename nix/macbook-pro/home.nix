@@ -10,8 +10,8 @@ in
 {
   programs.home-manager.enable = true;
 
-  home.username = "jackstockley";
-  home.homeDirectory = "/Users/jackstockley";
+  home.username = builtins.getEnv "USER";
+  home.homeDirectory = "/Users/${builtins.getEnv "USER"}";
   home.enableNixpkgsReleaseCheck = false;
   xdg.enable = true;
 

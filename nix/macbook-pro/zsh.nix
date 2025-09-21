@@ -38,7 +38,7 @@
     # Homebrew Analytics
     export HOMEBREW_NO_ANALYTICS=1
 
-    export PATH="/Users/jackstockley/.local/bin:$PATH"
+    export PATH="/Users/${builtins.getEnv "USER"}/.local/bin:$PATH"
 
     export LDFLAGS="-L/opt/homebrew/opt/libpq/lib"
     export CPPFLAGS="-I/opt/homebrew/opt/libpq/include"
