@@ -18,11 +18,10 @@ if [ -n "$GITHUB_TOKEN" ]; then
   # Set current GitHub Access Token for root user
   LINE="access-tokens = github.com=${GITHUB_TOKEN}"
   sudo mkdir -p /var/root/.config
-  echo "$LINE" | sudo tee "/var/root/.config/nix" >/dev/null
+  echo "$LINE" | sudo tee "/var/root/.config/nix/nix.conf" >/dev/null
   # Set correct permissions
-  sudo chown root:wheel "/var/root/.config/nix" || true
-  sudo cp /var/root/.config/nix ~/.config/
-  sudo chmod 600 "/var/root/.config/nix"
+  sudo chown root:wheel "/var/root/.config/nix/nix.conf" || true
+  sudo chmod 600 "/var/root/.config/nix/nix.conf"
   # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   ln -s "$SCRIPT_DIR" ~/.config/
