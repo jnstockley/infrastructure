@@ -8,18 +8,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "$SCRIPT_DIR/../scripts/rosetta-install.sh"
 
 . "$SCRIPT_DIR/../scripts/nix-install.sh"
-# Check if Nix is already installed
-#if ! command -v nix &>/dev/null; then
-#    # Download and install Nix
-#    sh <(curl -L https://nixos.org/nix/install) --daemon --yes
-#    # Source the Nix environment in the current shell
-#    # shellcheck disable=SC1091
-#    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-#fi
 
-#mkdir -p ~/Documents/GitHub/Infrastructure/
-
-#mkdir -p ~/.config/nix
+mkdir -p ~/.config/
 
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
@@ -34,12 +24,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   sudo chmod 600 "/var/root/.config/nix"
   # Disable mas if running in GitHub Actions
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
-  #
-  echo ~
-  echo "$SCRIPT_DIR"
-  mkdir -p ~/.config/
-  cp -r "$SCRIPT_DIR" ~/.config/
-  ls /Users/runner/.config/macbook-pro
+  ln -s "$SCRIPT_DIR" ~/.config/
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
