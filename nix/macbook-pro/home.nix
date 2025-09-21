@@ -11,7 +11,7 @@ in
   programs.home-manager.enable = true;
 
   home.username = builtins.getEnv "USER";
-  home.homeDirectory = "/Users/${builtins.getEnv "USER"}";
+  home.homeDirectory = "/Users/${home.username}";
   home.enableNixpkgsReleaseCheck = false;
   xdg.enable = true;
 
