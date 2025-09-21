@@ -26,7 +26,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   export NIX_CONFIG="access-tokens = github.com=${GITHUB_TOKEN}"
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   echo "$SCRIPT_DIR"
-  ls -s "$SCRIPT_DIR" ~/.config/
+  ln -s "$SCRIPT_DIR" ~/.config/
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
     echo "Infrastructure repo not found, cloning..."
