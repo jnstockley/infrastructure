@@ -36,8 +36,9 @@ if [ -n "$GITHUB_TOKEN" ]; then
   . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
   #
   echo ~
+  echo "$SCRIPT_DIR"
   mkdir -p ~/.config/
-  cp -r "$SCRIPT_DIR/" ~/.config/
+  cp -r "$SCRIPT_DIR" ~/.config/
   ls /Users/runner/.config/macbook-pro
 else # Not run in GitHub Actions
   if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
