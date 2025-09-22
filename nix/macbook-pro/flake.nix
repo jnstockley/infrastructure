@@ -135,13 +135,13 @@
             #  done
             ''
               # Clear all Finder favorites
-              /usr/local/bin/mysides remove all
+              mysides remove all
 
               # Add Finder favorites
-              /usr/local/bin/mysides add Applications file:///Applications/
-              /usr/local/bin/mysides add Downloads file:///Users/${username}/Downloads/
-              /usr/local/bin/mysides add Documents file:///Users/${username}/Documents/
-              /usr/local/bin/mysides add Home file:///Users/${username}/
+              mysides add Applications file:///Applications/
+              mysides add Downloads file:///Users/${username}/Downloads/
+              mysides add Documents file:///Users/${username}/Documents/
+              mysides add Home file:///Users/${username}/
 
               if [ ! -d /Users/${username}/Nextcloud ]; then
                   mkdir /Users/${username}/Nextcloud
@@ -149,7 +149,7 @@
                   chmod 700 /Users/${username}/Nextcloud
               fi
 
-              /usr/local/bin/mysides add Nextcloud file:///Users/${username}/Nextcloud
+              mysides add Nextcloud file:///Users/${username}/Nextcloud
 
               killall Finder
 
