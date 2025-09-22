@@ -23,11 +23,9 @@ in rec
 
   home.packages = with pkgs; [
     mysides
-    mkalias
   ];
 
-  home.activation.applications = {
-    text = ''
+  home.activation.applications.text =  ''
       # Clear all Finder favorites
       ${pkgs.mysides}/bin/mysides remove all || true
 
@@ -52,7 +50,6 @@ in rec
       /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/JetBrains Toolbox.app", hidden:true}'
       /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Steam.app", hidden:true}'
     '';
-  };
 
   programs = {
     zsh = import ./zsh.nix { inherit config pkgs lib; };
