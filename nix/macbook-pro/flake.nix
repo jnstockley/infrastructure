@@ -59,6 +59,7 @@
             pkgs.tcl
             pkgs.tclPackages.tclx
             pkgs.mysides
+            pkgs.mas
           ];
 
           users.users.${username} = {
