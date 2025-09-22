@@ -68,44 +68,71 @@
 
           system.primaryUser = "${username}";
 
-          homebrew = {
-            enable = true;
-            brews = [
-              "nvm"
-              "mas"
-            ];
-            casks = [
-              "balenaetcher"
-              "malwarebytes"
-              "steam"
-              "visual-studio-code"
-              "vnc-server"
-              "docker"
-              "roblox"
-              "termius"
-              "minecraft"
-              "jetbrains-toolbox"
-              "firefox"
-              "nextcloud"
-              "rustdesk"
-              "ghostty"
-            ];
-            #masApps = {
-            #  "Bitwarden" = 1352778147;
-            #  "Hidden Bar" = 1452453066;
-            #  "Windows App" = 1295203466;
-            #  "Wireguard" = 1441195209;
-            #  "Excel" = 62058435;
-            #  "Powerpoint" = 462062816;
-            #  "Word" = 462054704;
-            #  "OneDrive" = 823766827;
-            #};
-            onActivation = {
-              autoUpdate = true;
-              cleanup = "uninstall";
-              upgrade = true;
-            };
-          };
+          #homebrew = {
+          #  enable = true;
+          #  brews = [
+          #    "nvm"
+          #    "mas"
+          #  ];
+          #  casks = [
+          #    "balenaetcher"
+          #    "malwarebytes"
+          #    "steam"
+          #    "visual-studio-code"
+          #    "vnc-server"
+          #    "docker"
+          #    "roblox"
+          #    "termius"
+          #    "minecraft"
+          #    "jetbrains-toolbox"
+          #    "firefox"
+          #    "nextcloud"
+          #    "rustdesk"
+          #    "ghostty"
+          #  ];
+          #  #masApps = {
+          #  #  "Bitwarden" = 1352778147;
+          #  #  "Hidden Bar" = 1452453066;
+          #  #  "Windows App" = 1295203466;
+          #  #  "Wireguard" = 1441195209;
+          #  #  "Excel" = 62058435;
+          #  #  "Powerpoint" = 462062816;
+          #  #  "Word" = 462054704;
+          #  #  "OneDrive" = 823766827;
+          #  #};
+          #  onActivation = {
+          #    autoUpdate = true;
+          #    cleanup = "uninstall";
+          #    upgrade = true;
+          #  };
+          #};
+
+          system.activationScripts.postActivation.text = ''
+              mysides remove all
+
+              # Add Finder favorites
+              mysides add Applications file:///Applications/
+              mysides add Downloads file:///Users/${username}/Downloads/
+              mysides add Documents file:///Users/${username}/Documents/
+              mysides add Home file:///Users/${username}/
+
+              if [ ! -d /Users/${username}/Nextcloud ]; then
+                  mkdir /Users/${username}/Nextcloud
+                  chown ${username}:staff /Users/${username}/Nextcloud
+                  chmod 700 /Users/${username}/Nextcloud
+              fi
+
+              mysides add Nextcloud file:///Users/${username}/Nextcloud
+
+              killall Finder
+
+              sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool TRUE
+
+              # Login Items
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Nextcloud.app", hidden:true}'
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/JetBrains Toolbox.app", hidden:true}'
+              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Steam.app", hidden:true}'
+          '';
 
           #system.activationScripts.postUserActivation.text = ''
           #  # Following line should allow us to avoid a logout/login cycle when changing settings
