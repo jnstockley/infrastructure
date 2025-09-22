@@ -28,7 +28,7 @@ services:
       - no-new-privileges:true
 
   beszel-agent:
-    image: henrygd/beszel-agent:0.12.9
+    image: henrygd/beszel-agent:0.12.10
     container_name: beszel-agent-photo-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
