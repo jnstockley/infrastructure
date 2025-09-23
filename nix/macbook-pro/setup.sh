@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-
+# shellcheck disable=SC1091
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 . "$SCRIPT_DIR/../scripts/xcode-cli-install.sh"
@@ -13,37 +13,37 @@ mkdir -p ~/.config/
 
 # Check if GITHUB_TOKEN is set
 if [ -n "$GITHUB_TOKEN" ]; then
-  # Remove existing root config if it exists
-  sudo rm -rf /var/root/.config/nix
-  sudo mkdir -p /var/root/.config/nix
-  sudo touch /var/root/.config/nix/nix.conf
-  # Set current GitHub Access Token for root user
-  LINE="access-tokens = github.com=${GITHUB_TOKEN}"
-  sudo mkdir -p /var/root/.config
-  echo "$LINE" | sudo tee "/var/root/.config/nix/nix.conf" >/dev/null
-  # Set correct permissions
-  sudo chown root:wheel "/var/root/.config/nix/nix.conf" || true
-  sudo chmod 600 "/var/root/.config/nix/nix.conf"
-  # Disable mas if running in GitHub Actions
-  . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
-  sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/flake.nix
-  sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/home.nix
-  # shellcheck disable=SC2016
-  sed -i '' 's|home.homeDirectory = "/Users/${home.username}";|home.homeDirectory = "/var/root";|' nix/macbook-pro/home.nix
-  sed -i '' 's|home = "/Users/${username}";|home = "/var/root";|' nix/macbook-pro/flake.nix
-  cp -r "$SCRIPT_DIR/" ~/.config/macbook-pro
+    # Remove existing root config if it exists
+    sudo rm -rf /var/root/.config/nix
+    sudo mkdir -p /var/root/.config/nix
+    sudo touch /var/root/.config/nix/nix.conf
+    # Set current GitHub Access Token for root user
+    LINE="access-tokens = github.com=${GITHUB_TOKEN}"
+    sudo mkdir -p /var/root/.config
+    echo "$LINE" | sudo tee "/var/root/.config/nix/nix.conf" >/dev/null
+    # Set correct permissions
+    sudo chown root:wheel "/var/root/.config/nix/nix.conf" || true
+    sudo chmod 600 "/var/root/.config/nix/nix.conf"
+    # Disable mas if running in GitHub Actions
+    . "$SCRIPT_DIR/../scripts/mas-disable.sh" "$SCRIPT_DIR/flake.nix"
+    sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/flake.nix
+    sed -i '' 's/username = "jackstockley";/username = "root";/' nix/macbook-pro/home.nix
+    # shellcheck disable=SC2016
+    sed -i '' 's|home.homeDirectory = "/Users/${home.username}";|home.homeDirectory = "/var/root";|' nix/macbook-pro/home.nix
+    sed -i '' 's|home = "/Users/${username}";|home = "/var/root";|' nix/macbook-pro/flake.nix
+    cp -r "$SCRIPT_DIR/" ~/.config/macbook-pro
 else # Not run in GitHub Actions
-  if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
-    echo "Infrastructure repo not found, cloning..."
-    git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
-  else
-    echo "Infrastructure repo found, pulling latest changes..."
-    CURRENT_DIR=$(pwd)
-    cd ~/Documents/GitHub/Infrastructure/ || exit
-    git pull
-    cd "$CURRENT_DIR" || exit
-    ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
-  fi
+    if [ ! -d ~/Documents/GitHub/Infrastructure/.git ]; then
+        echo "Infrastructure repo not found, cloning..."
+        git clone https://github.com/jnstockley/infrastructure.git ~/Documents/GitHub/Infrastructure/
+    else
+        echo "Infrastructure repo found, pulling latest changes..."
+        CURRENT_DIR=$(pwd)
+        cd ~/Documents/GitHub/Infrastructure/ || exit
+        git pull
+        cd "$CURRENT_DIR" || exit
+        ln -s ~/Documents/GitHub/Infrastructure/nix/macbook-pro/ ~/.config/
+    fi
 fi
 
 sudo nix run nix-darwin --extra-experimental-features "nix-command flakes" -- switch --flake ~/.config/macbook-pro#macbook --impure
