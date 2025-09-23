@@ -59,6 +59,7 @@
             pkgs.tcl
             pkgs.tclPackages.tclx
             pkgs.mysides
+            pkgs.mas
           ];
 
           users.users.${username} = {
@@ -107,61 +108,7 @@
           #  };
           #};
 
-          system.activationScripts.postActivation.text = ''
-              mysides remove all
-
-              # Add Finder favorites
-              mysides add Applications file:///Applications/
-              mysides add Downloads file:///Users/${username}/Downloads/
-              mysides add Documents file:///Users/${username}/Documents/
-              mysides add Home file:///Users/${username}/
-
-              if [ ! -d /Users/${username}/Nextcloud ]; then
-                  mkdir /Users/${username}/Nextcloud
-                  chown ${username}:staff /Users/${username}/Nextcloud
-                  chmod 700 /Users/${username}/Nextcloud
-              fi
-
-              mysides add Nextcloud file:///Users/${username}/Nextcloud
-
-              killall Finder
-
-              sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates -bool TRUE
-
-              # Login Items
-              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Nextcloud.app", hidden:true}'
-              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/JetBrains Toolbox.app", hidden:true}'
-              /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Steam.app", hidden:true}'
-          '';
-
-          #system.activationScripts.postUserActivation.text = ''
-          #  # Following line should allow us to avoid a logout/login cycle when changing settings
-          #  /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-          #'';
-
-          #system.defaults = import ./settings.nix { inherit config pkgs; };
-
-          #system.activationScripts.applications.text =
-          #  #let
-          #  #  env = pkgs.buildEnv {
-          #  #    name = "system-applications";
-          #  #    paths = config.environment.systemPackages;
-          #  #    pathsToLink = "/Applications";
-          #  #  };
-          #  #in
-          #  #pkgs.lib.mkForce ''
-          #  #  # Set up applications.
-          #  #  echo "setting up /Applications..." >&2
-          #  #  rm -rf /Applications/Nix\ Apps
-          #  #  mkdir -p /Applications/Nix\ Apps
-          #  #  find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-          #  #  while read -r src; do
-          #  #    app_name=$(basename "$src")
-          #  #    echo "copying $src" >&2
-          #  #    ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-          #  #  done
-          #  ''
-          #    # Clear all Finder favorites
+          #system.activationScripts.postActivation.text = ''
           #    mysides remove all
           #
           #    # Add Finder favorites
@@ -186,7 +133,7 @@
           #    /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Nextcloud.app", hidden:true}'
           #    /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/JetBrains Toolbox.app", hidden:true}'
           #    /usr/bin/osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Steam.app", hidden:true}'
-          #  '';
+          #'';
 
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
