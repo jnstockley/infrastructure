@@ -2,7 +2,7 @@
 name: web-scrapper
 services:
   web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.113
+    image: jnstockley/web-scrapper:v0.3.114
     container_name: web_scrapper_hyundai
     volumes:
       - ./hyundai-data/:/web-scrapper/data/
