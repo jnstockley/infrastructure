@@ -50,7 +50,7 @@ services:
       - no-new-privileges:true
 
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.143.1
+    image: ghcr.io/immich-app/immich-server:v1.144.1
     container_name: immich_server
     depends_on:
       database:
