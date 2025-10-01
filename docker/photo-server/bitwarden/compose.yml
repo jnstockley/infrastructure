@@ -150,7 +150,7 @@ services:
       - no-new-privileges:true
 
   notifications:
-    image: ghcr.io/bitwarden/notifications:2025.9.0
+    image: ghcr.io/bitwarden/notifications:2025.9.1
     container_name: bitwarden-notifications
     volumes:
       - ./ca-certificates:/etc/bitwarden/ca-certificates
