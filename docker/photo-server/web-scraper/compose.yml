@@ -1,14 +1,14 @@
 ---
-name: web-scrapper
+name: web-scraper
 services:
-  web-scrapper-hyundai:
-    image: jnstockley/web-scrapper:v0.3.114
-    container_name: web_scrapper_hyundai
+  web-scraper-hyundai:
+    image: jnstockley/web-scraper:v1.0.0
+    container_name: web_scraper_hyundai
     volumes:
-      - ./hyundai-data/:/web-scrapper/data/
+      - ./hyundai-data/:/app/data/
     environment:
       - TZ=America/Chicago
-      - SCRAPPER=diff
+      - SCRAPER=diff
       - URL=https://update.hyundai.com/US/EN/updateNoticeList
       - PERCENTAGE=5
       - SLEEP_TIME_SEC=21600
@@ -16,9 +16,9 @@ services:
       - .env
     restart: unless-stopped
     healthcheck:
-      test: poetry run python3 src/healthcheck.py
+      test: python src/healthcheck.py || exit 1
       interval: 60s
-      retries: 3
+      retries: 5
       start_period: 20s
       timeout: 10s
     deploy:
