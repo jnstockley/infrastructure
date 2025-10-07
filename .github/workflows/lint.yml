@@ -26,7 +26,7 @@ jobs:
         uses: cachix/install-nix-action@v31
 
       - name: Step 4 - Install uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
 
       - name: Step 5 - Install Linters
         run: |
