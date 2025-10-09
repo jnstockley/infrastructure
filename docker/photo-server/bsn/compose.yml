@@ -5,8 +5,8 @@ services:
     image: jnstockley/bsn:v1.0.8
     container_name: bsn
     volumes:
-      - ./data:/bsn/data
-      - ./logs:/bsn/logs
+      - ./data:/app/data
+      - ./logs:/app/logs
     env_file:
       - .env
     restart: unless-stopped
