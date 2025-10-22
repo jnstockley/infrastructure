@@ -40,10 +40,10 @@ services:
       - no-new-privileges:true
 
   postgres:
-    image: postgres:17.6-alpine3.21
+    image: postgres:18.0-alpine3.21
     container_name: postgres
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/18/docker
     environment:
       - TZ=America/Chicago
     env_file:
