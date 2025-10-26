@@ -2,7 +2,7 @@
 name: bsn
 services:
   bsn:
-    image: jnstockley/bsn:v1.0.10
+    image: jnstockley/bsn:v1.0.11
     container_name: bsn
     volumes:
       - ./data:/app/data
