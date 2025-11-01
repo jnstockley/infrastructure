@@ -32,10 +32,6 @@ services:
       - traefik.http.routers.backup.tls.certresolver=production
       - traefik.http.routers.backup.service=backup
       - traefik.http.services.backup.loadbalancer.server.port=8384
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     hostname: syncthing_photo_server
     security_opt:
       - no-new-privileges:true

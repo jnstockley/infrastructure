@@ -36,10 +36,6 @@ services:
       - traefik.http.services.adguard-secure.loadbalancer.server.port=80
     cap_add:
       - NET_ADMIN
-    deploy:
-      resources:
-        limits:
-          memory: 1G
     expose:
       - '53'
     security_opt:

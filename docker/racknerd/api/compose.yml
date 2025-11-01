@@ -27,10 +27,6 @@ services:
       - traefik.http.routers.api.service=api
       - traefik.http.services.api.loadbalancer.server.port=5000
       - traefik.docker.network=api
-    deploy:
-      resources:
-        limits:
-          memory: 128M
     security_opt:
       - no-new-privileges:true
 

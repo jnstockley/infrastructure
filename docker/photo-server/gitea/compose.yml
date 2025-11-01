@@ -28,10 +28,6 @@ services:
       - traefik.http.routers.gitea.tls.certresolver=production
       - traefik.http.routers.gitea.service=gitea
       - traefik.http.services.gitea.loadbalancer.server.port=3000
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true
 

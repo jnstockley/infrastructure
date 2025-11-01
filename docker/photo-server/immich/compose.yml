@@ -42,10 +42,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     security_opt:
       - no-new-privileges:true
 
@@ -78,10 +74,6 @@ services:
       - traefik.http.routers.photos.tls.certresolver=production
       - traefik.http.routers.photos.service=photos
       - traefik.http.services.photos.loadbalancer.server.port=2283
-    deploy:
-      resources:
-        limits:
-          memory: 1G
     security_opt:
       - no-new-privileges:true
 

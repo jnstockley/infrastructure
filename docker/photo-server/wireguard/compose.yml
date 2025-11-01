@@ -23,12 +23,6 @@ services:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    deploy:
-      mode: replicated
-      replicas: 1
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true
     sysctls:
