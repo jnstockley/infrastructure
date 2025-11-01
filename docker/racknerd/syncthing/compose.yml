@@ -33,10 +33,6 @@ services:
       - traefik.http.routers.syncthing.service=syncthing
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
       - traefik.docker.network=syncthing
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     hostname: racknerd_syncthing
     security_opt:
       - no-new-privileges:true

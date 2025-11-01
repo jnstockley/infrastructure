@@ -21,9 +21,5 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true

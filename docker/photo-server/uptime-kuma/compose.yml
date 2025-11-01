@@ -27,10 +27,6 @@ services:
       - traefik.http.routers.uptime-kuma.tls.certresolver=production
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
-    deploy:
-      resources:
-        limits:
-          memory: 256M
     security_opt:
       - no-new-privileges:true
 
