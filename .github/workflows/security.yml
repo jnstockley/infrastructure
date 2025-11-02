@@ -14,21 +14,41 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Security Scan
+  iac:
+    name: IaC Scan
     runs-on: ubuntu-latest
-
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v5
-      - name: Step 2 - Run KICS Scan
-        uses: Checkmarx/kics-github-action@v2.1.14
+      - name: Step 2 - Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@0.28.0
         with:
-          path: '.'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          output_path: myResults/
-          enable_comments: true
-          enable_jobs_summary: true
-          enable_annotations: true
-          comments_with_queries: true
-          exclude_queries: d6355c88-1e8d-49e9-b2f2-f8a1ca12c75b,1c1325ff-831d-43a1-973e-839ae57dfcc0,bc2908f3-f73c-40a9-8793-c1b7d5544f79,8c978947-0ff6-485c-b0c2-0bfca6026466,ce76b7d0-9e77-464d-b86f-c5c48e03e22d,555ab8f9-2001-455e-a077-f2d0f41e2fb9,698ed579-b239-4f8f-a388-baa4bcb13ef8
+           scan-type: 'config'
+           hide-progress: true
+           format: 'sarif'
+           output: 'trivy-results.sarif'
+           exit-code: '1'
+           severity: 'CRITICAL,HIGH'
+      - name: Step 3 - Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  repo:
+    name: Repository Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v5
+      - name: Step 2 - Run Trivy vulnerability scanner on repository
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
+      - name: Step 3 - Upload Trivy repo scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
