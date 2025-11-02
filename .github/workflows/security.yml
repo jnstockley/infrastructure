@@ -34,7 +34,7 @@ jobs:
            exit-code: '1'
            severity: 'CRITICAL,HIGH'
       - name: Step 3 - Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
 
@@ -57,6 +57,6 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL'
       - name: Step 3 - Upload Trivy repo scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
