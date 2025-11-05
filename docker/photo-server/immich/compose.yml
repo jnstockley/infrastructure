@@ -24,7 +24,7 @@ services:
       - no-new-privileges:true
 
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v2.2.2
+    image: ghcr.io/immich-app/immich-machine-learning:v2.2.3
     container_name: immich_machine_learning
     depends_on:
       database:
