@@ -5,3 +5,4 @@
 - Unifi (TODO)
 - Authentik (TODO)
 - Uptime Kuma (TODO)
+- Home Assistant
