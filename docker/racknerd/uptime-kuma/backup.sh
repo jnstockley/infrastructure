@@ -9,8 +9,14 @@ DATABASE_FILE="/app/data/kuma.db"
 # Get the current date and time in the format YYYY-MM-DD_HH-MM-SS
 CURRENT_DATE=$(date +"%Y-%m-%d_%H-%M-%S")
 
-# Define the output file, including the current date and time in its name
-OUTPUT_FILE="${HOME}/infrastructure/docker/racknerd/uptime-kuma/backup/dump_${CURRENT_DATE}.sql.bz2"
+# Define the backup directory and output file, including the current date and time in its name
+OUTPUT_DIR="${HOME}/infrastructure/docker/racknerd/uptime-kuma/backup"
+mkdir -p "$OUTPUT_DIR"
 
-# Run the pg_dumpall command inside the Docker container and save the output to a file
+# Remove backups older than 14 days
+find "$OUTPUT_DIR" -type f -name 'dump_*.sql.bz2' -mtime +14 -print -exec rm -f {} \;
+
+OUTPUT_FILE="${OUTPUT_DIR}/dump_${CURRENT_DATE}.sql.bz2"
+
+# Run the sqlite3 dump command inside the Docker container and save the output to a file
 docker exec $CONTAINER_NAME sqlite3 $DATABASE_FILE .dump | bzip2 >"$OUTPUT_FILE"
