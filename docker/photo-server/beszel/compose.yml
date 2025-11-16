@@ -2,7 +2,7 @@
 name: beszel
 services:
   beszel:
-    image: henrygd/beszel:0.16.0
+    image: henrygd/beszel:0.16.1
     container_name: beszel
     volumes:
       - ./data:/beszel_data
@@ -28,7 +28,7 @@ services:
       - no-new-privileges:true
 
   beszel-agent:
-    image: henrygd/beszel-agent:0.16.0
+    image: henrygd/beszel-agent:0.16.1
     container_name: beszel-agent-photo-server
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
