@@ -15,5 +15,8 @@ find "$OUTPUT_DIR" -type f -name 'dump_*.sql.bz2' -mtime +14 -print -exec rm -f 
 
 OUTPUT_FILE="${OUTPUT_DIR}/dump_${CURRENT_DATE}.sql.bz2"
 
+# Truncate table
+docker exec $CONTAINER_NAME psql -U jackstockley -d authentik -c "TRUNCATE TABLE public.django_channels_postgres_message;"
+
 # Run the pg_dumpall command inside the Docker container and save the output to a file
 docker exec $CONTAINER_NAME pg_dumpall -U jackstockley -W | bzip2 >"$OUTPUT_FILE"
