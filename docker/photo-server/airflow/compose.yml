@@ -1,6 +1,6 @@
 ---
 x-airflow-common: &airflow-common
-  image: jnstockley/airflow:2025.11.06
+  image: jnstockley/airflow:2025.11.18
   networks:
     - private
     - proxy
