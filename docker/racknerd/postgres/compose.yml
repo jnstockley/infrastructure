@@ -36,7 +36,7 @@ services:
       - no-new-privileges:true
 
   postgres:
-    image: postgres:18.0-alpine
+    image: postgres:18.1-alpine
     container_name: postgres
     volumes:
       - ./postgres:/var/lib/postgresql/18/docker
