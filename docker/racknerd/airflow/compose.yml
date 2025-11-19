@@ -1,6 +1,6 @@
 ---
 x-airflow-common: &airflow-common
-  image: jnstockley/airflow:2025.11.18
+  image: jnstockley/airflow:2025.11.19
   networks:
     - airflow
     - postgres
