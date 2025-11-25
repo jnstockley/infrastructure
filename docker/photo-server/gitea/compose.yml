@@ -2,7 +2,7 @@
 name: gitea
 services:
   server:
-    image: gitea/gitea:1.25.1
+    image: gitea/gitea:1.25.2
     container_name: gitea
     volumes:
       - ./data:/data
