@@ -14,7 +14,7 @@ check_interval = 5
   # 2. Encode the username and token in base64
   #    Example: echo -n 'username:token' | base64
   # 3. Replace the <BASE64_ENCODED_AUTH> with the base64 encoded string
-  #environment = ["DOCKER_AUTH_CONFIG={\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"<BASE64_ENCODED_AUTH>\"}}}"]
+  environment = ["DOCKER_AUTH_CONFIG={\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"<BASE64_ENCODED_AUTH>\"}}}"]
   [runners.custom_build_dir]
     enabled = false
   [runners.docker]
