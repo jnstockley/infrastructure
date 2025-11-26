@@ -7,6 +7,4 @@ services:
     volumes:
       - ./config/config.toml:/etc/gitlab-runner/config.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file:
-      - .env
     restart: unless-stopped
