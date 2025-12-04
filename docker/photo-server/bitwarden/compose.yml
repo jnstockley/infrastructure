@@ -85,7 +85,7 @@ services:
       - no-new-privileges:true
 
   identity:
-    image: ghcr.io/bitwarden/identity:2025.11.0
+    image: ghcr.io/bitwarden/identity:2025.11.1
     container_name: bitwarden-identity
     volumes:
       - ./identity:/etc/bitwarden/identity
