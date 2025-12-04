@@ -120,7 +120,7 @@ services:
     stop_grace_period: 60s
 
   nginx:
-    image: ghcr.io/bitwarden/nginx:2025.11.0
+    image: ghcr.io/bitwarden/nginx:2025.11.1
     container_name: bitwarden-nginx
     depends_on:
       - admin
