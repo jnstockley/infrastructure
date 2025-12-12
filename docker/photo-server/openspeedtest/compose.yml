@@ -1,0 +1,22 @@
+---
+name: openspeedtest
+services:
+  speedtest:
+    image: openspeedtest/latest:v2.0.6
+    container_name: openspeedtest
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.openspeedtest.entrypoints=websecure
+      - traefik.http.routers.openspeedtest.rule=Host(`speed.jstockley.com`) || Host(`speed.local.jstockley.com`)
+      - traefik.http.routers.openspeedtest.tls=true
+      - traefik.http.routers.openspeedtest.tls.certresolver=production
+      - traefik.http.routers.openspeedtest.service=openspeedtest
+      - traefik.http.services.openspeedtest.loadbalancer.server.port=3000
+
+networks:
+  proxy:
+    name: proxy
+    external: true
