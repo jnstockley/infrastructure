@@ -56,7 +56,6 @@ jobs:
           RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
           SSH_HOST: ${{ secrets.IP }}
         run: |
           # Process files and create commands
@@ -104,7 +103,6 @@ jobs:
           PHOTO_SERVER_FILES: ${{ needs.get_changed_files.outputs.photo_server_file_changes }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
         run: |
           # Process files and create commands
           PROCESSED_FILES=$(echo "$PHOTO_SERVER_FILES" | tr ',' ' ')
@@ -148,7 +146,6 @@ jobs:
           CHICAGO_RPI_FILES: ${{ needs.get_changed_files.outputs.chicago_rpi_file_changes }}
           SSH_USER: jackstockley
           SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.SSH_PASSWORD }}
         run: |
           # Process files and create commands
           PROCESSED_FILES=$(echo "$CHICAGO_RPI_FILES" | tr ',' ' ')
