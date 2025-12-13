@@ -113,7 +113,7 @@ EOF
 chmod 700 "$SSH_DIR/ssh_expect.exp"
 
 # Execute the expect script
-expect "$SSH_DIR/ssh_expect.exp" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "$COMMAND_FILE"
+expect "$SSH_DIR/ssh_expect.exp" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "" "$COMMAND_FILE"
 
 # Clean up
 rm -rf "$SSH_DIR"
