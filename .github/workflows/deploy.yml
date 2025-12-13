@@ -75,7 +75,6 @@ jobs:
           ./scripts/ssh.sh \
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
-            -p "${{ secrets.SSH_PW }}" \
             -h "${{ secrets.IP }}" \
             -c "$SSH_COMMANDS"
 
@@ -118,7 +117,6 @@ jobs:
           ./scripts/ssh.sh \
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
-            -p "${{ secrets.SSH_PW }}" \
             -h "photo-server.internal.jstockley.com" \
             -c "$SSH_COMMANDS"
 
@@ -161,6 +159,5 @@ jobs:
           ./scripts/ssh.sh \
             -u "jackstockley" \
             -k "${{ secrets.SSH_KEY }}" \
-            -p "${{ secrets.SSH_PW }}" \
             -h "192.168.1.83" \
             -c "$SSH_COMMANDS"
