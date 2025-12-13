@@ -18,9 +18,6 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__LOG_RETENTION_DAYS: 7
     AIRFLOW__FAB__EXPOSE_HOSTNAME: true
-  dns:
-    - 192.168.1.135
-    - 192.168.1.1
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
