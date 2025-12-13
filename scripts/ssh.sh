@@ -5,12 +5,11 @@ set -e
 
 # Function to show usage
 function show_usage() {
-    echo "Usage: $0 -u USERNAME -k SSH_KEY -p SSH_PASSPHRASE -h HOSTNAME -c \"COMMANDS\""
+    echo "Usage: $0 -u USERNAME -k SSH_KEY -h HOSTNAME -c \"COMMANDS\""
     echo
     echo "Arguments:"
     echo "  -u USERNAME        SSH username"
     echo "  -k SSH_KEY         Path to SSH private key or the key contents"
-    echo "  -p SSH_PASSPHRASE  SSH key passphrase"
     echo "  -h HOSTNAME        Remote hostname or IP address"
     echo "  -c COMMANDS        Commands to execute (can be multiline)"
     echo
@@ -20,7 +19,6 @@ function show_usage() {
 # Initialize variables
 SSH_USER=""
 SSH_KEY=""
-SSH_PASSPHRASE=""
 SSH_HOST=""
 SSH_COMMANDS=""
 
@@ -29,7 +27,6 @@ while getopts ":u:k:p:h:c:" opt; do
     case $opt in
         u) SSH_USER="$OPTARG" ;;
         k) SSH_KEY="$OPTARG" ;;
-        p) SSH_PASSPHRASE="$OPTARG" ;;
         h) SSH_HOST="$OPTARG" ;;
         c) SSH_COMMANDS="$OPTARG" ;;
         \?)
@@ -44,11 +41,10 @@ while getopts ":u:k:p:h:c:" opt; do
 done
 
 # Check if all required arguments are provided
-if [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_PASSPHRASE" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_COMMANDS" ]; then
+if [ -z "$SSH_USER" ] || [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_COMMANDS" ]; then
     echo "Error: Missing required arguments."
     [ -z "$SSH_USER" ] && echo "Missing: SSH_USER"
     [ -z "$SSH_KEY" ] && echo "Missing: SSH_KEY"
-    [ -z "$SSH_PASSPHRASE" ] && echo "Missing: SSH_PASSPHRASE"
     [ -z "$SSH_HOST" ] && echo "Missing: SSH_HOST"
     [ -z "$SSH_COMMANDS" ] && echo "Missing: SSH_COMMANDS"
     show_usage
@@ -117,7 +113,7 @@ EOF
 chmod 700 "$SSH_DIR/ssh_expect.exp"
 
 # Execute the expect script
-expect "$SSH_DIR/ssh_expect.exp" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "$SSH_PASSPHRASE" "$COMMAND_FILE"
+expect "$SSH_DIR/ssh_expect.exp" "$KEY_PATH" "$SSH_DIR/config" "$SSH_USER" "$SSH_HOST" "$COMMAND_FILE"
 
 # Clean up
 rm -rf "$SSH_DIR"
