@@ -23,7 +23,7 @@ SSH_HOST=""
 SSH_COMMANDS=""
 
 # Parse arguments
-while getopts ":u:k:p:h:c:" opt; do
+while getopts ":u:k:h:c:" opt; do
     case $opt in
         u) SSH_USER="$OPTARG" ;;
         k) SSH_KEY="$OPTARG" ;;
