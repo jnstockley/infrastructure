@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e  # Exit on error
+set -e # Exit on error
 
 # Function to check if running as root or with sudo
 check_sudo() {
@@ -12,7 +12,7 @@ check_sudo() {
 
 # Function to check if apt is available
 check_apt() {
-    if ! command -v apt-get &> /dev/null; then
+    if ! command -v apt-get &>/dev/null; then
         echo "Error: apt-get is not available on this system"
         echo "This script is designed for Debian/Ubuntu-based distributions"
         exit 1
