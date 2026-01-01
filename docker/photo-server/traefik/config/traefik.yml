@@ -47,9 +47,14 @@ entryPoints:
     address: :443
     transport:
       respondingTimeouts:
-        readTimeout: 600s
+        readTimeout: 24h # Allows uploads > 100MB; prevents connection reset due to chunking (public upload-only links)
         idleTimeout: 600s
         writeTimeout: 600s
+    http:
+      # Required for Nextcloud to correctly handle encoded URL characters (%2F and %3F in this case) in newer Traefik versions (v3.6.4+).
+      encodedCharacters:
+        allowEncodedSlash: true
+        allowEncodedQuestionMark: true
     forwardedHeaders:
       trustedIPs:
         - "127.0.0.1/32"
