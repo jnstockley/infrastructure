@@ -47,7 +47,7 @@ entryPoints:
     address: :443
     transport:
       respondingTimeouts:
-        readTimeout: 24h # Allows uploads > 100MB; prevents connection reset due to chunking (public upload-only links)
+        readTimeout: 24h  # Allows uploads > 100MB; prevents connection reset due to chunking (public upload-only links)
         idleTimeout: 600s
         writeTimeout: 600s
     http:
