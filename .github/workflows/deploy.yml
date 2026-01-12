@@ -25,7 +25,7 @@ jobs:
         run: sudo timedatectl set-timezone America/Chicago
 
       - name: Step 2 - Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
         with:
           fetch-depth: 0
 
@@ -49,7 +49,7 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.racknerd_file_changes != '' }}
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
       - name: Step 2 - Deploy to Racknerd Server
         env:
@@ -86,7 +86,7 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.photo_server_file_changes != '' }}
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
       - name: Step 2 - WireGuard Connection
         run: |
@@ -128,7 +128,7 @@ jobs:
     if: ${{ needs.get_changed_files.outputs.chicago_rpi_file_changes != '' }}
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
       - name: Step 2 - WireGuard Connection
         run: |
