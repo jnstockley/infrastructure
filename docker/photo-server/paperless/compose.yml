@@ -1,0 +1,36 @@
+---
+name: paperless-ngx
+services:
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.4
+    container_name: paperless-ngx
+    volumes:
+      - ./data:/usr/src/paperless/data
+      - ./media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - private
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.paperless.entrypoints=websecure
+      - traefik.http.routers.paperless.rule=Host(`paperless.local.jstockley.com`)
+      - traefik.http.routers.paperless.tls=true
+      - traefik.http.routers.paperless.tls.certresolver=production
+      - traefik.http.routers.paperless.service=paperless
+      - traefik.http.services.paperless.loadbalancer.server.port=8000
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+  private:
+    name: private
+    internal: true
+    external: true
