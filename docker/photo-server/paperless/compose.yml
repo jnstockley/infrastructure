@@ -1,6 +1,20 @@
 ---
 name: paperless-ngx
 services:
+  nc-sync:
+    image: flor1der/paperless-nextcloud-sync:1.2.0
+    depends_on:
+      - webserver
+    volumes:
+      - /home/jackstockley/infrastructure/docker/photo-server/paperless/media/documents/archive:/mnt/source:ro
+      - ./nc-sync-logs/:/var/log/
+    env_file:
+      - .env
+    restart: unless-stopped
+    devices:
+      - /dev/fuse
+    privileged: true
+
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.4
     container_name: paperless-ngx
