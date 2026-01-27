@@ -8,5 +8,13 @@
   ],
   "assignees": [
     "jnstockley"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["n8nio/n8n"],
+      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+$/",
+      "ignoreUnstable": true
+    }
   ]
 }
