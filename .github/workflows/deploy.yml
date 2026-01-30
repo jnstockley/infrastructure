@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
       - name: Step 2 - Prepare SSH commands
-        id: prepare-ssh
+        id: racknerd-ssh
         env:
           RACKNERD_SERVER_FILES: ${{ needs.get_changed_files.outputs.racknerd_file_changes }}
         run: |
@@ -76,7 +76,7 @@ jobs:
           host: ${{ secrets.IP }}
           username: jackstockley
           private_key: ${{ secrets.SSH_KEY }}
-          command: ${{ steps.prepare-ssh.outputs.ssh_commands }}
+          command: ${{ steps.racknerd-ssh.outputs.ssh_commands }}
 
   photo_server_deploy:
     name: Deploy new Docker Container to Photo Server
@@ -97,13 +97,11 @@ jobs:
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
 
-      - name: Step 3 - Deploy to Photo Server
+      - name: Step 3 - Prepare SSH commands
+        id: photo-server-ssh
         env:
           PHOTO_SERVER_FILES: ${{ needs.get_changed_files.outputs.photo_server_file_changes }}
-          SSH_USER: jackstockley
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
-          # Process files and create commands
           PROCESSED_FILES=$(echo "$PHOTO_SERVER_FILES" | tr ',' ' ')
           SSH_COMMANDS="cd ~/infrastructure/ && git reset --hard origin/main && git pull"
 
@@ -113,12 +111,18 @@ jobs:
 
           SSH_COMMANDS="$SSH_COMMANDS && docker image prune -a -f && docker system prune -f"
 
-          # Execute the SSH script with properly quoted arguments
-          ./scripts/ssh.sh \
-            -u "jackstockley" \
-            -k "${{ secrets.SSH_KEY }}" \
-            -h "photo-server.internal.jstockley.com" \
-            -c "$SSH_COMMANDS"
+          # publish as step output
+          echo "ssh_commands<<'EOF'" >> $GITHUB_OUTPUT
+          printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Step 4 - Deploy to Photo Server
+        uses: jnstockley/gh-ssh-action@v1.0.0-b1
+        with:
+          host: photo-server.internal.jstockley.com
+          username: jackstockley
+          private_key: ${{ secrets.SSH_KEY }}
+          command: ${{ steps.photo-server-ssh.outputs.ssh_commands }}
 
   chicago_rpi_deploy:
     name: Deploy new Docker Container to Chicago RPI
