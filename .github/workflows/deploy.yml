@@ -71,7 +71,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 3 - Deploy to Racknerd Server
-        uses: jnstockley/gh-ssh-action@v1.0.0-b1
+        uses: jnstockley/gh-ssh-action@v1.0.0-b2
         with:
           host: ${{ secrets.IP }}
           username: jackstockley
@@ -117,7 +117,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 4 - Deploy to Photo Server
-        uses: jnstockley/gh-ssh-action@v1.0.0-b1
+        uses: jnstockley/gh-ssh-action@v1.0.0-b2
         with:
           host: photo-server.internal.jstockley.com
           username: jackstockley
