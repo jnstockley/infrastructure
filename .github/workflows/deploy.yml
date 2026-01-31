@@ -71,7 +71,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 3 - Deploy to Racknerd Server
-        uses: jnstockley/gh-ssh-action@v1.1.0-b1
+        uses: jnstockley/gh-ssh-action@v1.1.0-b2
         with:
           host: ${{ secrets.IP }}
           username: jackstockley
@@ -91,7 +91,7 @@ jobs:
       - name: Step 2 - WireGuard Connection
         run: |
             sudo apt-get update
-            sudo apt-get install -y wireguard resolvconf expect
+            sudo apt-get install -y wireguard resolvconf
             echo "${{ secrets.VPN }}" > wg0.conf
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
@@ -117,7 +117,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 4 - Deploy to Photo Server
-        uses: jnstockley/gh-ssh-action@v1.1.0-b1
+        uses: jnstockley/gh-ssh-action@v1.1.0-b2
         with:
           host: photo-server.internal.jstockley.com
           username: jackstockley
