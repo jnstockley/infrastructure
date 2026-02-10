@@ -2,7 +2,7 @@
 name: api
 services:
   api:
-    image: jnstockley/api:v0.2.52
+    image: jnstockley/api:v0.2.54
     container_name: api
     environment:
       - TZ=America/Chicago
