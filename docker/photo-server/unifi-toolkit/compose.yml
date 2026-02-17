@@ -1,0 +1,32 @@
+---
+name: unifi-toolkit
+services:
+  unifi-toolkit:
+    image: ghcr.io/crosstalk-solutions/unifi-toolkit:1.9.8
+    container_name: unifi-toolkit
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    networks:
+      - proxy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.unifi-toolkit.entrypoints=websecure
+      - traefik.http.routers.unifi-toolkit.rule=Host(`unifi-toolkit.local.jstockley.com`)
+      - traefik.http.routers.unifi-toolkit.tls=true
+      - traefik.http.routers.unifi-toolkit.tls.certresolver=production
+      - traefik.http.routers.unifi-toolkit.service=unifi-toolkit
+      - traefik.http.services.unifi-toolkit.loadbalancer.server.port=8000
+
+networks:
+  proxy:
+    name: proxy
+    external: true
