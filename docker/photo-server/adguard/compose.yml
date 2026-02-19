@@ -3,7 +3,7 @@
 name: adguard
 services:
   adguard:
-    image: adguard/adguardhome:v0.107.71
+    image: adguard/adguardhome:v0.107.72
     container_name: adguard
     volumes:
       - ./conf:/opt/adguardhome/conf
