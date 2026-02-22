@@ -16,7 +16,7 @@ services:
     privileged: true
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.7
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.8
     container_name: paperless-ngx
     volumes:
       - ./data:/usr/src/paperless/data
