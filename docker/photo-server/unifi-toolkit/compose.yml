@@ -2,7 +2,7 @@
 name: unifi-toolkit
 services:
   unifi-toolkit:
-    image: ghcr.io/crosstalk-solutions/unifi-toolkit:1.9.10
+    image: ghcr.io/crosstalk-solutions/unifi-toolkit:1.9.11
     container_name: unifi-toolkit
     volumes:
       - ./data:/app/data
