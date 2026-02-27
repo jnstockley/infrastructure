@@ -1,6 +1,6 @@
 ---
 x-airflow-common: &airflow-common
-  image: jnstockley/airflow:2026.02.18
+  image: jnstockley/airflow:2026.02.26
   networks:
     - airflow
     - postgres
@@ -9,15 +9,10 @@ x-airflow-common: &airflow-common
     - .env
   environment: &airflow-common-env
     AIRFLOW__API__BASE_URL: https://airflow.jstockley.com
-    TZ: America/Chicago
-    AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Chicago
-    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: America/Chicago
     AIRFLOW_VAR_ENV: prod
     REDIS_URI: redis://redis:6379/0
     AUTHENTIK_APP_NANE: airflow
-    AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__LOG_RETENTION_DAYS: 7
-    AIRFLOW__FAB__EXPOSE_HOSTNAME: true
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
