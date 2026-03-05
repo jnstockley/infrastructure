@@ -4,7 +4,7 @@ http:
     synology:
       rule: "Host(`nas.jstockley.com`) || Host(`nas.local.jstockley.com`)"
       entryPoints:
-        - synology
+        - websecure
       service: synology
       tls:
         certResolver: production
