@@ -1,0 +1,15 @@
+---
+http:
+  routers:
+    synology:
+      rule: "Host(`nas.jstockley.com`) || Host(`nas.local.jstockley.com`)"
+      entryPoints:
+        - synology
+      service: synology
+      tls:
+        certResolver: production
+  services:
+    synology:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.1.133:5001"
