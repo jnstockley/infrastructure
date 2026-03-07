@@ -8,6 +8,7 @@ services:
       - postgres
     volumes:
       - ./pgadmin:/var/lib/pgadmin
+      - ./config_local.py:/pgadmin4/config_local.py
     environment:
       - TZ=America/Chicago
     env_file:
