@@ -10,6 +10,8 @@ services:
       - ./pgadmin:/var/lib/pgadmin
     environment:
       - TZ=America/Chicago
+      - PGADMIN_CONFIG_AUTHENTICATION_SOURCES="['oauth2']"
+      - PGADMIN_CONFIG_OAUTH2_AUTO_CREATE_USER=False
     env_file:
       - .env
     networks:
@@ -40,8 +42,6 @@ services:
       - ./postgres:/var/lib/postgresql/18/docker
     environment:
       - TZ=America/Chicago
-      - PGADMIN_CONFIG_AUTHENTICATION_SOURCES="['oauth2']"
-      - PGADMIN_CONFIG_OAUTH2_AUTO_CREATE_USER=False
     env_file:
       - .env
     networks:
