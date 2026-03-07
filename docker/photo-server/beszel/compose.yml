@@ -6,11 +6,11 @@ services:
     container_name: beszel
     volumes:
       - ./data:/beszel_data
+    environment:
+      - DISABLE_PASSWORD_AUTH=true
     networks:
       - proxy
       - beszel-agent
-    environment:
-      - DISABLE_PASSWORD_AUTH=true
     restart: unless-stopped
     healthcheck:
       test: ['CMD', '/beszel', 'health', '--url', 'http://localhost:8090']
