@@ -15,7 +15,7 @@ services:
       - traefik.http.routers.openspeedtest.tls.certresolver=production
       - traefik.http.routers.openspeedtest.service=openspeedtest
       - traefik.http.services.openspeedtest.loadbalancer.server.port=3000
-      - traefik.http.routers.openspeedtest.middlewares=authentik@file
+      - traefik.http.routers.openspeedtest.middlewares=authentik@docker
 
 networks:
   proxy:
