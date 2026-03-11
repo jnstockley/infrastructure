@@ -1,0 +1,69 @@
+---
+# Authentik Embedded Outpost — Proxy Mode
+#
+# This defines the Traefik service and security middleware chain that sit in
+# front of every app protected by Authentik in Proxy mode.
+#
+# How it works:
+#   Client → Traefik → authentik-outpost (port 9000) → backend app
+#   The Authentik embedded outpost authenticates the request, checks per-app
+#   Policy Bindings, and proxies to the configured internal host.
+#
+# Per-app Traefik labels (docker-compose):
+#   - traefik.http.routers.<app>.service=authentik-outpost@file
+#   - traefik.http.routers.<app>.middlewares=authentik-proxy-chain@file
+#
+# Per-app Traefik file-based router (for non-Docker services):
+#   routers:
+#     <app>:
+#       rule: "Host(`<app>.jstockley.com`)"
+#       entrypoints: [websecure]
+#       service: authentik-outpost        # no @file suffix needed in this file
+#       middlewares: [authentik-proxy-chain]
+#       tls:
+#         certresolver: production
+#
+# See docker/photo-server/authentik/setup.md for full Authentik admin setup.
+
+http:
+  services:
+    # Routes all protected-app traffic through the Authentik embedded outpost.
+    # passHostHeader is REQUIRED: the outpost dispatches to the correct Proxy
+    # Provider by matching the incoming Host header.
+    authentik-outpost:
+      loadBalancer:
+        servers:
+          - url: "http://authentik:9000"
+        passHostHeader: true
+
+  middlewares:
+    # Hardened HTTP security headers applied to every response coming out of
+    # the outpost (covers both the Authentik login flow and the proxied app).
+    authentik-proxy-secure-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 63072000                        # 2 years
+        customFrameOptionsValue: SAMEORIGIN
+        referrerPolicy: "strict-origin-when-cross-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=()"
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow, nosnippet, noarchive"
+
+    # Coarse-grained rate limiting to slow credential-stuffing and brute-force
+    # attempts at the Authentik login page that the outpost serves.
+    authentik-rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+
+    # Single middleware to reference from every protected router.
+    authentik-proxy-chain:
+      chain:
+        middlewares:
+          - authentik-proxy-secure-headers
+          - authentik-rate-limit
+
