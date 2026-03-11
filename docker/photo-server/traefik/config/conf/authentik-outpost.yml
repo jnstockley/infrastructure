@@ -66,4 +66,3 @@ http:
         middlewares:
           - authentik-proxy-secure-headers
           - authentik-rate-limit
-
