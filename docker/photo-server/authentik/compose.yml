@@ -23,6 +23,7 @@ services:
       start_period: 180s
       timeout: 30s
     labels:
+      # ── Authentik UI / API ───────────────────────────────────────────────────
       - traefik.enable=true
       - traefik.http.routers.auth.entrypoints=websecure
       - traefik.http.routers.auth.rule=Host(`idp.jstockley.com`)
@@ -30,6 +31,16 @@ services:
       - traefik.http.routers.auth.tls.certresolver=production
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
+      # ── Embedded Outpost callbacks ───────────────────────────────────────────
+      # Catches /outpost.goauthentik.io/* paths on ANY hostname so that the
+      # login-flow redirects (injected into proxied responses by the outpost)
+      # always resolve correctly, regardless of which app domain is active.
+      - traefik.http.routers.auth-outpost-cb.entrypoints=websecure
+      - traefik.http.routers.auth-outpost-cb.rule=PathPrefix(`/outpost.goauthentik.io/`)
+      - traefik.http.routers.auth-outpost-cb.tls=true
+      - traefik.http.routers.auth-outpost-cb.tls.certresolver=production
+      - traefik.http.routers.auth-outpost-cb.service=auth
+      - traefik.http.routers.auth-outpost-cb.priority=10
     security_opt:
       - no-new-privileges:true
 
