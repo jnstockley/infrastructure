@@ -26,6 +26,7 @@ networks:
   private:
     name: private
     internal: true
+    external: true
   proxy:
     name: proxy
     external: true
