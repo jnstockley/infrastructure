@@ -6,7 +6,6 @@ services:
     container_name: openspeedtest
     networks:
       - private
-      # - proxy
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -14,19 +13,11 @@ services:
       - traefik.http.routers.openspeedtest.rule=Host(`speed.jstockley.com`) || Host(`speed.local.jstockley.com`)
       - traefik.http.routers.openspeedtest.tls=true
       - traefik.http.routers.openspeedtest.tls.certresolver=production
-      - traefik.http.routers.openspeedtest.service=openspeedtest
-      # - traefik.http.services.openspeedtest.loadbalancer.server.port=3000
-      # - ↓ Route to Authentik outpost instead of the app directly
       - traefik.http.routers.openspeedtest.service=authentik-outpost@file
-      # -  ↓ Apply security headers + rate limiting
       - traefik.http.routers.openspeedtest.middlewares=authentik-proxy-chain@file
-
 
 networks:
   private:
     name: private
     internal: true
-    external: true
-  proxy:
-    name: proxy
     external: true
