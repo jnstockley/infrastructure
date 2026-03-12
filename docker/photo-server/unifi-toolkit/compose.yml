@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
+      - private
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
@@ -23,10 +23,12 @@ services:
       - traefik.http.routers.unifi-toolkit.rule=Host(`unifi-toolkit.local.jstockley.com`)
       - traefik.http.routers.unifi-toolkit.tls=true
       - traefik.http.routers.unifi-toolkit.tls.certresolver=production
-      - traefik.http.routers.unifi-toolkit.service=unifi-toolkit
       - traefik.http.services.unifi-toolkit.loadbalancer.server.port=8000
+      - traefik.http.routers.unifi-toolkit.service=authentik-outpost@file
+      - traefik.http.routers.unifi-toolkit.middlewares=authentik-proxy-chain@file
 
 networks:
-  proxy:
-    name: proxy
+  private:
+    name: private
+    internal: true
     external: true
