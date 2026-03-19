@@ -5,7 +5,7 @@ services:
     image: databasus/databasus:v3.22.0
     container_name: databasus
     depends_on:
-      - postgres-db
+      - postgres
     volumes:
       - ./databasus-data:/databasus-data
     networks:
