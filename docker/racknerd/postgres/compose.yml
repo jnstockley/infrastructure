@@ -1,6 +1,26 @@
 ---
 name: postgres
 services:
+  databasus:
+    image: databasus/databasus:v3.22.0
+    container_name: databasus
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./databasus-data:/databasus-data
+    networks:
+      - postgres
+      - databasus
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.databasus.entrypoints=websecure
+      - traefik.http.routers.databasus.rule=Host(`databasus.jstockley.com`)
+      - traefik.http.routers.databasus.tls=true
+      - traefik.http.routers.databasus.tls.certresolver=production
+      - traefik.http.routers.databasus.service=databasus
+      - traefik.http.services.databasus.loadbalancer.server.port=4005
+
   pg-admin:
     image: dpage/pgadmin4:9.13.0
     container_name: pgadmin
@@ -65,6 +85,9 @@ networks:
   pgadmin:
     external: true
     name: pgadmin
+  databasus:
+    name: databasus
+    external: true
   wireguard:
     name: wireguard
     external: true
