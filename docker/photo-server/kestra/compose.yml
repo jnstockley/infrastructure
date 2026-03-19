@@ -7,13 +7,13 @@ services:
       - ./data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/kestra-wd:/tmp/kestra-wd
-      - ./config/application.yaml:/etc/config/application.yml
+      - ./config/application.yml:/etc/config/application.yml
     env_file:
       - .env
     networks:
       - proxy
       - private
-    command: server standalone --worker-thread=128 --config /etc/config/application.yaml
+    command: server standalone --worker-thread=128 --config /etc/config/application.yml
     restart: unless-stopped
     labels:
       - traefik.enable=true
