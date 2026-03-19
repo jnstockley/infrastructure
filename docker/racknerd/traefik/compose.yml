@@ -27,6 +27,7 @@ services:
       - airflow
       - tailscale
       - wireguard
+      - databasus
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -70,4 +71,7 @@ networks:
     external: true
   wireguard:
     name: wireguard
+    external: true
+  databasus:
+    name: databasus
     external: true
