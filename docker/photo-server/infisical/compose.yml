@@ -1,0 +1,31 @@
+---
+name: infisical
+services:
+  backend:
+    image: infisical/infisical:v0.159.4
+    container_name: infisical-backend
+    environment:
+      - NODE_ENV=production
+    env_file: .env
+    networks:
+      - proxy
+      - private
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.infisical.entrypoints=websecure
+      - traefik.http.routers.infisical.rule=Host(`secrets.local.jstockley.com`)
+      - traefik.http.routers.infisical.tls=true
+      - traefik.http.routers.infisical.tls.certresolver=production
+      - traefik.http.routers.infisical.service=infisical
+      - traefik.http.services.infisical.loadbalancer.server.port=8080
+    pull_policy: always
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+  private:
+    name: private
+    internal: true
+    external: true
