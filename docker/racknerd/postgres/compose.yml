@@ -2,7 +2,7 @@
 name: postgres
 services:
   databasus:
-    image: databasus/databasus:v3.29.1
+    image: databasus/databasus:v3.30.0
     container_name: databasus
     depends_on:
       - postgres
@@ -23,7 +23,7 @@ services:
       - traefik.docker.network=databasus
 
   pg-admin:
-    image: dpage/pgadmin4:9.13.0
+    image: dpage/pgadmin4:9.14.0
     container_name: pgadmin
     depends_on:
       - postgres
