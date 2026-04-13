@@ -87,6 +87,83 @@ jobs:
           sarif_file: 'trivy-results.sarif'
           category: '${{ matrix.image }}'
 
+  host-scan-racknerd:
+    name: Host Scan - Racknerd
+    runs-on: ubuntu-latest
+    environment: racknerd
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Step 1 - Run Trivy on Racknerd
+        uses: jnstockley/gh-ssh-action@v1.2.12
+        with:
+          host: ${{ secrets.IP }}
+          username: jackstockley
+          private_key: ${{ secrets.SSH_KEY }}
+          command: cd ~/infrastructure/trivy && docker compose up
+      - name: Step 2 - Copy SARIF results from Racknerd and delete remote copy
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.IP }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          printf 'StrictHostKeyChecking no\nUserKnownHostsFile /dev/null\n' > ~/.ssh/config
+          scp jackstockley@"$SSH_HOST":~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
+          ssh jackstockley@"$SSH_HOST" "rm -f ~/infrastructure/trivy/trivy-results.sarif"
+          rm -f ~/.ssh/id_rsa
+      - name: Step 3 - Upload Trivy host scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'racknerd'
+
+  host-scan-photo-server:
+    name: Host Scan - Photo Server
+    runs-on: ubuntu-latest
+    environment: photo-server
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Step 1 - WireGuard Connection
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard resolvconf
+          echo "${{ secrets.VPN }}" > wg0.conf
+          sudo chmod 600 wg0.conf
+          sudo cp wg0.conf /etc/wireguard/
+          sudo wg-quick up wg0
+      - name: Step 2 - Run Trivy on Photo Server
+        uses: jnstockley/gh-ssh-action@v1.2.12
+        with:
+          host: photo-server.internal.jstockley.com
+          username: jackstockley
+          private_key: ${{ secrets.SSH_KEY }}
+          command: cd ~/infrastructure/trivy && docker compose up
+      - name: Step 3 - Copy SARIF results from Photo Server and delete remote copy
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          printf 'StrictHostKeyChecking no\nUserKnownHostsFile /dev/null\n' > ~/.ssh/config
+          scp jackstockley@photo-server.internal.jstockley.com:~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
+          ssh jackstockley@photo-server.internal.jstockley.com "rm -f ~/infrastructure/trivy/trivy-results.sarif"
+          rm -f ~/.ssh/id_rsa
+      - name: Step 4 - Upload Trivy host scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: 'host-photo-server'
+
   repo:
     permissions:
       contents: read  # for actions/checkout to fetch code
