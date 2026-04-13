@@ -8,6 +8,18 @@ services:
     volumes:
       - /home/jackstockley/infrastructure/docker/photo-server/paperless/media/documents/archive:/mnt/source:ro
       - ./nc-sync-logs/:/var/log/
+    environment:
+      - USERMAP_UID=1000
+      - USERMAP_GID=1000
+      - PAPERLESS_TIME_ZONE=America/Chicago
+      - PAPERLESS_OCR_LANGUAGE=eng
+      - PAPERLESS_REDIS=redis://redis:6379/2
+      - PAPERLESS_FILENAME_FORMAT={{ created_year }}/{{ title }}
+      - PAPERLESS_ENABLE_ALLAUTH=true
+      - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
+      - PAPERLESS_AUTO_LOGIN=true
+      - PAPERLESS_AUTO_CREATE=true
+      - TZ=America/Chicago
     env_file:
       - .env
     restart: unless-stopped
@@ -23,6 +35,18 @@ services:
       - ./media:/usr/src/paperless/media
       - ./export:/usr/src/paperless/export
       - ./consume:/usr/src/paperless/consume
+    environment:
+      - USERMAP_UID=1000
+      - USERMAP_GID=1000
+      - PAPERLESS_TIME_ZONE=America/Chicago
+      - PAPERLESS_OCR_LANGUAGE=eng
+      - PAPERLESS_REDIS=redis://redis:6379/2
+      - PAPERLESS_FILENAME_FORMAT={{ created_year }}/{{ title }}
+      - PAPERLESS_ENABLE_ALLAUTH=true
+      - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
+      - PAPERLESS_AUTO_LOGIN=true
+      - PAPERLESS_AUTO_CREATE=true
+      - TZ=America/Chicago
     env_file:
       - .env
     networks:

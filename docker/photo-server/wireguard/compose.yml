@@ -7,8 +7,18 @@ services:
     volumes:
       - ./config:/config
       - /lib/modules:/lib/modules
-    env_file:
-      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SERVERURL=iowa.vpn.jstockley.com
+      - SERVERPORT=51820
+      - PEERS=iphone,ipad,macbook,github,appletv
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0
+      - ALLOWEDIPS=0.0.0.0/0
+      - PERSISTENTKEEPALIVE_PEERS=all
+      - LOG_CONFS=true
     ports:
       - '0.0.0.0:51820:51820/udp'
     networks:

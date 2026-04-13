@@ -8,6 +8,9 @@ services:
       - ./data:/data
     environment:
       - TZ=America/Chicago
+      - GITEA__service__DISABLE_REGISTRATION=true
+      - GITEA__openid__ENABLE_OPENID_SIGNIN=true
+      - GITEA__openid__ENABLE_OPENID_SIGNUP=false
     env_file:
       - ./.env
     networks:

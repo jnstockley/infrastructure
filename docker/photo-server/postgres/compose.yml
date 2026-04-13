@@ -8,6 +8,9 @@ services:
       - postgres-db
     volumes:
       - ./databasus-data:/databasus-data
+    environment:
+      - TZ=America/Chicago
+      - PGTZ=America/Chicago
     networks:
       - private
     restart: unless-stopped
@@ -30,6 +33,7 @@ services:
       - ./config_local.py:/pgadmin4/config_local.py
     environment:
       - TZ=America/Chicago
+      - PGTZ=America/Chicago
     env_file:
       - .env
     networks:
@@ -60,6 +64,7 @@ services:
       - ./postgres:/var/lib/postgresql/18/docker
     environment:
       - TZ=America/Chicago
+      - PGTZ=America/Chicago
     env_file:
       - .env
     networks:
