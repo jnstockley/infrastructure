@@ -30,7 +30,11 @@ jobs:
           output: 'trivy-results.sarif'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
-      - name: Step 3 - Upload Trivy scan results to GitHub Security tab
+      - name: Step 3 - Tag SARIF results
+        run: |
+          jq '.runs |= map(.tool.driver.name = "Trivy (IaC Scan)")' \
+            trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
+      - name: Step 4 - Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
@@ -77,7 +81,21 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-      - name: Step 2 - Upload Trivy image scan results to GitHub Security tab
+      - name: Step 2 - Tag SARIF results
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          jq --arg image "$IMAGE" '
+            .runs |= map(
+              .tool.driver.name = "Trivy (Image Scan)" |
+              if .tool.driver.rules then
+                .tool.driver.rules |= map(
+                  .properties.tags = ((.properties.tags // []) + ["image", $image])
+                )
+              else . end
+            )
+          ' trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
+      - name: Step 3 - Upload Trivy image scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
@@ -111,7 +129,19 @@ jobs:
           scp jackstockley@"$SSH_HOST":~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
           ssh jackstockley@"$SSH_HOST" "rm -f ~/infrastructure/trivy/trivy-results.sarif"
           rm -f ~/.ssh/id_rsa
-      - name: Step 3 - Upload Trivy host scan results to GitHub Security tab
+      - name: Step 3 - Tag SARIF results
+        run: |
+          jq '
+            .runs |= map(
+              .tool.driver.name = "Trivy (Host Scan)" |
+              if .tool.driver.rules then
+                .tool.driver.rules |= map(
+                  .properties.tags = ((.properties.tags // []) + ["host", "racknerd"])
+                )
+              else . end
+            )
+          ' trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
+      - name: Step 4 - Upload Trivy host scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
@@ -153,7 +183,19 @@ jobs:
           scp jackstockley@photo-server.internal.jstockley.com:~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
           ssh jackstockley@photo-server.internal.jstockley.com "rm -f ~/infrastructure/trivy/trivy-results.sarif"
           rm -f ~/.ssh/id_rsa
-      - name: Step 4 - Upload Trivy host scan results to GitHub Security tab
+      - name: Step 4 - Tag SARIF results
+        run: |
+          jq '
+            .runs |= map(
+              .tool.driver.name = "Trivy (Host Scan)" |
+              if .tool.driver.rules then
+                .tool.driver.rules |= map(
+                  .properties.tags = ((.properties.tags // []) + ["host", "photo-server"])
+                )
+              else . end
+            )
+          ' trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
+      - name: Step 5 - Upload Trivy host scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
@@ -178,7 +220,11 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-      - name: Step 3 - Upload Trivy repo scan results to GitHub Security tab
+      - name: Step 3 - Tag SARIF results
+        run: |
+          jq '.runs |= map(.tool.driver.name = "Trivy (Repository Scan)")' \
+            trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
+      - name: Step 4 - Upload Trivy repo scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
