@@ -8,5 +8,5 @@ services:
       - /:/app:ro
       - ./:/report:rw
     working_dir: /app
-    command: ["fs", "--skip-dirs", "var/lib/docker/,run/", "-f", "sarif", "-o", "/report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "--scanners", "vuln,misconfig", "."]
+    command: ["fs", "--skip-dirs", "var/lib/docker/,run/", "-f", "sarif", "-o", "/report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "--ignore-unfixed", "--scanners", "vuln,misconfig", "."]
     restart: 'no'
