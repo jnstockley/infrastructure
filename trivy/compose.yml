@@ -1,0 +1,12 @@
+---
+name: trivy
+services:
+  trivy:
+    image: aquasec/trivy:0.69.3
+    container_name: trivy
+    volumes:
+      - /:/app:ro
+      - ./:/app/report:rw
+    working_dir: /app
+    command: ["trivy", "fs", "--format", "template", "--template", "@/contrib/sarif.tpl", "--output", "report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "."]
+    restart: 'no'
