@@ -8,5 +8,5 @@ services:
       - /:/app:ro
       - ./:/report:rw
     working_dir: /app
-    command: ["fs", "-f", "sarif", "-o", "/report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "--scanners", "vuln,misconfig" "."]
+    command: ["fs", "-f", "sarif", "-o", "/report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "--scanners", "vuln,misconfig", "."]
     restart: 'no'
