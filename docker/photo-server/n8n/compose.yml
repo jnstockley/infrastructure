@@ -6,6 +6,11 @@ services:
     container_name: n8n
     volumes:
       - ./data:/home/node/.n8n
+    environment:
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - TZ=America/Chicago
+      - GENERIC_TIMEZONE=America/Chicago
     env_file:
       - .env
     networks:

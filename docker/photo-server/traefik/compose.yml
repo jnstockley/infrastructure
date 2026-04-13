@@ -10,6 +10,8 @@ services:
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
       - traefik-logs:/var/log/traefik/
+    environment:
+      - TZ=America/Chicago
     env_file:
       - .env
     ports:

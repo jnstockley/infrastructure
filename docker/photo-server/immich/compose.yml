@@ -11,6 +11,12 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE_NAME}
       POSTGRES_INITDB_ARGS: '--data-checksums'
+      UPLOAD_LOCATION: /mnt/photos
+      DB_DATA_LOCATION: ./postgres
+      TZ: America/Chicago
+      REDIS_HOSTNAME: redis
+      REDIS_PORT: 6379
+      REDIS_DBINDEX: 1
     networks:
       - private
     restart: always
@@ -31,6 +37,13 @@ services:
         condition: service_healthy
     volumes:
       - model-cache:/cache
+    environment:
+      - UPLOAD_LOCATION=/mnt/photos
+      - DB_DATA_LOCATION=./postgres
+      - TZ=America/Chicago
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=6379
+      - REDIS_DBINDEX=1
     env_file:
       - .env
     networks:
@@ -54,6 +67,13 @@ services:
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - ./healthcheck.js:/healthcheck/healthcheck.js
+    environment:
+      - UPLOAD_LOCATION=/mnt/photos
+      - DB_DATA_LOCATION=./postgres
+      - TZ=America/Chicago
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=6379
+      - REDIS_DBINDEX=1
     env_file:
       - .env
     networks:

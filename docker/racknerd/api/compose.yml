@@ -6,6 +6,7 @@ services:
     container_name: api
     environment:
       - TZ=America/Chicago
+      - PGTZ=America/Chicago
     env_file:
       - .env
     networks:

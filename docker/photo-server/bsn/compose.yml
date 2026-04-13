@@ -7,6 +7,10 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+    environment:
+      - LOG_LEVEL=DEBUG
+      - ALLOW_SHORTS=False
+      - TZ=America/Chicago
     env_file:
       - .env
     restart: unless-stopped

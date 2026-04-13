@@ -8,6 +8,9 @@ services:
       - ./logs:/logs
       - ./certs:/certs
       - ./config.js:/usr/src/app/config.js:ro
+    environment:
+      LOG_LEVEL: debug
+      MEND_RNV_ACCEPT_TOS: Y
     env_file:
       - .env
     networks:

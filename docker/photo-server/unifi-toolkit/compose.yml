@@ -6,6 +6,12 @@ services:
     container_name: unifi-toolkit
     volumes:
       - ./data:/app/data
+    environment:
+      - DEPLOYMENT_TYPE=local
+      - DATABASE_URL=sqlite+aiosqlite:///./data/unifi_toolkit.db
+      - LOG_LEVEL=INFO
+      - STALKER_REFRESH_INTERVAL=60
+      - UNIFI_VERIFY_SSL=true
     env_file:
       - .env
     networks:

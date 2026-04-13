@@ -27,6 +27,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /mnt/photos/.beszel:/extra-filesystems/sdb1:ro
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - LISTEN=45876
     env_file:
       - .env
     networks:
