@@ -9,4 +9,4 @@ services:
       - ./:/app/report:rw
     working_dir: /app
     command: ["trivy", "fs", "--format", "template", "--template", "@/contrib/sarif.tpl", "--output", "report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "."]
-    restart: no
+    restart: 'no'
