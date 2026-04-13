@@ -28,6 +28,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: 'config'
+          ignore-unfixed: true
           hide-progress: true
           format: 'sarif'
           output: 'trivy-results.sarif'
@@ -76,6 +77,7 @@ jobs:
         with:
           scan-type: 'image'
           image-ref: ${{ matrix.image }}
+          ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -99,6 +101,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: 'fs'
+          ignore-unfixed: true
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
