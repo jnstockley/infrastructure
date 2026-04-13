@@ -15,6 +15,8 @@ services:
       REDIS_HOSTNAME: redis
       REDIS_PORT: 6379
       REDIS_DBINDEX: 1
+    env_file:
+      - .env
     networks:
       - private
     restart: always
