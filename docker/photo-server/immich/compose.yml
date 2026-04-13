@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: ${DB_DATABASE_NAME}
       POSTGRES_INITDB_ARGS: '--data-checksums'
       UPLOAD_LOCATION: /mnt/photos
-      DB_DATA_LOCATION: ./postgres
+      DB_DATA_LOCATION: "./postgres"
       TZ: America/Chicago
       REDIS_HOSTNAME: redis
       REDIS_PORT: 6379
@@ -39,7 +39,7 @@ services:
       - model-cache:/cache
     environment:
       - UPLOAD_LOCATION=/mnt/photos
-      - DB_DATA_LOCATION=./postgres
+      - DB_DATA_LOCATION="./postgres"
       - TZ=America/Chicago
       - REDIS_HOSTNAME=redis
       - REDIS_PORT=6379
@@ -69,7 +69,7 @@ services:
       - ./healthcheck.js:/healthcheck/healthcheck.js
     environment:
       - UPLOAD_LOCATION=/mnt/photos
-      - DB_DATA_LOCATION=./postgres
+      - DB_DATA_LOCATION="./postgres"
       - TZ=America/Chicago
       - REDIS_HOSTNAME=redis
       - REDIS_PORT=6379
