@@ -75,11 +75,11 @@ jobs:
       - name: Step 1 - Run Trivy vulnerability scanner on ${{ matrix.image }}
         uses: aquasecurity/trivy-action@0.35.0
         with:
-          scan-type: 'image'
           image-ref: ${{ matrix.image }}
-          ignore-unfixed: true
-          format: 'sarif'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
+          scanners: 'vuln,secret,misconfig'
           severity: 'CRITICAL,HIGH'
       - name: Step 2 - Tag SARIF results
         env:
