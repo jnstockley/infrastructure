@@ -6,7 +6,7 @@ services:
     container_name: trivy
     volumes:
       - /:/app:ro
-      - ./:/app/report:rw
+      - ./:/report:rw
     working_dir: /app
-    command: ["trivy", "fs", "--format", "template", "--template", "@/contrib/sarif.tpl", "--output", "report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "."]
+    command: ["fs", "-f", "sarif", "-o", "/report/trivy-results.sarif", "--severity", "CRITICAL,HIGH", "."]
     restart: 'no'
