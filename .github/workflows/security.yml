@@ -38,6 +38,54 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
+  discover-images:
+    name: Discover Docker Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      images: ${{ steps.extract.outputs.images }}
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v6
+      - name: Step 2 - Extract images from compose files
+        id: extract
+        run: |
+          images=$(grep -rh "image:" docker/ --include="compose.yml" \
+            | grep -v '\${' \
+            | sed 's/.*image:[[:space:]]*//' \
+            | sort -u \
+            | jq -R -s -c '[split("\n")[] | select(length > 0)]')
+          echo "images=$images" >> $GITHUB_OUTPUT
+
+  image-scan:
+    name: Image Scan
+    needs: discover-images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.discover-images.outputs.images) }}
+    steps:
+      - name: Step 1 - Run Trivy vulnerability scanner on ${{ matrix.image }}
+        uses: aquasecurity/trivy-action@0.35.0
+        with:
+          scan-type: 'image'
+          image-ref: ${{ matrix.image }}
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      - name: Step 2 - Upload Trivy image scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-results.sarif'
+          category: '${{ matrix.image }}'
+
   repo:
     permissions:
       contents: read  # for actions/checkout to fetch code
