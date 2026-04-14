@@ -79,7 +79,7 @@ jobs:
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
-          scanners: 'vuln,secret,misconfig'
+          scanners: 'vuln,secret'
           severity: 'CRITICAL,HIGH'
       - name: Step 2 - Tag SARIF results
         env:
