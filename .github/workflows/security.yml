@@ -116,7 +116,7 @@ jobs:
           host: ${{ secrets.IP }}
           username: jackstockley
           private_key: ${{ secrets.SSH_KEY }}
-          command: cd ~/infrastructure/trivy && docker compose up
+          command: cd ~/infrastructure/trivy && git reset --hard origin/main && git pull && docker compose up
       - name: Step 2 - Copy SARIF results from Racknerd and delete remote copy
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -171,7 +171,7 @@ jobs:
           host: photo-server.internal.jstockley.com
           username: jackstockley
           private_key: ${{ secrets.SSH_KEY }}
-          command: cd ~/infrastructure/trivy && docker compose up
+          command: cd ~/infrastructure/trivy && git reset --hard origin/main && git pull && docker compose up
       - name: Step 3 - Copy SARIF results from Photo Server and delete remote copy
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
