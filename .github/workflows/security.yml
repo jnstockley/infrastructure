@@ -32,7 +32,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Step 3 - Tag SARIF results
         run: |
-          jq '.runs |= map(.tool.driver.name = "Trivy (IaC Scan)")' \
+          jq '.runs |= map(.tool.driver.name = trivy-iac)' \
             trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
       - name: Step 4 - Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
@@ -88,7 +88,7 @@ jobs:
         run: |
           jq --arg image "$IMAGE" '
             .runs |= map(
-              .tool.driver.name = "Trivy (Image Scan)" |
+              .tool.driver.name = trivy-docker-image |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["image", $image])
@@ -134,7 +134,7 @@ jobs:
         run: |
           jq '
             .runs |= map(
-              .tool.driver.name = "Trivy (Host Scan)" |
+              .tool.driver.name = trivy-host |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["host", "racknerd"])
@@ -188,7 +188,7 @@ jobs:
         run: |
           jq '
             .runs |= map(
-              .tool.driver.name = "Trivy (Host Scan)" |
+              .tool.driver.name = trivy-host |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["host", "photo-server"])
@@ -276,7 +276,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Step 3 - Tag SARIF results
         run: |
-          jq '.runs |= map(.tool.driver.name = "Trivy (Repository Scan)")' \
+          jq '.runs |= map(.tool.driver.name = trivy-repo)' \
             trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
       - name: Step 4 - Upload Trivy repo scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
