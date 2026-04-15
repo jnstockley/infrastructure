@@ -32,7 +32,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Step 3 - Tag SARIF results
         run: |
-          jq '.runs |= map(.tool.driver.name = trivy-iac)' \
+          jq '.runs |= map(.tool.driver.name = "trivy-iac")' \
             trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
       - name: Step 4 - Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
@@ -95,7 +95,7 @@ jobs:
         run: |
           jq --arg image "$IMAGE" '
             .runs |= map(
-              .tool.driver.name = "Trivy (Image Scan)" |
+              .tool.driver.name = "trivy-image" |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["image", $image])
@@ -141,7 +141,7 @@ jobs:
         run: |
           jq '
             .runs |= map(
-              .tool.driver.name = trivy-host |
+              .tool.driver.name = "trivy-host" |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["host", "racknerd"])
@@ -195,7 +195,7 @@ jobs:
         run: |
           jq '
             .runs |= map(
-              .tool.driver.name = trivy-host |
+              .tool.driver.name = "trivy-host" |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["host", "photo-server"])
@@ -236,7 +236,7 @@ jobs:
 
           # Collect every category that has ever been uploaded by an image scan
           all_categories=$(gh api "repos/$REPO/code-scanning/analyses" --paginate \
-            | jq -r '[.[] | select(.tool.name == "Trivy (Image Scan)") | .category] | unique | .[]')
+            | jq -r '[.[] | select(.tool.name == "trivy-image") | .category] | unique | .[]')
 
           if [ -z "$all_categories" ]; then
             echo "No existing image scan categories found, nothing to clean up."
@@ -283,7 +283,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Step 3 - Tag SARIF results
         run: |
-          jq '.runs |= map(.tool.driver.name = trivy-repo)' \
+          jq '.runs |= map(.tool.driver.name = "trivy-repo")' \
             trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
       - name: Step 4 - Upload Trivy repo scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
