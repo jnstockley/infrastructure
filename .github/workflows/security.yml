@@ -250,16 +250,9 @@ jobs:
               | jq -r --arg c "$category" \
                 '[.[] | select(.category == $c)] | sort_by(.created_at) | reverse | .[].id')
 
-            total=${#ids[@]}
-            for i in "${!ids[@]}"; do
-              id="${ids[$i]}"
-              if [ "$((i + 1))" -eq "$total" ]; then
-                echo "  Deleting last analysis $id (confirm_delete)"
-                gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete" || true
-              else
-                echo "  Deleting analysis $id"
-                gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id" || true
-              fi
+            for id in "${ids[@]}"; do
+              echo "  Deleting analysis $id"
+              gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete"
             done
           done <<< "$all_categories"
 
