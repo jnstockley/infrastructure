@@ -203,6 +203,66 @@ jobs:
           sarif_file: 'trivy-results.sarif'
           category: 'photo-server'
 
+  cleanup-stale-image-scans:
+    name: Cleanup Stale Image Scans
+    needs: [discover-images, image-scan]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Step 1 - Remove stale image scan categories
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_IMAGES: ${{ needs.discover-images.outputs.images }}
+        run: |
+          REPO="${{ github.repository }}"
+
+          # Guard against an empty image list to avoid wiping everything
+          if [ -z "$CURRENT_IMAGES" ] || [ "$CURRENT_IMAGES" = "[]" ]; then
+            echo "No current images found, skipping cleanup."
+            exit 0
+          fi
+
+          # Collect every category that has ever been uploaded by an image scan
+          all_categories=$(gh api "repos/$REPO/code-scanning/analyses" --paginate \
+            | jq -r '[.[] | select(.tool.name == "Trivy (Image Scan)") | .category] | unique | .[]')
+
+          if [ -z "$all_categories" ]; then
+            echo "No existing image scan categories found, nothing to clean up."
+            exit 0
+          fi
+
+          while IFS= read -r category; do
+            # Skip categories that are still active
+            if echo "$CURRENT_IMAGES" | jq -e --arg c "$category" 'any(.[]; . == $c)' > /dev/null 2>&1; then
+              echo "Active category, skipping: $category"
+              continue
+            fi
+
+            echo "Removing stale category: $category"
+
+            # Fetch all analysis IDs for this category, newest-to-oldest
+            mapfile -t ids < <(gh api "repos/$REPO/code-scanning/analyses" --paginate \
+              | jq -r --arg c "$category" \
+                '[.[] | select(.category == $c)] | sort_by(.created_at) | reverse | .[].id')
+
+            total=${#ids[@]}
+            for i in "${!ids[@]}"; do
+              id="${ids[$i]}"
+              if [ "$((i + 1))" -eq "$total" ]; then
+                echo "  Deleting last analysis $id (confirm_delete)"
+                gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete" || true
+              else
+                echo "  Deleting analysis $id"
+                gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id" || true
+              fi
+            done
+          done <<< "$all_categories"
+
   repo:
     permissions:
       contents: read  # for actions/checkout to fetch code
