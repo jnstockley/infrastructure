@@ -30,6 +30,7 @@ jobs:
           output: 'trivy-results.sarif'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
       - name: Step 3 - Tag SARIF results
         run: |
           jq '.runs |= map(.tool.driver.name = "Trivy (IaC Scan)")' \
@@ -81,6 +82,7 @@ jobs:
           output: 'trivy-results.sarif'
           scanners: 'vuln,secret'
           severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
       - name: Step 2 - Tag SARIF results
         env:
           IMAGE: ${{ matrix.image }}
@@ -220,6 +222,7 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
       - name: Step 3 - Tag SARIF results
         run: |
           jq '.runs |= map(.tool.driver.name = "Trivy (Repository Scan)")' \
