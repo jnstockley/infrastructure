@@ -82,13 +82,20 @@ jobs:
           scanners: 'vuln,secret'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
-      - name: Step 2 - Tag SARIF results
+      - name: Step 2 - Compute image name without tag
+        id: image-name
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: |
+          image_no_tag=$(echo "$IMAGE" | sed 's/:[^/:]*$//')
+          echo "value=$image_no_tag" >> $GITHUB_OUTPUT
+      - name: Step 3 - Tag SARIF results
         env:
           IMAGE: ${{ matrix.image }}
         run: |
           jq --arg image "$IMAGE" '
             .runs |= map(
-              .tool.driver.name = trivy-docker-image |
+              .tool.driver.name = "Trivy (Image Scan)" |
               if .tool.driver.rules then
                 .tool.driver.rules |= map(
                   .properties.tags = ((.properties.tags // []) + ["image", $image])
@@ -96,11 +103,11 @@ jobs:
               else . end
             )
           ' trivy-results.sarif > trivy-tagged.sarif && mv trivy-tagged.sarif trivy-results.sarif
-      - name: Step 3 - Upload Trivy image scan results to GitHub Security tab
+      - name: Step 4 - Upload Trivy image scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: 'trivy-results.sarif'
-          category: '${{ matrix.image }}'
+          category: '${{ steps.image-name.outputs.value }}'
 
   host-scan-racknerd:
     name: Host Scan - Racknerd
@@ -237,8 +244,8 @@ jobs:
           fi
 
           while IFS= read -r category; do
-            # Skip categories that are still active
-            if echo "$CURRENT_IMAGES" | jq -e --arg c "$category" 'any(.[]; . == $c)' > /dev/null 2>&1; then
+            # Skip categories that are still active (compare against tag-stripped image names)
+            if echo "$CURRENT_IMAGES" | jq -e --arg c "$category" '[.[] | gsub(":[^/:]+$"; "")] | any(.[]; . == $c)' > /dev/null 2>&1; then
               echo "Active category, skipping: $category"
               continue
             fi
