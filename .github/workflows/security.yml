@@ -30,7 +30,6 @@ jobs:
           output: 'trivy-results.sarif'
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
-          ignore-unfixed: true
       - name: Step 3 - Tag SARIF results
         run: |
           jq '.runs |= map(.tool.driver.name = "Trivy (IaC Scan)")' \
@@ -222,7 +221,6 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-          ignore-unfixed: true
       - name: Step 3 - Tag SARIF results
         run: |
           jq '.runs |= map(.tool.driver.name = "Trivy (Repository Scan)")' \
