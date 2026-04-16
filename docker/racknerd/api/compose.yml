@@ -2,7 +2,7 @@
 name: api
 services:
   api:
-    image: jnstockley/api:v0.2.67
+    image: jnstockley/api:v0.2.68
     container_name: api
     environment:
       - TZ=America/Chicago
@@ -13,6 +13,8 @@ services:
       - api
       - postgres
     restart: unless-stopped
+    healthcheck:
+      disable: true
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.entrypoints=websecure
