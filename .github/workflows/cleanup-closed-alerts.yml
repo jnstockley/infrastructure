@@ -1,0 +1,38 @@
+---
+name: Cleanup Closed Alerts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup-closed-alerts:
+    name: Cleanup Closed Alerts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Step 1 - Delete dismissed and fixed code scanning alerts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          REPO="${{ github.repository }}"
+
+          for state in dismissed fixed; do
+            echo "Fetching $state alerts..."
+            alert_numbers=$(gh api "repos/$REPO/code-scanning/alerts?state=$state&per_page=100" --paginate \
+              | jq -r '.[].number')
+
+            if [ -z "$alert_numbers" ]; then
+              echo "No $state alerts found."
+              continue
+            fi
+
+            while IFS= read -r number; do
+              echo "  Deleting $state alert #$number"
+              gh api --method DELETE "repos/$REPO/code-scanning/alerts/$number" || true
+            done <<< "$alert_numbers"
+          done
+
