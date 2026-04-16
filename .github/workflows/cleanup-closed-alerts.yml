@@ -51,6 +51,23 @@ jobs:
               status=$?
               if [ $status -eq 0 ]; then
                 echo "  Deleted $id"
+
+                # Follow next_analysis_url chain if present - delete linked analyses in the set
+                next_url=$(echo "$response" | jq -r '.next_analysis_url // empty')
+                while [ -n "$next_url" ]; do
+                  # Extract just the path portion for gh api
+                  next_path=$(echo "$next_url" | sed 's|https://api.github.com||')
+                  echo "  Following chain: deleting $next_path"
+                  chain_response=$(gh api --method DELETE "${next_path}?confirm_delete" 2>&1)
+                  chain_status=$?
+                  if [ $chain_status -eq 0 ]; then
+                    echo "  Deleted chained analysis"
+                    next_url=$(echo "$chain_response" | jq -r '.next_analysis_url // empty')
+                  else
+                    echo "  Chain ended or failed: $chain_response"
+                    break
+                  fi
+                done
               elif echo "$response" | grep -q "not deletable"; then
                 echo "  Skipping $id - last analysis in set, cannot be deleted (GitHub limitation)"
               else
