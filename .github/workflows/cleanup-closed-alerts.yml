@@ -21,25 +21,53 @@ jobs:
           set +e
           REPO="${{ github.repository }}"
 
+          # Step 1: Dismiss all open alerts first
           echo "Fetching all open alerts..."
           alert_numbers=$(gh api "repos/$REPO/code-scanning/alerts?state=open&per_page=100" \
             --paginate | jq -r '.[].number')
 
           if [ -z "$alert_numbers" ]; then
-            echo "No open alerts found, nothing to dismiss."
+            echo "No open alerts found."
+          else
+            while IFS= read -r number; do
+              echo "  Dismissing alert #$number"
+              gh api --method PATCH "repos/$REPO/code-scanning/alerts/$number" \
+                -f state=dismissed \
+                -f dismissed_reason="won't fix" \
+                -f dismissed_comment="Dismissed via automated cleanup" \
+                --silent \
+                && echo "  Dismissed #$number" \
+                || echo "  Failed to dismiss #$number"
+            done <<< "$alert_numbers"
+            echo "All open alerts dismissed."
+          fi
+
+          # Step 2: Delete all analyses to remove alerts from the UI
+          echo "Fetching all analyses..."
+          all_analyses=$(gh api "repos/$REPO/code-scanning/analyses" --paginate)
+
+          categories=$(echo "$all_analyses" | jq -r '[.[].category] | unique | .[]')
+
+          if [ -z "$categories" ]; then
+            echo "No analyses found, nothing to delete."
             exit 0
           fi
 
-          while IFS= read -r number; do
-            echo "  Dismissing alert #$number"
-            gh api --method PATCH "repos/$REPO/code-scanning/alerts/$number" \
-              -f state=dismissed \
-              -f dismissed_reason="won't fix" \
-              -f dismissed_comment="Dismissed via automated cleanup" \
-              --silent \
-              && echo "  Dismissed #$number" \
-              || echo "  Failed to dismiss #$number"
-          done <<< "$alert_numbers"
+          while IFS= read -r category; do
+            echo "Processing category: $category"
 
-          echo "Done. All open alerts have been dismissed."
+            mapfile -t ids < <(echo "$all_analyses" \
+              | jq -r --arg c "$category" \
+                '[.[] | select(.category == $c)] | sort_by(.created_at) | .[].id')
+
+            for id in "${ids[@]}"; do
+              echo "  Deleting analysis $id"
+              gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id" \
+                -f confirm_delete=true --silent \
+                && echo "  Deleted $id" \
+                || echo "  Failed to delete $id (may be last in set)"
+            done
+          done <<< "$categories"
+
+          echo "Done."
 
