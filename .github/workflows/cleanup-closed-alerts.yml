@@ -13,7 +13,7 @@ jobs:
       security-events: write
       actions: read
     steps:
-      - name: Step 1 - Delete old analyses to remove closed alerts
+      - name: Step 1 - Dismiss all open code scanning alerts
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -21,58 +21,25 @@ jobs:
           set +e
           REPO="${{ github.repository }}"
 
-          echo "Fetching all analyses..."
-          all_analyses=$(gh api "repos/$REPO/code-scanning/analyses" --paginate)
+          echo "Fetching all open alerts..."
+          alert_numbers=$(gh api "repos/$REPO/code-scanning/alerts?state=open&per_page=100" \
+            --paginate | jq -r '.[].number')
 
-          # Get unique categories
-          categories=$(echo "$all_analyses" | jq -r '[.[].category] | unique | .[]')
-
-          if [ -z "$categories" ]; then
-            echo "No analyses found, nothing to clean up."
+          if [ -z "$alert_numbers" ]; then
+            echo "No open alerts found, nothing to dismiss."
             exit 0
           fi
 
-          while IFS= read -r category; do
-            echo "Processing category: $category"
+          while IFS= read -r number; do
+            echo "  Dismissing alert #$number"
+            gh api --method PATCH "repos/$REPO/code-scanning/alerts/$number" \
+              -f state=dismissed \
+              -f dismissed_reason="won't fix" \
+              -f dismissed_comment="Dismissed via automated cleanup" \
+              --silent \
+              && echo "  Dismissed #$number" \
+              || echo "  Failed to dismiss #$number"
+          done <<< "$alert_numbers"
 
-            # Get all analysis IDs for this category sorted oldest-to-newest
-            mapfile -t old_ids < <(echo "$all_analyses" \
-              | jq -r --arg c "$category" \
-                '[.[] | select(.category == $c)] | sort_by(.created_at) | .[].id')
-
-            if [ ${#old_ids[@]} -eq 0 ]; then
-              echo "  No analyses found for this category."
-              continue
-            fi
-
-            for id in "${old_ids[@]}"; do
-              echo "  Deleting old analysis $id"
-              response=$(gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id" \
-                -f confirm_delete=true 2>&1)
-              status=$?
-              if [ $status -eq 0 ]; then
-                echo "  Deleted $id"
-
-                # Follow next_analysis_url chain if present - delete linked analyses in the set
-                next_url=$(echo "$response" | jq -r '.next_analysis_url // empty')
-                while [ -n "$next_url" ]; do
-                  # Extract just the path portion for gh api
-                  next_path=$(echo "$next_url" | sed 's|https://api.github.com||')
-                  echo "  Following chain: deleting $next_path"
-                  chain_response=$(gh api --method DELETE "$next_path" \
-                    -f confirm_delete=true 2>&1)
-                  chain_status=$?
-                  if [ $chain_status -eq 0 ]; then
-                    echo "  Deleted chained analysis"
-                    next_url=$(echo "$chain_response" | jq -r '.next_analysis_url // empty')
-                  else
-                    echo "  Chain ended or failed: $chain_response"
-                    break
-                  fi
-                done
-              else
-                echo "  Failed to delete $id: $response"
-              fi
-            done
-          done <<< "$categories"
+          echo "Done. All open alerts have been dismissed."
 
