@@ -13,26 +13,41 @@ jobs:
       security-events: write
       actions: read
     steps:
-      - name: Step 1 - Delete dismissed and fixed code scanning alerts
+      - name: Step 1 - Delete old analyses to remove closed alerts
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           REPO="${{ github.repository }}"
 
-          for state in dismissed fixed; do
-            echo "Fetching $state alerts..."
-            alert_numbers=$(gh api "repos/$REPO/code-scanning/alerts?state=$state&per_page=100" --paginate \
-              | jq -r '.[].number')
+          echo "Fetching all analyses..."
+          all_analyses=$(gh api "repos/$REPO/code-scanning/analyses" --paginate)
 
-            if [ -z "$alert_numbers" ]; then
-              echo "No $state alerts found."
+          # Get unique categories
+          categories=$(echo "$all_analyses" | jq -r '[.[].category] | unique | .[]')
+
+          if [ -z "$categories" ]; then
+            echo "No analyses found, nothing to clean up."
+            exit 0
+          fi
+
+          while IFS= read -r category; do
+            echo "Processing category: $category"
+
+            # Get all analysis IDs for this category sorted newest-to-oldest, skip the first (most recent)
+            mapfile -t old_ids < <(echo "$all_analyses" \
+              | jq -r --arg c "$category" \
+                '[.[] | select(.category == $c)] | sort_by(.created_at) | reverse | .[1:][].id')
+
+            if [ ${#old_ids[@]} -eq 0 ]; then
+              echo "  Only one analysis exists, skipping."
               continue
             fi
 
-            while IFS= read -r number; do
-              echo "  Deleting $state alert #$number"
-              gh api --method DELETE "repos/$REPO/code-scanning/alerts/$number" || true
-            done <<< "$alert_numbers"
-          done
+            for id in "${old_ids[@]}"; do
+              echo "  Deleting old analysis $id"
+              gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete" \
+                --silent && echo "  Deleted $id" || echo "  Failed to delete $id"
+            done
+          done <<< "$categories"
 
