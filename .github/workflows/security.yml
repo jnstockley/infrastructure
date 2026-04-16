@@ -247,6 +247,7 @@ jobs:
           fi
 
           while IFS= read -r category; do
+
             # Strip any version tag from the category name for comparison
             category_no_tag=$(echo "$category" | sed 's/:[^/:]*$//')
 
@@ -268,6 +269,7 @@ jobs:
               gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete"
             done
           done <<< "$all_categories"
+
 
   repo:
     permissions:
