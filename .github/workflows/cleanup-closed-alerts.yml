@@ -21,8 +21,8 @@ jobs:
           set +e
           REPO="${{ github.repository }}"
 
-          # Step 1: Dismiss all open alerts first
-          echo "Fetching all open alerts..."
+          # Step 1: Dismiss all open alerts so they don't re-open after analyses are deleted
+          echo "=== Dismissing all open alerts ==="
           alert_numbers=$(gh api "repos/$REPO/code-scanning/alerts?state=open&per_page=100" \
             --paginate | jq -r '.[].number')
 
@@ -30,7 +30,6 @@ jobs:
             echo "No open alerts found."
           else
             while IFS= read -r number; do
-              echo "  Dismissing alert #$number"
               gh api --method PATCH "repos/$REPO/code-scanning/alerts/$number" \
                 -f state=dismissed \
                 -f dismissed_reason="won't fix" \
@@ -39,35 +38,48 @@ jobs:
                 && echo "  Dismissed #$number" \
                 || echo "  Failed to dismiss #$number"
             done <<< "$alert_numbers"
-            echo "All open alerts dismissed."
           fi
 
-          # Step 2: Delete all analyses to remove alerts from the UI
-          echo "Fetching all analyses..."
+          # Step 2: For each category, follow the next_analysis_url chain to delete everything
+          echo ""
+          echo "=== Deleting all analyses ==="
           all_analyses=$(gh api "repos/$REPO/code-scanning/analyses" --paginate)
-
           categories=$(echo "$all_analyses" | jq -r '[.[].category] | unique | .[]')
 
           if [ -z "$categories" ]; then
-            echo "No analyses found, nothing to delete."
+            echo "No analyses found."
             exit 0
           fi
 
           while IFS= read -r category; do
             echo "Processing category: $category"
 
-            mapfile -t ids < <(echo "$all_analyses" \
+            # Start with the oldest analysis for this category
+            start_id=$(echo "$all_analyses" \
               | jq -r --arg c "$category" \
-                '[.[] | select(.category == $c)] | sort_by(.created_at) | .[].id')
+                '[.[] | select(.category == $c)] | sort_by(.created_at) | first | .id')
 
-            for id in "${ids[@]}"; do
-              echo "  Deleting analysis $id"
-              gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id" \
-                -f confirm_delete=true --silent \
-                && echo "  Deleted $id" \
-                || echo "  Failed to delete $id (may be last in set)"
+            [ -z "$start_id" ] || [ "$start_id" = "null" ] && continue
+
+            current_id="$start_id"
+            while [ -n "$current_id" ] && [ "$current_id" != "null" ]; do
+              echo "  Deleting analysis $current_id"
+              response=$(gh api --method DELETE \
+                "repos/$REPO/code-scanning/analyses/$current_id" \
+                -f confirm_delete=true 2>&1)
+              status=$?
+
+              if [ $status -eq 0 ]; then
+                echo "  Deleted $current_id"
+                current_id=$(echo "$response" | jq -r '.next_analysis_url // empty' \
+                  | grep -oP '(?<=/analyses/)\d+')
+              else
+                echo "  Failed to delete $current_id: $response"
+                break
+              fi
             done
           done <<< "$categories"
 
+          echo ""
           echo "Done."
 
