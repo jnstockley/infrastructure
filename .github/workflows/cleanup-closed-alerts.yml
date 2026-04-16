@@ -18,6 +18,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set +e
           REPO="${{ github.repository }}"
 
           echo "Fetching all analyses..."
