@@ -34,20 +34,27 @@ jobs:
           while IFS= read -r category; do
             echo "Processing category: $category"
 
-            # Get all analysis IDs for this category sorted newest-to-oldest, skip the first (most recent)
+            # Get all analysis IDs for this category sorted oldest-to-newest, skip the last (most recent)
             mapfile -t old_ids < <(echo "$all_analyses" \
               | jq -r --arg c "$category" \
-                '[.[] | select(.category == $c)] | sort_by(.created_at) | reverse | .[1:][].id')
+                '[.[] | select(.category == $c)] | sort_by(.created_at) | .[:-1][].id')
 
             if [ ${#old_ids[@]} -eq 0 ]; then
-              echo "  Only one analysis exists, skipping."
+              echo "  Only one analysis exists, skipping (GitHub does not allow deleting the last analysis)."
               continue
             fi
 
             for id in "${old_ids[@]}"; do
               echo "  Deleting old analysis $id"
-              gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete" \
-                --silent && echo "  Deleted $id" || echo "  Failed to delete $id"
+              response=$(gh api --method DELETE "repos/$REPO/code-scanning/analyses/$id?confirm_delete" 2>&1)
+              status=$?
+              if [ $status -eq 0 ]; then
+                echo "  Deleted $id"
+              elif echo "$response" | grep -q "not deletable"; then
+                echo "  Skipping $id - last analysis in set, cannot be deleted (GitHub limitation)"
+              else
+                echo "  Failed to delete $id: $response"
+              fi
             done
           done <<< "$categories"
 
