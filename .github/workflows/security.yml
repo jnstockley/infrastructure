@@ -91,9 +91,9 @@ jobs:
           echo "value=$image_no_tag" >> $GITHUB_OUTPUT
       - name: Step 3 - Tag SARIF results
         env:
-          IMAGE: ${{ matrix.image }}
+          IMAGE_NO_TAG: ${{ steps.image-name.outputs.value }}
         run: |
-          jq --arg image "$IMAGE" '
+          jq --arg image "$IMAGE_NO_TAG" '
             .runs |= map(
               .tool.driver.name = "trivy-image" |
               if .tool.driver.rules then
@@ -234,6 +234,9 @@ jobs:
             exit 0
           fi
 
+          # Build the list of active stripped image names (no version tag)
+          active_images=$(echo "$CURRENT_IMAGES" | jq -c '[.[] | gsub(":[^/:]+$"; "")]')
+
           # Collect every category that has ever been uploaded by an image scan
           all_categories=$(gh api "repos/$REPO/code-scanning/analyses" --paginate \
             | jq -r '[.[] | select(.tool.name == "trivy-image") | .category] | unique | .[]')
@@ -244,8 +247,11 @@ jobs:
           fi
 
           while IFS= read -r category; do
-            # Skip categories that are still active (compare against tag-stripped image names)
-            if echo "$CURRENT_IMAGES" | jq -e --arg c "$category" '[.[] | gsub(":[^/:]+$"; "")] | any(.[]; . == $c)' > /dev/null 2>&1; then
+            # Strip any version tag from the category name for comparison
+            category_no_tag=$(echo "$category" | sed 's/:[^/:]*$//')
+
+            # Skip categories (after stripping version) that are still active
+            if echo "$active_images" | jq -e --arg c "$category_no_tag" 'any(.[]; . == $c)' > /dev/null 2>&1; then
               echo "Active category, skipping: $category"
               continue
             fi
