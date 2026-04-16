@@ -13,6 +13,8 @@ services:
       - api
       - postgres
     restart: unless-stopped
+    healthcheck:
+      disable: true
     labels:
       - traefik.enable=true
       - traefik.http.routers.api.entrypoints=websecure
