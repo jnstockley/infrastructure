@@ -65,8 +65,8 @@ jobs:
             while [ -n "$current_id" ] && [ "$current_id" != "null" ]; do
               echo "  Deleting analysis $current_id"
               response=$(gh api --method DELETE \
-                "repos/$REPO/code-scanning/analyses/$current_id" \
-                -f confirm_delete=true 2>&1)
+                "repos/$REPO/code-scanning/analyses/$current_id?confirm_delete=true" \
+                2>&1)
               status=$?
 
               if [ $status -eq 0 ]; then
