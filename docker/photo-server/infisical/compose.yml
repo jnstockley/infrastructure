@@ -15,7 +15,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.infisical.entrypoints=websecure
-      - traefik.http.routers.infisical.rule=Host(`secrets.local.jstockley.com`)
+      - traefik.http.routers.infisical.rule=Host(`secrets.jstockley.com`)
       - traefik.http.routers.infisical.tls=true
       - traefik.http.routers.infisical.tls.certresolver=production
       - traefik.http.routers.infisical.service=infisical
