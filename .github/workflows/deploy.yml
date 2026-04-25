@@ -70,7 +70,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 3 - Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.9
+        uses: Infisical/secrets-action@v1.0.16
         with:
           method: "oidc"
           identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
@@ -97,7 +97,7 @@ jobs:
         uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
       - name: Step 2 - Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.9
+        uses: Infisical/secrets-action@v1.0.16
         with:
           method: "oidc"
           identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
@@ -132,8 +132,6 @@ jobs:
           echo "ssh_commands<<EOF" >> $GITHUB_OUTPUT
           printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-      - run: ping 192.168.1.135 -c 4
 
       - name: Step 5 - Deploy to Photo Server
         uses: jnstockley/gh-ssh-action@v1.2.14
