@@ -133,6 +133,8 @@ jobs:
           printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - run: ping photo-server.internal.jstockley.com -c 4
+
       - name: Step 5 - Deploy to Photo Server
         uses: jnstockley/gh-ssh-action@v1.2.14
         with:
