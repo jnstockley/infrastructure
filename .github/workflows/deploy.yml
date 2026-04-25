@@ -96,16 +96,25 @@ jobs:
       - name: Step 1 - Checkout code
         uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98
 
-      - name: Step 2 - WireGuard Connection
+      - name: Step 2 - Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.9
+        with:
+          method: "oidc"
+          identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
+          domain: "https://secrets.jstockley.com"
+          project-slug: "infrastructure"
+          env-slug: "photo-server"
+
+      - name: Step 4 - WireGuard Connection
         run: |
             sudo apt-get update
             sudo apt-get install -y wireguard resolvconf
-            echo "${{ secrets.VPN }}" > wg0.conf
+            echo "${{ env.VPN_CONFIG }}" > wg0.conf
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
 
-      - name: Step 3 - Prepare SSH commands
+      - name: Step 4 - Prepare SSH commands
         id: photo-server-ssh
         env:
           PHOTO_SERVER_FILES: ${{ needs.get_changed_files.outputs.photo_server_file_changes }}
@@ -123,15 +132,6 @@ jobs:
           echo "ssh_commands<<EOF" >> $GITHUB_OUTPUT
           printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Step 4 - Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.9
-        with:
-          method: "oidc"
-          identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
-          domain: "https://secrets.jstockley.com"
-          project-slug: "infrastructure"
-          env-slug: "photo-server"
 
       - name: Step 5 - Deploy to Photo Server
         uses: jnstockley/gh-ssh-action@v1.2.14
