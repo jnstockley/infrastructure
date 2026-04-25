@@ -11,6 +11,11 @@ on:
       - docker/racknerd/**/compose.yml
       - docker/photo-server/**/compose.yml
 
+permissions: # Needed for Infisical
+  id-token: write  # Required for OIDC authentication
+  contents: read   # Required for checking out code
+
+
 jobs:
   get_changed_files:
     name: Get changed files
@@ -64,10 +69,19 @@ jobs:
           printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Step 3 - Deploy to Racknerd Server
+      - name: Step 3 - Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.9
+        with:
+          method: "oidc"
+          identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
+          domain: "secrets.jstockley.com"
+          project-slug: "infrastructure"
+          env-slug: "racknerd"
+
+      - name: Step 4 - Deploy to Racknerd Server
         uses: jnstockley/gh-ssh-action@v1.2.14
         with:
-          host: ${{ secrets.IP }}
+          host: ${{ env.IP_ADDRESS }}
           username: jackstockley
           private_key: ${{ secrets.SSH_KEY }}
           command: ${{ steps.racknerd-ssh.outputs.ssh_commands }}
@@ -110,10 +124,19 @@ jobs:
           printf '%s\n' "$SSH_COMMANDS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Step 4 - Deploy to Photo Server
+      - name: Step 4 - Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.9
+        with:
+          method: "oidc"
+          identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
+          domain: "secrets.jstockley.com"
+          project-slug: "infrastructure"
+          env-slug: "photo-server"
+
+      - name: Step 5 - Deploy to Photo Server
         uses: jnstockley/gh-ssh-action@v1.2.14
         with:
-          host: photo-server.internal.jstockley.com
+          host: ${{ env.IP_ADDRESS }}
           username: jackstockley
           private_key: ${{ secrets.SSH_KEY }}
           command: ${{ steps.photo-server-ssh.outputs.ssh_commands }}
