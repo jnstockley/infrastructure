@@ -74,7 +74,7 @@ jobs:
         with:
           method: "oidc"
           identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
-          domain: "secrets.jstockley.com"
+          domain: "https://secrets.jstockley.com"
           project-slug: "infrastructure"
           env-slug: "racknerd"
 
@@ -129,7 +129,7 @@ jobs:
         with:
           method: "oidc"
           identity-id: "560c0540-b603-4725-a149-e1270a08a6db"
-          domain: "secrets.jstockley.com"
+          domain: "https://secrets.jstockley.com"
           project-slug: "infrastructure"
           env-slug: "photo-server"
 
