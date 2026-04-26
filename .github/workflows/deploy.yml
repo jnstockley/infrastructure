@@ -83,7 +83,7 @@ jobs:
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
-          private_key: ${{ secrets.SSH_KEY }}
+          private_key: ${{ env.SSH_KEY }}
           command: ${{ steps.racknerd-ssh.outputs.ssh_commands }}
 
   photo_server_deploy:
@@ -138,5 +138,5 @@ jobs:
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
-          private_key: ${{ secrets.SSH_KEY }}
+          private_key: ${{ env.SSH_KEY }}
           command: ${{ steps.photo-server-ssh.outputs.ssh_commands }}
