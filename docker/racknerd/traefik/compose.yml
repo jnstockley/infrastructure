@@ -30,6 +30,7 @@ services:
       - tailscale
       - wireguard
       - databasus
+      - phpmyadmin
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
@@ -76,4 +77,7 @@ networks:
     external: true
   databasus:
     name: databasus
+    external: true
+  phpmyadmin:
+    name: phpmyadmin
     external: true
