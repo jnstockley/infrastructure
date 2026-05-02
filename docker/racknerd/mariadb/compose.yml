@@ -1,0 +1,27 @@
+---
+name: mariadb
+services:
+  mariadb:
+    image: mariadb:12.2.2
+    container_name: mariadb
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - TZ=America/Chicago
+      - PGTZ=America/Chicago
+    env_file:
+      - .env
+    networks:
+      - mariadb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  mariadb:
+    name: mariadb
+    external: true
