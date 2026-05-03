@@ -1,0 +1,162 @@
+---
+name: Trivy Security Scanning
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  trivy-fs-scan:
+    name: "Trivy · Filesystem (Deps, Secrets, Misconfig)"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # The trivy-action automatically caches the Trivy vulnerability DB
+      # between runs, which saves 30–60 seconds on repeat scans.
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          scanners: 'vuln,secret,misconfig'
+          format: 'sarif'
+          output: 'trivy-fs-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          ignore-unfixed: true
+          trivy-config: 'trivy/trivy.yaml'
+
+      - name: Upload filesystem scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-fs-results.sarif'
+          category: 'trivy-filesystem'
+
+  trivy-docker-images:
+    name: "Trivy · Docker Image CVE Scanning"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@v0.2.6
+        with:
+          cache: true
+
+      # Extract every unique `image:` value from docker-compose files.
+      # Filters out lines with shell variable interpolation (${VAR}) because
+      # those can't be resolved in CI without the full runtime environment.
+      - name: Extract Docker image list from compose files
+        id: extract
+        run: |
+          IMAGE_LIST=$(
+            grep -rh "^\s*image:" docker/ 2>/dev/null \
+              | sed "s/.*image:[[:space:]]*//" \
+              | tr -d "\"'" \
+              | sed 's/[[:space:]]*$//' \
+              | grep -v '^\$' \
+              | grep -v '^\${' \
+              | sort -u
+          )
+
+          if [ -z "$IMAGE_LIST" ]; then
+            echo "::warning::No static image references found in docker/. " \
+                 "Images using \${VARIABLE} syntax cannot be scanned in CI."
+            exit 0
+          fi
+
+          echo "Images to scan:"
+          printf '%s\n' "$IMAGE_LIST"
+          printf '%s\n' "$IMAGE_LIST" > /tmp/images.txt
+
+      # Scan each image individually and write a per-image SARIF file.
+      # --exit-code 0 means the step never fails due to findings alone;
+      # the SARIF upload is what surfaces the results in the Security tab.
+      - name: Scan each Docker image
+        run: |
+          mkdir -p sarif-results
+
+          if [ ! -f /tmp/images.txt ]; then
+            echo "No images.txt found — skipping image scans."
+            exit 0
+          fi
+
+          while IFS= read -r image; do
+            [ -z "$image" ] && continue
+
+            # Build a filesystem-safe filename from the image reference
+            safe_name=$(printf '%s' "$image" | tr '/:.@' '----' | tr -cd '[:alnum:]-_')
+            sarif_out="sarif-results/${safe_name}.sarif"
+
+            echo "::group::Scanning image: $image"
+            trivy image \
+              --format sarif \
+              --output "$sarif_out" \
+              --severity CRITICAL,HIGH,MEDIUM \
+              --ignore-unfixed \
+              --scanners vuln \
+              --config "$GITHUB_WORKSPACE/trivy/trivy.yaml" \
+              --exit-code 0 \
+              "$image"
+            echo "::endgroup::"
+
+          done < /tmp/images.txt
+
+      - name: Upload Docker image scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          # Passing a directory uploads all *.sarif files inside it
+          sarif_file: 'sarif-results/'
+          category: 'trivy-docker-images'
+
+  trivy-terraform:
+    name: "Trivy · Terraform IaC Misconfiguration Scan"
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trivy config scan on Terraform
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: 'config'
+          scan-ref: 'tf/'
+          format: 'sarif'
+          output: 'trivy-terraform-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+          hide-progress: true
+          trivy-config: 'trivy/trivy.yaml'
+
+      - name: Upload Terraform scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: 'trivy-terraform-results.sarif'
+          category: 'trivy-terraform'
