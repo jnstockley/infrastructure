@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # The trivy-action automatically caches the Trivy vulnerability DB
       # between runs, which saves 30–60 seconds on repeat scans.
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@v0.2.6
@@ -141,7 +141,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Trivy config scan on Terraform
         uses: aquasecurity/trivy-action@v0.36.0
