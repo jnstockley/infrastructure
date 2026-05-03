@@ -12,7 +12,6 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     networks:
-      - private
       - proxy
     restart: unless-stopped
     healthcheck:
@@ -33,9 +32,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
-    external: true
   private:
     name: private
     internal: true
