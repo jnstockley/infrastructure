@@ -1,0 +1,31 @@
+---
+scan:
+  scanners:
+    - vuln
+    - secret
+    - misconfig
+
+  # Skip directories that are not part of the application itself
+  skip-dirs:
+    - .git
+    - .github
+    - .venv
+    - venv
+    - __pycache__
+    - node_modules
+    - .cache
+    - docs
+    - tests
+
+vulnerability:
+  ignore-unfixed: true
+  severity:
+    - CRITICAL
+    - HIGH
+
+misconfiguration:
+  severity:
+    - CRITICAL
+    - HIGH
+    - MEDIUM
+    - LOW
