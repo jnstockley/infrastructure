@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # The trivy-action automatically caches the Trivy vulnerability DB
       # between runs, which saves 30–60 seconds on repeat scans.
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@v0.2.6
@@ -103,32 +103,67 @@ jobs:
 
           while IFS= read -r image; do
             [ -z "$image" ] && continue
-
-            # Build a filesystem-safe filename from the image reference
             safe_name=$(printf '%s' "$image" | tr '/:.@' '----' | tr -cd '[:alnum:]-_')
-            sarif_out="sarif-results/${safe_name}.sarif"
-
             echo "::group::Scanning image: $image"
             trivy image \
               --format sarif \
-              --output "$sarif_out" \
+              --output "sarif-results/${safe_name}.sarif" \
               --severity CRITICAL,HIGH,MEDIUM \
               --ignore-unfixed \
               --scanners vuln \
-              --config "$GITHUB_WORKSPACE/trivy/trivy.yaml" \
               --exit-code 0 \
               "$image"
             echo "::endgroup::"
-
           done < /tmp/images.txt
 
-      - name: Upload Docker image scan results to GitHub Security tab
+      - name: Combine SARIF files into one
+        if: always()
+        run: |
+          mkdir -p sarif-results
+
+          if [ -z "$(ls -A sarif-results/*.sarif 2>/dev/null)" ]; then
+            # No images were scanned — write an empty SARIF so GitHub
+            # reconciles and auto-closes any previously open alerts
+            echo "No SARIF files found — writing empty SARIF for reconciliation."
+            cat > combined.sarif << 'EOF'
+          {
+            "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+            "version": "2.1.0",
+            "runs": [{
+              "tool": { "driver": { "name": "trivy", "rules": [] } },
+              "results": []
+            }]
+          }
+          EOF
+          else
+            # Merge all per-image SARIF files into a single run.
+            # Rules are deduplicated by ID (same CVE can appear across images).
+            # Results from all images are concatenated into one results array.
+            jq -s '{
+              "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+              "version": "2.1.0",
+              "runs": [{
+                "tool": {
+                  "driver": {
+                    "name": "trivy",
+                    "informationUri": "https://trivy.dev",
+                    "rules": ([ .[].runs[].tool.driver.rules // [] ] | add // [] | unique_by(.id))
+                  }
+                },
+                "results": [ .[].runs[].results // [] | .[] ]
+              }]
+            }' sarif-results/*.sarif > combined.sarif
+          fi
+
+          echo "Combined SARIF stats:"
+          jq '{rules: .runs[0].tool.driver.rules | length, results: .runs[0].results | length}' combined.sarif
+
+      - name: Upload combined SARIF to GitHub Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@v4
         with:
-          # Passing a directory uploads all *.sarif files inside it
-          sarif_file: 'sarif-results/'
-          category: 'trivy-docker-images'
+          sarif_file: combined.sarif
+          category: trivy-docker-images
 
   trivy-terraform:
     name: "Trivy · Terraform IaC Misconfiguration Scan"
@@ -141,7 +176,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run Trivy config scan on Terraform
         uses: aquasecurity/trivy-action@v0.36.0
