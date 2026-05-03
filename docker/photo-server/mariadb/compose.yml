@@ -1,0 +1,56 @@
+---
+name: mariadb
+services:
+  mariadb:
+    image: mariadb:12.2.2
+    container_name: mariadb
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      - TZ=America/Chicago
+      - PGTZ=America/Chicago
+    env_file:
+      - .env
+    networks:
+      - private
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.3
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    volumes:
+      - ./sessions:/sessions
+    environment:
+      PMA_HOST: mariadb
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - private
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.phpmyadmin.entrypoints=websecure
+      - traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.local.jstockley.com`)
+      - traefik.http.routers.phpmyadmin.tls=true
+      - traefik.http.routers.phpmyadmin.tls.certresolver=production
+      - traefik.http.routers.phpmyadmin.service=phpmyadmin
+      - traefik.http.services.phpmyadmin.loadbalancer.server.port=80
+      - traefik.docker.network=phpmyadmin
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+  private:
+    name: private
+    internal: true
+    external: true
