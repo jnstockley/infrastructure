@@ -38,7 +38,7 @@ jobs:
       - name: Step 3 - Copy SARIF results from Racknerd and delete remote copy
         env:
           SSH_KEY: ${{ env.SSH_KEY }}
-          SSH_HOST: ${{ env.IP }}
+          SSH_HOST: ${{ env.IP_ADDRESS }}
         run: |
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
@@ -108,13 +108,14 @@ jobs:
       - name: Step 4 - Copy SARIF results from Photo Server and delete remote copy
         env:
           SSH_KEY: ${{ env.SSH_KEY }}
+          SSH_HOST: ${{ env.IP_ADDRESS }}
         run: |
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           printf 'StrictHostKeyChecking no\nUserKnownHostsFile /dev/null\n' > ~/.ssh/config
-          scp jackstockley@photo-server.internal.jstockley.com:~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
-          ssh jackstockley@photo-server.internal.jstockley.com "rm -f ~/infrastructure/trivy/trivy-results.sarif"
+          scp jackstockley@"$SSH_HOST":~/infrastructure/trivy/trivy-results.sarif trivy-results.sarif
+          ssh jackstockley@"$SSH_HOST" "rm -f ~/infrastructure/trivy/trivy-results.sarif"
           rm -f ~/.ssh/id_rsa
 
       - name: Step 5 - Tag SARIF results
