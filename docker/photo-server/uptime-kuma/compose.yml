@@ -27,8 +27,8 @@ services:
       - traefik.http.routers.uptime-kuma.rule=Host(`status.local.jstockley.com`)
       - traefik.http.routers.uptime-kuma.tls=true
       - traefik.http.routers.uptime-kuma.tls.certresolver=production
-      - traefik.http.routers.uptime-kuma.service=uptime-kuma
-      - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
+      - traefik.http.routers.unifi-toolkit.service=authentik-outpost@file
+      - traefik.http.routers.unifi-toolkit.middlewares=authentik-proxy-chain@file
     security_opt:
       - no-new-privileges:true
 
