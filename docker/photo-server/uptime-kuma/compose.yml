@@ -12,7 +12,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
     networks:
-      - proxy
+      - private
     restart: unless-stopped
     healthcheck:
       test: node ./extra/healthcheck.js
