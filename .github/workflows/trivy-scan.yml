@@ -10,9 +10,6 @@ on:
     - cron: '0 6 * * 1'
   workflow_dispatch:
 
-env:
-  TRIVY_VERSION: "v0.63.0"
-
 jobs:
   trivy-fs-scan:
     name: "Trivy · Filesystem (Deps, Secrets, Misconfig)"
@@ -64,7 +61,6 @@ jobs:
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@v0.2.6
         with:
-          version: ${{ env.TRIVY_VERSION }}
           cache: true
 
       # Extract every unique `image:` value from docker-compose files.
