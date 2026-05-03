@@ -121,13 +121,109 @@ jobs:
 
           done < /tmp/images.txt
 
-      - name: Upload Docker image scan results to GitHub Security tab
+      # -----------------------------------------------------------------------
+      # Step 1 — Close alerts for images no longer in any compose file
+      # Queries the GitHub Code Scanning API for all existing trivy-docker-*
+      # categories, then uploads an empty SARIF for any that are no longer
+      # represented in the current scan output. This signals to GitHub that
+      # those images are gone and their alerts should be auto-closed.
+      # -----------------------------------------------------------------------
+      - name: Close alerts for removed images
         if: always()
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          # Passing a directory uploads all *.sarif files inside it
-          sarif_file: 'sarif-results/'
-          category: 'trivy-docker-images'
+        run: |
+          # Build the set of categories we are about to upload
+          declare -A current_categories
+          if [ -d sarif-results ]; then
+            for sarif_file in sarif-results/*.sarif; do
+              [ -f "$sarif_file" ] || continue
+              label=$(basename "$sarif_file" .sarif)
+              current_categories["trivy-docker-${label}"]=1
+            done
+          fi
+
+          echo "Currently active categories:"
+          printf '  %s\n' "${!current_categories[@]}"
+
+          # Fetch all existing trivy-docker-* categories from the API.
+          # --paginate handles repos with many images across many commits.
+          existing_categories=$(gh api \
+            --paginate \
+            -H "Accept: application/vnd.github+json" \
+            "/repos/${{ github.repository }}/code-scanning/analyses?tool_name=trivy&per_page=100" \
+            --jq '.[].category | select(startswith("trivy-docker-"))' \
+            2>/dev/null | sort -u || true)
+
+          if [ -z "$existing_categories" ]; then
+            echo "No existing trivy-docker-* categories found — nothing to close."
+            exit 0
+          fi
+
+          # Write a valid empty SARIF once; reuse it for each stale category.
+          # An empty `results` array with no rules tells GitHub the scan ran
+          # cleanly but found no subjects — triggering alert auto-close.
+          cat > /tmp/empty.sarif << 'EOF'
+          {
+            "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+            "version": "2.1.0",
+            "runs": [{
+              "tool": { "driver": { "name": "trivy", "rules": [] } },
+              "results": []
+            }]
+          }
+          EOF
+
+          while IFS= read -r category; do
+            [ -z "$category" ] && continue
+
+            if [ -n "${current_categories[$category]+_}" ]; then
+              echo "Category still active — skipping: $category"
+              continue
+            fi
+
+            echo "Closing stale category: $category"
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/code-scanning/sarifs \
+              -f commit_sha="${{ github.sha }}" \
+              -f ref="${{ github.ref }}" \
+              -f sarif="$(gzip -c /tmp/empty.sarif | base64 -w 0)" \
+              -f tool_name="trivy" \
+              -f category="$category"
+
+            echo "  ↳ Empty SARIF uploaded — alerts will auto-close."
+          done <<< "$existing_categories"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # -----------------------------------------------------------------------
+      # Step 2 — Upload results for currently active images (one category each)
+      # -----------------------------------------------------------------------
+      - name: Upload Docker image scan results
+        if: always()
+        run: |
+          if [ ! -d sarif-results ] || [ -z "$(ls -A sarif-results/ 2>/dev/null)" ]; then
+            echo "No SARIF files to upload — skipping."
+            exit 0
+          fi
+
+          for sarif_file in sarif-results/*.sarif; do
+            [ -f "$sarif_file" ] || continue
+            image_label=$(basename "$sarif_file" .sarif)
+            echo "Uploading SARIF for: $image_label"
+
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/code-scanning/sarifs \
+              -f commit_sha="${{ github.sha }}" \
+              -f ref="${{ github.ref }}" \
+              -f sarif="$(gzip -c "$sarif_file" | base64 -w 0)" \
+              -f tool_name="trivy" \
+              -f category="trivy-docker-${image_label}"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   trivy-terraform:
     name: "Trivy · Terraform IaC Misconfiguration Scan"
