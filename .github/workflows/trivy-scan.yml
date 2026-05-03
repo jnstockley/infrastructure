@@ -121,17 +121,9 @@ jobs:
 
           done < /tmp/images.txt
 
-      # -----------------------------------------------------------------------
-      # Step 1 — Close alerts for images no longer in any compose file
-      # Queries the GitHub Code Scanning API for all existing trivy-docker-*
-      # categories, then uploads an empty SARIF for any that are no longer
-      # represented in the current scan output. This signals to GitHub that
-      # those images are gone and their alerts should be auto-closed.
-      # -----------------------------------------------------------------------
       - name: Close alerts for removed images
         if: always()
         run: |
-          # Build the set of categories we are about to upload
           declare -A current_categories
           if [ -d sarif-results ]; then
             for sarif_file in sarif-results/*.sarif; do
@@ -144,8 +136,6 @@ jobs:
           echo "Currently active categories:"
           printf '  %s\n' "${!current_categories[@]}"
 
-          # Fetch all existing trivy-docker-* categories from the API.
-          # --paginate handles repos with many images across many commits.
           existing_categories=$(gh api \
             --paginate \
             -H "Accept: application/vnd.github+json" \
@@ -158,20 +148,6 @@ jobs:
             exit 0
           fi
 
-          # Write a valid empty SARIF once; reuse it for each stale category.
-          # An empty `results` array with no rules tells GitHub the scan ran
-          # cleanly but found no subjects — triggering alert auto-close.
-          cat > /tmp/empty.sarif << 'EOF'
-          {
-            "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
-            "version": "2.1.0",
-            "runs": [{
-              "tool": { "driver": { "name": "trivy", "rules": [] } },
-              "results": []
-            }]
-          }
-          EOF
-
           while IFS= read -r category; do
             [ -z "$category" ] && continue
 
@@ -181,24 +157,35 @@ jobs:
             fi
 
             echo "Closing stale category: $category"
+
+            # Inject the category as automationDetails.id — this is how GitHub
+            # Code Scanning identifies the category from a raw API upload.
+            # The trailing slash is required by the SARIF 2.1.0 spec for IDs.
+            empty_sarif=$(jq -n \
+              --arg cat "${category}/" \
+              '{
+                "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+                "version": "2.1.0",
+                "runs": [{
+                  "automationDetails": { "id": $cat },
+                  "tool": { "driver": { "name": "trivy", "rules": [] } },
+                  "results": []
+                }]
+              }')
+
             gh api \
               --method POST \
               -H "Accept: application/vnd.github+json" \
               /repos/${{ github.repository }}/code-scanning/sarifs \
               -f commit_sha="${{ github.sha }}" \
               -f ref="${{ github.ref }}" \
-              -f sarif="$(gzip -c /tmp/empty.sarif | base64 -w 0)" \
-              -f tool_name="trivy" \
-              -f category="$category"
+              -f sarif="$(echo "$empty_sarif" | gzip | base64 -w 0)"
 
             echo "  ↳ Empty SARIF uploaded — alerts will auto-close."
           done <<< "$existing_categories"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # -----------------------------------------------------------------------
-      # Step 2 — Upload results for currently active images (one category each)
-      # -----------------------------------------------------------------------
       - name: Upload Docker image scan results
         if: always()
         run: |
@@ -210,7 +197,16 @@ jobs:
           for sarif_file in sarif-results/*.sarif; do
             [ -f "$sarif_file" ] || continue
             image_label=$(basename "$sarif_file" .sarif)
+            category="trivy-docker-${image_label}"
             echo "Uploading SARIF for: $image_label"
+
+            # Inject automationDetails.id into the SARIF before uploading.
+            # The raw GitHub API has no `category` parameter — the category
+            # is communicated entirely through this SARIF field.
+            categorized=$(jq \
+              --arg cat "${category}/" \
+              '.runs[0].automationDetails = {"id": $cat}' \
+              "$sarif_file")
 
             gh api \
               --method POST \
@@ -218,9 +214,7 @@ jobs:
               /repos/${{ github.repository }}/code-scanning/sarifs \
               -f commit_sha="${{ github.sha }}" \
               -f ref="${{ github.ref }}" \
-              -f sarif="$(gzip -c "$sarif_file" | base64 -w 0)" \
-              -f tool_name="trivy" \
-              -f category="trivy-docker-${image_label}"
+              -f sarif="$(echo "$categorized" | gzip | base64 -w 0)"
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
