@@ -30,7 +30,7 @@ jobs:
       - name: Step 2 - Run Trivy on Racknerd
         uses: jnstockley/gh-ssh-action@v1.2.14
         with:
-          host: ${{ env.IP }}
+          host: ${{ env.IP_ADDRESS }}
           username: jackstockley
           private_key: ${{ env.SSH_KEY }}
           command: cd ~/infrastructure/trivy && git reset --hard origin/main && git pull && docker compose up
@@ -92,7 +92,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y wireguard resolvconf
-          echo "${{ env.VPN }}" > wg0.conf
+          echo "${{ env.VPN_CONFIG }}" > wg0.conf
           sudo chmod 600 wg0.conf
           sudo cp wg0.conf /etc/wireguard/
           sudo wg-quick up wg0
