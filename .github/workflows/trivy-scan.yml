@@ -115,7 +115,7 @@ jobs:
               --severity CRITICAL,HIGH,MEDIUM \
               --ignore-unfixed \
               --scanners vuln \
-              --config trivy/trivy.yaml \
+              --config "$GITHUB_WORKSPACE/trivy/trivy.yaml" \
               --exit-code 0 \
               "$image"
             echo "::endgroup::"
