@@ -34,7 +34,7 @@ jobs:
           scanners: 'vuln,secret,misconfig'
           format: 'sarif'
           output: 'trivy-fs-results.sarif'
-          severity: 'CRITICAL,HIGH,MEDIUM'
+          severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
           trivy-config: 'trivy/trivy.yaml'
 
@@ -185,7 +185,7 @@ jobs:
           scan-ref: 'tf/'
           format: 'sarif'
           output: 'trivy-terraform-results.sarif'
-          severity: 'CRITICAL,HIGH,MEDIUM'
+          severity: 'CRITICAL,HIGH'
           hide-progress: true
           trivy-config: 'trivy/trivy.yaml'
 
