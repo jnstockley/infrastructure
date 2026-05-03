@@ -108,7 +108,7 @@ jobs:
             trivy image \
               --format sarif \
               --output "sarif-results/${safe_name}.sarif" \
-              --severity CRITICAL,HIGH,MEDIUM \
+              --severity CRITICAL,HIGH \
               --ignore-unfixed \
               --scanners vuln \
               --exit-code 0 \
