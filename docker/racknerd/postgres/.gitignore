@@ -3,3 +3,4 @@ postgres/
 pgadmin/
 backup/
 *.sql
+databasus-data/
