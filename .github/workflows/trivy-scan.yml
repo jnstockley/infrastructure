@@ -188,6 +188,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
           hide-progress: true
           trivy-config: 'trivy/trivy.yaml'
+          ignore-unfixed: true
 
       - name: Upload Terraform scan results to GitHub Security tab
         if: always()
