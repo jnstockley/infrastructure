@@ -18,7 +18,7 @@ api:
 
 entryPoints:
   web:
-    address: :80
+    address: '[::]:80'
     http:
       redirections:
         entryPoint:
@@ -29,14 +29,14 @@ entryPoints:
         - "127.0.0.1/32"
         - "172.0.0.0/8"
   ping:
-    address: :8082
+    address: '[::]:8082'
     forwardedHeaders:
       trustedIPs:
         - "127.0.0.1/32"
         - "172.0.0.0/8"
 
   websecure:
-    address: :443
+    address: '[::]:443'
     forwardedHeaders:
       trustedIPs:
         - "127.0.0.1/32"
