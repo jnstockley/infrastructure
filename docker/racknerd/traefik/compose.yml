@@ -1,3 +1,4 @@
+# dclint disable no-duplicate-exported-ports
 ---
 name: traefik
 services:
@@ -16,7 +17,9 @@ services:
       - .env
     ports:
       - '0.0.0.0:80:80'
+      - '[::]:80:80'
       - '0.0.0.0:443:443'
+      - '[::]:443:443'
     networks:
       - adguard
       - vaultwarden

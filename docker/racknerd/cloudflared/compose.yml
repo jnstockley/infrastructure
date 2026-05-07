@@ -36,4 +36,3 @@ networks:
     external: true
     enable_ipv4: true
     enable_ipv6: true
-
