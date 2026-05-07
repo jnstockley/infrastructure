@@ -17,6 +17,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.databasus.entrypoints=websecure
       - traefik.http.routers.databasus.rule=Host(`databasus.jstockley.com`)
       - traefik.http.routers.databasus.tls=true
@@ -49,6 +50,7 @@ services:
       timeout: 10s
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.pgadmin.entrypoints=websecure
       - traefik.http.routers.pgadmin.rule=Host(`pgadmin.jstockley.com`)
       - traefik.http.routers.pgadmin.tls=true
