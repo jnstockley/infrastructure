@@ -1,3 +1,4 @@
+# dclint disable no-duplicate-exported-ports
 ---
 name: traefik
 services:
