@@ -12,9 +12,8 @@ services:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
     networks:
-      - postgres
-      - databasus
-      - mariadb
+      - proxy
+      - private
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -24,7 +23,6 @@ services:
       - traefik.http.routers.databasus.tls.certresolver=production
       - traefik.http.routers.databasus.service=databasus
       - traefik.http.services.databasus.loadbalancer.server.port=4005
-      - traefik.docker.network=databasus
 
   pg-admin:
     image: dpage/pgadmin4:9.14.0
@@ -40,9 +38,8 @@ services:
     env_file:
       - .env
     networks:
-      - postgres
-      - pgadmin
-      - wireguard
+      - proxy
+      - private
     restart: unless-stopped
     healthcheck:
       test: wget -nv -t 1 --spider http://localhost:80/misc/ping || exit 1
@@ -58,7 +55,6 @@ services:
       - traefik.http.routers.pgadmin.tls.certresolver=production
       - traefik.http.routers.pgadmin.service=pgadmin
       - traefik.http.services.pgadmin.loadbalancer.server.port=80
-      - traefik.docker.network=pgadmin
     security_opt:
       - no-new-privileges:true
 
@@ -73,8 +69,7 @@ services:
     env_file:
       - .env
     networks:
-      - postgres
-      - wireguard
+      - private
     restart: unless-stopped
     healthcheck:
       test: pg_isready -U jackstockley
@@ -86,21 +81,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  postgres:
-    name: postgres
-    external: true
-  pgadmin:
-    external: true
-    name: pgadmin
-  databasus:
-    name: databasus
-    external: true
-  wireguard:
-    name: wireguard
-    external: true
-  mariadb:
-    name: mariadb
-    external: true
   proxy:
     name: proxy
     external: true

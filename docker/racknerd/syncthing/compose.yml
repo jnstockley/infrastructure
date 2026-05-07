@@ -15,8 +15,7 @@ services:
     ports:
       - '0.0.0.0:8384:8384'
     networks:
-      - syncthing
-      - wireguard
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8384/rest/noauth/health || exit 1
@@ -32,26 +31,13 @@ services:
       - traefik.http.routers.syncthing.tls.certresolver=production
       - traefik.http.routers.syncthing.service=syncthing
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
-      - traefik.docker.network=syncthing
     hostname: racknerd_syncthing
     security_opt:
       - no-new-privileges:true
 
 networks:
-  syncthing:
-    name: syncthing
-    external: true
-  wireguard:
-    name: wireguard
-    external: true
   proxy:
     name: proxy
-    external: true
-    enable_ipv4: true
-    enable_ipv6: true
-  private:
-    name: private
-    internal: true
     external: true
     enable_ipv4: true
     enable_ipv6: true

@@ -10,8 +10,8 @@ services:
     env_file:
       - .env
     networks:
-      - api
-      - postgres
+      - proxy
+      - private
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -21,14 +21,18 @@ services:
       - traefik.http.routers.api.tls.certresolver=production
       - traefik.http.routers.api.service=api
       - traefik.http.services.api.loadbalancer.server.port=5000
-      - traefik.docker.network=api
     security_opt:
       - no-new-privileges:true
 
 networks:
-  api:
-    name: api
+  proxy:
+    name: proxy
     external: true
-  postgres:
-    name: postgres
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
+    internal: true
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

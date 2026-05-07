@@ -9,8 +9,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - redis
-      - wireguard
+      - private
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
     healthcheck:
@@ -23,17 +22,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  redis:
-    name: redis
-    external: true
-  wireguard:
-    name: wireguard
-    external: true
-  proxy:
-    name: proxy
-    external: true
-    enable_ipv4: true
-    enable_ipv6: true
   private:
     name: private
     internal: true

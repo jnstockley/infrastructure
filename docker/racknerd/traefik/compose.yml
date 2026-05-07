@@ -21,19 +21,6 @@ services:
       - '0.0.0.0:443:443'
       - '[::]:443:443'
     networks:
-      - adguard
-      - vaultwarden
-      - nextcloud-aio
-      - traefik
-      - uptime-kuma
-      - pgadmin
-      - api
-      - syncthing
-      - airflow
-      - tailscale
-      - wireguard
-      - databasus
-      - phpmyadmin
       - proxy
     restart: unless-stopped
     healthcheck:
@@ -46,45 +33,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  adguard:
-    name: adguard
-    external: true
-  vaultwarden:
-    name: vaultwarden
-    external: true
-  nextcloud-aio:
-    name: nextcloud-aio
-    external: true
-  traefik:
-    name: traefik
-    external: true
-  uptime-kuma:
-    name: uptime-kuma
-    external: true
-  pgadmin:
-    name: pgadmin
-    external: true
-  api:
-    name: api
-    external: true
-  syncthing:
-    external: true
-    name: syncthing
-  airflow:
-    name: airflow
-    external: true
-  tailscale:
-    name: tailscale
-    external: true
-  wireguard:
-    name: wireguard
-    external: true
-  databasus:
-    name: databasus
-    external: true
-  phpmyadmin:
-    name: phpmyadmin
-    external: true
   proxy:
     name: proxy
     external: true
