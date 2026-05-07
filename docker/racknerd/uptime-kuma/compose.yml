@@ -21,6 +21,7 @@ services:
       timeout: 30s
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.uptime-kuma.entrypoints=websecure
       - traefik.http.routers.uptime-kuma.rule=Host(`status.jstockley.com`)
       - traefik.http.routers.uptime-kuma.tls=true

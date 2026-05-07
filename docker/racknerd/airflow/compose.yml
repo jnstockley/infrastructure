@@ -33,6 +33,7 @@ services:
       start_period: 30s
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.airflow.entrypoints=websecure
       - traefik.http.routers.airflow.rule=Host(`airflow.jstockley.com`)
       - traefik.http.routers.airflow.tls=true

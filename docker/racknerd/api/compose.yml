@@ -17,6 +17,7 @@ services:
       disable: true
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.api.entrypoints=websecure
       - traefik.http.routers.api.rule=Host(`api.jstockley.com`)
       - traefik.http.routers.api.tls=true
