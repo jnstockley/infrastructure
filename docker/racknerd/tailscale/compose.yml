@@ -15,12 +15,7 @@ services:
     env_file:
       - .env
     networks:
-      - tailscale
-      - syncthing
-      - uptime-kuma
-      - adguard
-      - vaultwarden
-      - postgres
+      - private
     restart: unless-stopped
     healthcheck:
       test: ping -c "3" racknerd
@@ -36,29 +31,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  tailscale:
-    name: tailscale
-    external: true
-  syncthing:
-    name: syncthing
-    external: true
-  uptime-kuma:
-    name: uptime-kuma
-    external: true
-  adguard:
-    name: adguard
-    external: true
-  vaultwarden:
-    name: vaultwarden
-    external: true
-  postgres:
-    name: postgres
-    external: true
-  proxy:
-    name: proxy
-    external: true
-    enable_ipv4: true
-    enable_ipv6: true
   private:
     name: private
     internal: true

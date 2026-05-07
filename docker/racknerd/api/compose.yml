@@ -11,7 +11,7 @@ services:
       - .env
     networks:
       - proxy
-      - postgres
+      - private
     restart: unless-stopped
     healthcheck:
       disable: true
@@ -27,9 +27,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  postgres:
-    name: postgres
-    external: true
   proxy:
     name: proxy
     external: true

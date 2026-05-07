@@ -2,9 +2,8 @@
 x-airflow-common: &airflow-common
   image: jnstockley/airflow:2026.05.02
   networks:
-    - airflow
-    - postgres
-    - redis
+    - proxy
+    - private
   env_file:
     - .env
   environment: &airflow-common-env
@@ -40,7 +39,6 @@ services:
       - traefik.http.routers.airflow.tls.certresolver=production
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
-      - traefik.docker.network=airflow
     <<: *airflow-common
 
   airflow-dag-processor:
@@ -118,15 +116,6 @@ services:
     <<: *airflow-common
 
 networks:
-  airflow:
-    name: airflow
-    external: true
-  postgres:
-    name: postgres
-    external: true
-  redis:
-    name: redis
-    external: true
   proxy:
     name: proxy
     external: true

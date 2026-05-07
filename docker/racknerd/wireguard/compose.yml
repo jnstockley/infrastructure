@@ -22,7 +22,7 @@ services:
     ports:
       - '0.0.0.0:51820:51820/udp'
     networks:
-      - wireguard
+      - private
     restart: unless-stopped
     healthcheck:
       test: curl --fail https://google.com || exit 1
@@ -39,9 +39,6 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
 
 networks:
-  wireguard:
-    name: wireguard
-    external: true
   private:
     name: private
     internal: true
