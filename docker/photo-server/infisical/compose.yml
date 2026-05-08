@@ -20,6 +20,7 @@ services:
       - traefik.http.routers.infisical.tls.certresolver=production
       - traefik.http.routers.infisical.service=infisical
       - traefik.http.services.infisical.loadbalancer.server.port=8080
+      - traefik.docker.network=proxy
     pull_policy: always
 
 networks:

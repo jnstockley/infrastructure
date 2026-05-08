@@ -31,6 +31,7 @@ services:
       - traefik.http.routers.auth.tls.certresolver=production
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
+      - traefik.docker.network=proxy
       # ── Embedded Outpost callbacks ───────────────────────────────────────────
       # Catches /outpost.goauthentik.io/* paths on ANY hostname so that the
       # login-flow redirects (injected into proxied responses by the outpost)
