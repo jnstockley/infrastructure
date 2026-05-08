@@ -28,7 +28,7 @@ jobs:
           env-slug: "racknerd"
 
       - name: Step 2 - Run Trivy on Racknerd
-        uses: jnstockley/gh-ssh-action@v1.2.14
+        uses: jnstockley/gh-ssh-action@v1.2.15
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
@@ -98,7 +98,7 @@ jobs:
           sudo wg-quick up wg0
 
       - name: Step 3 - Run Trivy on Photo Server
-        uses: jnstockley/gh-ssh-action@v1.2.14
+        uses: jnstockley/gh-ssh-action@v1.2.15
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
