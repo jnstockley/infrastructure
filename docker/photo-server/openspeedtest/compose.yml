@@ -5,7 +5,7 @@ services:
     image: openspeedtest/latest:v2.0.6
     container_name: openspeedtest
     networks:
-      - private2
+      - private
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -17,7 +17,9 @@ services:
       - traefik.http.routers.openspeedtest.middlewares=authentik-proxy-chain@file
 
 networks:
-  private2:
-    name: private2
+  private:
+    name: private
     internal: true
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

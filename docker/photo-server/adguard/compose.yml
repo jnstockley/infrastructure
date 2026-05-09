@@ -14,7 +14,7 @@ services:
       - '0.0.0.0:53:53/tcp'
       - '0.0.0.0:53:53/udp'
     networks:
-      - proxy2
+      - proxy
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -28,7 +28,7 @@ services:
       - traefik.http.routers.adguard-secure.tls.certresolver=production
       - traefik.http.routers.adguard-secure.service=adguard-secure
       - traefik.http.services.adguard-secure.loadbalancer.server.port=80
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
     cap_add:
       - NET_ADMIN
     expose:
@@ -37,6 +37,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  proxy2:
-    name: proxy2
+  proxy:
+    name: proxy
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

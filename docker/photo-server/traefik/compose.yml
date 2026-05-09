@@ -23,7 +23,7 @@ services:
       - '0.0.0.0:25565:25565/tcp'
       - '[::]:25565:25565/tcp'
     networks:
-      - proxy2
+      - proxy
       - nextcloud
       - bitwarden
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       - traefik.http.routers.traefik-secure.entrypoints=websecure
       - traefik.http.routers.traefik-secure.rule=Host(`traefik.local.jstockley.com`)
       - traefik.http.routers.traefik-secure.tls=true
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
       - traefik.http.routers.traefik-secure.tls.certresolver=production
       - traefik.http.routers.traefik-secure.tls.domains[0].main=local.jstockley.com
       - traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.jstockley.com
@@ -54,9 +54,11 @@ services:
       - no-new-privileges:true
 
 networks:
-  proxy2:
-    name: proxy2
+  proxy:
+    name: proxy
     external: true
+    enable_ipv4: true
+    enable_ipv6: true
   nextcloud:
     name: nextcloud
     external: true
