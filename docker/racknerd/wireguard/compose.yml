@@ -18,18 +18,12 @@ services:
       - INTERNAL_SUBNET=10.13.13.0
       - ALLOWEDIPS=0.0.0.0/0
       - PERSISTENTKEEPALIVE_PEERS=all
-      - LOG_CONFS=true
+      - LOG_CONFS=false
     ports:
       - '0.0.0.0:51820:51820/udp'
     networks:
       - private
     restart: unless-stopped
-    healthcheck:
-      test: curl --fail https://google.com || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

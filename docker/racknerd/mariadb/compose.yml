@@ -20,6 +20,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    security_opt:
+      - no-new-privileges:true
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.2.3
@@ -34,6 +36,12 @@ services:
       - proxy
       - private
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/index.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
@@ -43,6 +51,8 @@ services:
       - traefik.http.routers.phpmyadmin.tls.certresolver=production
       - traefik.http.routers.phpmyadmin.service=phpmyadmin
       - traefik.http.services.phpmyadmin.loadbalancer.server.port=80
+    security_opt:
+      - no-new-privileges:true
 
 networks:
   proxy:

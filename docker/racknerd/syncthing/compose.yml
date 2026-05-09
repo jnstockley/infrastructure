@@ -12,8 +12,6 @@ services:
       - TZ=America/Chicago
       - PUID=0
       - PGID=0
-    ports:
-      - '0.0.0.0:8384:8384'
     networks:
       - proxy
     restart: unless-stopped
