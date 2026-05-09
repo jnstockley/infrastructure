@@ -12,8 +12,8 @@ services:
     env_file:
       - .env
     networks:
-      - proxy2
-      - private2
+      - proxy
+      - private
     command: server
     restart: unless-stopped
     healthcheck:
@@ -31,7 +31,7 @@ services:
       - traefik.http.routers.auth.tls.certresolver=production
       - traefik.http.routers.auth.service=auth
       - traefik.http.services.auth.loadbalancer.server.port=9000
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
       # ── Embedded Outpost callbacks ───────────────────────────────────────────
       # Catches /outpost.goauthentik.io/* paths on ANY hostname so that the
       # login-flow redirects (injected into proxied responses by the outpost)
@@ -57,7 +57,7 @@ services:
     env_file:
       - .env
     networks:
-      - private2
+      - private
     command: worker
     restart: unless-stopped
     healthcheck:
@@ -71,10 +71,12 @@ services:
       - no-new-privileges:true
 
 networks:
-  proxy2:
+  proxy:
     external: true
-    name: proxy2
-  private2:
-    name: private2
+    name: proxy
+  private:
+    name: private
     internal: true
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

@@ -14,8 +14,8 @@ services:
     env_file:
       - .env
     networks:
-      - private2
-      - proxy2
+      - private
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: node ./extra/healthcheck.js
@@ -31,15 +31,19 @@ services:
       - traefik.http.routers.uptime-kuma.tls.certresolver=production
       - traefik.http.routers.uptime-kuma.service=uptime-kuma
       - traefik.http.services.uptime-kuma.loadbalancer.server.port=3001
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy2:
-    name: proxy2
+  proxy:
+    name: proxy
     external: true
-  private2:
-    name: private2
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
     internal: true
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

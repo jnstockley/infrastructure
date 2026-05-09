@@ -15,7 +15,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - proxy2
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: /crafty/healthcheck.sh
@@ -31,7 +31,7 @@ services:
       - traefik.http.routers.mc.tls.certresolver=production
       - traefik.http.routers.mc.service=mc
       - traefik.http.services.mc.loadbalancer.server.port=8443
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
       - traefik.http.services.mc.loadbalancer.server.scheme=https
       - traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https
       - traefik.tcp.routers.mc-server.entrypoints=minecraft
@@ -43,6 +43,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  proxy2:
-    name: proxy2
+  proxy:
+    name: proxy
     external: true
+    enable_ipv4: true
+    enable_ipv6: true

@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     networks:
-      - private2
+      - private
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
@@ -31,8 +31,8 @@ services:
     env_file:
       - .env
     networks:
-      - proxy2
-      - private2
+      - proxy
+      - private
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/index.php"]
@@ -48,13 +48,17 @@ services:
       - traefik.http.routers.phpmyadmin.tls.certresolver=production
       - traefik.http.routers.phpmyadmin.service=phpmyadmin
       - traefik.http.services.phpmyadmin.loadbalancer.server.port=80
-      - traefik.docker.network=proxy2
+      - traefik.docker.network=proxy
 
 networks:
-  proxy2:
-    name: proxy2
+  proxy:
+    name: proxy
     external: true
-  private2:
-    name: private2
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
     internal: true
     external: true
+    enable_ipv4: true
+    enable_ipv6: true
