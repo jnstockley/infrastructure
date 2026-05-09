@@ -24,12 +24,6 @@ services:
     networks:
       - private
     restart: unless-stopped
-    healthcheck:
-      test: curl --fail https://google.com || exit 1
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 100s
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
