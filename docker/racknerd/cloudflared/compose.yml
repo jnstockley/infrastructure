@@ -12,12 +12,6 @@ services:
       - proxy
     command: tunnel --metrics localhost:3333 run
     restart: unless-stopped
-    healthcheck:
-      test: tunnel --metrics localhost:3333 ready
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
     security_opt:
       - no-new-privileges:true
 
