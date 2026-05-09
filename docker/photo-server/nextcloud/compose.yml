@@ -33,7 +33,7 @@ services:
       # WATCHTOWER_DOCKER_SOCKET_PATH: /var/run/docker.sock # Needs to be specified if the docker socket on the host is not located in the default '/var/run/docker.sock'. Otherwise mastercontainer updates will fail. For macos it needs to be '/var/run/docker.sock'
       # security_opt: ["label:disable"] # Is needed when using SELinux
     networks:
-      - nextcloud
+      - proxy
     restart: unless-stopped
     healthcheck:
       test: curl --fail -k https://localhost:8080 || exit 1
@@ -46,8 +46,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  nextcloud:
-    name: nextcloud
+  proxy:
+    name: proxy
     external: true
 
 volumes:
