@@ -44,7 +44,7 @@ services:
       - .env
     networks:
       - private
-      - proxy
+      - proxy2
     restart: unless-stopped
     healthcheck:
       test: wget -nv -t 1 --spider http://localhost:80/misc/ping || exit 1
@@ -60,7 +60,7 @@ services:
       - traefik.http.routers.pgadmin.tls.certresolver=production
       - traefik.http.routers.pgadmin.service=pgadmin
       - traefik.http.services.pgadmin.loadbalancer.server.port=80
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
@@ -91,6 +91,6 @@ networks:
     name: private
     internal: true
     external: true
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true

@@ -14,7 +14,7 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
+      - proxy2
       - private
     restart: unless-stopped
     healthcheck:
@@ -31,13 +31,13 @@ services:
       - traefik.http.routers.mend.tls.certresolver=production
       - traefik.http.routers.mend.service=mend
       - traefik.http.services.mend.loadbalancer.server.port=8080
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
   private:
     name: private

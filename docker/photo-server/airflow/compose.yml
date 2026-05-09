@@ -3,7 +3,7 @@ x-airflow-common: &airflow-common
   image: jnstockley/airflow:2026.05.02
   networks:
     - private
-    - proxy
+    - proxy2
   env_file:
     - .env
   environment: &airflow-common-env
@@ -39,7 +39,7 @@ services:
       - traefik.http.routers.airflow.tls.certresolver=production
       - traefik.http.routers.airflow.service=airflow
       - traefik.http.services.airflow.loadbalancer.server.port=8080
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     <<: *airflow-common
 
   airflow-dag-processor:
@@ -117,8 +117,8 @@ services:
     <<: *airflow-common
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
   private:
     name: private
