@@ -8,6 +8,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - PORT=45876
+      - HUB_URL=https://stats.local.jstockley.com
     env_file:
       - .env
     ports:
