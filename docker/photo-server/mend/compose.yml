@@ -14,8 +14,8 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
-      - private
+      - proxy2
+      - private2
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8080/health || exit 1
@@ -31,15 +31,15 @@ services:
       - traefik.http.routers.mend.tls.certresolver=production
       - traefik.http.routers.mend.service=mend
       - traefik.http.services.mend.loadbalancer.server.port=8080
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

@@ -9,8 +9,8 @@ services:
       - REDIS_URL=redis://redis:6379
     env_file: .env
     networks:
-      - proxy
-      - private
+      - proxy2
+      - private2
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -20,14 +20,14 @@ services:
       - traefik.http.routers.infisical.tls.certresolver=production
       - traefik.http.routers.infisical.service=infisical
       - traefik.http.services.infisical.loadbalancer.server.port=8080
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     pull_policy: always
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

@@ -50,8 +50,8 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
-      - private
+      - proxy2
+      - private2
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -61,15 +61,15 @@ services:
       - traefik.http.routers.paperless.tls.certresolver=production
       - traefik.http.routers.paperless.service=paperless
       - traefik.http.services.paperless.loadbalancer.server.port=8000
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

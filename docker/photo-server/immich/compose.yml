@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE_NAME}"]
@@ -45,7 +45,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: python3 healthcheck.py
@@ -73,8 +73,8 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
-      - private
+      - proxy2
+      - private2
     restart: unless-stopped
     healthcheck:
       test: immich-healthcheck
@@ -90,16 +90,16 @@ services:
       - traefik.http.routers.photos.tls.certresolver=production
       - traefik.http.routers.photos.service=photos
       - traefik.http.services.photos.loadbalancer.server.port=2283
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true
 

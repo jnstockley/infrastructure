@@ -14,8 +14,8 @@ services:
     env_file:
       - ./.env
     networks:
-      - proxy
-      - private
+      - proxy2
+      - private2
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:3000/api/healthz || exit 1
@@ -31,15 +31,15 @@ services:
       - traefik.http.routers.gitea.tls.certresolver=production
       - traefik.http.routers.gitea.service=gitea
       - traefik.http.services.gitea.loadbalancer.server.port=3000
-      - traefik.docker.network=proxy
+      - traefik.docker.network=proxy2
     security_opt:
       - no-new-privileges:true
 
 networks:
-  proxy:
-    name: proxy
+  proxy2:
+    name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true
