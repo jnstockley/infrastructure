@@ -24,6 +24,8 @@ services:
       - traefik.http.routers.databasus.tls.certresolver=production
       - traefik.http.routers.databasus.service=databasus
       - traefik.http.services.databasus.loadbalancer.server.port=4005
+    security_opt:
+      - no-new-privileges:true
 
   pg-admin:
     image: dpage/pgadmin4:9.14.0

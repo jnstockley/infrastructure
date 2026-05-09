@@ -18,7 +18,7 @@ services:
       - INTERNAL_SUBNET=10.13.13.0
       - ALLOWEDIPS=0.0.0.0/0
       - PERSISTENTKEEPALIVE_PEERS=all
-      - LOG_CONFS=true
+      - LOG_CONFS=false
     ports:
       - '0.0.0.0:51820:51820/udp'
     networks:
