@@ -2,7 +2,7 @@
 x-airflow-common: &airflow-common
   image: jnstockley/airflow:2026.05.02
   networks:
-    - private
+    - private2
     - proxy2
   env_file:
     - .env
@@ -120,7 +120,7 @@ networks:
   proxy2:
     name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

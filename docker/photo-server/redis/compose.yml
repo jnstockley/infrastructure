@@ -9,7 +9,7 @@ services:
     environment:
       - TZ=America/Chicago
     networks:
-      - private
+      - private2
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
     healthcheck:
@@ -22,6 +22,6 @@ services:
       - no-new-privileges:true
 
 networks:
-  private:
-    name: private
+  private2:
+    name: private2
     external: true

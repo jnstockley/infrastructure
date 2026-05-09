@@ -15,7 +15,7 @@ services:
       - .env
     networks:
       - proxy2
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: curl --fail http://localhost:8080/health || exit 1
@@ -39,7 +39,7 @@ networks:
   proxy2:
     name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

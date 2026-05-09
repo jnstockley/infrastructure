@@ -15,7 +15,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
@@ -33,7 +33,7 @@ services:
       - traefik.http.routers.unifi-toolkit.middlewares=authentik-proxy-chain@file
 
 networks:
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

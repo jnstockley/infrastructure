@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
@@ -32,7 +32,7 @@ services:
       - .env
     networks:
       - proxy2
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/index.php"]
@@ -54,7 +54,7 @@ networks:
   proxy2:
     name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

@@ -12,7 +12,7 @@ services:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4005"]
@@ -43,7 +43,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
       - proxy2
     restart: unless-stopped
     healthcheck:
@@ -75,7 +75,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: pg_isready -U jackstockley
@@ -87,8 +87,8 @@ services:
       - no-new-privileges:true
 
 networks:
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true
   proxy2:

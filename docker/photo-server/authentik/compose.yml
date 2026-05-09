@@ -13,7 +13,7 @@ services:
       - .env
     networks:
       - proxy2
-      - private
+      - private2
     command: server
     restart: unless-stopped
     healthcheck:
@@ -57,7 +57,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     command: worker
     restart: unless-stopped
     healthcheck:
@@ -74,7 +74,7 @@ networks:
   proxy2:
     external: true
     name: proxy2
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

@@ -15,7 +15,7 @@ services:
       - .env
     networks:
       - proxy2
-      - private
+      - private2
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -31,7 +31,7 @@ networks:
   proxy2:
     name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true

@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE_NAME}"]
@@ -45,7 +45,7 @@ services:
     env_file:
       - .env
     networks:
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: python3 healthcheck.py
@@ -74,7 +74,7 @@ services:
       - .env
     networks:
       - proxy2
-      - private
+      - private2
     restart: unless-stopped
     healthcheck:
       test: immich-healthcheck
@@ -98,8 +98,8 @@ networks:
   proxy2:
     name: proxy2
     external: true
-  private:
-    name: private
+  private2:
+    name: private2
     internal: true
     external: true
 
