@@ -13,8 +13,6 @@ services:
       - proxy
       - private
     restart: unless-stopped
-    healthcheck:
-      disable: true
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
