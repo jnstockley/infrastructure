@@ -23,5 +23,6 @@ jobs:
         run: |
           for dir in tf/*/; do
             echo "Validating $dir"
+            tofu -chdir="$dir" init
             tofu -chdir="$dir" validate
           done
