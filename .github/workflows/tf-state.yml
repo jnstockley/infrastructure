@@ -1,0 +1,27 @@
+---
+name: Remote OpenTofu State
+on:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint and Validate Open Tofu code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version_file: tf/.opentofu-version
+
+      - name: Check format
+        run: tofu fmt -recursive -check
+
+      - name: Validate OpenTofu code
+        run: |
+          for dir in tf/*/; do
+            echo "Validating $dir"
+            tofu -chdir="$dir" validate
+          done
