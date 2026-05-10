@@ -4,9 +4,11 @@ terraform {
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
-      version = "3.0.1-rc9"
+      version = "3.0.2-rc07"
     }
   }
+
+  backend "http" {}
 }
 
 variable "proxmox_api_url" {
@@ -23,16 +25,10 @@ variable "proxmox_api_password" {
   sensitive = true
 }
 
-variable "proxmox_api_otp" {
-  type      = string
-  sensitive = true
-}
-
 
 provider "proxmox" {
   pm_api_url      = var.proxmox_api_url
   pm_user         = var.proxmox_api_user
   pm_password     = var.proxmox_api_password
-  pm_otp          = var.proxmox_api_otp
   pm_tls_insecure = false
 }

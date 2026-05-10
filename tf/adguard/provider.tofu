@@ -5,10 +5,20 @@ terraform {
       version = "1.7.0"
     }
   }
+
+  backend "http" {
+
+  }
 }
 
-variable "adguard_host" {
-  type = string
+data "terraform_remote_state" "cloudflare" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
 }
 
 variable "adguard_username" {
@@ -20,18 +30,19 @@ variable "adguard_password" {
   sensitive = true
 }
 
-variable "adguard_cert_chain" {
+variable "gitlab_username" {
   type      = string
-  sensitive = true
+  sensitive = false
 }
 
-variable "adguard_private_key" {
+variable "gitlab_access_token" {
   type      = string
   sensitive = true
 }
 
 provider "adguard" {
-  host     = var.adguard_host
+  host     = data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name
+  scheme   = "https"
   username = var.adguard_username
   password = var.adguard_password
 }
