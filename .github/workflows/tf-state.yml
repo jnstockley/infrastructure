@@ -310,7 +310,7 @@ jobs:
     name: Run Infisical
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    # if: needs.changes.outputs.infisical == 'true'
+    if: needs.changes.outputs.infisical == 'true'
     environment: infisical
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
