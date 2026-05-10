@@ -92,3 +92,46 @@ resource "infisical_project_environment" "adguard" {
   project_id = infisical_project.open-tofu.id
   slug       = "adguard"
 }
+
+resource "infisical_project_environment" "authentik" {
+  name       = "Authentik"
+  project_id = infisical_project.open-tofu.id
+  slug       = "authentik"
+}
+
+resource "infisical_project_environment" "cloudflare" {
+  name       = "Cloudflare"
+  project_id = infisical_project.open-tofu.id
+  slug       = "cloudflare"
+}
+
+resource "infisical_project_environment" "gitea" {
+  name       = "Gitea"
+  project_id = infisical_project.open-tofu.id
+  slug       = "gitea"
+}
+
+resource "infisical_project_environment" "infisical" {
+  name       = "Infisical"
+  project_id = infisical_project.open-tofu.id
+  slug       = "infisical"
+}
+
+resource "infisical_project_environment" "proxmox" {
+  name       = "Proxmox"
+  project_id = infisical_project.open-tofu.id
+  slug       = "proxmox"
+}
+
+resource "infisical_project_environment" "unifi" {
+  name       = "Unifi"
+  project_id = infisical_project.open-tofu.id
+  slug       = "unifi"
+}
+
+resource "infisical_project_environment" "uptime-kuma" {
+  name       = "Uptime Kuma"
+  project_id = infisical_project.open-tofu.id
+  slug       = "uptime-kuma"
+}
+
