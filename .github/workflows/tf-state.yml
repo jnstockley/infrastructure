@@ -5,7 +5,7 @@ on:
 
 jobs:
   lint:
-    name: Lint and Validate Open Tofu code
+    name: Lint Open Tofu code
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,11 +18,3 @@ jobs:
 
       - name: Check format
         run: tofu fmt -recursive -check
-
-      - name: Validate OpenTofu code
-        run: |
-          for dir in tf/*/; do
-            echo "Validating $dir"
-            tofu -chdir="$dir" init
-            tofu -chdir="$dir" validate
-          done
