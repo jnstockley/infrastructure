@@ -89,6 +89,6 @@ resource "infisical_project" "open-tofu" {
 
 resource "infisical_project_environment" "adguard" {
   name       = "AdGuard"
-  project_id = infisical_project.infrastructure.id
+  project_id = infisical_project.open-tofu.id
   slug       = "adguard"
 }
