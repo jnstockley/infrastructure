@@ -249,7 +249,7 @@ jobs:
     name: Run Gitea
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    # if: needs.changes.outputs.gitea == 'true'
+    if: needs.changes.outputs.gitea == 'true'
     environment: gitea
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
