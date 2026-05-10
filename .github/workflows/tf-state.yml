@@ -184,7 +184,7 @@ jobs:
           tofu apply -auto-approve tfplan
 
   cloudflare:
-    name: Run cloudflare
+    name: Run Cloudflare
     runs-on: ubuntu-latest
     needs: [lint, changes]
     if: needs.changes.outputs.cloudflare == 'true'
@@ -246,7 +246,7 @@ jobs:
           tofu apply -auto-approve tfplan
 
   gitea:
-    name: Run gitea
+    name: Run Gitea
     runs-on: ubuntu-latest
     needs: [lint, changes]
     # if: needs.changes.outputs.gitea == 'true'
@@ -287,16 +287,16 @@ jobs:
           -reconfigure \
           -upgrade
 
-      - name: Validate gitea
+      - name: Validate Gitea
         run: |
           cd tf/gitea
           tofu validate
 
-      - name: Plan and Apply gitea
+      - name: Plan and Apply Gitea
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_gitea_token: ${{ env.GITEA_TOKEN }}
-          TF_VAR_gitea_password: ${{ env.GITEA_PASSWORD }}
+          TF_VAR_gitea_password: ${{ env.GITEA_USER_PASSWORD }}
           TF_VAR_github_token: ${{ env.GITHUB_TOKEN }}
           TF_VAR_research_git_token: ${{ env.RESEARCH_GIT_TOKEN }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
