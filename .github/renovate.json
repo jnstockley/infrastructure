@@ -15,5 +15,14 @@
       "matchPackageNames": ["n8nio/n8n"],
       "followTag": "latest"
     }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["(^|/)\\.opentofu-version$"],
+      "matchStrings": ["(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "depNameTemplate": "opentofu/opentofu",
+      "datasourceTemplate": "github-releases"
+    }
   ]
 }
