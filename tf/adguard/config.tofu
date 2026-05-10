@@ -6,11 +6,6 @@ resource "adguard_config" "config" {
     update_interval = 1
   }
 
-  dhcp = {
-    enabled   = false
-    interface = "eth0"
-  }
-
   dns = {
     disallowed_clients = [
       "178.131.146.199",
