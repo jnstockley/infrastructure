@@ -8,6 +8,7 @@ resource "adguard_config" "config" {
 
   dhcp = {
     enabled = false
+    interface = "eth0"
   }
 
   dns = {
