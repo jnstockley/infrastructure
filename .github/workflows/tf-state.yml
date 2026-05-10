@@ -64,3 +64,9 @@ jobs:
         run: |
           cd tf/adguard
           tofu validate
+
+      - name: Plan and Apply AdGuard
+        run: |
+          cd tf/adguard
+          tofu plan -out=tfplan
+          tofu apply -auto-approve tfplan
