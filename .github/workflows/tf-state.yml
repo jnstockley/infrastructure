@@ -72,7 +72,7 @@ jobs:
     needs: [lint, changes]
     if: needs.changes.outputs.adguard == 'true'
     environment: adguard
-    permissions: # Needed for Infisical
+    permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
       contents: read   # Required for checking out code
     steps:
