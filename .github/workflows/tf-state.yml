@@ -187,7 +187,7 @@ jobs:
     name: Run cloudflare
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    # if: needs.changes.outputs.cloudflare == 'true'
+    if: needs.changes.outputs.cloudflare == 'true'
     environment: cloudflare
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
