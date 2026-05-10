@@ -7,7 +7,7 @@ resource "adguard_config" "config" {
   }
 
   dhcp = {
-    enabled = false
+    enabled   = false
     interface = "eth0"
   }
 
