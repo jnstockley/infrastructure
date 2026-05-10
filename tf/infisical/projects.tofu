@@ -80,3 +80,15 @@ resource "infisical_project" "govee-cloud" {
   type        = "secret-manager" # Default project type
 }
 
+resource "infisical_project" "open-tofu" {
+  name        = "OpenTofu"
+  slug        = "open-tofu"
+  description = "OpenTofu secrets"
+  type        = "secret-manager" # Default project type
+}
+
+resource "infisical_project_environment" "adguard" {
+  name       = "AdGuard"
+  project_id = infisical_project.infrastructure.id
+  slug       = "adguard"
+}

@@ -27,7 +27,7 @@ resource "uptimekuma_notification_smtp" "smtp-failover" {
   password = var.smtp_password
 
   # Optional: Email customization
-  html_body = true
+  html_body      = true
 
   is_active  = true
   is_default = false
