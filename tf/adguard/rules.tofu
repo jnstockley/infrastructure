@@ -1,6 +1,3 @@
-# manage user rules
-# NOTE: there can only be 1 (one) `adguard_user_rules` resource
-# specifying multiple resources will result in errors
 resource "adguard_user_rules" "rules" {
   rules = [
     "# Paramount Plus",
@@ -23,6 +20,7 @@ resource "adguard_user_rules" "rules" {
     "@@||pubads.g.doubleclick.net^$important",
     "@@||collector.cdp.cnn.com^$important",
     "@@||smetrics.cnn.com^$important",
+    "@@||smetrics.cnn.com^$important",
     "@@||cnn.com.102.122.2o7.net^$important",
     "@@||licensing.bitmovin.com^$important",
     "@@||sentry.io^$important",
@@ -30,6 +28,23 @@ resource "adguard_user_rules" "rules" {
     "@@||get.activated.win^$client='Backup Server'",
     "@@||dearpersonco.store^$important",
     "@@||decagon.ai^$important",
-    "@@||api.sidechat.lol^$important"
+    "@@||api.sidechat.lol^$important",
+    "@@||authentik.error-reporting.a7k.io^$important",
+    "@@||global.ketchcdn.com^$important",
+    "@@||mongodb.com^$important",
+    "@@||mongodb.org^$important",
+    "@@||stats.grafana.org^$important",
+    "@@||ui.com^$important",
+    "@@||rat.rakuten.co.jp^$important",
+    "@@||ecbsn.com^$important",
+    "@@||mirror.archlinuxarm.org^$important",
+    "@@||attackertv.so^$important",
+    "@@||facebook.com^$important",
+    "@@||nssm.cc^$important",
+    "@@||jstockley.com^$important",
+    "@@||tailscale.com^$important",
+    "@@||linktr.ee^$important",
+    "@@||a.co^$important",
+    "@@||one.one.one.one^$important"
   ]
 }
