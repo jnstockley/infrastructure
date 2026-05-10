@@ -16,6 +16,8 @@ jobs:
         with:
           tofu_version_file: tf/.opentofu-version
 
+      - run: tofu --version
+
       - name: Check format
         run: tofu fmt -recursive -check
 
