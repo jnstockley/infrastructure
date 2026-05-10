@@ -81,7 +81,7 @@ resource "infisical_identity_oidc_auth" "api-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/api:environment:docker"
+  bound_subject      = "repo:jnstockley/api:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "api-project-identity" {
@@ -105,7 +105,7 @@ resource "infisical_identity_oidc_auth" "bsn-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/bsn:environment:docker"
+  bound_subject      = "repo:jnstockley/bsn:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "bsn-project-identity" {
@@ -129,7 +129,7 @@ resource "infisical_identity_oidc_auth" "email-to-calendar-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/email-to-calendar:environment:docker"
+  bound_subject      = "repo:jnstockley/email-to-calendar:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "email-to-calendar-project-identity" {
@@ -177,7 +177,7 @@ resource "infisical_identity_oidc_auth" "secret-santa-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/secret-santa:environment:docker"
+  bound_subject      = "repo:jnstockley/secret-santa:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "secret-santa-project-identity" {
@@ -201,7 +201,7 @@ resource "infisical_identity_oidc_auth" "web-scraper-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/web-scraper:environment:docker"
+  bound_subject      = "repo:jnstockley/web-scraper:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "web-scraper-project-identity" {
@@ -225,12 +225,36 @@ resource "infisical_identity_oidc_auth" "govee-cloud-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/govee-cloud:environment:docker"
+  bound_subject      = "repo:jnstockley/govee-cloud:environment:(docker|sync)"
 }
 
 resource "infisical_project_identity" "govee-cloud-project-identity" {
   project_id  = infisical_project.govee-cloud.id
   identity_id = infisical_identity.govee-cloud-identity.id
+  roles = [
+    {
+      role_slug = "viewer"
+    }
+  ]
+}
+
+resource "infisical_identity" "open-tofu-identity" {
+  name   = "OpenTofu"
+  role   = "no-access"
+  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+}
+
+resource "infisical_identity_oidc_auth" "open-tofu-oidc-auth" {
+  identity_id        = infisical_identity.open-tofu-identity.id
+  oidc_discovery_url = "https://token.actions.githubusercontent.com"
+  bound_issuer       = "https://token.actions.githubusercontent.com"
+  bound_audiences    = ["https://github.com/jnstockley"]
+  bound_subject      = "repo:jnstockley/infrastructure:environment:adguard"
+}
+
+resource "infisical_project_identity" "open-tofu-project-identity" {
+  project_id  = infisical_project.open-tofu.id
+  identity_id = infisical_identity.open-tofu-identity.id
   roles = [
     {
       role_slug = "viewer"

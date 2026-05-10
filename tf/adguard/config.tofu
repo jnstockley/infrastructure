@@ -19,9 +19,9 @@ resource "adguard_config" "config" {
     edns_cs_enabled = true
     fallback_dns = [
       "1.1.1.2",
-      "#2606:4700:4700::1112",
+      "2606:4700:4700::1112",
       "1.0.0.2",
-      "#2606:4700:4700::1002",
+      "2606:4700:4700::1002",
     ]
     upstream_dns = [
       "https://security.cloudflare-dns.com/dns-query",

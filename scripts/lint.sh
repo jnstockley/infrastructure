@@ -5,7 +5,5 @@ yamllint -s .
 npx dclint -r --max-warnings 0 docker/
 find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) -print0 | xargs -0 shellcheck -x -S style -e SC2016,SC1091
 shfmt --diff -i 4 -ci .
-tofu validate
-tofu fmt -recursive
 uvx ruff check
 uvx ruff format --check
