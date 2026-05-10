@@ -424,10 +424,10 @@ jobs:
 
       - name: Plan Uptime Kuma
         env:
-          TF_VAR_uptime_kuma_public_host: ${{ env.UPTIME_KUMA_PUBLIC_HOST }}
+          TF_VAR_uptime_kuma_public_endpoint: ${{ env.UPTIME_KUMA_PUBLIC_ENDPOINT }}
           TF_VAR_uptime_kuma_public_username: ${{ env.UPTIME_KUMA_PUBLIC_USERNAME }}
           TF_VAR_uptime_kuma_public_password: ${{ env.UPTIME_KUMA_PUBLIC_PASSWORD }}
-          TF_VAR_uptime_kuma_local_host: ${{ env.UPTIME_KUMA_LOCAL_HOST }}
+          TF_VAR_uptime_kuma_local_endpoint: ${{ env.UPTIME_KUMA_LOCAL_ENDPOINT }}
           TF_VAR_uptime_kuma_local_username: ${{ env.UPTIME_KUMA_LOCAL_USERNAME }}
           TF_VAR_uptime_kuma_local_password: ${{ env.UPTIME_KUMA_LOCAL_PASSWORD }}
           TF_VAR_smtp_password: ${{ env.SMTP_PASSWORD }}
@@ -442,10 +442,10 @@ jobs:
       - name: Plan and Apply Uptime Kuma
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
-          TF_VAR_uptime_kuma_public_host: ${{ env.UPTIME_KUMA_PUBLIC_HOST }}
+          TF_VAR_uptime_kuma_public_endpoint: ${{ env.UPTIME_KUMA_PUBLIC_ENDPOINT }}
           TF_VAR_uptime_kuma_public_username: ${{ env.UPTIME_KUMA_PUBLIC_USERNAME }}
           TF_VAR_uptime_kuma_public_password: ${{ env.UPTIME_KUMA_PUBLIC_PASSWORD }}
-          TF_VAR_uptime_kuma_local_host: ${{ env.UPTIME_KUMA_LOCAL_HOST }}
+          TF_VAR_uptime_kuma_local_endpoint: ${{ env.UPTIME_KUMA_LOCAL_ENDPOINT }}
           TF_VAR_uptime_kuma_local_username: ${{ env.UPTIME_KUMA_LOCAL_USERNAME }}
           TF_VAR_uptime_kuma_local_password: ${{ env.UPTIME_KUMA_LOCAL_PASSWORD }}
           TF_VAR_smtp_password: ${{ env.SMTP_PASSWORD }}
