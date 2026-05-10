@@ -66,6 +66,9 @@ jobs:
           tofu validate
 
       - name: Plan and Apply AdGuard
+        env:
+          TF_VAR_adguard_username: ${{ env.ADGUARD_USERNAME }}
+          TF_VAR_adguard_password: ${{ env.ADGUARD_PASSWORD }}
         run: |
           cd tf/adguard
           tofu plan -out=tfplan
