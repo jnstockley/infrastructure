@@ -305,3 +305,62 @@ jobs:
           cd tf/gitea
           tofu plan -out=tfplan
           tofu apply -auto-approve tfplan
+
+  infisical:
+    name: Run Infisical
+    runs-on: ubuntu-latest
+    needs: [lint, changes]
+    # if: needs.changes.outputs.infisical == 'true'
+    environment: infisical
+    permissions:  # Needed for Infisical
+      id-token: write  # Required for OIDC authentication
+      contents: read   # Required for checking out code
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version_file: tf/.opentofu-version
+
+      - name: Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.16
+        with:
+          method: "oidc"
+          identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
+          domain: "https://secrets.jstockley.com"
+          project-slug: "open-tofu"
+          env-slug: "infisical"
+
+      - name: Init Infisical
+        run: |
+          cd tf/infisical
+          tofu init \
+          -backend-config=address=${{env.TF_ADDRESS}} \
+          -backend-config=lock_address=${{env.TF_ADDRESS}}/lock \
+          -backend-config=unlock_address=${{env.TF_ADDRESS}}/lock \
+          -backend-config=username=${{env.TF_USERNAME}} \
+          -backend-config=password=${{env.TF_PASSWORD}} \
+          -backend-config=lock_method=POST \
+          -backend-config=unlock_method=DELETE \
+          -backend-config=retry_wait_min=5 \
+          -reconfigure \
+          -upgrade
+
+      - name: Validate Infisical
+        run: |
+          cd tf/infisical
+          tofu validate
+
+      - name: Plan and Apply Infisical
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          TF_VAR_infisical_client_id: ${{ env.INFISICAL_CLIENT_ID }}
+          TF_VAR_infisical_client_secret: ${{ env.INFISICAL_CLIENT_SECRET }}
+          TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
+          TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
+        run: |
+          cd tf/infisical
+          tofu plan -out=tfplan
+          tofu apply -auto-approve tfplan
