@@ -413,6 +413,7 @@ jobs:
           tofu validate
 
       - name: Setup WireGuard Connection
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
             sudo apt-get update
             sudo apt-get install -y wireguard resolvconf
@@ -420,6 +421,10 @@ jobs:
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
+
+      - run: |
+          cd tf/uptime-kuma
+          tofu plan
 
       - name: Plan and Apply Uptime Kuma
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
