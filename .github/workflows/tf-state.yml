@@ -428,9 +428,9 @@ jobs:
 
       - name: Plan and Apply Proxmox
         env:
-          TF_proxmox_api_url: ${{ env.PROXMOX_API_URL }}
-          TF_proxmox_api_user: ${{ env.PROXMOX_API_USER }}
-          TF_proxmox_api_password: ${{ env.PROXMOX_API_PASSWORD }}
+          TF_VAR_proxmox_api_url: ${{ env.PROXMOX_API_URL }}
+          TF_VAR_proxmox_api_user: ${{ env.PROXMOX_API_USER }}
+          TF_VAR_proxmox_api_password: ${{ env.PROXMOX_API_PASSWORD }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
