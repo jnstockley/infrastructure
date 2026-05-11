@@ -23,6 +23,6 @@ variable "unifi_url" {
 
 
 provider "unifi" {
-  api_url  = var.unifi_url
-  api_key  = var.unifi_api_key
+  api_url = var.unifi_url
+  api_key = var.unifi_api_key
 }
