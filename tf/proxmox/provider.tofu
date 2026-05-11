@@ -41,7 +41,7 @@ variable "gitlab_access_token" {
 }
 
 provider "proxmox" {
-  pm_api_url      = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+  pm_api_url      = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api2/json"
   pm_user         = var.proxmox_api_user
   pm_password     = var.proxmox_api_password
   pm_tls_insecure = false
