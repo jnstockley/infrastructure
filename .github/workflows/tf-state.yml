@@ -495,8 +495,8 @@ jobs:
       - name: Plan and Apply Unifi
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
-          TF_unifi_url: ${{ env.UNIFI_URL }}
-          TF_unifi_api_key: ${{ env.UNIFI_API_KEY }}
+          TF_VAR_unifi_url: ${{ env.UNIFI_URL }}
+          TF_VAR_unifi_api_key: ${{ env.UNIFI_API_KEY }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
