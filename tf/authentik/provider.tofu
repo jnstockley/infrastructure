@@ -11,6 +11,26 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "cloudflare" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
+data "terraform_remote_state" "adguard" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/adguard"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
 variable "authentik_api_token" {
   type      = string
   sensitive = true

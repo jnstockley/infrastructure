@@ -114,7 +114,6 @@ jobs:
           tofu validate
 
       - name: Plan and Apply AdGuard
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_adguard_username: ${{ env.ADGUARD_USERNAME }}
           TF_VAR_adguard_password: ${{ env.ADGUARD_PASSWORD }}
@@ -123,7 +122,9 @@ jobs:
         run: |
           cd tf/adguard
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   authentik:
     name: Run Authentik
@@ -173,7 +174,6 @@ jobs:
           tofu validate
 
       - name: Plan and Apply Authentik
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_authentik_api_token: ${{ env.AUTHENTIK_API_TOKEN }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
@@ -181,7 +181,9 @@ jobs:
         run: |
           cd tf/authentik
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   cloudflare:
     name: Run Cloudflare
@@ -231,7 +233,6 @@ jobs:
           tofu validate
 
       - name: Plan and Apply Cloudflare
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_cloudflare_api_token: ${{ env.CLOUDFLARE_API_TOKEN }}
           TF_VAR_cloudflare_zone_id: ${{ env.CLOUDFLARE_ZONE_ID }}
@@ -243,7 +244,9 @@ jobs:
         run: |
           cd tf/cloudflare
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   gitea:
     name: Run Gitea
@@ -293,7 +296,6 @@ jobs:
           tofu validate
 
       - name: Plan and Apply Gitea
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_gitea_token: ${{ env.GITEA_TOKEN }}
           TF_VAR_gitea_password: ${{ env.GITEA_USER_PASSWORD }}
@@ -304,7 +306,9 @@ jobs:
         run: |
           cd tf/gitea
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   infisical:
     name: Run Infisical
@@ -354,7 +358,6 @@ jobs:
           tofu validate
 
       - name: Plan and Apply Infisical
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_infisical_client_id: ${{ env.INFISICAL_CLIENT_ID }}
           TF_VAR_infisical_client_secret: ${{ env.INFISICAL_CLIENT_SECRET }}
@@ -363,7 +366,9 @@ jobs:
         run: |
           cd tf/infisical
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   proxmox:
     name: Run Proxmox
@@ -413,7 +418,6 @@ jobs:
           tofu validate
 
       - name: Setup WireGuard Connection
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
             sudo apt-get update
             sudo apt-get install -y wireguard resolvconf
@@ -423,17 +427,18 @@ jobs:
             sudo wg-quick up wg0
 
       - name: Plan and Apply Proxmox
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
-          TF_proxmox_api_url: ${{ env.PROXMOX_API_URL }}
-          TF_proxmox_api_user: ${{ env.PROXMOX_API_USER }}
-          TF_proxmox_api_password: ${{ env.PROXMOX_API_PASSWORD }}
+          TF_VAR_proxmox_api_url: ${{ env.PROXMOX_API_URL }}
+          TF_VAR_proxmox_api_user: ${{ env.PROXMOX_API_USER }}
+          TF_VAR_proxmox_api_password: ${{ env.PROXMOX_API_PASSWORD }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
           cd tf/proxmox
           tofu plan -out=tfplan
-        # tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+        #  if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+        #    tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+        #  fi
 
   unifi:
     name: Run Unifi
@@ -483,7 +488,6 @@ jobs:
           tofu validate
 
       - name: Setup WireGuard Connection
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
             sudo apt-get update
             sudo apt-get install -y wireguard resolvconf
@@ -493,7 +497,6 @@ jobs:
             sudo wg-quick up wg0
 
       - name: Plan and Apply Unifi
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           TF_VAR_unifi_url: ${{ env.UNIFI_URL }}
           TF_VAR_unifi_api_key: ${{ env.UNIFI_API_KEY }}
@@ -502,7 +505,9 @@ jobs:
         run: |
           cd tf/unifi
           tofu plan -out=tfplan
-        # tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+        #  if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+        #    tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+        #  fi
 
   uptime-kuma:
     name: Run Uptime Kuma
@@ -552,7 +557,6 @@ jobs:
           tofu validate
 
       - name: Setup WireGuard Connection
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
             sudo apt-get update
             sudo apt-get install -y wireguard resolvconf
@@ -562,12 +566,9 @@ jobs:
             sudo wg-quick up wg0
 
       - name: Plan and Apply Uptime Kuma
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
-          TF_VAR_uptime_kuma_public_endpoint: ${{ env.UPTIME_KUMA_PUBLIC_ENDPOINT }}
           TF_VAR_uptime_kuma_public_username: ${{ env.UPTIME_KUMA_PUBLIC_USERNAME }}
           TF_VAR_uptime_kuma_public_password: ${{ env.UPTIME_KUMA_PUBLIC_PASSWORD }}
-          TF_VAR_uptime_kuma_local_endpoint: ${{ env.UPTIME_KUMA_LOCAL_ENDPOINT }}
           TF_VAR_uptime_kuma_local_username: ${{ env.UPTIME_KUMA_LOCAL_USERNAME }}
           TF_VAR_uptime_kuma_local_password: ${{ env.UPTIME_KUMA_LOCAL_PASSWORD }}
           TF_VAR_smtp_password: ${{ env.SMTP_PASSWORD }}
@@ -578,4 +579,6 @@ jobs:
         run: |
           cd tf/uptime-kuma
           tofu plan -out=tfplan
-          tofu apply -auto-approve tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi

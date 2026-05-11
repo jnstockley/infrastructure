@@ -1,7 +1,7 @@
 resource "uptimekuma_notification_nextcloudtalk" "nextcloud-talk" {
   provider           = uptimekuma.local
   name               = "Nextcloud Talk Notifications"
-  host               = "https://nextcloud.jstockley.com"
+  host               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}"
   conversation_token = var.nextcloud_talk_local_conversation_token
   bot_secret         = var.nextcloud_talk_local_secret
   is_active          = true
@@ -32,7 +32,6 @@ resource "uptimekuma_notification_smtp" "smtp-failover" {
   is_active  = true
   is_default = false
 }
-
 
 resource "uptimekuma_monitor_group" "adguard-group" {
   provider    = uptimekuma.local

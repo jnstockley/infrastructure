@@ -1,24 +1,3 @@
-data "terraform_remote_state" "cloudflare" {
-  backend = "http"
-
-  config = {
-    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
-    username = var.gitlab_username
-    password = var.gitlab_access_token
-  }
-}
-
-data "terraform_remote_state" "adguard" {
-  backend = "http"
-
-  config = {
-    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/adguard"
-    username = var.gitlab_username
-    password = var.gitlab_access_token
-  }
-}
-
-
 output "authentik_cloudflare_client_id" {
   value = authentik_provider_oauth2.cloudflare.client_id
 }
@@ -27,7 +6,6 @@ output "authentik_cloudflare_client_secret" {
   value     = authentik_provider_oauth2.cloudflare.client_secret
   sensitive = true
 }
-
 
 resource "authentik_provider_oauth2" "cloudflare" {
   access_token_validity = "minutes=5"
@@ -542,7 +520,6 @@ resource "authentik_application" "open-speed-test" {
   meta_launch_url   = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
 }
 
-
 resource "authentik_policy_binding" "open-speed-test-local" {
   target = authentik_application.open-speed-test-local.uuid
   group  = authentik_group.open-speedtest-access.id
@@ -565,7 +542,6 @@ resource "authentik_provider_proxy" "traefik-local" {
   mode                         = "proxy"
   internal_host_ssl_validation = false
 }
-
 
 resource "authentik_application" "traefik-local" {
   name              = "Traefik (Local)"
@@ -632,7 +608,6 @@ resource "authentik_provider_proxy" "unifi-toolkit" {
   mode                         = "proxy"
   internal_host_ssl_validation = false
 }
-
 
 resource "authentik_application" "unifi-toolkit" {
   name              = "UniFi Toolkit"

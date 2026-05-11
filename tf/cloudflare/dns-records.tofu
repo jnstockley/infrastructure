@@ -28,13 +28,12 @@ resource "cloudflare_dns_record" "iowa-vpn" {
   type    = "A"
 }
 
-
 resource "cloudflare_dns_record" "airflow" {
   name    = "airflow.jstockley.com"
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -43,7 +42,7 @@ resource "cloudflare_dns_record" "api" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -52,7 +51,7 @@ resource "cloudflare_dns_record" "backup" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -61,7 +60,7 @@ resource "cloudflare_dns_record" "databasus" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -70,7 +69,7 @@ resource "cloudflare_dns_record" "dns" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -79,7 +78,7 @@ resource "cloudflare_dns_record" "git" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -88,7 +87,7 @@ resource "cloudflare_dns_record" "home" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -97,7 +96,7 @@ resource "cloudflare_dns_record" "idp" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -178,7 +177,7 @@ resource "cloudflare_dns_record" "mc" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -187,7 +186,7 @@ resource "cloudflare_dns_record" "mend" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -196,7 +195,7 @@ resource "cloudflare_dns_record" "nextcloud" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -205,7 +204,7 @@ resource "cloudflare_dns_record" "open-speedtest" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -214,7 +213,7 @@ resource "cloudflare_dns_record" "pgadmin" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = false
 }
 
@@ -223,7 +222,7 @@ resource "cloudflare_dns_record" "phpymyadmin" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -232,7 +231,7 @@ resource "cloudflare_dns_record" "photos" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = false
 }
 
@@ -241,17 +240,16 @@ resource "cloudflare_dns_record" "pikvm" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
-
 
 resource "cloudflare_dns_record" "play" {
   name    = "play.jstockley.com"
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = false
 }
 
@@ -260,7 +258,7 @@ resource "cloudflare_dns_record" "n8n" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = false
 }
 
@@ -278,7 +276,7 @@ resource "cloudflare_dns_record" "secrets" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 
@@ -287,7 +285,7 @@ resource "cloudflare_dns_record" "status" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "vpn.jstockley.com"
+  content = cloudflare_dns_record.vpn.name
   proxied = true
 }
 
@@ -296,10 +294,9 @@ resource "cloudflare_dns_record" "synology" {
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
-
 
 resource "cloudflare_dns_record" "traefik" {
   name    = "traefik.jstockley.com"
@@ -310,13 +307,12 @@ resource "cloudflare_dns_record" "traefik" {
   proxied = true
 }
 
-
 resource "cloudflare_dns_record" "vault" {
   name    = "vault.jstockley.com"
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
-  content = "iowa.vpn.jstockley.com"
+  content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
 }
 

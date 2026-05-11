@@ -1,13 +1,3 @@
-data "terraform_remote_state" "cloudflare" {
-  backend = "http"
-
-  config = {
-    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
-    username = var.gitlab_username
-    password = var.gitlab_access_token
-  }
-}
-
 resource "gitea_repository" "address-book" {
   default_branch               = "master"
   description                  = "The backend for the Address Book REST API. Helps interface between java code and SQL database!"

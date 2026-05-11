@@ -11,8 +11,14 @@ terraform {
   backend "http" {}
 }
 
-variable "proxmox_api_url" {
-  type = string
+data "terraform_remote_state" "adguard" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/adguard"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
 }
 
 variable "proxmox_api_user" {
@@ -25,9 +31,17 @@ variable "proxmox_api_password" {
   sensitive = true
 }
 
+variable "gitlab_username" {
+  type = string
+}
+
+variable "gitlab_access_token" {
+  type      = string
+  sensitive = true
+}
 
 provider "proxmox" {
-  pm_api_url      = var.proxmox_api_url
+  pm_api_url      = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api2/json"
   pm_user         = var.proxmox_api_user
   pm_password     = var.proxmox_api_password
   pm_tls_insecure = false

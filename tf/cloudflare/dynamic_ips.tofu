@@ -1,5 +1,9 @@
+locals {
+  api_base_url = "https://api.jstockley.com"
+}
+
 data "http" "racknerd_ip" {
-  url = "https://api.jstockley.com/ip/racknerd"
+  url = "${local.api_base_url}/ip/racknerd"
 
   # Optional request headers
   request_headers = {
@@ -15,7 +19,7 @@ data "http" "racknerd_ip" {
 }
 
 data "http" "iowa_ip" {
-  url = "https://api.jstockley.com/ip/iowa"
+  url = "${local.api_base_url}/ip/iowa"
 
   # Optional request headers
   request_headers = {
@@ -31,7 +35,7 @@ data "http" "iowa_ip" {
 }
 
 data "http" "chicago_ip" {
-  url = "https://api.jstockley.com/ip/chicago"
+  url = "${local.api_base_url}/ip/chicago"
 
   # Optional request headers
   request_headers = {
