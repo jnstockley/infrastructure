@@ -369,7 +369,7 @@ jobs:
     name: Run Uptime Kuma
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    if: needs.changes.outputs.uptime-kuma == 'true'
+    # if: needs.changes.outputs.uptime-kuma == 'true'
     environment: uptime-kuma
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
