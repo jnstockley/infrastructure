@@ -1,20 +1,24 @@
 resource "proxmox_vm_qemu" "debian-12-testing" {
-  name             = "debian-12-testing"
-  target_node      = "proxmox"
-  vmid             = 900
-  desc             = "Debian 12"
-  bios             = "ovmf"
-  onboot           = true
-  startup          = "order=1"
-  vm_state         = "running"
-  protection       = true
-  boot             = "order=virtio0;sata0"
-  agent            = 1
-  qemu_os          = "l26"
-  memory           = 24576
-  sockets          = 1
-  cores            = 6
-  cpu_type         = "host"
+  name               = "debian-12-testing"
+  target_node        = "proxmox"
+  vmid               = 900
+  description        = "Debian 12"
+  bios               = "ovmf"
+  start_at_node_boot = true
+  startup_shutdown {
+    order = 1
+  }
+  vm_state   = "running"
+  protection = true
+  boot       = "order=virtio0;sata0"
+  agent      = 1
+  qemu_os    = "l26"
+  memory     = 24576
+  cpu {
+    sockets = 1
+    cores   = 6
+    type    = "host"
+  }
   hotplug          = "network,disk,usb"
   nameserver       = "192.168.0.1"
   automatic_reboot = true
