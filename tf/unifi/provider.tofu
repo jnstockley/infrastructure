@@ -11,12 +11,7 @@ terraform {
   }
 }
 
-variable "unifi_username" {
-  type      = string
-  sensitive = false
-}
-
-variable "unifi_password" {
+variable "unifi_api_key" {
   type      = string
   sensitive = true
 }
@@ -28,7 +23,6 @@ variable "unifi_url" {
 
 
 provider "unifi" {
-  username = var.unifi_username
-  password = var.unifi_password
   api_url  = var.unifi_url
+  api_key  = var.unifi_api_key
 }
