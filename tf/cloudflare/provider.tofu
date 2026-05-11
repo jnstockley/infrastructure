@@ -15,6 +15,16 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "authentik" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/authentik"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
 variable "cloudflare_api_token" {
   type      = string
   sensitive = true
@@ -29,7 +39,6 @@ variable "cloudflare_account_id" {
   type      = string
   sensitive = true
 }
-
 
 variable "gitlab_username" {
   type      = string

@@ -1,18 +1,8 @@
-data "terraform_remote_state" "authentik" {
-  backend = "http"
-
-  config = {
-    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/authentik"
-    username = var.gitlab_username
-    password = var.gitlab_access_token
-  }
-}
-
 resource "cloudflare_zero_trust_access_identity_provider" "authentik" {
   account_id = var.cloudflare_account_id
   config = {
-    auth_url  = "https://idp.jstockley.com/application/o/authorize/"
-    certs_url = "https://idp.jstockley.com/application/o/cloudflare/jwks/"
+    auth_url  = "https://${cloudflare_dns_record.idp.name}/application/o/authorize/"
+    certs_url = "https://${cloudflare_dns_record.idp.name}/application/o/cloudflare/jwks/"
     claims = [
       "name",
       "nickname",
@@ -27,7 +17,7 @@ resource "cloudflare_zero_trust_access_identity_provider" "authentik" {
       "email",
       "profile"
     ]
-    token_url = "https://idp.jstockley.com/application/o/token/"
+    token_url = "https://${cloudflare_dns_record.idp.name}/application/o/token/"
   }
   name = "Authentik"
   type = "oidc"
@@ -63,7 +53,6 @@ resource "cloudflare_zero_trust_access_policy" "internal_ips-v6" {
       }
   }]
 }
-
 
 resource "cloudflare_zero_trust_access_policy" "external_ips" {
   account_id       = var.cloudflare_account_id

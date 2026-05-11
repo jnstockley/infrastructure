@@ -11,6 +11,16 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "cloudflare" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
 variable "gitlab_username" {
   type      = string
   sensitive = false
@@ -35,7 +45,6 @@ variable "research_git_token" {
   type      = string
   sensitive = true
 }
-
 
 variable "gitea_password" {
   type      = string

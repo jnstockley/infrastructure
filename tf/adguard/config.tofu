@@ -1,6 +1,4 @@
 resource "adguard_config" "config" {
-
-
   filtering = {
     enabled         = true
     update_interval = 1
@@ -44,6 +42,6 @@ resource "adguard_config" "config" {
     certificate_chain = ""
     enabled           = true
     private_key       = ""
-    server_name       = "dns.jstockley.com"
+    server_name       = data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name
   }
 }

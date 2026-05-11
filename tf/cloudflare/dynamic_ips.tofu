@@ -1,5 +1,5 @@
 data "http" "racknerd_ip" {
-  url = "https://api.jstockley.com/ip/racknerd"
+  url = "${cloudflare_dns_record.api.name}/ip/racknerd"
 
   # Optional request headers
   request_headers = {
@@ -15,7 +15,7 @@ data "http" "racknerd_ip" {
 }
 
 data "http" "iowa_ip" {
-  url = "https://api.jstockley.com/ip/iowa"
+  url = "${cloudflare_dns_record.api.name}/ip/iowa"
 
   # Optional request headers
   request_headers = {
@@ -31,7 +31,7 @@ data "http" "iowa_ip" {
 }
 
 data "http" "chicago_ip" {
-  url = "https://api.jstockley.com/ip/chicago"
+  url = "${cloudflare_dns_record.api.name}/ip/chicago"
 
   # Optional request headers
   request_headers = {

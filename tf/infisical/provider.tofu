@@ -11,6 +11,16 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "cloudflare" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/cloudflare"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
 variable "gitlab_username" {
   type      = string
   sensitive = false
@@ -32,7 +42,7 @@ variable "infisical_client_secret" {
 }
 
 provider "infisical" {
-  host = "https://secrets.jstockley.com"
+  host = "https://${data.terraform_remote_state.cloudflare.outputs.secrets_dns_record_name}"
   auth = {
     universal = {
       client_id     = var.infisical_client_id
