@@ -369,7 +369,7 @@ jobs:
     name: Run Proxmox
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    # if: needs.changes.outputs.proxmox == 'true'
+    if: needs.changes.outputs.proxmox == 'true'
     environment: proxmox
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
