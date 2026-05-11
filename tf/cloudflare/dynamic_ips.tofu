@@ -1,5 +1,6 @@
 data "http" "racknerd_ip" {
-  url = "${cloudflare_dns_record.api.name}/ip/racknerd"
+  depends_on = [cloudflare_dns_record.api]
+  url        = "${cloudflare_dns_record.api.name}/ip/racknerd"
 
   # Optional request headers
   request_headers = {
@@ -15,7 +16,8 @@ data "http" "racknerd_ip" {
 }
 
 data "http" "iowa_ip" {
-  url = "${cloudflare_dns_record.api.name}/ip/iowa"
+  depends_on = [cloudflare_dns_record.api]
+  url        = "${cloudflare_dns_record.api.name}/ip/iowa"
 
   # Optional request headers
   request_headers = {
@@ -31,7 +33,8 @@ data "http" "iowa_ip" {
 }
 
 data "http" "chicago_ip" {
-  url = "${cloudflare_dns_record.api.name}/ip/chicago"
+  depends_on = [cloudflare_dns_record.api]
+  url        = "${cloudflare_dns_record.api.name}/ip/chicago"
 
   # Optional request headers
   request_headers = {
