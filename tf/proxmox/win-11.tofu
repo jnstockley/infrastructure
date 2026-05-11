@@ -1,20 +1,25 @@
 resource "proxmox_vm_qemu" "win-11-testing" {
-  name             = "win-11-testing"
-  target_node      = "proxmox"
-  vmid             = 901
-  desc             = "Windows 11"
-  bios             = "ovmf"
-  onboot           = true
-  startup          = "order=2"
-  vm_state         = "running"
-  protection       = true
-  boot             = "order=virtio0;sata0"
-  agent            = 1
-  qemu_os          = "win11"
-  memory           = 4096
-  sockets          = 1
-  cores            = 4
-  cpu_type         = "host"
+  name               = "win-11-testing"
+  target_node        = "proxmox"
+  vmid               = 901
+  description        = "Windows 11"
+  bios               = "ovmf"
+  start_at_node_boot = true
+  startup_shutdown {
+    order = 2
+  }
+
+  vm_state   = "running"
+  protection = true
+  boot       = "order=virtio0;sata0"
+  agent      = 1
+  qemu_os    = "win11"
+  memory     = 4096
+  cpu {
+    sockets = 1
+    cores   = 4
+    type    = "host"
+  }
   hotplug          = "network,disk,usb"
   nameserver       = "192.168.0.1"
   automatic_reboot = true
