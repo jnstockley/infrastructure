@@ -1,6 +1,9 @@
+locals {
+  api_base_url = "https://api.jstockley.com"
+}
+
 data "http" "racknerd_ip" {
-  depends_on = [cloudflare_dns_record.api]
-  url        = "${cloudflare_dns_record.api.name}/ip/racknerd"
+  url = "${local.api_base_url}/ip/racknerd"
 
   # Optional request headers
   request_headers = {
@@ -16,8 +19,7 @@ data "http" "racknerd_ip" {
 }
 
 data "http" "iowa_ip" {
-  depends_on = [cloudflare_dns_record.api]
-  url        = "${cloudflare_dns_record.api.name}/ip/iowa"
+  url = "${local.api_base_url}/ip/iowa"
 
   # Optional request headers
   request_headers = {
@@ -33,8 +35,7 @@ data "http" "iowa_ip" {
 }
 
 data "http" "chicago_ip" {
-  depends_on = [cloudflare_dns_record.api]
-  url        = "${cloudflare_dns_record.api.name}/ip/chicago"
+  url = "${local.api_base_url}/ip/chicago"
 
   # Optional request headers
   request_headers = {
