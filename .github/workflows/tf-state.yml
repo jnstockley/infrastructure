@@ -51,20 +51,28 @@ jobs:
           filters: |
             adguard:
               - 'tf/adguard/**'
+              - 'tf/.opentofu-version'
             authentik:
               - 'tf/authentik/**'
+              - 'tf/.opentofu-version'
             cloudflare:
               - 'tf/cloudflare/**'
+              - 'tf/.opentofu-version'
             gitea:
               - 'tf/gitea/**'
+              - 'tf/.opentofu-version'
             infisical:
               - 'tf/infisical/**'
+              - 'tf/.opentofu-version'
             proxmox:
               - 'tf/proxmox/**'
+              - 'tf/.opentofu-version'
             unifi:
               - 'tf/unifi/**'
+              - 'tf/.opentofu-version'
             uptime-kuma:
               - 'tf/uptime-kuma/**'
+              - 'tf/.opentofu-version'
 
   adguard:
     name: Run AdGuard
