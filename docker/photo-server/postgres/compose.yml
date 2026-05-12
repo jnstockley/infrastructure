@@ -30,7 +30,7 @@ services:
       - traefik.http.services.databasus.loadbalancer.server.port=4005
 
   pg-admin:
-    image: dpage/pgadmin4:9.14.0
+    image: dpage/pgadmin4:9.15.0
     container_name: pgadmin
     depends_on:
       - postgres-db
