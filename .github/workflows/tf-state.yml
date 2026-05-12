@@ -52,27 +52,35 @@ jobs:
             adguard:
               - 'tf/adguard/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             authentik:
               - 'tf/authentik/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             cloudflare:
               - 'tf/cloudflare/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             gitea:
               - 'tf/gitea/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             infisical:
               - 'tf/infisical/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             proxmox:
               - 'tf/proxmox/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             unifi:
               - 'tf/unifi/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
             uptime-kuma:
               - 'tf/uptime-kuma/**'
               - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
 
   adguard:
     name: Run AdGuard
