@@ -6,12 +6,14 @@ on:
       - main
     paths:
       - 'tf/**'
+      - '.github/workflows/tf-state.yml'
   pull_request:
     branches:
       - main
       - beta
     paths:
       - 'tf/**'
+      - '.github/workflows/tf-state.yml'
 
 jobs:
   lint:
