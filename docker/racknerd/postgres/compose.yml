@@ -34,7 +34,7 @@ services:
       - no-new-privileges:true
 
   pg-admin:
-    image: dpage/pgadmin4:9.14.0
+    image: dpage/pgadmin4:9.15.0
     container_name: pgadmin
     depends_on:
       - postgres
