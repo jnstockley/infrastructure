@@ -1,72 +1,58 @@
-resource "proxmox_vm_qemu" "debian-12-testing" {
-  name               = "debian-12-testing"
-  target_node        = "proxmox"
-  vmid               = 900
-  description        = "Debian 12"
-  bios               = "ovmf"
-  start_at_node_boot = true
-  startup_shutdown {
-    order = 1
-  }
-  vm_state   = "running"
-  protection = true
-  boot       = "order=virtio0;sata0"
-  agent      = 1
-  qemu_os    = "l26"
-  memory     = 24576
+resource "proxmox_vm_qemu" "debian-12" {
+  agent = 1
+  bios  = "seabios"
+  boot  = "order=virtio0;ide0"
   cpu {
+    type    = "host"
     sockets = 1
     cores   = 6
-    type    = "host"
   }
-  hotplug          = "network,disk,usb"
-  nameserver       = "192.168.0.1"
-  automatic_reboot = true
-
-  vga {
-    type = "std"
-  }
-
-  network {
-    id       = 0
-    model    = "virtio"
-    bridge   = "vmbr0"
-    firewall = true
-  }
+  define_connection_info = false
+  description            = "Debian 12 VM"
+  full_clone             = false
+  machine                = "q35"
+  memory                 = 49152
+  name                   = "debian-12"
+  qemu_os                = "l26"
+  scsihw                 = "virtio-scsi-single"
+  target_nodes           = ["proxmox"]
+  start_at_node_boot     = true
+  vmid                   = 100
 
   disks {
-    sata {
-      sata0 {
+    ide {
+      ide0 {
         cdrom {
-          iso = "local:iso/debian-12.7.0-amd64-netinst.iso"
+          iso = "local:iso/debian-amd64-netinst.iso"
         }
       }
     }
     virtio {
       virtio0 {
         passthrough {
-          asyncio   = "io_uring"
-          backup    = true
-          cache     = "none"
-          discard   = false
           file      = "/dev/disk/by-id/wwn-0x5002538d41e14f59"
-          readonly  = false
-          replicate = false
-          serial    = "S2R5NX0J414815P"
+          replicate = true
         }
       }
       virtio1 {
         passthrough {
-          asyncio   = "io_uring"
-          backup    = true
-          cache     = "none"
-          discard   = false
           file      = "/dev/disk/by-id/wwn-0x5001b448b02ee912"
-          readonly  = false
-          replicate = false
-          serial    = "22291W800281"
+          replicate = true
         }
       }
     }
+  }
+
+  network {
+    bridge   = "vmbr0"
+    firewall = true
+    id       = 0
+    model    = "virtio"
+  }
+
+  startup_shutdown {
+    order            = 1
+    shutdown_timeout = 0
+    startup_delay    = 0
   }
 }

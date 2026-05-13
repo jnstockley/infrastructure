@@ -3,7 +3,6 @@ import os
 import pytest
 import yaml
 from testcontainers.core.container import DockerContainer
-from testcontainers.core.waiting_utils import wait_container_is_ready
 from . import logger
 
 containers = os.environ["FILES"].split(",")
@@ -20,13 +19,16 @@ class TestContainers:
         ):
             self.path = container
 
-    def test_container(self):
+    def test_container(self, container: DockerContainer):
         if self.path is not None:
             try:
                 logger.info(f"Starting container from file: {self.path}")
                 image = get_docker_image_from_file(self.path)
             except Exception as e:
                 assert False, f"Unable to get docker image from file: {self.path}, {e}"
+
+            if not image:
+                assert False, f"Unable to get docker image from file: {self.path}"
 
             try:
                 start_container(image)
@@ -60,7 +62,6 @@ def start_container(image: str):
 
     try:
         with DockerContainer(image) as container:
-            wait_container_is_ready()
             return container
     except Exception as e:
         logger.error(f"Error starting container, {e}")
