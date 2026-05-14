@@ -1,0 +1,52 @@
+---
+name: forgejo
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:15.0.2
+    container_name: forgejo
+    volumes:
+      - ./data:/data
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=America/Chicago
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__service__DISABLE_REGISTRATION=true
+      - FORGEJO__openid__ENABLE_OPENID_SIGNIN=true
+      - FORGEJO__openid__ENABLE_OPENID_SIGNUP=false
+    env_file:
+      - ./.env
+    networks:
+      - proxy
+      - private
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:3000/api/healthz || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.forgejo.entrypoints=websecure
+      - traefik.http.routers.forgejo.rule=Host(`git.jstockley.com`)
+      - traefik.http.routers.forgejo.tls=true
+      - traefik.http.routers.forgejo.tls.certresolver=production
+      - traefik.http.routers.forgejo.service=forgejo
+      - traefik.http.services.forgejo.loadbalancer.server.port=3000
+      - traefik.docker.network=proxy
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
