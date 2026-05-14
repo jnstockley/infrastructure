@@ -413,7 +413,7 @@ output "adguard_dns_record_name" {
   value = cloudflare_dns_record.dns.name
 }
 
-output "gitea_dns_record_name" {
+output "forgejo_dns_record_name" {
   value = cloudflare_dns_record.git.name
 }
 
