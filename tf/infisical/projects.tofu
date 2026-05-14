@@ -105,10 +105,10 @@ resource "infisical_project_environment" "cloudflare" {
   slug       = "cloudflare"
 }
 
-resource "infisical_project_environment" "gitea" {
-  name       = "Gitea"
+resource "infisical_project_environment" "forgejo" {
+  name       = "Forgejo"
   project_id = infisical_project.open-tofu.id
-  slug       = "gitea"
+  slug       = "forgejo"
 }
 
 resource "infisical_project_environment" "infisical" {

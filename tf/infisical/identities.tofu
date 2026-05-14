@@ -249,7 +249,7 @@ resource "infisical_identity_oidc_auth" "open-tofu-oidc-auth" {
   oidc_discovery_url = "https://token.actions.githubusercontent.com"
   bound_issuer       = "https://token.actions.githubusercontent.com"
   bound_audiences    = ["https://github.com/jnstockley"]
-  bound_subject      = "repo:jnstockley/infrastructure:environment:(adguard|authentik|cloudflare|gitea|infisical|proxmox|unifi|uptime-kuma)"
+  bound_subject      = "repo:jnstockley/infrastructure:environment:(adguard|authentik|cloudflare|forgejo|infisical|proxmox|unifi|uptime-kuma)"
 }
 
 resource "infisical_project_identity" "open-tofu-project-identity" {
