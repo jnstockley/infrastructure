@@ -1,0 +1,24 @@
+# This file is maintained automatically by "tofu init".
+# Manual edits may be lost in future updates.
+
+provider "registry.opentofu.org/svalabs/forgejo" {
+  version     = "1.4.3"
+  constraints = "1.4.3"
+  hashes = [
+    "h1:u8Li/v7W1D4mBMgSbuumQPbLKfUAwyT5CA7KpGDKtHU=",
+    "zh:029546094a3b83009687119d169a021ddbe3a72554bfa93f2e01dfa10951df2d",
+    "zh:034d58683de499963d54a0d65a80d6bf38629cde4209d8ae9af1972efe5c97a5",
+    "zh:0df5fec01645ce413c6d429f06fc059dd8cd2048a39b9a7c616880e246bd7147",
+    "zh:18aa3fd02f0f27cffbe835e67c6d314a3acad486f6aca37e5c060b8401312aa8",
+    "zh:338f2d9e7fde91feb4b8b60f04c69b2a303e06a424782c775981fb46e5fdcbcc",
+    "zh:3ba40154f7662f3915787bc906476e94e15c821ddf7d00302a4b3ab7cb43c981",
+    "zh:596162d6c33eec7ac2b8d8957fdae31639e3c00509b32c5d08f29edceeb19a48",
+    "zh:676ec97229de99bdacb7191909d69243dc369c3f864f9543291dc3a64c278684",
+    "zh:78f59534116e5ae57199b5295256010ce0b3a3516aa8cbc1876a3b0d2c0c2073",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
+    "zh:988f9ee7cd628083cfac0803e4cf28991156b59dbde1ddb17b3012927ffa3522",
+    "zh:a95cc225fe94cf1a41c3ac48979df105afccf517a94d45ebae9d4d3f030f77d5",
+    "zh:b8fe8a34a2869415433cc35925ae96c8253e9914835c567635799bd1dd306868",
+    "zh:d619f9bfb815352fda85929b9db296bc3817a28e6388d24a720256b5a6588193",
+  ]
+}
