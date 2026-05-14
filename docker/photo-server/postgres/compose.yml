@@ -12,6 +12,7 @@ services:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
     networks:
+      - proxy
       - private
     restart: unless-stopped
     healthcheck:
