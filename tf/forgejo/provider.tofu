@@ -1,8 +1,8 @@
 terraform {
   required_providers {
-    gitea = {
-      source  = "go-gitea/gitea"
-      version = "0.7.0"
+    forgejo = {
+      source  = "svalabs/forgejo"
+      version = "1.4.3"
     }
   }
 
@@ -31,7 +31,7 @@ variable "gitlab_access_token" {
   sensitive = true
 }
 
-variable "gitea_token" {
+variable "forgejo_token" {
   type      = string
   sensitive = true
 }
@@ -46,12 +46,12 @@ variable "research_git_token" {
   sensitive = true
 }
 
-variable "gitea_password" {
+variable "forgejo_password" {
   type      = string
   sensitive = true
 }
 
-provider "gitea" {
-  base_url = "https://${data.terraform_remote_state.cloudflare.outputs.gitea_dns_record_name}"
-  token    = var.gitea_token
+provider "forgejo" {
+  host      = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}"
+  api_token = var.forgejo_token
 }

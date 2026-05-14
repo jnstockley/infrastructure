@@ -13,8 +13,8 @@ resource "authentik_group" "cloudflare-access" {
   is_superuser = false
 }
 
-resource "authentik_group" "gitea-access" {
-  name         = "Gitea Access"
+resource "authentik_group" "forgejo-access" {
+  name         = "Forgejo Access"
   is_superuser = false
 }
 

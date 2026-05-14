@@ -37,7 +37,7 @@ jobs:
       adguard: ${{ steps.filter.outputs.adguard }}
       authentik: ${{ steps.filter.outputs.authentik }}
       cloudflare: ${{ steps.filter.outputs.cloudflare }}
-      gitea: ${{ steps.filter.outputs.gitea }}
+      forgejo: ${{ steps.filter.outputs.forgejo }}
       infisical: ${{ steps.filter.outputs.infisical }}
       proxmox: ${{ steps.filter.outputs.proxmox }}
       unifi: ${{ steps.filter.outputs.unifi }}
@@ -63,8 +63,8 @@ jobs:
               - 'tf/cloudflare/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
-            gitea:
-              - 'tf/gitea/**'
+            forgejo:
+              - 'tf/forgejo/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
             infisical:
@@ -266,12 +266,12 @@ jobs:
             tofu apply -auto-approve tfplan
           fi
 
-  gitea:
-    name: Run Gitea
+  forgejo:
+    name: Run Forgejo
     runs-on: ubuntu-latest
     needs: [lint, changes]
-    if: needs.changes.outputs.gitea == 'true'
-    environment: gitea
+    if: needs.changes.outputs.forgejo == 'true'
+    environment: forgejo
     permissions:  # Needed for Infisical
       id-token: write  # Required for OIDC authentication
       contents: read   # Required for checking out code
@@ -291,11 +291,11 @@ jobs:
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
           domain: "https://secrets.jstockley.com"
           project-slug: "open-tofu"
-          env-slug: "gitea"
+          env-slug: "forgejo"
 
-      - name: Init Gitea
+      - name: Init Forgejo
         run: |
-          cd tf/gitea
+          cd tf/forgejo
           tofu init \
           -backend-config=address=${{env.TF_ADDRESS}} \
           -backend-config=lock_address=${{env.TF_ADDRESS}}/lock \
@@ -308,21 +308,21 @@ jobs:
           -reconfigure \
           -upgrade
 
-      - name: Validate Gitea
+      - name: Validate Forgejo
         run: |
-          cd tf/gitea
+          cd tf/forgejo
           tofu validate
 
-      - name: Plan and Apply Gitea
+      - name: Plan and Apply Forgejo
         env:
-          TF_VAR_gitea_token: ${{ env.GITEA_TOKEN }}
-          TF_VAR_gitea_password: ${{ env.GITEA_USER_PASSWORD }}
+          TF_VAR_forgejo_token: ${{ env.FORGEJO_TOKEN }}
+          TF_VAR_forgejo_password: ${{ env.FORGEJO_USER_PASSWORD }}
           TF_VAR_github_token: ${{ env.GITHUB_TOKEN }}
           TF_VAR_research_git_token: ${{ env.RESEARCH_GIT_TOKEN }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
-          cd tf/gitea
+          cd tf/forgejo
           tofu plan -out=tfplan
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
             tofu apply -auto-approve tfplan
