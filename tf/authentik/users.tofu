@@ -6,7 +6,7 @@ resource "authentik_user" "jackstockley" {
     authentik_group.authentik_admins.id,
     authentik_group.airflow-access.id,
     authentik_group.cloudflare-access.id,
-    authentik_group.gitea-access.id,
+    authentik_group.forgejo-access.id,
     authentik_group.home-assistant-access.id,
     authentik_group.immich-access.id,
     authentik_group.nextcloud-access.id,

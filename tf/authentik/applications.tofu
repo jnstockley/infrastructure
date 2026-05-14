@@ -180,18 +180,18 @@ resource "authentik_policy_binding" "airflow-dev-access" {
   order  = 0
 }
 
-resource "authentik_provider_oauth2" "gitea" {
+resource "authentik_provider_oauth2" "forgejo" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
       matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.gitea_dns_record_name}/user/oauth2/Authentik/callback"
+      url           = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}/user/oauth2/Authentik/callback"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
   client_id          = "aFPmalIM8sOPGEYZbsaTQ2ZRpqtFEZIuHesZeMhY"
   invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
-  name               = "Gitea"
+  name               = "Forgejo"
   property_mappings = [
     "4a51d5ca-8d95-4145-8fed-e400b9aac760",
     "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
@@ -200,16 +200,16 @@ resource "authentik_provider_oauth2" "gitea" {
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
 }
 
-resource "authentik_application" "gitea" {
-  name              = "Gitea"
-  slug              = "gitea"
-  protocol_provider = authentik_provider_oauth2.gitea.id
-  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/gitea.svg"
+resource "authentik_application" "forgejo" {
+  name              = "Forgejo"
+  slug              = "forgejo"
+  protocol_provider = authentik_provider_oauth2.forgejo.id
+  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/forgejo.svg"
 }
 
-resource "authentik_policy_binding" "gitea" {
-  target = authentik_application.gitea.uuid
-  group  = authentik_group.gitea-access.id
+resource "authentik_policy_binding" "forgejo" {
+  target = authentik_application.forgejo.uuid
+  group  = authentik_group.forgejo-access.id
   order  = 0
 }
 
