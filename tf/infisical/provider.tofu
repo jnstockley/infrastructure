@@ -2,7 +2,7 @@ terraform {
   required_providers {
     infisical = {
       source  = "Infisical/infisical"
-      version = "0.16.23"
+      version = "0.16.24"
     }
   }
 
