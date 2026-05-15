@@ -63,7 +63,7 @@ variable "uptime_kuma_public_password" {
   sensitive = true
 }
 
-variable "nextcloud_talk_local_conversation_token" {
+variable "nextcloud_talk_conversation_token" {
   type      = string
   sensitive = true
 }
@@ -73,10 +73,14 @@ variable "nextcloud_talk_local_secret" {
   sensitive = true
 }
 
+variable "nextcloud_talk_public_secret" {
+  type      = string
+  sensitive = true
+}
+
 provider "uptimekuma" {
   alias    = "local"
   endpoint = "https://status.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   username = var.uptime_kuma_local_username
   password = var.uptime_kuma_local_password
-
 }

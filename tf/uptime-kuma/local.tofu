@@ -2,7 +2,7 @@ resource "uptimekuma_notification_nextcloudtalk" "nextcloud-talk" {
   provider           = uptimekuma.local
   name               = "Nextcloud Talk Notifications"
   host               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}"
-  conversation_token = var.nextcloud_talk_local_conversation_token
+  conversation_token = var.nextcloud_talk_conversation_token
   bot_secret         = var.nextcloud_talk_local_secret
   is_active          = true
   is_default         = false

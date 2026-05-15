@@ -590,8 +590,9 @@ jobs:
           TF_VAR_uptime_kuma_local_username: ${{ env.UPTIME_KUMA_LOCAL_USERNAME }}
           TF_VAR_uptime_kuma_local_password: ${{ env.UPTIME_KUMA_LOCAL_PASSWORD }}
           TF_VAR_smtp_password: ${{ env.SMTP_PASSWORD }}
-          TF_VAR_nextcloud_talk_local_conversation_token: ${{ env.UPTIME_KUMA_LOCAL_CONVERSATION_TOKEN }}
+          TF_VAR_nextcloud_talk_conversation_token: ${{ env.UPTIME_KUMA_CONVERSATION_TOKEN }}
           TF_VAR_nextcloud_talk_local_secret: ${{ env.UPTIME_KUMA_LOCAL_SECRET }}
+          TF_VAR_nextcloud_talk_public_secret: ${{ env.UPTIME_KUMA_PUBLIC_SECRET }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
