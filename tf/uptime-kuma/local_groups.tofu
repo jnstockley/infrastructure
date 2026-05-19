@@ -88,14 +88,14 @@ resource "uptimekuma_monitor_group" "immich-group" {
   name = "Immich"
 }
 
-resource "uptimekuma_monitor_group" "infiscal-group" {
+resource "uptimekuma_monitor_group" "infisical-group" {
   provider    = uptimekuma.local
   interval    = 60
   max_retries = 3
   notification_ids = [
     uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
   ]
-  name = "Infiscal"
+  name = "Infisical"
 }
 
 resource "uptimekuma_monitor_group" "mariadb-group" {
@@ -226,4 +226,64 @@ resource "uptimekuma_monitor_group" "wireguard-group" {
     uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
   ]
   name = "WireGuard"
+}
+
+resource "uptimekuma_monitor_group" "home-assistant-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Home Assistant"
+}
+
+resource "uptimekuma_monitor_group" "pikvm-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "PiKVM"
+}
+
+resource "uptimekuma_monitor_group" "proxmox-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_smtp.smtp-failover.id
+  ]
+  name = "Proxmox"
+}
+
+resource "uptimekuma_monitor_group" "synology-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Synology"
+}
+
+resource "uptimekuma_monitor_group" "unifi-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Unifi"
+}
+
+resource "uptimekuma_monitor_group" "racknerd-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Racknerd"
 }

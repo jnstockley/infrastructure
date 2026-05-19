@@ -75,17 +75,6 @@ resource "uptimekuma_monitor_docker" "authentik-worker-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "authentik-proxy-docker" {
-  provider         = uptimekuma.local
-  name             = "Proxy Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "ak-outpost-traefik-output"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.authentik-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "beszel-docker" {
   provider         = uptimekuma.local
   name             = "Dashboard Container"
@@ -291,7 +280,7 @@ resource "uptimekuma_monitor_docker" "infisical-docker" {
   docker_container = "infisical-backend"
   interval         = 60
   active           = true
-  parent           = uptimekuma_monitor_group.infiscal-group.id
+  parent           = uptimekuma_monitor_group.infisical-group.id
   max_retries      = 0
 }
 
@@ -612,4 +601,455 @@ resource "uptimekuma_monitor_docker" "wireguard-docker" {
   active           = true
   parent           = uptimekuma_monitor_group.wireguard-group.id
   max_retries      = 0
+}
+
+resource "uptimekuma_monitor_http" "adguard-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://dns.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.adguard-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "airflow-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://airflow.local.jstockley.com/api/v2/monitor/health"
+  keyword             = "unhealthy"
+  invert_keyword      = true
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.airflow-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "authentik-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://idp.jstockley.com/-/health/ready/"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.authentik-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "beszel-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://stats.local.jstockley.com/api/health"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.beszel-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "bitwarden-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://vault.jstockley.com/alive"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.bitwarden-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "databasus-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://databasus.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.databasus-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "forgejo-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://git.jstockley.com/api/healthz"
+  json_path           = "$.status"
+  expected_value      = "pass"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.forgejo-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "immich-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://photos.local.jstockley.com/api/server/ping"
+  json_path           = "$.res"
+  expected_value      = "pong"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.immich-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "immich-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://photos.jstockley.com/api/server/ping"
+  json_path           = "$.res"
+  expected_value      = "pong"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.immich-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "infisical-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://secrets.jstockley.com/api/status"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.infisical-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "phpmyadmin-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://phpmyadmin.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.mariadb-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "mend-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://mend.jstockley.com/health"
+  keyword             = "OK"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.mend-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://mc.jstockley.com/api/v2/crafty/check"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.minecraft-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "n8n-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://n8n.local.jstockley.com/healthz/readiness"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.n8n-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "n8n-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://n8n.jstockley.com/healthz/readiness"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.n8n-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "nextcloud-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://nextcloud.jstockley.com/status.php"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.nextcloud-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (AIO)"
+  url                 = "https://nextcloud-aio.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.nextcloud-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "openspeedtest-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://speed.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.openspeedtest-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "openspeedtest-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://speed.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.openspeedtest-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "paperless-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://paperless.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.paperless-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "pgadmin-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://pgadmin.local.jstockley.com/misc/ping"
+  keyword             = "PING"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.postgres-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "syncthing-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://backup.local.jstockley.com/rest/noauth/health"
+  json_path           = "$.status"
+  expected_value      = "OK"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.syncthing-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "traefik-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://traefik.local.jstockley.com/ping"
+  keyword             = "OK"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.traefik-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "unifi-toolkit-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://unifi-toolkit.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.unifi-toolkit-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "home-assistant-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://home.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.home-assistant-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "home-assistant-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://home.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.home-assistant-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "pikvm-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://pikvm.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.pikvm-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "pikvm-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.24"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.pikvm-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://proxmox.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.proxmox-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.18:8006"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.proxmox-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "synology-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://nas.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.synology-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://nas.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.synology-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "synology-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.133:5001"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.synology-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "unifi-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://unifi.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.unifi-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "racknerd-http" {
+  provider            = uptimekuma.local
+  name                = "API"
+  url                 = "https://api.jstockley.com/health-check/"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.racknerd-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_ping" "racknerd-ping" {
+  provider    = uptimekuma.local
+  name        = "PING"
+  hostname    = "vpn.jstockley.com"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  parent      = uptimekuma_monitor_group.racknerd-group.id
 }
