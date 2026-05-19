@@ -88,14 +88,14 @@ resource "uptimekuma_monitor_group" "immich-group" {
   name = "Immich"
 }
 
-resource "uptimekuma_monitor_group" "infiscal-group" {
+resource "uptimekuma_monitor_group" "infisical-group" {
   provider    = uptimekuma.local
   interval    = 60
   max_retries = 3
   notification_ids = [
     uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
   ]
-  name = "Infiscal"
+  name = "Infisical"
 }
 
 resource "uptimekuma_monitor_group" "mariadb-group" {
