@@ -2,7 +2,7 @@ terraform {
   required_providers {
     forgejo = {
       source  = "svalabs/forgejo"
-      version = "1.4.3"
+      version = "1.4.4"
     }
   }
 
