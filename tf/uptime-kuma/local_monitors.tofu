@@ -909,3 +909,123 @@ resource "uptimekuma_monitor_http" "unifi-toolkit-http" {
   parent              = uptimekuma_monitor_group.unifi-toolkit-group.id
   max_retries         = 0
 }
+
+resource "uptimekuma_monitor_http" "home-assistant-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://home.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.home-assistant-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "home-assistant-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://home.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.home-assistant-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "pikvm-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://pikvm.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.pikvm-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "pikvm-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.24"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.pikvm-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://proxmox.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.proxmox-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.18:8006"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.proxmox-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "synology-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://nas.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.synology-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "proxmox-local-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage (Local)"
+  url                 = "https://nas.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.synology-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "synology-ip-http" {
+  provider     = uptimekuma.local
+  name         = "WebPage (IP)"
+  url          = "https://192.168.1.133:5001"
+  cache_buster = true
+  ignore_tls   = true
+  interval     = 60
+  active       = true
+  parent       = uptimekuma_monitor_group.synology-group.id
+  max_retries  = 0
+}
+
+resource "uptimekuma_monitor_http" "unifi-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://unifi.local.jstockley.com"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.unifi-group.id
+  max_retries         = 0
+}

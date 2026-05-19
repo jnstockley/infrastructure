@@ -227,3 +227,53 @@ resource "uptimekuma_monitor_group" "wireguard-group" {
   ]
   name = "WireGuard"
 }
+
+resource "uptimekuma_monitor_group" "home-assistant-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Home Assistant"
+}
+
+resource "uptimekuma_monitor_group" "pikvm-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "PiKVM"
+}
+
+resource "uptimekuma_monitor_group" "proxmox-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_smtp.smtp-failover.id
+  ]
+  name = "Proxmox"
+}
+
+resource "uptimekuma_monitor_group" "synology-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Synology"
+}
+
+resource "uptimekuma_monitor_group" "unifi-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Unifi"
+}
