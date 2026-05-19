@@ -1029,3 +1029,27 @@ resource "uptimekuma_monitor_http" "unifi-http" {
   parent              = uptimekuma_monitor_group.unifi-group.id
   max_retries         = 0
 }
+
+resource "uptimekuma_monitor_http_json_query" "racknerd-http" {
+  provider            = uptimekuma.local
+  name                = "API"
+  url                 = "https://api.jstockley.com/health-check/"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.racknerd-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_ping" "racknerd-ping" {
+  provider    = uptimekuma.local
+  name        = "PING"
+  hostname    = "vpn.jstockley.com"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  parent      = uptimekuma_monitor_group.racknerd-group.id
+}

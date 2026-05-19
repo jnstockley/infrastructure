@@ -277,3 +277,13 @@ resource "uptimekuma_monitor_group" "unifi-group" {
   ]
   name = "Unifi"
 }
+
+resource "uptimekuma_monitor_group" "racknerd-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+  ]
+  name = "Racknerd"
+}
