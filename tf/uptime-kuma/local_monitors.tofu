@@ -75,17 +75,6 @@ resource "uptimekuma_monitor_docker" "authentik-worker-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "authentik-proxy-docker" {
-  provider         = uptimekuma.local
-  name             = "Proxy Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "ak-outpost-traefik-output"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.authentik-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "beszel-docker" {
   provider         = uptimekuma.local
   name             = "Dashboard Container"
