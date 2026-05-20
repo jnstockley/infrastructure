@@ -47,12 +47,14 @@ jobs:
 
   trivy-docker-images:
     name: "Trivy · Docker Image CVE Scanning"
+    environment: security
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
       security-events: write
       actions: read
+      id-token: write  # required for OIDC authentication with Infisical
 
     steps:
       - name: Checkout repository
@@ -88,6 +90,22 @@ jobs:
           echo "Images to scan:"
           printf '%s\n' "$IMAGE_LIST"
           printf '%s\n' "$IMAGE_LIST" > /tmp/images.txt
+
+      - name: Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.16
+        with:
+          method: "oidc"
+          identity-id: '560c0540-b603-4725-a149-e1270a08a6db'
+          domain: "https://secrets.jstockley.com"
+          project-slug: ${{ github.event.repository.name }}
+          env-slug: "security"
+
+      - name: Log in to Docker Hub
+        if: steps.dockerfile_check.outputs.exists == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       # Scan each image individually and write a per-image SARIF file.
       # --exit-code 0 means the step never fails due to findings alone;
