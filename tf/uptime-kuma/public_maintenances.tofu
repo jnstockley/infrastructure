@@ -25,5 +25,5 @@ resource "uptimekuma_maintenance" "public-router-reboot-maintenance" {
 resource "uptimekuma_maintenance_monitors" "public-router-reboot-maintenance-monitors" {
   provider       = uptimekuma.public
   maintenance_id = uptimekuma_maintenance.public-router-reboot-maintenance.id
-  monitor_ids = [uptimekuma_monitor_group.iowa-group.id]
+  monitor_ids    = [uptimekuma_monitor_group.iowa-group.id]
 }
