@@ -3,7 +3,7 @@ resource "uptimekuma_monitor_group" "adguard-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "AdGuard Home"
 }
@@ -13,7 +13,7 @@ resource "uptimekuma_monitor_group" "airflow-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Airflow"
 }
@@ -23,7 +23,7 @@ resource "uptimekuma_monitor_group" "authentik-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Authentik"
 }
@@ -33,7 +33,7 @@ resource "uptimekuma_monitor_group" "beszel-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Beszel"
 }
@@ -43,7 +43,7 @@ resource "uptimekuma_monitor_group" "bitwarden-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Bitwarden"
 }
@@ -53,7 +53,7 @@ resource "uptimekuma_monitor_group" "bsn-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "BSN"
 }
@@ -63,7 +63,7 @@ resource "uptimekuma_monitor_group" "databasus-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Databasus"
 }
@@ -73,7 +73,7 @@ resource "uptimekuma_monitor_group" "forgejo-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Forgejo"
 }
@@ -83,7 +83,7 @@ resource "uptimekuma_monitor_group" "immich-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Immich"
 }
@@ -93,7 +93,7 @@ resource "uptimekuma_monitor_group" "infisical-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Infisical"
 }
@@ -103,7 +103,7 @@ resource "uptimekuma_monitor_group" "mariadb-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "MariaDB"
 }
@@ -113,7 +113,7 @@ resource "uptimekuma_monitor_group" "mend-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Mend"
 }
@@ -123,7 +123,7 @@ resource "uptimekuma_monitor_group" "minecraft-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Minecraft"
 }
@@ -133,7 +133,7 @@ resource "uptimekuma_monitor_group" "n8n-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "n8n"
 }
@@ -143,7 +143,7 @@ resource "uptimekuma_monitor_group" "nextcloud-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_smtp.smtp-failover.id
+    uptimekuma_notification_smtp.local-smtp-failover.id
   ]
   name = "Nextcloud"
 }
@@ -153,7 +153,7 @@ resource "uptimekuma_monitor_group" "openspeedtest-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "OpenSpeedTest"
 }
@@ -163,7 +163,7 @@ resource "uptimekuma_monitor_group" "paperless-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Paperless"
 }
@@ -173,7 +173,7 @@ resource "uptimekuma_monitor_group" "postgres-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "PostgreSQL"
 }
@@ -183,7 +183,7 @@ resource "uptimekuma_monitor_group" "redis-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Redis"
 }
@@ -193,7 +193,7 @@ resource "uptimekuma_monitor_group" "syncthing-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Synchting"
 }
@@ -203,7 +203,7 @@ resource "uptimekuma_monitor_group" "traefik-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Traefik"
 }
@@ -213,7 +213,7 @@ resource "uptimekuma_monitor_group" "unifi-toolkit-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Unifi Toolkit"
 }
@@ -223,7 +223,7 @@ resource "uptimekuma_monitor_group" "wireguard-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "WireGuard"
 }
@@ -233,7 +233,7 @@ resource "uptimekuma_monitor_group" "home-assistant-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Home Assistant"
 }
@@ -243,7 +243,7 @@ resource "uptimekuma_monitor_group" "pikvm-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "PiKVM"
 }
@@ -253,7 +253,7 @@ resource "uptimekuma_monitor_group" "proxmox-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_smtp.smtp-failover.id
+    uptimekuma_notification_smtp.local-smtp-failover.id
   ]
   name = "Proxmox"
 }
@@ -263,7 +263,7 @@ resource "uptimekuma_monitor_group" "synology-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Synology"
 }
@@ -273,7 +273,7 @@ resource "uptimekuma_monitor_group" "unifi-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Unifi"
 }
@@ -283,7 +283,7 @@ resource "uptimekuma_monitor_group" "racknerd-group" {
   interval    = 60
   max_retries = 3
   notification_ids = [
-    uptimekuma_notification_nextcloudtalk.nextcloud-talk.id
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Racknerd"
 }
