@@ -1,4 +1,4 @@
-resource "uptimekuma_notification_nextcloudtalk" "nextcloud-talk" {
+resource "uptimekuma_notification_nextcloudtalk" "local-nextcloud-talk" {
   provider           = uptimekuma.local
   name               = "Nextcloud Talk Notifications"
   host               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}"
@@ -8,7 +8,7 @@ resource "uptimekuma_notification_nextcloudtalk" "nextcloud-talk" {
   is_default         = false
 }
 
-resource "uptimekuma_notification_smtp" "smtp-failover" {
+resource "uptimekuma_notification_smtp" "local-smtp-failover" {
   provider = uptimekuma.local
   name     = "SMTP Notifications"
 
