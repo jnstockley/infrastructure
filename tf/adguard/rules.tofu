@@ -45,6 +45,8 @@ resource "adguard_user_rules" "rules" {
     "@@||tailscale.com^$important",
     "@@||linktr.ee^$important",
     "@@||a.co^$important",
-    "@@||one.one.one.one^$important"
+    "@@||one.one.one.one^$important",
+    "@@||us-east-2.ads.digital.disneyadvertising.com^$client='TLC TV'",
+    "@@||us-east-1.ads.digital.disneyadvertising.com^$client='TLC TV'"
   ]
 }
