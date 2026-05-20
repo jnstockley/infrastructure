@@ -84,3 +84,10 @@ provider "uptimekuma" {
   username = var.uptime_kuma_local_username
   password = var.uptime_kuma_local_password
 }
+
+provider "uptimekuma" {
+  alias    = "public"
+  endpoint = "https://${data.terraform_remote_state.cloudflare.outputs.status_dns_record_name}"
+  username = var.uptime_kuma_public_username
+  password = var.uptime_kuma_public_password
+}
