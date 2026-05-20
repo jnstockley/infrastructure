@@ -11,6 +11,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "racknerd-config" {
     ingress = [
       {
         hostname = cloudflare_dns_record.traefik.name
+        path     = "/ping"
+        service  = "http://traefik:8082"
+      },
+      {
+        hostname = cloudflare_dns_record.traefik.name
         service  = "http://traefik:8080"
       },
       {
