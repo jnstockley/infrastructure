@@ -17,6 +17,12 @@ resource "infisical_project_environment" "photo-server" {
   slug       = "photo-server"
 }
 
+resource "infisical_project_environment" "security" {
+  name       = "Security"
+  project_id = infisical_project.infrastructure.id
+  slug       = "security"
+}
+
 resource "infisical_project" "bsn" {
   name        = "bsn"
   slug        = "bsn"
