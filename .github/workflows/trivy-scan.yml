@@ -11,6 +11,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  changes:
+    name: "Detect changed paths"
+    runs-on: ubuntu-latest
+    outputs:
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Check for changes in docker/
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          filters: |
+            docker:
+              - 'docker/**'
+
   trivy-fs-scan:
     name: "Trivy · Filesystem (Deps, Secrets, Misconfig)"
     runs-on: ubuntu-latest
@@ -47,6 +64,11 @@ jobs:
 
   trivy-docker-images:
     name: "Trivy · Docker Image CVE Scanning"
+    needs: changes
+    if: >
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      needs.changes.outputs.docker == 'true'
     environment: security
     runs-on: ubuntu-latest
 
