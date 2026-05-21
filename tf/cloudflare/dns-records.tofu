@@ -449,7 +449,7 @@ output "pgadmin_dns_record_name" {
   value = cloudflare_dns_record.pgadmin.name
 }
 
-output "phpymyadmin_dns_record_name" {
+output "phpmyadmin_dns_record_name" {
   value = cloudflare_dns_record.phpymyadmin.name
 }
 

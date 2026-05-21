@@ -177,7 +177,7 @@ resource "uptimekuma_monitor_docker" "public-wireguard-docker" {
 resource "uptimekuma_monitor_http_keyword" "public-airflow-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://airflow.jstockley.com/api/v2/monitor/health"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.airflow_dns_record_name}/api/v2/monitor/health"
   keyword             = "unhealthy"
   invert_keyword      = true
   cache_buster        = true
@@ -191,7 +191,7 @@ resource "uptimekuma_monitor_http_keyword" "public-airflow-http" {
 resource "uptimekuma_monitor_http_json_query" "api-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://api.jstockley.com/health-check/"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.api_dns_record_name}/health-check/"
   json_path           = "$.status"
   expected_value      = "ok"
   cache_buster        = true
@@ -205,7 +205,7 @@ resource "uptimekuma_monitor_http_json_query" "api-http" {
 resource "uptimekuma_monitor_http" "public-databasus-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://databasus.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.databasus_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -217,7 +217,7 @@ resource "uptimekuma_monitor_http" "public-databasus-http" {
 resource "uptimekuma_monitor_http" "public-phpmyadmin-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://phpmyadmin.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.phpmyadmin_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -229,7 +229,7 @@ resource "uptimekuma_monitor_http" "public-phpmyadmin-http" {
 resource "uptimekuma_monitor_http_keyword" "public-pgadmin-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://pgadmin.jstockley.com/misc/ping"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.pgadmin_dns_record_name}/misc/ping"
   keyword             = "PING"
   cache_buster        = true
   expiry_notification = true
@@ -242,7 +242,7 @@ resource "uptimekuma_monitor_http_keyword" "public-pgadmin-http" {
 resource "uptimekuma_monitor_http_json_query" "public-syncthing-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://backup.jstockley.com/rest/noauth/health"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.backup_dns_record_name}/rest/noauth/health"
   json_path           = "$.status"
   expected_value      = "OK"
   cache_buster        = true
@@ -256,7 +256,7 @@ resource "uptimekuma_monitor_http_json_query" "public-syncthing-http" {
 resource "uptimekuma_monitor_http_keyword" "public-traefik-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://traefik.jstockley.com/ping"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.traefik_dns_record_name}/ping"
   keyword             = "OK"
   cache_buster        = true
   expiry_notification = true
@@ -269,7 +269,7 @@ resource "uptimekuma_monitor_http_keyword" "public-traefik-http" {
 resource "uptimekuma_monitor_http" "iowa-http" {
   provider            = uptimekuma.public
   name                = "DNS"
-  url                 = "https://dns.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -281,7 +281,7 @@ resource "uptimekuma_monitor_http" "iowa-http" {
 resource "uptimekuma_monitor_ping" "iowa-ping" {
   provider    = uptimekuma.public
   name        = "PING"
-  hostname    = "iowa.vpn.jstockley.com"
+  hostname    = data.terraform_remote_state.cloudflare.outputs.iowa_vpn_dns_record_name
   interval    = 60
   max_retries = 0
   active      = false
