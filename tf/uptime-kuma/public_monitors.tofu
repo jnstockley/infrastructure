@@ -284,6 +284,6 @@ resource "uptimekuma_monitor_ping" "iowa-ping" {
   hostname    = "iowa.vpn.jstockley.com"
   interval    = 60
   max_retries = 0
-  active      = true
+  active      = false
   parent      = uptimekuma_monitor_group.iowa-group.id
 }
