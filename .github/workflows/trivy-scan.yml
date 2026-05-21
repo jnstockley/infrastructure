@@ -128,6 +128,13 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ env.DOCKER_PASSWORD }}
 
+      - name: Log in to N8N Docker Hub
+        uses: docker/login-action@v4
+        with:
+          registry: docker.n8n.io
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
       # Scan each image individually and write a per-image SARIF file.
       # --exit-code 0 means the step never fails due to findings alone;
       # the SARIF upload is what surfaces the results in the Security tab.
