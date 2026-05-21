@@ -1053,3 +1053,55 @@ resource "uptimekuma_monitor_ping" "racknerd-ping" {
   active      = true
   parent      = uptimekuma_monitor_group.racknerd-group.id
 }
+
+resource "uptimekuma_monitor_http_keyword" "youtube-livestream" {
+  provider            = uptimekuma.local
+  name                = "Livestream"
+  url                 = "https://www.youtube.com/feeds/videos.xml?playlist_id=UULVXuqSBlHAE6Xw-yeJA0Tunw"
+  keyword             = "Linus Tech Tips"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.youtube-rss.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "youtube-video" {
+  provider            = uptimekuma.local
+  name                = "Video"
+  url                 = "https://www.youtube.com/feeds/videos.xml?playlist_id=UULFXuqSBlHAE6Xw-yeJA0Tunw"
+  keyword             = "Linus Tech Tips"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.youtube-rss.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "youtube-short" {
+  provider            = uptimekuma.local
+  name                = "Short"
+  url                 = "https://www.youtube.com/feeds/videos.xml?playlist_id=UUSHXuqSBlHAE6Xw-yeJA0Tunw"
+  keyword             = "Linus Tech Tips"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.youtube-rss.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "youtube-channel" {
+  provider            = uptimekuma.local
+  name                = "Channel"
+  url                 = "https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw"
+  keyword             = "Linus Tech Tips"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.youtube-rss.id
+  max_retries         = 0
+}

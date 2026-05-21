@@ -287,3 +287,13 @@ resource "uptimekuma_monitor_group" "racknerd-group" {
   ]
   name = "Racknerd"
 }
+
+resource "uptimekuma_monitor_group" "youtube-rss" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "YouTube RSS"
+}
