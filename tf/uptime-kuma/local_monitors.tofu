@@ -606,7 +606,7 @@ resource "uptimekuma_monitor_docker" "wireguard-docker" {
 resource "uptimekuma_monitor_http" "adguard-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://dns.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -618,7 +618,7 @@ resource "uptimekuma_monitor_http" "adguard-http" {
 resource "uptimekuma_monitor_http_keyword" "airflow-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://airflow.local.jstockley.com/api/v2/monitor/health"
+  url                 = "https://airflow.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/v2/monitor/health"
   keyword             = "unhealthy"
   invert_keyword      = true
   cache_buster        = true
@@ -632,7 +632,7 @@ resource "uptimekuma_monitor_http_keyword" "airflow-http" {
 resource "uptimekuma_monitor_http" "authentik-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://idp.jstockley.com/-/health/ready/"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.authentik_dns_record_name}/-/health/ready/"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -644,7 +644,7 @@ resource "uptimekuma_monitor_http" "authentik-http" {
 resource "uptimekuma_monitor_http" "beszel-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://stats.local.jstockley.com/api/health"
+  url                 = "https://stats.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/health"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -656,7 +656,7 @@ resource "uptimekuma_monitor_http" "beszel-http" {
 resource "uptimekuma_monitor_http" "bitwarden-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://vault.jstockley.com/alive"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.vault_dns_record_name}/alive"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -668,7 +668,7 @@ resource "uptimekuma_monitor_http" "bitwarden-http" {
 resource "uptimekuma_monitor_http" "databasus-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://databasus.local.jstockley.com"
+  url                 = "https://databasus.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -680,7 +680,7 @@ resource "uptimekuma_monitor_http" "databasus-http" {
 resource "uptimekuma_monitor_http_json_query" "forgejo-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://git.jstockley.com/api/healthz"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}/api/healthz"
   json_path           = "$.status"
   expected_value      = "pass"
   cache_buster        = true
@@ -694,7 +694,7 @@ resource "uptimekuma_monitor_http_json_query" "forgejo-http" {
 resource "uptimekuma_monitor_http_json_query" "immich-local-http" {
   provider            = uptimekuma.local
   name                = "WebPage (Local)"
-  url                 = "https://photos.local.jstockley.com/api/server/ping"
+  url                 = "https://photos.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/server/ping"
   json_path           = "$.res"
   expected_value      = "pong"
   cache_buster        = true
@@ -708,7 +708,7 @@ resource "uptimekuma_monitor_http_json_query" "immich-local-http" {
 resource "uptimekuma_monitor_http_json_query" "immich-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://photos.jstockley.com/api/server/ping"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.photos_dns_record_name}/api/server/ping"
   json_path           = "$.res"
   expected_value      = "pong"
   cache_buster        = true
@@ -722,7 +722,7 @@ resource "uptimekuma_monitor_http_json_query" "immich-http" {
 resource "uptimekuma_monitor_http" "infisical-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://secrets.jstockley.com/api/status"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.secrets_dns_record_name}/api/status"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -734,7 +734,7 @@ resource "uptimekuma_monitor_http" "infisical-http" {
 resource "uptimekuma_monitor_http" "phpmyadmin-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://phpmyadmin.local.jstockley.com"
+  url                 = "https://phpmyadmin.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -746,7 +746,7 @@ resource "uptimekuma_monitor_http" "phpmyadmin-http" {
 resource "uptimekuma_monitor_http_keyword" "mend-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://mend.jstockley.com/health"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.mend_dns_record_name}/health"
   keyword             = "OK"
   cache_buster        = true
   expiry_notification = true
@@ -759,7 +759,7 @@ resource "uptimekuma_monitor_http_keyword" "mend-http" {
 resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://mc.jstockley.com/api/v2/crafty/check"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.minecraft_dns_record_name}/api/v2/crafty/check"
   json_path           = "$.status"
   expected_value      = "ok"
   cache_buster        = true
@@ -773,7 +773,7 @@ resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
 resource "uptimekuma_monitor_http_json_query" "n8n-local-http" {
   provider            = uptimekuma.local
   name                = "WebPage (Local)"
-  url                 = "https://n8n.local.jstockley.com/healthz/readiness"
+  url                 = "https://n8n.${data.terraform_remote_state.adguard.outputs.local_wildcard}/healthz/readiness"
   json_path           = "$.status"
   expected_value      = "ok"
   cache_buster        = true
@@ -787,7 +787,7 @@ resource "uptimekuma_monitor_http_json_query" "n8n-local-http" {
 resource "uptimekuma_monitor_http_json_query" "n8n-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://n8n.jstockley.com/healthz/readiness"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.n8n_dns_record_name}/healthz/readiness"
   json_path           = "$.status"
   expected_value      = "ok"
   cache_buster        = true
@@ -801,7 +801,7 @@ resource "uptimekuma_monitor_http_json_query" "n8n-http" {
 resource "uptimekuma_monitor_http" "nextcloud-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://nextcloud.jstockley.com/status.php"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}/status.php"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -813,7 +813,7 @@ resource "uptimekuma_monitor_http" "nextcloud-http" {
 resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
   provider            = uptimekuma.local
   name                = "WebPage (AIO)"
-  url                 = "https://nextcloud-aio.local.jstockley.com"
+  url                 = "https://nextcloud-aio.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -825,7 +825,7 @@ resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
 resource "uptimekuma_monitor_http" "openspeedtest-local-http" {
   provider            = uptimekuma.local
   name                = "WebPage (Local)"
-  url                 = "https://speed.local.jstockley.com"
+  url                 = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -837,7 +837,7 @@ resource "uptimekuma_monitor_http" "openspeedtest-local-http" {
 resource "uptimekuma_monitor_http" "openspeedtest-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://speed.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -849,7 +849,7 @@ resource "uptimekuma_monitor_http" "openspeedtest-http" {
 resource "uptimekuma_monitor_http" "paperless-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://paperless.local.jstockley.com"
+  url                 = "https://paperless.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -861,7 +861,7 @@ resource "uptimekuma_monitor_http" "paperless-http" {
 resource "uptimekuma_monitor_http_keyword" "pgadmin-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://pgadmin.local.jstockley.com/misc/ping"
+  url                 = "https://pgadmin.${data.terraform_remote_state.adguard.outputs.local_wildcard}/misc/ping"
   keyword             = "PING"
   cache_buster        = true
   expiry_notification = true
@@ -874,7 +874,7 @@ resource "uptimekuma_monitor_http_keyword" "pgadmin-http" {
 resource "uptimekuma_monitor_http_json_query" "syncthing-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://backup.local.jstockley.com/rest/noauth/health"
+  url                 = "https://backup.${data.terraform_remote_state.adguard.outputs.local_wildcard}/rest/noauth/health"
   json_path           = "$.status"
   expected_value      = "OK"
   cache_buster        = true
@@ -888,7 +888,7 @@ resource "uptimekuma_monitor_http_json_query" "syncthing-http" {
 resource "uptimekuma_monitor_http_keyword" "traefik-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://traefik.local.jstockley.com/ping"
+  url                 = "https://traefik.${data.terraform_remote_state.adguard.outputs.local_wildcard}/ping"
   keyword             = "OK"
   cache_buster        = true
   expiry_notification = true
@@ -901,7 +901,7 @@ resource "uptimekuma_monitor_http_keyword" "traefik-http" {
 resource "uptimekuma_monitor_http" "unifi-toolkit-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://unifi-toolkit.local.jstockley.com"
+  url                 = "https://unifi-toolkit.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -913,7 +913,7 @@ resource "uptimekuma_monitor_http" "unifi-toolkit-http" {
 resource "uptimekuma_monitor_http" "home-assistant-local-http" {
   provider            = uptimekuma.local
   name                = "WebPage (Local)"
-  url                 = "https://home.local.jstockley.com"
+  url                 = "https://home.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -925,7 +925,7 @@ resource "uptimekuma_monitor_http" "home-assistant-local-http" {
 resource "uptimekuma_monitor_http" "home-assistant-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://home.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.home_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -937,7 +937,7 @@ resource "uptimekuma_monitor_http" "home-assistant-http" {
 resource "uptimekuma_monitor_http" "pikvm-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://pikvm.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.pikvm_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -961,7 +961,7 @@ resource "uptimekuma_monitor_http" "pikvm-ip-http" {
 resource "uptimekuma_monitor_http" "proxmox-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://proxmox.local.jstockley.com"
+  url                 = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -985,7 +985,7 @@ resource "uptimekuma_monitor_http" "proxmox-ip-http" {
 resource "uptimekuma_monitor_http" "synology-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://nas.jstockley.com"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.synology_dns_record_name}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -997,7 +997,7 @@ resource "uptimekuma_monitor_http" "synology-http" {
 resource "uptimekuma_monitor_http" "proxmox-local-http" {
   provider            = uptimekuma.local
   name                = "WebPage (Local)"
-  url                 = "https://nas.local.jstockley.com"
+  url                 = "https://nas.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -1021,7 +1021,7 @@ resource "uptimekuma_monitor_http" "synology-ip-http" {
 resource "uptimekuma_monitor_http" "unifi-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
-  url                 = "https://unifi.local.jstockley.com"
+  url                 = "https://unifi.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -1033,7 +1033,7 @@ resource "uptimekuma_monitor_http" "unifi-http" {
 resource "uptimekuma_monitor_http_json_query" "racknerd-http" {
   provider            = uptimekuma.local
   name                = "API"
-  url                 = "https://api.jstockley.com/health-check/"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.api_dns_record_name}/health-check/"
   json_path           = "$.status"
   expected_value      = "ok"
   cache_buster        = true
@@ -1047,7 +1047,7 @@ resource "uptimekuma_monitor_http_json_query" "racknerd-http" {
 resource "uptimekuma_monitor_ping" "racknerd-ping" {
   provider    = uptimekuma.local
   name        = "PING"
-  hostname    = "vpn.jstockley.com"
+  hostname    = data.terraform_remote_state.cloudflare.outputs.vpn_dns_record_name
   interval    = 60
   max_retries = 0
   active      = true
