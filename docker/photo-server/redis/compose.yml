@@ -2,7 +2,7 @@
 name: redis
 services:
   redis:
-    image: dhi.io/redis:8.6.3
+    image: redis:8.6.3-alpine
     container_name: redis
     volumes:
       - ./data/:/data
