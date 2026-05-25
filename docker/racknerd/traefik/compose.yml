@@ -3,7 +3,7 @@
 name: traefik
 services:
   traefik:
-    image: traefik:v3.7.1
+    image: dhi.io/traefik:3.7.1
     container_name: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

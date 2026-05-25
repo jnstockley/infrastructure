@@ -2,7 +2,7 @@
 name: mariadb
 services:
   mariadb:
-    image: mariadb:12.2.2
+    image: dhi.io/mariadb:12.3.1
     container_name: mariadb
     volumes:
       - ./data:/var/lib/mysql
@@ -24,7 +24,7 @@ services:
       - no-new-privileges:true
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.2.3
+    image: phpmyadmin:5.2.3
     container_name: phpmyadmin
     depends_on:
       - mariadb

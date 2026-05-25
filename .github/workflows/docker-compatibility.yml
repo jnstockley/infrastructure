@@ -37,6 +37,27 @@ jobs:
       - name: Step 4 - Install Packages
         run: uv sync --frozen
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Log in to Docker Hardened Hub
+        uses: docker/login-action@v4
+        with:
+          registry: dhi.io
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
+
+      - name: Log in to the GitHub Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+
       - name: Step 5 - Run Tests
         env:
           FILES: ${{ steps.get-changes.outputs.changed_files }}
