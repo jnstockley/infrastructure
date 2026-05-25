@@ -3,14 +3,14 @@
 name: traefik
 services:
   traefik:
-    image: dhi.io/traefik:3.7.1
+    image: traefik:3.7.1
     container_name: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./config/conf/:/etc/traefik/conf/
       - ./config/certs/:/etc/traefik/certs/
-      - traefik-logs:/var/log/traefik/
+      - ./logs:/var/log/traefik/
     environment:
       - TZ=America/Chicago
     env_file:
