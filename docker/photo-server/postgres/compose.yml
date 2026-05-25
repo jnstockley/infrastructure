@@ -67,7 +67,7 @@ services:
       - no-new-privileges:true
 
   postgres-db:
-    image: postgres:18.4-alpine
+    image: dhi.io/postgres:18.4
     container_name: postgres
     volumes:
       - ./postgres:/var/lib/postgresql/18/docker
