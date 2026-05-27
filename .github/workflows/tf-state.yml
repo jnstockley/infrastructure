@@ -471,6 +471,7 @@ jobs:
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
           cd tf/proxmox
+          tofu plan -out=tfplan
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
             tofu apply -auto-approve tfplan
           fi
