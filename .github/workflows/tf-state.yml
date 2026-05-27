@@ -472,7 +472,7 @@ jobs:
         run: |
           cd tf/proxmox
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-            tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+            tofu apply -auto-approve tfplan
           fi
 
   unifi:
@@ -544,7 +544,7 @@ jobs:
           cd tf/unifi
           tofu plan -out=tfplan
         #  if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-        #    tofu apply -auto-approve tfplan TODO - Uncomment when ready to apply Proxmox changes
+        #    tofu apply -auto-approve tfplan # TODO - Uncomment when ready to apply Proxmox changes
         #  fi
 
   uptime-kuma:
