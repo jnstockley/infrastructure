@@ -9,13 +9,6 @@
   "assignees": [
     "jnstockley"
   ],
-  "packageRules": [
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["n8nio/n8n"],
-      "followTag": "latest"
-    }
-  ],
   "customManagers": [
     {
       "customType": "regex",
