@@ -79,7 +79,7 @@ jobs:
           env-slug: "racknerd"
 
       - name: Step 4 - Deploy to Racknerd Server
-        uses: jnstockley/gh-ssh-action@v1.2.17
+        uses: jnstockley/gh-ssh-action@v1.2.18
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
@@ -134,7 +134,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Step 5 - Deploy to Photo Server
-        uses: jnstockley/gh-ssh-action@v1.2.17
+        uses: jnstockley/gh-ssh-action@v1.2.18
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
