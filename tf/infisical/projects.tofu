@@ -141,3 +141,9 @@ resource "infisical_project_environment" "uptime-kuma" {
   slug       = "uptime-kuma"
 }
 
+resource "infisical_project" "youtube-notify" {
+  name        = "YouTube Notify"
+  slug        = "youtube-notify"
+  description = "GitHub youtube-notify secrets"
+  type        = "secret-manager" # Default project type
+}
