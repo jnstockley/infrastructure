@@ -261,3 +261,27 @@ resource "infisical_project_identity" "open-tofu-project-identity" {
     }
   ]
 }
+
+resource "infisical_identity" "youtube-notify-identity" {
+  name   = "GitHub youtube-notify"
+  role   = "no-access"
+  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+}
+
+resource "infisical_identity_oidc_auth" "youtube-notify-oidc-auth" {
+  identity_id        = infisical_identity.youtube-notify-identity.id
+  oidc_discovery_url = "https://token.actions.githubusercontent.com"
+  bound_issuer       = "https://token.actions.githubusercontent.com"
+  bound_audiences    = ["https://github.com/jnstockley"]
+  bound_subject      = "repo:jnstockley/youtube-notify:environment:(docker|sync)"
+}
+
+resource "infisical_project_identity" "youtube-notify-project-identity" {
+  project_id  = infisical_project.youtube-notify.id
+  identity_id = infisical_identity.youtube-notify-identity.id
+  roles = [
+    {
+      role_slug = "viewer"
+    }
+  ]
+}
