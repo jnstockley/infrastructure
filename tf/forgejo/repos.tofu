@@ -542,16 +542,16 @@ resource "forgejo_repository" "web-scraper" {
   depends_on = [forgejo_user.jack-stockley]
 }
 
-resource "forgejo_repository" "jnstockley_hawkai_3xx" {
+resource "forgejo_repository" "hawkai_3xx" {
   default_branch  = "main"
   description     = null
   mirror          = true
-  clone_addr      = "https://research-git.uiowa.edu/hawkai/jnstockley_hawkai_3xx.git"
+  clone_addr      = "https://github.com/jnstockley/hawkai_3xx"
   mirror_interval = "8h0m0s"
   has_releases    = true
-  service         = "gitlab"
-  auth_token      = var.research_git_token
-  name            = "jnstockley_hawkai_3xx"
+  service         = "github"
+  auth_token      = var.github_token
+  name            = "hawkai_3xx"
   private         = true
   owner           = forgejo_user.jack-stockley.login
 
