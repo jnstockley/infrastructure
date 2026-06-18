@@ -2,7 +2,7 @@
 name: postgres
 services:
   databasus:
-    image: databasus/databasus:v3.44.0
+    image: databasus/databasus:v3.45.0
     container_name: databasus
     depends_on:
       - postgres
