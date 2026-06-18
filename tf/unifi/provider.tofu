@@ -35,6 +35,11 @@ variable "gitlab_access_token" {
   sensitive = true
 }
 
+variable "wifi_passphrase" {
+  type      = string
+  sensitive = true
+}
+
 provider "unifi" {
   api_url = "https://unifi.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   api_key = var.unifi_api_key

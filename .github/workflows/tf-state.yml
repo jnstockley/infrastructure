@@ -541,12 +541,13 @@ jobs:
           TF_VAR_unifi_api_key: ${{ env.UNIFI_API_KEY }}
           TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
+          TF_VAR_wifi_passphrase: ${{ env.WIFI_PASSPHRASE }}
         run: |
           cd tf/unifi
           tofu plan -out=tfplan
-        #  if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
-        #    tofu apply -auto-approve tfplan # TODO - Uncomment when ready to apply Proxmox changes
-        #  fi
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
 
   uptime-kuma:
     name: Run Uptime Kuma
