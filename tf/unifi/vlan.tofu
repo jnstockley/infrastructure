@@ -1,7 +1,6 @@
 resource "unifi_network" "default" {
   name   = "Default"
   subnet = "192.168.1.1/24"
-  vlan   = 1
 
   dhcp_server = {
     enabled     = true
