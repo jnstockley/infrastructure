@@ -26,6 +26,8 @@ services:
       - proxy
       - nextcloud
       - bitwarden
+    extra_hosts:
+      - host.docker.internal:host-gateway
     restart: unless-stopped
     healthcheck:
       test: traefik healthcheck
