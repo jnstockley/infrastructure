@@ -1,0 +1,15 @@
+---
+http:
+  routers:
+    unifi:
+      rule: "Host(`cockpit.local.jstockley.com`)"
+      entryPoints:
+        - websecure
+      service: unifi
+      tls:
+        certResolver: production
+  services:
+    unifi:
+      loadBalancer:
+        servers:
+          - url: "https://localhost:9090"
