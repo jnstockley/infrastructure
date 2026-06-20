@@ -11,5 +11,11 @@ http:
   services:
     cockpit:
       loadBalancer:
+        passHostHeader: true
+        serversTransport: cockpit-transport
         servers:
           - url: "https://localhost:9090"
+
+  serversTransports:
+    cockpit-transport:
+      insecureSkipVerify: true
