@@ -2,7 +2,7 @@
 name: infisical
 services:
   backend:
-    image: infisical/infisical:v0.161.1
+    image: infisical/infisical:v0.161.3
     container_name: infisical-backend
     environment:
       - NODE_ENV=production
