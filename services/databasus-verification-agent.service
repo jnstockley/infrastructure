@@ -5,6 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
+ExecStartPre=/bin/bash -c 'until curl -sf https://databasus.jstockley.com > /dev/null; do sleep 2; done'
 ExecStart=/home/jackstockley/verification-agent start
 RemainAfterExit=yes
 User=jackstockley
