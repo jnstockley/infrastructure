@@ -202,10 +202,12 @@ resource "uptimekuma_monitor_http_json_query" "api-http" {
   max_retries         = 0
 }
 
-resource "uptimekuma_monitor_http" "public-databasus-http" {
+resource "uptimekuma_monitor_http_json_query" "public-databasus-http" {
   provider            = uptimekuma.public
   name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.databasus_dns_record_name}"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.databasus_dns_record_name}/api/v1/system/health"
+  json_path           = "$.status"
+  expected_value      = "Application is healthy, internal DB working fine and disk usage is below 95%. You can connect downdetector to this endpoint"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
