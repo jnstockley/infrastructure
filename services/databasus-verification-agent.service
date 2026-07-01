@@ -1,0 +1,16 @@
+[Unit]
+Description=Databasus Verification Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/jackstockley/verification-agent start
+RemainAfterExit=yes
+User=jackstockley
+Group=jackstockley
+WorkingDirectory=/home/jackstockley
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
