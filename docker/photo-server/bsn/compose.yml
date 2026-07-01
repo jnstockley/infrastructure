@@ -10,6 +10,7 @@ services:
     environment:
       - LOG_LEVEL=DEBUG
       - ALLOW_SHORTS=False
+      - INTERVAL=15
       - TZ=America/Chicago
     env_file:
       - .env
