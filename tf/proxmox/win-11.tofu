@@ -60,4 +60,8 @@ resource "proxmox_vm_qemu" "win-11" {
     shutdown_timeout = 0
     startup_delay    = 0
   }
+
+    lifecycle {
+    prevent_destroy = true
+  }
 }

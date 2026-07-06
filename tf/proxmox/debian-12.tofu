@@ -55,4 +55,8 @@ resource "proxmox_vm_qemu" "debian-12" {
     shutdown_timeout = 0
     startup_delay    = 0
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
