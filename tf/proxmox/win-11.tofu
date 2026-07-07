@@ -17,6 +17,7 @@ resource "proxmox_vm_qemu" "win-11" {
   target_nodes           = ["proxmox"]
   start_at_node_boot     = true
   vmid                   = 101
+  automatic_reboot       = true
 
   disks {
     ide {
@@ -48,6 +49,13 @@ resource "proxmox_vm_qemu" "win-11" {
     }
   }
 
+  efidisk {
+    efitype           = "4m"
+    format            = "raw"
+    pre_enrolled_keys = true
+    storage           = "local-lvm"
+  }
+
   network {
     bridge   = "vmbr0"
     firewall = true
@@ -61,7 +69,7 @@ resource "proxmox_vm_qemu" "win-11" {
     startup_delay    = 0
   }
 
-    lifecycle {
+  lifecycle {
     prevent_destroy = true
   }
 }
