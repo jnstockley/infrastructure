@@ -46,7 +46,7 @@ resource "proxmox_vm_qemu" "hassio" {
     startup_delay    = 0
   }
 
-    lifecycle {
+  lifecycle {
     prevent_destroy = true
   }
 }
