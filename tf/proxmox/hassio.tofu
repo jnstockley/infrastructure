@@ -45,4 +45,8 @@ resource "proxmox_vm_qemu" "hassio" {
     shutdown_timeout = 0
     startup_delay    = 0
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
