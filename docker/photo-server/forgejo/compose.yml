@@ -2,7 +2,7 @@
 name: forgejo
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:15.0.3
+    image: codeberg.org/forgejo/forgejo:15.0.4
     container_name: forgejo
     volumes:
       - ./data:/data
