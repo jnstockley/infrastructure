@@ -10,8 +10,9 @@ output "authentik_cloudflare_client_secret" {
 resource "authentik_provider_oauth2" "cloudflare" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [{
-    matching_mode = "strict",
-    url           = "https://jstockley.cloudflareaccess.com/cdn-cgi/access/callback",
+    matching_mode     = "strict",
+    redirect_uri_type = "authorization",
+    url               = "https://jstockley.cloudflareaccess.com/cdn-cgi/access/callback",
   }]
   name = "Cloudflare"
   property_mappings = [
@@ -42,17 +43,20 @@ resource "authentik_provider_oauth2" "homeassistant" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.home_dns_record_name}/auth/openid/callback"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.home_dns_record_name}/auth/openid/callback"
     },
     {
-      matching_mode = "strict",
-      url           = "https://home.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/openid/callback"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://home.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/openid/callback"
 
     },
     {
-      matching_mode = "strict",
-      url           = "http://homeassistant.local:8123/auth/openid/callback"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "http://homeassistant.local:8123/auth/openid/callback"
 
     }
   ]
@@ -85,8 +89,9 @@ resource "authentik_provider_oauth2" "airflow" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.airflow_dns_record_name}/auth/oauth-authorized/authentik"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.airflow_dns_record_name}/auth/oauth-authorized/authentik"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -118,8 +123,9 @@ resource "authentik_provider_oauth2" "airflow-internal" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://airflow.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/oauth-authorized/authentik"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://airflow.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/oauth-authorized/authentik"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -151,8 +157,9 @@ resource "authentik_provider_oauth2" "airflow-dev" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "http://localhost:8080/auth/oauth-authorized/authentik"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "http://localhost:8080/auth/oauth-authorized/authentik"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -184,8 +191,9 @@ resource "authentik_provider_oauth2" "forgejo" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}/user/oauth2/Authentik/callback"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}/user/oauth2/Authentik/callback"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -217,8 +225,9 @@ resource "authentik_provider_oauth2" "nextcloud" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}/apps/user_oidc/code"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}/apps/user_oidc/code"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -250,8 +259,9 @@ resource "authentik_provider_oauth2" "paperless" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://paperless.${data.terraform_remote_state.adguard.outputs.local_wildcard}/accounts/oidc/authentik/login/callback/"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://paperless.${data.terraform_remote_state.adguard.outputs.local_wildcard}/accounts/oidc/authentik/login/callback/"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -283,12 +293,14 @@ resource "authentik_provider_oauth2" "synology" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://nas.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://nas.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
     },
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.synology_dns_record_name}"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.synology_dns_record_name}"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -320,8 +332,9 @@ resource "authentik_provider_oauth2" "tailscale" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://login.tailscale.com/a/oauth_response"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://login.tailscale.com/a/oauth_response"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -353,8 +366,9 @@ resource "authentik_provider_oauth2" "proxmox" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -387,8 +401,9 @@ resource "authentik_provider_oauth2" "pg-admin-local" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://pgadmin.${data.terraform_remote_state.adguard.outputs.local_wildcard}/oauth2/authorize"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://pgadmin.${data.terraform_remote_state.adguard.outputs.local_wildcard}/oauth2/authorize"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -420,8 +435,9 @@ resource "authentik_provider_oauth2" "pg-admin-external" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.pgadmin_dns_record_name}/oauth2/authorize"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.pgadmin_dns_record_name}/oauth2/authorize"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -453,8 +469,9 @@ resource "authentik_provider_oauth2" "beszel" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://stats.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/oauth2-redirect"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://stats.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/oauth2-redirect"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -561,16 +578,19 @@ resource "authentik_provider_oauth2" "immich" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
-      matching_mode = "strict",
-      url           = "https://${data.terraform_remote_state.cloudflare.outputs.photos_dns_record_name}/auth/login"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.photos_dns_record_name}/auth/login"
     },
     {
-      matching_mode = "strict",
-      url           = "https://photos.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/login"
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://photos.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/login"
     },
     {
-      matching_mode = "regex",
-      url           = "app.immich:///oauth-callback*"
+      matching_mode     = "regex",
+      redirect_uri_type = "authorization",
+      url               = "app.immich:///oauth-callback*"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
@@ -620,5 +640,39 @@ resource "authentik_application" "unifi-toolkit" {
 resource "authentik_policy_binding" "unifi-toolkit" {
   target = authentik_application.unifi-toolkit.uuid
   group  = authentik_group.unifi-access.id
+  order  = 0
+}
+
+resource "authentik_provider_oauth2" "arcane" {
+  access_token_validity = "minutes=5"
+  allowed_redirect_uris = [
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://arcane.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/login"
+    }
+  ]
+  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  client_id          = "vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0"
+  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name               = "Arcane"
+  property_mappings = [
+    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    "4fe26886-06bc-4c83-8f21-beb85752491f",
+  ]
+  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+}
+
+resource "authentik_application" "arcane" {
+  name              = "Arcane"
+  slug              = "arcane"
+  protocol_provider = authentik_provider_oauth2.arcane.id
+  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/arcane.svg"
+}
+
+resource "authentik_policy_binding" "arcane" {
+  target = authentik_application.arcane.uuid
+  group  = authentik_group.arcane-access.id
   order  = 0
 }
