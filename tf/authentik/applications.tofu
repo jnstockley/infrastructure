@@ -663,8 +663,8 @@ resource "authentik_provider_oauth2" "arcane" {
     "urn:ietf:params:oauth:grant-type:device_code",
     "refresh_token",
   ]
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
-  name               = "Arcane"
+  invalidation_flow = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name              = "Arcane"
   property_mappings = [
     "4a51d5ca-8d95-4145-8fed-e400b9aac760",
     "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
