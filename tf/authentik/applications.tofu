@@ -649,7 +649,7 @@ resource "authentik_provider_oauth2" "arcane" {
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://arcane.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/login"
+      url               = "https://arcane.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/oidc/callback"
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
