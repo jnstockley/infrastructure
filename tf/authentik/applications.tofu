@@ -654,6 +654,15 @@ resource "authentik_provider_oauth2" "arcane" {
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
   client_id          = "vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0"
+  grant_types = [
+    "authorization_code",
+    "hybrid",
+    "implicit",
+    "client_credentials",
+    "password",
+    "urn:ietf:params:oauth:grant-type:device_code",
+    "refresh_token",
+  ]
   invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
   name               = "Arcane"
   property_mappings = [
