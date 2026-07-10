@@ -1,0 +1,38 @@
+---
+name: arcane
+services:
+  arcane:
+    image: ghcr.io/getarcaneapp/manager:v2.1.0
+    container_name: arcane
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+      - /home/jackstockley/infrastructure/docker/photo-server:/app/data/projects
+    environment:
+      - APP_URL=https://arcane.local.jstockley.com
+      - TZ="America/Chicago"
+      - OIDC_ENABLED="true"
+      - OIDC_CLIENT_ID="vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0"
+      - OIDC_ISSUER_URL="https://idp.jstockley.com/application/o/arcane/"
+      - OIDC_PROVIDER_NAME="Authentik"
+    env_file:
+      - .env
+    networks:
+      - proxy
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.arcane.entrypoints=websecure
+      - traefik.http.routers.arcane.rule=Host(`arcane.local.jstockley.com`)
+      - traefik.http.routers.arcane.tls=true
+      - traefik.http.routers.arcane.tls.certresolver=production
+      - traefik.http.routers.arcane.service=arcane
+      - traefik.http.services.arcane.loadbalancer.server.port=3552
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true

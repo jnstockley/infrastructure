@@ -19,6 +19,7 @@ resource "authentik_user" "jackstockley" {
     authentik_group.open-speedtest-access.id,
     authentik_group.traefik-local-access.id,
     authentik_group.unifi-access.id,
+    authentik_group.arcane-access.id
   ]
 }
 

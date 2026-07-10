@@ -76,3 +76,8 @@ resource "authentik_group" "unifi-access" {
   name         = "UniFi Access"
   is_superuser = false
 }
+
+resource "authentik_group" "arcane-access" {
+  name         = "Arcane Access"
+  is_superuser = false
+}
