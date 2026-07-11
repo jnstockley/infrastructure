@@ -17,9 +17,21 @@ services:
       - OIDC_PROVIDER_NAME=Authentik
     env_file:
       - .env
+    network_mode: service:tailscale
+    restart: unless-stopped
+
+  tailscale:
+    image: tailscale/tailscale:v1.98.8
+    container_name: ts-manager-host
+    volumes:
+      - ts-state:/var/lib/tailscale
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--ssh=false
+    env_file:
+      - .env
     networks:
       - proxy
-    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.arcane.entrypoints=websecure
@@ -29,6 +41,11 @@ services:
       - traefik.http.routers.arcane.service=arcane
       - traefik.http.services.arcane.loadbalancer.server.port=3552
       - traefik.docker.network=proxy
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    restart: unless-stopped
+    hostname: arcane-manager-photo-server
 
 networks:
   proxy:
@@ -36,3 +53,6 @@ networks:
     external: true
     enable_ipv4: true
     enable_ipv6: true
+
+volumes:
+  ts-state:
