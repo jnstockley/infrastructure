@@ -15,4 +15,24 @@ services:
       TZ: "America/Chicago"
     env_file:
       - .env
+    network_mode: service:tailscale
     restart: unless-stopped
+
+  tailscale:
+    image: tailscale/tailscale:v1.98.8
+    container_name: ts-agent-host
+    volumes:
+      - ts-state:/var/lib/tailscale
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--ssh=false
+    env_file:
+      - .env
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    hostname: arcane-agent-racknerd
+
+volumes:
+  ts-state:
