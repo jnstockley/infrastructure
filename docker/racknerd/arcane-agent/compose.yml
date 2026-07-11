@@ -11,7 +11,7 @@ services:
     environment:
       EDGE_AGENT: "true"
       EDGE_TRANSPORT: "poll"
-      MANAGER_API_URL: "https://arcane.local.jstockley.com"
+      MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net"
       TZ: "America/Chicago"
     env_file:
       - .env
