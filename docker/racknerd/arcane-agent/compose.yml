@@ -23,6 +23,8 @@ services:
     container_name: ts-agent-host
     volumes:
       - ts-state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_EXTRA_ARGS=--ssh=false
