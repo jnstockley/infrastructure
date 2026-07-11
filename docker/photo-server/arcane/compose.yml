@@ -32,6 +32,7 @@ services:
       - .env
     networks:
       - proxy
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.arcane.entrypoints=websecure
@@ -44,7 +45,6 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    restart: unless-stopped
     hostname: arcane-manager-photo-server
 
 networks:
