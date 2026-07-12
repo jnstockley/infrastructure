@@ -25,8 +25,6 @@ services:
     container_name: ts-manager-host
     volumes:
       - ts-state:/var/lib/tailscale
-    devices:
-      - /dev/net/tun:/dev/net/tun
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_EXTRA_ARGS=--ssh=false --accept-dns=true
@@ -48,6 +46,8 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
+    devices:
+      - /dev/net/tun:/dev/net/tun
     hostname: arcane-manager-photo-server
 
 networks:
