@@ -11,11 +11,13 @@ services:
     environment:
       EDGE_AGENT: "true"
       EDGE_TRANSPORT: "poll"
-      MANAGER_API_URL: "http://100.111.82.90:3552"
+      MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net:3552"
       TZ: "America/Chicago"
     env_file:
       - .env
     network_mode: service:tailscale
+    dns:
+      - 100.100.100.100
     restart: unless-stopped
 
   tailscale:
@@ -27,7 +29,7 @@ services:
       - /dev/net/tun:/dev/net/tun
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
-      - TS_EXTRA_ARGS=--ssh=false
+      - TS_EXTRA_ARGS=--ssh=false --accept-dns=true
       - TS_USERSPACE=false
     env_file:
       - .env
