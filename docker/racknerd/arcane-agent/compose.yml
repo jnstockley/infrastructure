@@ -2,7 +2,7 @@
 name: arcane-agent
 services:
   arcane-agent:
-    image: ghcr.io/getarcaneapp/agent:v2.3.2
+    image: ghcr.io/getarcaneapp/agent:v2.4.0
     container_name: arcane-agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
