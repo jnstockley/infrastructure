@@ -129,6 +129,12 @@ resource "infisical_project_environment" "proxmox" {
   slug       = "proxmox"
 }
 
+resource "infisical_project_environment" "tailscale" {
+  name       = "Tailscale"
+  project_id = infisical_project.open-tofu.id
+  slug       = "tailscale"
+}
+
 resource "infisical_project_environment" "unifi" {
   name       = "Unifi"
   project_id = infisical_project.open-tofu.id
