@@ -47,5 +47,6 @@ resource "adguard_user_rules" "rules" {
     "@@||a.co^$important",
     "@@||one.one.one.one^$important",
     "@@||xmt.paze.com^$important",
+    "@@||biltrewards.com^$important",
   ]
 }
