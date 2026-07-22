@@ -163,18 +163,60 @@ resource "infisical_project" "youtube-notify" {
 
 resource "infisical_project_environment" "airflow-dev" {
   name       = "Airflow Dev"
-  project_id = infisical_project.airflow.id
+  project_id = infisical_project.airflow-docker.id
   slug       = "airflow-dev"
 }
 
 resource "infisical_project_environment" "airflow-photo-server" {
   name       = "Airflow Photo Server"
-  project_id = infisical_project.airflow.id
+  project_id = infisical_project.airflow-docker.id
   slug       = "airflow-photo-server"
 }
 
 resource "infisical_project_environment" "airflow-racknerd" {
   name       = "Airflow Racknerd"
-  project_id = infisical_project.airflow.id
+  project_id = infisical_project.airflow-docker.id
   slug       = "airflow-racknerd"
+}
+
+resource "infisical_secret_folder" "airflow-connections-dev" {
+  environment_slug = infisical_project_environment.airflow-dev.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Connections"
+  folder_path      = "connections"
+}
+
+resource "infisical_secret_folder" "airflow-connections-photo-server" {
+  environment_slug = infisical_project_environment.airflow-photo-server.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Connections"
+  folder_path      = "connections"
+}
+
+resource "infisical_secret_folder" "airflow-connections-racknerd" {
+  environment_slug = infisical_project_environment.airflow-racknerd.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Connections"
+  folder_path      = "connections"
+}
+
+resource "infisical_secret_folder" "airflow-variables-dev" {
+  environment_slug = infisical_project_environment.airflow-dev.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Variables"
+  folder_path      = "variables"
+}
+
+resource "infisical_secret_folder" "airflow-variables-photo-server" {
+  environment_slug = infisical_project_environment.airflow-photo-server.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Variables"
+  folder_path      = "variables"
+}
+
+resource "infisical_secret_folder" "airflow-variables-racknerd" {
+  environment_slug = infisical_project_environment.airflow-racknerd.slug
+  project_id       = infisical_project.airflow-docker.id
+  name             = "Variables"
+  folder_path      = "variables"
 }
