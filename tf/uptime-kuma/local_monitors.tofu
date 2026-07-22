@@ -1056,6 +1056,26 @@ resource "uptimekuma_monitor_ping" "racknerd-ping" {
   parent      = uptimekuma_monitor_group.racknerd-group.id
 }
 
+resource "uptimekuma_monitor_ping" "backup-server-dns-ping" {
+  provider    = uptimekuma.local
+  name        = "DNS PING"
+  hostname    = "backup-server.internal.jstockley.com"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  parent      = uptimekuma_monitor_group.backup-server-group.id
+}
+
+resource "uptimekuma_monitor_ping" "backup-server-ip-ping" {
+  provider    = uptimekuma.local
+  name        = "IP PING"
+  hostname    = "192.168.1.111"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  parent      = uptimekuma_monitor_group.backup-server-group.id
+}
+
 resource "uptimekuma_monitor_http_keyword" "youtube-livestream" {
   provider            = uptimekuma.local
   name                = "Livestream"
