@@ -58,6 +58,13 @@ resource "infisical_project" "airflow" {
   type        = "secret-manager" # Default project type
 }
 
+resource "infisical_project" "airflow-docker" {
+  name        = "Airflow Docker"
+  slug        = "airflow-docker"
+  description = "Docker Airflow secrets"
+  type        = "secret-manager" # Default project type
+}
+
 resource "infisical_project" "web-scraper" {
   name        = "web-scraper"
   slug        = "web-scraper"
@@ -152,4 +159,22 @@ resource "infisical_project" "youtube-notify" {
   slug        = "youtube-notify"
   description = "GitHub youtube-notify secrets"
   type        = "secret-manager" # Default project type
+}
+
+resource "infisical_project_environment" "airflow-dev" {
+  name       = "Airflow Dev"
+  project_id = infisical_project.airflow.id
+  slug       = "airflow-dev"
+}
+
+resource "infisical_project_environment" "airflow-photo-server" {
+  name       = "Airflow Photo Server"
+  project_id = infisical_project.airflow.id
+  slug       = "airflow-photo-server"
+}
+
+resource "infisical_project_environment" "airflow-racknerd" {
+  name       = "Airflow Racknerd"
+  project_id = infisical_project.airflow.id
+  slug       = "airflow-racknerd"
 }
