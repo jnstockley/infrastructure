@@ -153,3 +153,4 @@ resource "infisical_project" "youtube-notify" {
   description = "GitHub youtube-notify secrets"
   type        = "secret-manager" # Default project type
 }
+
