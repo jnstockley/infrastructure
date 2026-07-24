@@ -47,7 +47,7 @@ def get_docker_image_from_file(path: str) -> str | None:
             d = data.pop()
             if "image" in d:
                 return d["image"]
-            for k, v in d.values():
+            for v in d.values():
                 if isinstance(v, dict):
                     data.append(v)
 
