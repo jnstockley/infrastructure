@@ -15,7 +15,8 @@ class TestContainers:
     def setup_method(self, container: str):
         self.path = None
         if container.endswith(".yml") and (
-            container.startswith(("docker/racknerd/", "docker/photo-server/"))):
+            container.startswith(("docker/racknerd/", "docker/photo-server/"))
+        ):
             self.path = container
 
     def test_container(self, container: DockerContainer):
@@ -65,6 +66,7 @@ def start_container(image: str):
     except Exception as e:
         logger.error(f"Error starting container, {e}")
         raise
+
 
 class DockerException(Exception):
     pass
