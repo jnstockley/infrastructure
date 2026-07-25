@@ -2,7 +2,7 @@ terraform {
   required_providers {
     uptimekuma = {
       source  = "breml/uptimekuma"
-      version = "0.3.3"
+      version = "0.4.0"
     }
   }
 
