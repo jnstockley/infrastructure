@@ -7,6 +7,9 @@ services:
     volumes:
       - ./config:/config
       - ./cache:/cache
+      - type: bind
+        source: /mnt/media
+        target: /media
     environment:
       - JELLYFIN_PublishedServerUrl=https://jellyfin.local.jstockley.com
     networks:
