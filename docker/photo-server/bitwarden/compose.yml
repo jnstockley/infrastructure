@@ -114,6 +114,8 @@ services:
       - env/mssql.env
       - env/uid.env
       - env/mssql.override.env
+    networks:
+      - private
     restart: always
     security_opt:
       - no-new-privileges:true
@@ -178,3 +180,9 @@ networks:
   bitwarden:
     external: true
     name: bitwarden
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
