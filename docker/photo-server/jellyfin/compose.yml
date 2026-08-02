@@ -12,6 +12,9 @@ services:
         target: /media
     environment:
       - JELLYFIN_PublishedServerUrl=https://jellyfin.local.jstockley.com
+    ports:
+      - '0.0.0.0:7359:7359/udp'  # Client auto-discovery
+      - '0.0.0.0:1900:1900/udp'  # DLNA auto-discovery
     networks:
       - proxy
     restart: 'unless-stopped'
