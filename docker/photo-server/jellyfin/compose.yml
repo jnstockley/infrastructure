@@ -28,4 +28,3 @@ services:
       # auto-detect the container's address on the "proxy" network.
       - traefik.http.services.jellyfin.loadbalancer.server.url=http://host.docker.internal:8096
     user: 1000:1000
-
