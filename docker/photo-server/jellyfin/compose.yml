@@ -12,11 +12,10 @@ services:
         target: /media
     environment:
       - JELLYFIN_PublishedServerUrl=https://jellyfin.local.jstockley.com
-    ports:
-      - '0.0.0.0:7359:7359/udp'  # Client auto-discovery
-      - '0.0.0.0:1900:1900/udp'  # DLNA auto-discovery
-    networks:
-      - proxy
+    # Host networking is required so UDP discovery replies (port 7359/1900)
+    # leave with the host's real IP as source, instead of being dropped by
+    # Docker's NAT when the original request was sent to a broadcast address.
+    network_mode: host
     restart: 'unless-stopped'
     labels:
       - traefik.enable=true
@@ -25,13 +24,8 @@ services:
       - traefik.http.routers.jellyfin.tls=true
       - traefik.http.routers.jellyfin.tls.certresolver=production
       - traefik.http.routers.jellyfin.service=jellyfin
-      - traefik.http.services.jellyfin.loadbalancer.server.port=8096
-      - traefik.docker.network=proxy
+      # Explicit URL needed since host networking means Traefik can't
+      # auto-detect the container's address on the "proxy" network.
+      - traefik.http.services.jellyfin.loadbalancer.server.url=http://host.docker.internal:8096
     user: 1000:1000
 
-networks:
-  proxy:
-    name: proxy
-    external: true
-    enable_ipv4: true
-    enable_ipv6: true
