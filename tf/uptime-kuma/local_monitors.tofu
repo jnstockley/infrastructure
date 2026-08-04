@@ -1212,3 +1212,54 @@ resource "uptimekuma_monitor_ping" "broadlink" {
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
 }
+
+resource "uptimekuma_monitor_ping" "balcony-strip-lights" {
+  provider    = uptimekuma.local
+  name        = "Balcony Strip Lights"
+  hostname    = "192.168.1.137"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "balcony-camera" {
+  provider    = uptimekuma.local
+  name        = "Balcony Camera"
+  hostname    = "192.168.1.131"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "balcony-plug" {
+  provider    = uptimekuma.local
+  name        = "Balcony Plug"
+  hostname    = "192.168.1.210"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
