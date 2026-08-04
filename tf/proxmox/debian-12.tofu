@@ -11,7 +11,8 @@ resource "proxmox_vm_qemu" "debian-12" {
   description            = "Debian 12 VM"
   full_clone             = false
   machine                = "q35"
-  memory                 = 49152
+  balloon                = 16384
+  memory                 = 32768
   name                   = "debian-12"
   qemu_os                = "l26"
   scsihw                 = "virtio-scsi-single"
@@ -54,6 +55,17 @@ resource "proxmox_vm_qemu" "debian-12" {
     order            = 1
     shutdown_timeout = 0
     startup_delay    = 0
+  }
+
+  pcis {
+    pci0 {
+      mapping {
+        mapping_id  = "gtx-970"
+        pcie        = false
+        primary_gpu = false
+        rombar      = true
+      }
+    }
   }
 
   lifecycle {
