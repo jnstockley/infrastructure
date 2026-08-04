@@ -1218,7 +1218,7 @@ resource "uptimekuma_monitor_ping" "balcony-strip-lights" {
   name        = "Balcony Strip Lights"
   hostname    = "192.168.1.137"
   interval    = 60
-  max_retries = 0
+  max_retries = 3
   active      = true
   tags = [
     {
@@ -1235,7 +1235,7 @@ resource "uptimekuma_monitor_ping" "balcony-camera" {
   name        = "Balcony Camera"
   hostname    = "192.168.1.131"
   interval    = 60
-  max_retries = 0
+  max_retries = 3
   active      = true
   tags = [
     {
@@ -1252,7 +1252,7 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
   name        = "Balcony Plug"
   hostname    = "192.168.1.210"
   interval    = 60
-  max_retries = 0
+  max_retries = 3
   active      = true
   tags = [
     {
