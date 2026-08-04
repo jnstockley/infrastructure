@@ -1127,3 +1127,88 @@ resource "uptimekuma_monitor_http_keyword" "youtube-channel" {
   parent              = uptimekuma_monitor_group.youtube-rss.id
   max_retries         = 0
 }
+
+resource "uptimekuma_monitor_push" "kitchen-sink-shelly" {
+  provider       = uptimekuma.local
+  name           = "Kitchen Sink Shelly"
+  interval       = 7200
+  max_retries    = 2
+  retry_interval = 900
+  active         = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_push" "master-bathroom-shelly" {
+  provider       = uptimekuma.local
+  name           = "Master Bathroom Sink Shelly"
+  interval       = 7200
+  max_retries    = 2
+  retry_interval = 900
+  active         = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_push" "guest-bathroom-shelly" {
+  provider       = uptimekuma.local
+  name           = "Guest Bathroom Sink Shelly"
+  interval       = 7200
+  max_retries    = 2
+  retry_interval = 900
+  active         = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_push" "laundry-room-shelly" {
+  provider       = uptimekuma.local
+  name           = "Laundry Room Shelly"
+  interval       = 7200
+  max_retries    = 2
+  retry_interval = 900
+  active         = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "broadlink" {
+  provider    = uptimekuma.local
+  name        = "Broadlink"
+  hostname    = "192.168.1.62"
+  interval    = 60
+  max_retries = 0
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
