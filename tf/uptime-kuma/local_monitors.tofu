@@ -1134,7 +1134,7 @@ resource "uptimekuma_monitor_push" "kitchen-sink-shelly" {
   interval       = 7200
   max_retries    = 2
   retry_interval = 900
-  active         = true
+  active         = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1151,7 +1151,7 @@ resource "uptimekuma_monitor_push" "master-bathroom-shelly" {
   interval       = 7200
   max_retries    = 2
   retry_interval = 900
-  active         = true
+  active         = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1168,7 +1168,7 @@ resource "uptimekuma_monitor_push" "guest-bathroom-shelly" {
   interval       = 7200
   max_retries    = 2
   retry_interval = 900
-  active         = true
+  active         = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1185,7 +1185,7 @@ resource "uptimekuma_monitor_push" "laundry-room-shelly" {
   interval       = 7200
   max_retries    = 2
   retry_interval = 900
-  active         = true
+  active         = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1219,7 +1219,7 @@ resource "uptimekuma_monitor_ping" "balcony-strip-lights" {
   hostname    = "192.168.1.137"
   interval    = 60
   max_retries = 3
-  active      = true
+  active      = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1236,7 +1236,7 @@ resource "uptimekuma_monitor_ping" "balcony-camera" {
   hostname    = "192.168.1.131"
   interval    = 60
   max_retries = 3
-  active      = true
+  active      = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1253,7 +1253,7 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
   hostname    = "192.168.1.210"
   interval    = 60
   max_retries = 3
-  active      = true
+  active      = false
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
