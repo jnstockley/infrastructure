@@ -69,6 +69,9 @@ entryPoints:
         - "172.0.0.0/8"
         - "172.64.0.0/13"
 
+  dot:
+    address: :853/tcp
+
 ping:
   entryPoint: "ping"
 

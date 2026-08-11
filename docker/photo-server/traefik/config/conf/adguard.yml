@@ -1,0 +1,19 @@
+---
+tcp:
+  routers:
+    adguard-dot:
+      rule: "HostSNI(`*.dns.jstockley.com`)"
+      entryPoints:
+        - "dot"
+      service: adguard-dot
+      tls:
+        certResolver: "production"
+        domains:
+          - main: "*.dns.jstockley.com"
+
+  services:
+    adguard-dot:
+      loadBalancer:
+        servers:
+          - address: "adguard:53"
+
