@@ -1219,7 +1219,7 @@ resource "uptimekuma_monitor_ping" "balcony-strip-lights" {
   hostname    = "192.168.1.137"
   interval    = 60
   max_retries = 3
-  active      = false
+  active      = true
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
@@ -1253,7 +1253,7 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
   hostname    = "192.168.1.210"
   interval    = 60
   max_retries = 3
-  active      = false
+  active      = true
   tags = [
     {
       tag_id = uptimekuma_tag.iot.id
