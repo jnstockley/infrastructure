@@ -2,7 +2,7 @@
 name: postgres
 services:
   databasus:
-    image: databasus/databasus:v3.52.1
+    image: databasus/databasus:v3.53.0
     container_name: databasus
     depends_on:
       - postgres
@@ -69,7 +69,7 @@ services:
       - no-new-privileges:true
 
   postgres:
-    image: postgres:18.4-alpine
+    image: postgres:18.6-alpine
     container_name: postgres
     volumes:
       - ./postgres:/var/lib/postgresql/18/docker
