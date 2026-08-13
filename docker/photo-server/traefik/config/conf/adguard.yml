@@ -18,4 +18,3 @@ tcp:
       loadBalancer:
         servers:
           - address: "adguard:53"
-
