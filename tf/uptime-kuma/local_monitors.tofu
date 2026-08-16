@@ -1199,7 +1199,7 @@ resource "uptimekuma_monitor_push" "laundry-room-shelly" {
 resource "uptimekuma_monitor_ping" "broadlink" {
   provider    = uptimekuma.local
   name        = "Broadlink"
-  hostname    = "192.168.1.62"
+  hostname    = "192.168.2.62"
   interval    = 60
   max_retries = 0
   active      = true
@@ -1250,7 +1250,7 @@ resource "uptimekuma_monitor_ping" "balcony-camera" {
 resource "uptimekuma_monitor_ping" "balcony-plug" {
   provider    = uptimekuma.local
   name        = "Balcony Plug"
-  hostname    = "192.168.1.210"
+  hostname    = "192.168.1.211"
   interval    = 60
   max_retries = 3
   active      = true
