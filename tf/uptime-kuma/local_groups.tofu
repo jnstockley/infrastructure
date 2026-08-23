@@ -18,6 +18,16 @@ resource "uptimekuma_monitor_group" "airflow-group" {
   name = "Airflow"
 }
 
+resource "uptimekuma_monitor_group" "arcane-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "Arcane"
+}
+
 resource "uptimekuma_monitor_group" "authentik-group" {
   provider    = uptimekuma.local
   interval    = 60
@@ -96,6 +106,16 @@ resource "uptimekuma_monitor_group" "infisical-group" {
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
   name = "Infisical"
+}
+
+resource "uptimekuma_monitor_group" "jellyfin-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "Jellyfin"
 }
 
 resource "uptimekuma_monitor_group" "mariadb-group" {
