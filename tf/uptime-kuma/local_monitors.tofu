@@ -1228,3 +1228,55 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
 }
+
+resource "uptimekuma_monitor_ping" "hallway-camera" {
+  provider    = uptimekuma.local
+  name        = "Hallway Camera"
+  hostname    = "192.168.2.8"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "kitchen-camera" {
+  provider    = uptimekuma.local
+  name        = "Kitchen Camera"
+  hostname    = "192.168.2.114"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "outside-camera" {
+  provider    = uptimekuma.local
+  name        = "Outside Camera"
+  hostname    = "192.168.2.103"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
