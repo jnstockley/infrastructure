@@ -53,6 +53,17 @@ resource "uptimekuma_monitor_docker" "api-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "arcan-agent-docker" {
+  provider         = uptimekuma.public
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "arcane-agent"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.arcane-agent-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "public-beszel-agent-docker" {
   provider         = uptimekuma.public
   name             = "Agent Container"
