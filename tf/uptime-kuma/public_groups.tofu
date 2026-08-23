@@ -18,6 +18,16 @@ resource "uptimekuma_monitor_group" "api-group" {
   name = "API"
 }
 
+resource "uptimekuma_monitor_group" "arcane-agent-group" {
+  provider    = uptimekuma.public
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.public-nextcloud-talk.id
+  ]
+  name = "Arcane Agent"
+}
+
 resource "uptimekuma_monitor_group" "public-beszel-group" {
   provider    = uptimekuma.public
   interval    = 60

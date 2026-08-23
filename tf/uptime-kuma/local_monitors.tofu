@@ -53,6 +53,17 @@ resource "uptimekuma_monitor_docker" "airflow-scheduler-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "arcane-docker" {
+  provider         = uptimekuma.local
+  name             = "Arcane Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "arcane"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.arcane-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "authentik-server-docker" {
   provider         = uptimekuma.local
   name             = "Server Container"
@@ -281,6 +292,17 @@ resource "uptimekuma_monitor_docker" "infisical-docker" {
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.infisical-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "jellyfin-docker" {
+  provider         = uptimekuma.local
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "jellyfin"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.jellyfin-group.id
   max_retries      = 0
 }
 
@@ -629,6 +651,20 @@ resource "uptimekuma_monitor_http_keyword" "airflow-http" {
   max_retries         = 0
 }
 
+resource "uptimekuma_monitor_http_json_query" "arcane-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://arcane.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/health"
+  json_path           = "$.status"
+  expected_value      = "UP"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.arcane-group.id
+  max_retries         = 0
+}
+
 resource "uptimekuma_monitor_http" "authentik-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
@@ -730,6 +766,20 @@ resource "uptimekuma_monitor_http" "infisical-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.infisical-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_keyword" "jellyfin-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://jellyfin.${data.terraform_remote_state.adguard.outputs.local_wildcard}/health"
+  keyword             = "Healthy"
+  invert_keyword      = false
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.jellyfin-group.id
   max_retries         = 0
 }
 
@@ -1128,74 +1178,6 @@ resource "uptimekuma_monitor_http_keyword" "youtube-channel" {
   max_retries         = 0
 }
 
-resource "uptimekuma_monitor_push" "kitchen-sink-shelly" {
-  provider       = uptimekuma.local
-  name           = "Kitchen Sink Shelly"
-  interval       = 7200
-  max_retries    = 2
-  retry_interval = 900
-  active         = false
-  tags = [
-    {
-      tag_id = uptimekuma_tag.iot.id
-    }
-  ]
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-}
-
-resource "uptimekuma_monitor_push" "master-bathroom-shelly" {
-  provider       = uptimekuma.local
-  name           = "Master Bathroom Sink Shelly"
-  interval       = 7200
-  max_retries    = 2
-  retry_interval = 900
-  active         = false
-  tags = [
-    {
-      tag_id = uptimekuma_tag.iot.id
-    }
-  ]
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-}
-
-resource "uptimekuma_monitor_push" "guest-bathroom-shelly" {
-  provider       = uptimekuma.local
-  name           = "Guest Bathroom Sink Shelly"
-  interval       = 7200
-  max_retries    = 2
-  retry_interval = 900
-  active         = false
-  tags = [
-    {
-      tag_id = uptimekuma_tag.iot.id
-    }
-  ]
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-}
-
-resource "uptimekuma_monitor_push" "laundry-room-shelly" {
-  provider       = uptimekuma.local
-  name           = "Laundry Room Shelly"
-  interval       = 7200
-  max_retries    = 2
-  retry_interval = 900
-  active         = false
-  tags = [
-    {
-      tag_id = uptimekuma_tag.iot.id
-    }
-  ]
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-}
-
 resource "uptimekuma_monitor_ping" "broadlink" {
   provider    = uptimekuma.local
   name        = "Broadlink"
@@ -1230,23 +1212,6 @@ resource "uptimekuma_monitor_ping" "balcony-strip-lights" {
   ]
 }
 
-resource "uptimekuma_monitor_ping" "balcony-camera" {
-  provider    = uptimekuma.local
-  name        = "Balcony Camera"
-  hostname    = "192.168.1.131"
-  interval    = 60
-  max_retries = 3
-  active      = false
-  tags = [
-    {
-      tag_id = uptimekuma_tag.iot.id
-    }
-  ]
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-}
-
 resource "uptimekuma_monitor_ping" "balcony-plug" {
   provider    = uptimekuma.local
   name        = "Balcony Plug"
@@ -1263,3 +1228,55 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
 }
+
+resource "uptimekuma_monitor_ping" "hallway-camera" {
+  provider    = uptimekuma.local
+  name        = "Hallway Camera"
+  hostname    = "192.168.2.8"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "kitchen-camera" {
+  provider    = uptimekuma.local
+  name        = "Kitchen Camera"
+  hostname    = "192.168.2.114"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
+resource "uptimekuma_monitor_ping" "outside-camera" {
+  provider    = uptimekuma.local
+  name        = "Outside Camera"
+  hostname    = "192.168.2.103"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  tags = [
+    {
+      tag_id = uptimekuma_tag.iot.id
+    }
+  ]
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+}
+
