@@ -28,3 +28,19 @@ services:
       # auto-detect the container's address on the "proxy" network.
       - traefik.http.services.jellyfin.loadbalancer.server.url=http://host.docker.internal:8096
     user: 1000:1000
+
+  upscaler:
+    image: kuscheltier/jellyfin-ai-upscaler:v1.8.3.30
+    container_name: jellyfin-ai-upscaler
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ai-models:/app/models
+
+volumes:
+  ai-models:
