@@ -32,6 +32,8 @@ services:
   upscaler:
     image: kuscheltier/jellyfin-ai-upscaler:v1.8.3.30
     container_name: jellyfin-ai-upscaler
+    volumes:
+      - ai-models:/app/models
     deploy:
       resources:
         reservations:
@@ -39,8 +41,6 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    volumes:
-      - ai-models:/app/models
 
 volumes:
   ai-models:
