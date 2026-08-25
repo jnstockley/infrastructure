@@ -9,6 +9,7 @@ services:
     environment:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
+      - MARIADB_AUTO_UPGRADE=true
     env_file:
       - .env
     networks:
