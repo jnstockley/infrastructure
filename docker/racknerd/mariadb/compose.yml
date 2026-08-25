@@ -2,13 +2,14 @@
 name: mariadb
 services:
   mariadb:
-    image: mariadb:12.3.2
+    image: mariadb:12.3.3
     container_name: mariadb
     volumes:
       - ./data:/var/lib/mysql
     environment:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
+      - MARIADB_AUTO_UPGRADE=true
     env_file:
       - .env
     networks:
