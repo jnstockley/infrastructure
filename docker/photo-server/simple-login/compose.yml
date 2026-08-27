@@ -104,7 +104,7 @@ services:
 
   # ── Mail transfer agent ─────────────────────────────────────────────────────
   postfix-certs:
-    image: ldez/traefik-certs-dumper:v2.11.2
+    image: ldez/traefik-certs-dumper:v2.11.4
     container_name: simplelogin-postfix-certs
     volumes:
       # ADJUST: point this at the acme.json used by your existing Traefik stack.
