@@ -28,6 +28,45 @@ resource "cloudflare_dns_record" "iowa-vpn" {
   type    = "A"
 }
 
+resource "cloudflare_dns_record" "simplelogin" {
+  name    = "simplelogin.jstockley.com"
+  ttl     = 300
+  type    = "A"
+  zone_id = var.cloudflare_zone_id
+  content = jsondecode(data.http.racknerd_ip.response_body).ipv4_address
+  comment = "Last updated by Terraform"
+  proxied = false
+}
+
+resource "cloudflare_dns_record" "simplelogin_mx" {
+  name     = "mail.jstockley.com"
+  ttl      = 300
+  type     = "MX"
+  zone_id  = var.cloudflare_zone_id
+  content  = cloudflare_dns_record.simplelogin.name
+  priority = 10
+  proxied  = false
+}
+
+resource "cloudflare_dns_record" "simplelogin_spf" {
+  name    = "mail.jstockley.com"
+  ttl     = 300
+  type    = "TXT"
+  zone_id = var.cloudflare_zone_id
+  content = "\"v=spf1 mx ~all\""
+  proxied = false
+}
+
+
+resource "cloudflare_dns_record" "simplelogin_dmarc" {
+  name    = "_dmarc.mail.jstockley.com"
+  ttl     = 300
+  type    = "TXT"
+  zone_id = var.cloudflare_zone_id
+  content = "\"v=DMARC1; p=quarantine; adkim=r; aspf=r\""
+  proxied = false
+}
+
 resource "cloudflare_dns_record" "airflow" {
   name    = "airflow.jstockley.com"
   ttl     = 1
@@ -471,6 +510,14 @@ output "n8n_dns_record_name" {
 
 output "secrets_dns_record_name" {
   value = cloudflare_dns_record.secrets.name
+}
+
+output "simplelogin_dns_record_name" {
+  value = cloudflare_dns_record.simplelogin.name
+}
+
+output "simplelogin_mx_dns_record_name" {
+  value = cloudflare_dns_record.simplelogin_mx.name
 }
 
 output "status_dns_record_name" {
