@@ -189,7 +189,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.simplelogin.entrypoints=websecure
-      - traefik.http.routers.simplelogin.rule=Host(`simplelogin.jstockley.com`)
+      - traefik.http.routers.simplelogin.rule=Host(`simplelogin.jstockley.com`) || Host(`mail.jstockley.com`)
       - traefik.http.routers.simplelogin.tls=true
       - traefik.http.routers.simplelogin.tls.certresolver=production
       - traefik.http.routers.simplelogin.service=simplelogin
