@@ -109,7 +109,7 @@ services:
   # through the same code path used for per-domain certs, and crashes. This tiny
   # stdlib-only script extracts just the cert/key for POSTFIX_FQDN instead.
   postfix-certs:
-    image: python:3.13-alpine
+    image: python:3.14-alpine
     container_name: simplelogin-postfix-certs
     env_file:
       - .env
