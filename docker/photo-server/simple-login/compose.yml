@@ -103,21 +103,72 @@ services:
       - no-new-privileges:true
 
   # ── Mail transfer agent ─────────────────────────────────────────────────────
+  # NOTE: this used to be ldez/traefik-certs-dumper, but that tool panics with
+  # `unsupported key type: ''` on current Traefik acme.json files -- it also tries
+  # to parse the ACME *account* private key (stored as raw DER, not PEM-wrapped)
+  # through the same code path used for per-domain certs, and crashes. This tiny
+  # stdlib-only script extracts just the cert/key for POSTFIX_FQDN instead.
   postfix-certs:
-    image: ldez/traefik-certs-dumper:v2.11.2
+    image: python:3.13-alpine
     container_name: simplelogin-postfix-certs
+    env_file:
+      - .env
     volumes:
       # ADJUST: point this at the acme.json used by your existing Traefik stack.
       - ../traefik/config/certs/acme.json:/traefik-acme/acme.json:ro
       - ./data/certs:/output
     network_mode: "none"
-    command:
-      - file
-      - --version=v3
-      - --domain-subdir
-      - --watch
-      - --source=/traefik-acme/acme.json
-      - --dest=/output
+    entrypoint:
+      - python
+      - -c
+      - |
+        import base64, json, os, time, sys
+
+        SOURCE = "/traefik-acme/acme.json"
+        DEST_ROOT = "/output"
+        DOMAIN = os.environ.get("POSTFIX_FQDN")
+        POLL_SECONDS = 30
+
+        if not DOMAIN:
+            sys.exit("POSTFIX_FQDN is not set")
+
+        last_written = None
+
+        while True:
+            try:
+                with open(SOURCE) as f:
+                    data = json.load(f)
+
+                cert_entry = None
+                for resolver in data.values():
+                    for cert in resolver.get("Certificates", []) or []:
+                        d = cert.get("domain", {})
+                        names = [d.get("main")] + (d.get("sans") or [])
+                        if DOMAIN in names:
+                            cert_entry = cert
+                            break
+                    if cert_entry:
+                        break
+
+                if cert_entry is None:
+                    print("[postfix-certs] no certificate found yet for " + DOMAIN, flush=True)
+                else:
+                    cert_pem = base64.b64decode(cert_entry["certificate"])
+                    key_pem = base64.b64decode(cert_entry["key"])
+                    if (cert_pem, key_pem) != last_written:
+                        out_dir = os.path.join(DEST_ROOT, DOMAIN)
+                        os.makedirs(out_dir, exist_ok=True)
+                        with open(os.path.join(out_dir, "certificate.crt"), "wb") as fh:
+                            fh.write(cert_pem)
+                        with open(os.path.join(out_dir, "privatekey.key"), "wb") as fh:
+                            fh.write(key_pem)
+                        os.chmod(os.path.join(out_dir, "privatekey.key"), 0o600)
+                        last_written = (cert_pem, key_pem)
+                        print("[postfix-certs] wrote cert/key for " + DOMAIN, flush=True)
+            except Exception as e:
+                print("[postfix-certs] error: " + repr(e), flush=True)
+
+            time.sleep(POLL_SECONDS)
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
