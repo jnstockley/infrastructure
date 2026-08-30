@@ -1,0 +1,9 @@
+# /etc/postfix/pgsql-transport-maps.cf on the VPS host
+hosts = 127.0.0.1
+user = simplelogin
+password = CHANGE_ME_TO_MATCH_POSTGRES_PASSWORD_IN_ENV
+dbname = simplelogin
+
+# Forward to the sl-email container, published on 127.0.0.1:20381
+query = SELECT 'smtp:127.0.0.1:20381' FROM custom_domain WHERE domain = '%s' AND verified=true
+    UNION SELECT 'smtp:127.0.0.1:20381' WHERE '%s' = 'mail.jstockley.com' LIMIT 1;
