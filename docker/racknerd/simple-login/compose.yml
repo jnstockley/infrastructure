@@ -15,6 +15,7 @@ services:
     networks:
       - sl-network
       - proxy
+      - private
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -83,6 +84,7 @@ services:
     env_file: .env
     networks:
       - sl-network
+      - private
     command: ["flask", "db", "upgrade"]
     profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
 
@@ -98,6 +100,13 @@ networks:
           gateway: 10.0.0.1
   proxy:
     name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  # External network shared with the `postgres` stack (docker/racknerd/postgres)
+  # so these containers can reach the `postgres` container directly by name.
+  private:
+    name: private
     external: true
     enable_ipv4: true
     enable_ipv6: true
