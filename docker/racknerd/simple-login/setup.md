@@ -1,137 +1,125 @@
-# SimpleLogin Setup
+# SimpleLogin self-host — mail.jstockley.com
 
-This stack assumes, matching the rest of this infra repo:
+Files in this bundle:
+- `compose.yml` — the app stack (Postgres, webapp, email handler, job runner)
+- `.env.example` — copy to `.env` and fill in secrets
+- `postfix/` — config for the **native** Postfix install on your VPS host
 
-- Traefik is already running on this host with an external `proxy` network and a
-  certresolver named `production`.
-- A shared Postgres instance is already running on the external `private` network
-  (this repo's `postgres/compose.yml` pattern) — this stack does **not** bring its
-  own database.
-- You control DNS for the domain you're using for aliases.
+Assumptions baked in (change if wrong):
+- VPS is Ubuntu/Debian-based with `apt` and Docker + Docker Compose v2 already usable (`docker compose version` works)
+- Traefik is already running as a container on an external Docker network — this assumes it's named `traefik`; check with `docker network ls` and edit `compose.yml`'s bottom `networks:` block if different, along with the `certresolver` label name
+- Port 25 inbound is open on your VPS provider's firewall/security group (many providers block outbound 25 to prevent spam, but inbound is usually fine — worth double-checking with your provider, e.g. DigitalOcean/Vultr/Hetzner docs, since this is the single most common self-host blocker)
+- At least 2GB RAM on the VPS
 
-Replace `mail.jstockley.com` / `mail.jstockley.com` everywhere below with your real domain.
+## 0. Point DNS at the server
 
-## 1. DNS records
+At your DNS provider for jstockley.com, add:
 
-| Type  | Host                        | Value                                              |
-|-------|-----------------------------|-----------------------------------------------------|
-| A     | `mail.jstockley.com`           | your server's public IP                             |
-| MX    | `mail.jstockley.com`                | `10 mail.jstockley.com.`                                |
-| TXT   | `dkim._domainkey.mail.jstockley.com` | `v=DKIM1; k=rsa; p=<DKIM public key, see step 2>`  |
-| TXT   | `mail.jstockley.com`                | `v=spf1 mx ~all`                                     |
-| TXT   | `_dmarc.mail.jstockley.com`         | `v=DMARC1; p=quarantine; adkim=r; aspf=r`            |
+| Type | Host | Value | Priority |
+|---|---|---|---|
+| A | mail | `<your VPS IP>` | — |
+| MX | mail | `mail.jstockley.com.` | 10 |
+| TXT | mail | `v=spf1 mx ~all` | — |
+| TXT | `_dmarc.mail` | `v=DMARC1; p=quarantine; adkim=r; aspf=r` | — |
+| TXT | `dkim._domainkey.mail` | (generated in step 1 below) | — |
 
-Open inbound ports 25, 80, 443 on this host's firewall. Port 80/443 should already be
-open for Traefik.
+If you're using Cloudflare for DNS, set the `mail` A record to **DNS only** (grey cloud, not orange/proxied) — Cloudflare's proxy doesn't work for mail server IPs.
 
-## 2. Generate a DKIM keypair
+## 1. Generate DKIM keys
 
 ```bash
-mkdir -p dkim
-openssl genrsa -out dkim/dkim.key -traditional 1024
-openssl rsa -in dkim/dkim.key -pubout -out dkim/dkim.pub.key
+mkdir -p ~/simplelogin-selfhost && cd ~/simplelogin-selfhost
+openssl genrsa -out dkim.key -traditional 1024
+openssl rsa -in dkim.key -pubout -out dkim.pub.key
 
-# Print the value for the DKIM TXT record above:
-sed "s/-----BEGIN PUBLIC KEY-----/v=DKIM1; k=rsa; p=/g" dkim/dkim.pub.key \
+# Print the DNS TXT value to paste into the dkim._domainkey.mail record above:
+sed "s/-----BEGIN PUBLIC KEY-----/v=DKIM1; k=rsa; p=/g" dkim.pub.key \
   | sed 's/-----END PUBLIC KEY-----//g' | tr -d '\n' | awk 1
 ```
 
-1024-bit is intentional here (matches upstream guidance) — some registrars mishandle
-long TXT records with a 2048-bit key.
+Verify propagation before moving on:
+```bash
+dig @1.1.1.1 mail.jstockley.com mx
+dig @1.1.1.1 dkim._domainkey.mail.jstockley.com txt
+```
 
-## 3. Create the database on your shared Postgres
+## 2. Copy this bundle onto the VPS
+
+Put `compose.yml`, `.env.example`, `postfix/`, and the two `dkim.key`/`dkim.pub.key` files you just generated into the same directory on the VPS, e.g. `~/simplelogin-selfhost/`.
 
 ```bash
-docker exec -it postgres psql -U <your_postgres_admin_user> -d postgres
+cp .env.example .env
 ```
+Edit `.env` and set real values for `POSTGRES_PASSWORD`, `FLASK_SECRET` (generate with `openssl rand -hex 32`), and double check `SL_VERSION` against https://hub.docker.com/r/simplelogin/app/tags.
 
-```sql
-CREATE ROLE simplelogin WITH LOGIN PASSWORD 'CHANGE_ME_DB_PASSWORD';
-CREATE DATABASE simplelogin OWNER simplelogin;
-```
-
-Use the same password in `DB_URI` and the `DB_PASSWORD` field in `.env` — they must match.
-
-## 4. Point the cert dumper at your Traefik ACME storage
-
-`postfix-certs` reads Traefik's `acme.json` to reuse the certificate Traefik already
-issues for `mail.jstockley.com`, instead of running a second Let's Encrypt client on
-this host (which would fight Traefik for port 80/443).
-
-Edit the `postfix-certs` volume in `compose.yml`:
-
-```yaml
-volumes:
-  - ../traefik/config/certs/acme.json:/traefik-acme/acme.json:ro
-```
-
-Change the host-side path to wherever your Traefik stack actually stores `acme.json`.
-Confirm the exact certresolver storage path in your `traefik.yml` static config if
-you're not sure.
-
-If you don't run Traefik with ACME (e.g. you use split-horizon DNS challenges some
-other way, or don't want to share cert material across stacks), you can instead let
-Postfix manage its own certificate: remove the `postfix-certs` service, drop
-`TLS_CERT_FILE`/`TLS_KEY_FILE` from `.env`, and add `LETSENCRYPT_EMAIL=you@mail.jstockley.com`
-instead. This only works if nothing else on the host holds port 80 during
-issuance/renewal.
-
-## 5. Find your Docker network subnets
+## 3. Install and configure Postfix (native, on the host)
 
 ```bash
-docker network inspect proxy private | grep -A2 Subnet
+sudo apt update && sudo apt install -y postfix postfix-pgsql dnsutils
 ```
-
-Update `MYNETWORKS` in `.env` with the actual subnets reported (in addition to the
-loopback ranges already listed). This controls which sources Postfix will relay mail
-for without restriction — too narrow breaks outbound mail from the app containers,
-too broad creates an open relay.
-
-## 6. First boot
+Choose **Internet Site** when prompted, accept the proposed system mail name.
 
 ```bash
-cp sample.env .env
-# edit .env: fill in every CHANGE_ME, your real domain, and the values from steps 2-5
+sudo cp postfix/main.cf /etc/postfix/main.cf
+sudo cp postfix/pgsql-relay-domains.cf /etc/postfix/pgsql-relay-domains.cf
+sudo cp postfix/pgsql-transport-maps.cf /etc/postfix/pgsql-transport-maps.cf
+```
+Edit the `password` field in both `pgsql-*.cf` files on the host to match `POSTGRES_PASSWORD` from your `.env`.
 
-mkdir -p data/pgp data/upload data/certs
+If the snakeoil TLS cert doesn't already exist:
+```bash
+sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+  -keyout /etc/ssl/private/ssl-cert-snakeoil.key \
+  -out /etc/ssl/certs/ssl-cert-snakeoil.pem
+```
 
+Restart Postfix — **do this after** the `db` container is up in step 4, since Postfix needs to reach Postgres on `127.0.0.1:5432`:
+```bash
+sudo systemctl restart postfix
+```
+
+## 4. Bring up the database, then run migration + init
+
+```bash
+cd ~/simplelogin-selfhost
+docker compose up -d db
+docker compose --profile tools run --rm migration
+docker compose --profile tools run --rm init
+```
+
+Now restart Postfix (it needs the `db` container's port up first):
+```bash
+sudo systemctl restart postfix
+```
+
+## 5. Start the rest of the stack
+
+```bash
 docker compose up -d
-docker compose logs -f migrate init
+docker compose logs -f
 ```
 
-`migrate` and `init` run once and exit — check their logs for a clean exit (0) before
-worrying about the other containers. `webapp`, `email-handler`, and `job-runner` won't
-start until `init` completes successfully.
+Traefik should pick up the `sl-app` container automatically via its labels and issue a cert for `mail.jstockley.com`.
 
-## 7. Create your account, then lock down registration
+## 6. Create your account and make it "premium" (free, self-hosted — no payment)
 
-Sign up at `https://mail.jstockley.com` once the webapp is healthy. To give an account
-unlimited aliases (premium):
-
+Visit `https://mail.jstockley.com`, sign up, then:
 ```bash
-docker exec -it postgres psql -U <your_postgres_admin_user> -d simplelogin \
-  -c "UPDATE users SET lifetime = TRUE WHERE email = 'you@mail.jstockley.com';"
+docker exec -it sl-db psql -U simplelogin simplelogin
+UPDATE users SET lifetime = TRUE;
+\q
+```
+This unlocks unlimited aliases, custom domains, and send/reply-from-alias — for free, since you're self-hosting.
+
+Once your account(s) are created, lock down further signups by uncommenting the two `DISABLE_*` lines at the bottom of `.env`, then:
+```bash
+docker compose restart app
 ```
 
-Once you and anyone else who needs an account have signed up, close registration by
-uncommenting in `.env`:
+## 7. Point Bitwarden at your instance
 
-```
-DISABLE_REGISTRATION=1
-```
+In Bitwarden's username generator: select **SimpleLogin**, set the self-host server URL to `https://mail.jstockley.com`, and paste the API key from your SimpleLogin account's API Keys page.
 
-Then: `docker compose up -d webapp` to apply.
+## Known gap: outbound sending
 
-## Troubleshooting
-
-- **No mail arriving**: `docker compose logs -f postfix`. Confirm your MX record
-  resolves and port 25 is reachable from the internet (`telnet mail.jstockley.com 25`
-  from an external host — not from this server, ISPs commonly block outbound 25 for
-  the *test* even when inbound works fine).
-- **Postfix has no TLS**: check `docker compose logs postfix-certs` — it only produces
-  output once Traefik has actually issued a cert for `POSTFIX_FQDN`. Until then,
-  Postfix falls back to running without TLS rather than failing to start.
-- **`migrate` loops forever waiting for postgres**: confirm `DB_HOST`/`DB_PORT` in
-  `.env` match a running, reachable container on the `private` network
-  (`docker exec simplelogin-migrate bash -c 'cat /etc/hosts'` can help confirm DNS
-  resolution on that network).
+This setup covers receive-and-forward out of the box. To reliably **send/reply from an alias**, most VPS providers block or throttle direct outbound port 25, so mail sent straight from Postfix will often land in spam or get rejected outright. If/when you want that, the common fix is routing outbound through a transactional relay (e.g. Brevo's free tier — 300 emails/day) and adding proper SPF/DKIM/DMARC alignment for it. Happy to walk through that as a follow-up once the base setup is confirmed working.
