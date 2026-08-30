@@ -9,8 +9,8 @@ services:
       - ./data:/sl
       - ./data/upload:/code/static/upload
       - ./.env:/code/.env:ro
-      - ./dkim.key:/dkim.key:ro
-      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./dkim/dkim.key:/dkim.key:ro
+      - ./dkim/dkim.pub.key:/dkim.pub.key:ro
     env_file: .env
     networks:
       - sl-network
@@ -31,8 +31,8 @@ services:
       - ./data:/sl
       - ./data/upload:/code/static/upload
       - ./.env:/code/.env:ro
-      - ./dkim.key:/dkim.key:ro
-      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./dkim/dkim.key:/dkim.key:ro
+      - ./dkim/dkim.pub.key:/dkim.pub.key:ro
     env_file: .env
     # Published to localhost ONLY: native Postfix relays inbound mail to
     # this port (see postfix/pgsql-transport-maps.cf -> smtp:127.0.0.1:20381)
@@ -49,8 +49,8 @@ services:
     volumes:
       - ./data:/sl
       - ./.env:/code/.env:ro
-      - ./dkim.key:/dkim.key:ro
-      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./dkim/dkim.key:/dkim.key:ro
+      - ./dkim/dkim.pub.key:/dkim.pub.key:ro
     env_file: .env
     networks:
       - sl-network
@@ -64,8 +64,8 @@ services:
       - ./data:/sl
       - ./data/upload:/code/static/upload
       - ./.env:/code/.env:ro
-      - ./dkim.key:/dkim.key:ro
-      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./dkim/dkim.key:/dkim.key:ro
+      - ./dkim/dkim.pub.key:/dkim.pub.key:ro
     env_file: .env
     networks:
       - sl-network
@@ -77,8 +77,8 @@ services:
     volumes:
       - ./data:/sl
       - ./data/upload:/code/static/upload
-      - ./dkim.key:/dkim.key:ro
-      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./dkim/dkim.key:/dkim.key:ro
+      - ./dkim/dkim.pub.key:/dkim.pub.key:ro
       - ./.env:/code/.env:ro
     env_file: .env
     networks:
