@@ -41,6 +41,7 @@ services:
       - '127.0.0.1:20381:20381'
     networks:
       - sl-network
+      - private
     command: ["python", "email_handler.py"]
     restart: unless-stopped
 
@@ -55,6 +56,7 @@ services:
     env_file: .env
     networks:
       - sl-network
+      - private
     command: ["python", "init_app.py"]
     profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
 
@@ -70,6 +72,7 @@ services:
     env_file: .env
     networks:
       - sl-network
+      - private
     command: ["python", "job_runner.py"]
     restart: unless-stopped
   migration:
