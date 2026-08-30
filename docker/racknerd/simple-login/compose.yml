@@ -5,9 +5,6 @@ services:
   app:
     image: simplelogin/app:${SL_VERSION}
     container_name: sl-app
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./data:/sl
       - ./data/upload:/code/static/upload
@@ -30,9 +27,6 @@ services:
   email:
     image: simplelogin/app:${SL_VERSION}
     container_name: sl-email
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./data:/sl
       - ./data/upload:/code/static/upload
@@ -52,9 +46,6 @@ services:
   init:
     image: simplelogin/app:${SL_VERSION}
     container_name: sl-init
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./data:/sl
       - ./.env:/code/.env:ro
@@ -69,9 +60,6 @@ services:
   job-runner:
     image: simplelogin/app:${SL_VERSION}
     container_name: sl-job-runner
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./data:/sl
       - ./data/upload:/code/static/upload
@@ -86,9 +74,6 @@ services:
   migration:
     image: simplelogin/app:${SL_VERSION}
     container_name: sl-migration
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./data:/sl
       - ./data/upload:/code/static/upload
