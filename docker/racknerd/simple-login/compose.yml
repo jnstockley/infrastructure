@@ -1,213 +1,118 @@
 ---
-x-simplelogin-common: &simplelogin-common
-  image: simplelogin/app-ci:v4.78.9
-  env_file:
-    - .env
-  environment:
-    - TZ=America/Chicago
-  volumes:
-    - ./dkim/dkim.key:/dkim.key:ro
-    - ./data/pgp:/sl/pgp
-    - ./data/upload:/code/static/upload
-  networks:
-    - proxy
-    - private
-  security_opt:
-    - no-new-privileges:true
 name: simplelogin
-
 services:
 
-  email-handler:
-    container_name: simplelogin-email-handler
+  app:
+    image: simplelogin/app:${SL_VERSION}
+    container_name: sl-app
     depends_on:
-      init:
-        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/sl
+      - ./data/upload:/code/static/upload
+      - ./.env:/code/.env:ro
+      - ./dkim.key:/dkim.key:ro
+      - ./dkim.pub.key:/dkim.pub.key:ro
+    env_file: .env
+    networks:
+      - sl-network
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.simplelogin.rule=Host(`mail.jstockley.com`)"
+      - "traefik.http.routers.simplelogin.entrypoints=websecure"
+      - "traefik.http.routers.simplelogin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.simplelogin.loadbalancer.server.port=7777"
+
+  email:
+    image: simplelogin/app:${SL_VERSION}
+    container_name: sl-email
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/sl
+      - ./data/upload:/code/static/upload
+      - ./.env:/code/.env:ro
+      - ./dkim.key:/dkim.key:ro
+      - ./dkim.pub.key:/dkim.pub.key:ro
+    env_file: .env
+    # Published to localhost ONLY: native Postfix relays inbound mail to
+    # this port (see postfix/pgsql-transport-maps.cf -> smtp:127.0.0.1:20381)
+    ports:
+      - '127.0.0.1:20381:20381'
+    networks:
+      - sl-network
     command: ["python", "email_handler.py"]
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 20381), 3)"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    labels:
-      - traefik.enable=false
-    <<: *simplelogin-common
-    security_opt:
-      - no-new-privileges:true
 
   init:
-    container_name: simplelogin-init
+    image: simplelogin/app:${SL_VERSION}
+    container_name: sl-init
     depends_on:
-      migrate:
-        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/sl
+      - ./.env:/code/.env:ro
+      - ./dkim.key:/dkim.key:ro
+      - ./dkim.pub.key:/dkim.pub.key:ro
+    env_file: .env
+    networks:
+      - sl-network
     command: ["python", "init_app.py"]
-    restart: "no"
-    <<: *simplelogin-common
+    profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
 
   job-runner:
-    container_name: simplelogin-job-runner
+    image: simplelogin/app:${SL_VERSION}
+    container_name: sl-job-runner
     depends_on:
-      init:
-        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data:/sl
+      - ./data/upload:/code/static/upload
+      - ./.env:/code/.env:ro
+      - ./dkim.key:/dkim.key:ro
+      - ./dkim.pub.key:/dkim.pub.key:ro
+    env_file: .env
+    networks:
+      - sl-network
     command: ["python", "job_runner.py"]
     restart: unless-stopped
-    labels:
-      - traefik.enable=false
-    <<: *simplelogin-common
-    security_opt:
-      - no-new-privileges:true
-  migrate:
-    container_name: simplelogin-migrate
-    command:
-      - bash
-      - -c
-      - |
-        until (echo > /dev/tcp/${DB_HOST}/${DB_PORT}) 2>/dev/null; do
-          echo "waiting for postgres at ${DB_HOST}:${DB_PORT}..."
-          sleep 2
-        done
-        alembic upgrade head
-    restart: "no"
-    <<: *simplelogin-common
-
-  postfix:
-    image: simplelogin/postfix:4.2.3
-    container_name: simplelogin-postfix
+  migration:
+    image: simplelogin/app:${SL_VERSION}
+    container_name: sl-migration
     depends_on:
-      - email-handler
-      - postfix-certs
+      db:
+        condition: service_healthy
     volumes:
-      - ./data/certs:/certs:ro
-    environment:
-      - TZ=America/Chicago
-      - SIMPLELOGIN_COMPATIBILITY_MODE=v4
-    env_file:
-      - .env
-    ports:
-      - '0.0.0.0:25:25'
+      - ./data:/sl
+      - ./data/upload:/code/static/upload
+      - ./dkim.key:/dkim.key:ro
+      - ./dkim.pub.key:/dkim.pub.key:ro
+      - ./.env:/code/.env:ro
+    env_file: .env
     networks:
-      - proxy
-      - private
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "/usr/sbin/postfix", "status"]
-      interval: 60s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
-    labels:
-      - traefik.enable=false
-    security_opt:
-      - no-new-privileges:true
-
-  # ── Mail transfer agent ─────────────────────────────────────────────────────
-  # NOTE: this used to be ldez/traefik-certs-dumper, but that tool panics with
-  # `unsupported key type: ''` on current Traefik acme.json files -- it also tries
-  # to parse the ACME *account* private key (stored as raw DER, not PEM-wrapped)
-  # through the same code path used for per-domain certs, and crashes. This tiny
-  # stdlib-only script extracts just the cert/key for POSTFIX_FQDN instead.
-  postfix-certs:
-    image: python:3.13-alpine
-    container_name: simplelogin-postfix-certs
-    env_file:
-      - .env
-    volumes:
-      # ADJUST: point this at the acme.json used by your existing Traefik stack.
-      - ../traefik/config/certs/acme.json:/traefik-acme/acme.json:ro
-      - ./data/certs:/output
-    network_mode: "none"
-    entrypoint:
-      - python
-      - -c
-      - |
-        import base64, json, os, time, sys
-
-        SOURCE = "/traefik-acme/acme.json"
-        DEST_ROOT = "/output"
-        DOMAIN = os.environ.get("POSTFIX_FQDN")
-        POLL_SECONDS = 30
-
-        if not DOMAIN:
-            sys.exit("POSTFIX_FQDN is not set")
-
-        last_written = None
-
-        while True:
-            try:
-                with open(SOURCE) as f:
-                    data = json.load(f)
-
-                cert_entry = None
-                for resolver in data.values():
-                    for cert in resolver.get("Certificates", []) or []:
-                        d = cert.get("domain", {})
-                        names = [d.get("main")] + (d.get("sans") or [])
-                        if DOMAIN in names:
-                            cert_entry = cert
-                            break
-                    if cert_entry:
-                        break
-
-                if cert_entry is None:
-                    print("[postfix-certs] no certificate found yet for " + DOMAIN, flush=True)
-                else:
-                    cert_pem = base64.b64decode(cert_entry["certificate"])
-                    key_pem = base64.b64decode(cert_entry["key"])
-                    if (cert_pem, key_pem) != last_written:
-                        out_dir = os.path.join(DEST_ROOT, DOMAIN)
-                        os.makedirs(out_dir, exist_ok=True)
-                        with open(os.path.join(out_dir, "certificate.crt"), "wb") as fh:
-                            fh.write(cert_pem)
-                        with open(os.path.join(out_dir, "privatekey.key"), "wb") as fh:
-                            fh.write(key_pem)
-                        os.chmod(os.path.join(out_dir, "privatekey.key"), 0o600)
-                        last_written = (cert_pem, key_pem)
-                        print("[postfix-certs] wrote cert/key for " + DOMAIN, flush=True)
-            except Exception as e:
-                print("[postfix-certs] error: " + repr(e), flush=True)
-
-            time.sleep(POLL_SECONDS)
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-
-  # ── Long-running services ───────────────────────────────────────────────────
-  webapp:
-    container_name: simplelogin-webapp
-    depends_on:
-      init:
-        condition: service_completed_successfully
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:7777/health', timeout=3)"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.simplelogin.entrypoints=websecure
-      - traefik.http.routers.simplelogin.rule=Host(`simplelogin.jstockley.com`) || Host(`mail.jstockley.com`)
-      - traefik.http.routers.simplelogin.tls=true
-      - traefik.http.routers.simplelogin.tls.certresolver=production
-      - traefik.http.routers.simplelogin.service=simplelogin
-      - traefik.http.services.simplelogin.loadbalancer.server.port=7777
-      - traefik.docker.network=proxy
-    <<: *simplelogin-common
-    security_opt:
-      - no-new-privileges:true
+      - sl-network
+    command: ["flask", "db", "upgrade"]
+    profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
 
 networks:
+  # Fixed subnet so native Postfix can trust this range in mynetworks
+  # (see postfix/main.cf) and so containers can reach the host's Postfix
+  # at the gateway IP (10.0.0.1) to relay outbound mail.
+  sl-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
   proxy:
     name: proxy
-    external: true
-    enable_ipv4: true
-    enable_ipv6: true
-  private:
-    name: private
-    internal: true
     external: true
     enable_ipv4: true
     enable_ipv6: true
