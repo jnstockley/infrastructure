@@ -1,0 +1,9 @@
+# /etc/postfix/pgsql-relay-domains.cf on the VPS host
+# Connects to the Dockerized Postgres, published on 127.0.0.1:5432
+hosts = 127.0.0.1
+user = simplelogin
+password = CHANGE_ME_TO_MATCH_POSTGRES_PASSWORD_IN_ENV
+dbname = simplelogin
+
+query = SELECT domain FROM custom_domain WHERE domain='%s' AND verified=true
+    UNION SELECT '%s' WHERE '%s' = 'mail.jstockley.com' LIMIT 1;

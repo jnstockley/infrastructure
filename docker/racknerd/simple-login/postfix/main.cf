@@ -1,0 +1,60 @@
+# /etc/postfix/main.cf on the VPS host
+# Adapted for SimpleLogin self-host, domain: mail.jstockley.com
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+append_dot_mydomain = no
+readme_directory = no
+compatibility_level = 2
+
+# TLS parameters (snakeoil cert generated if it doesn't already exist -
+# see README.md; swap for a real cert/Let's Encrypt cert if you want inbound
+# STARTTLS to present a trusted cert)
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+smtp_tls_security_level = may
+smtpd_tls_security_level = may
+
+alias_maps = hash:/etc/aliases
+
+# 127.0.0.0/8 = localhost, 10.0.0.0/24 = the sl-network docker bridge
+# (lets the SimpleLogin containers relay outbound mail through this Postfix)
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.0.0/24
+
+mydestination =
+myhostname = mail.jstockley.com
+mydomain = mail.jstockley.com
+myorigin = mail.jstockley.com
+
+relay_domains = pgsql:/etc/postfix/pgsql-relay-domains.cf
+transport_maps = pgsql:/etc/postfix/pgsql-transport-maps.cf
+
+smtpd_delay_reject = yes
+smtpd_helo_required = yes
+smtpd_helo_restrictions =
+    permit_mynetworks,
+    reject_non_fqdn_helo_hostname,
+    reject_invalid_helo_hostname,
+    permit
+
+smtpd_sender_restrictions =
+    permit_mynetworks,
+    reject_non_fqdn_sender,
+    reject_unknown_sender_domain,
+    permit
+
+smtpd_recipient_restrictions =
+   reject_unauth_pipelining,
+   reject_non_fqdn_recipient,
+   reject_unknown_recipient_domain,
+   permit_mynetworks,
+   reject_unauth_destination,
+   reject_rbl_client zen.spamhaus.org=127.0.0.[2..11],
+   reject_rhsbl_sender dbl.spamhaus.org=127.0.1.[2..99],
+   reject_rhsbl_helo dbl.spamhaus.org=127.0.1.[2..99],
+   reject_rhsbl_reverse_client dbl.spamhaus.org=127.0.1.[2..99],
+   warn_if_reject reject_rbl_client zen.spamhaus.org=127.255.255.[1..255],
+   reject_rbl_client bl.spamcop.net,
+   permit
