@@ -78,8 +78,6 @@ services:
       - PGTZ=America/Chicago
     env_file:
       - .env
-    ports:
-      - '127.0.0.1:5432:5432'
     networks:
       - private
     restart: unless-stopped

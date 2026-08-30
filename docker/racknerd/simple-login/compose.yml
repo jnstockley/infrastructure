@@ -1,7 +1,6 @@
 ---
 name: simplelogin
 services:
-
   app:
     image: simplelogin/app-ci:v4.81.7
     container_name: sl-app
@@ -90,6 +89,17 @@ services:
       - private
     command: ["flask", "db", "upgrade"]
     profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
+
+  pg-forwarder:
+    image: alpine/socat:1.8.1.3
+    container_name: sl-pg-forwarder
+    ports:
+      - '127.0.0.1:5432:5432'
+    networks:
+      - private
+      - sl-network
+    command: ["tcp-listen:5432,fork,reuseaddr", "tcp-connect:postgres:5432"]
+    restart: unless-stopped
 
 networks:
   # Fixed subnet so native Postfix can trust this range in mynetworks
