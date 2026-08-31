@@ -39,6 +39,9 @@
 
     WindowManager.StandardHideWidgets = true;
 
+    power.sleep.harddisk = "never";
+    power.sleep.display = "never";
+
     # Uncomment on a real headless box — skips the "are you sure" dialog
     # when a script triggers a restart/shutdown.
     # loginwindow.LoginwindowText = "Managed by nix-darwin — see hosts/";
@@ -48,10 +51,10 @@
   # `pmset` isn't exposed via `system.defaults`, so it's set through an
   # activation script instead. Runs on every `darwin-rebuild switch`, but
   # `pmset` itself is idempotent (just re-applies the same setting).
-  system.activationScripts.postActivation.text = ''
-    # Disable system sleep when plugged into AC power (-c)
-    sudo pmset -c sleep 0
-  '';
+  #system.activationScripts.postActivation.text = ''
+  #  # Disable system sleep when plugged into AC power (-c)
+  #  sudo pmset -c sleep 0
+  #'';
 
   # ---- Remote access (needed once this Mac has no keyboard/monitor) -------
   # Confirm the exact option name for the nix-darwin revision this flake is
