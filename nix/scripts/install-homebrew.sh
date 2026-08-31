@@ -11,6 +11,22 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
   exit 1
 fi
 
+# --- Prime sudo -------------------------------------------------------------
+# The official Homebrew installer needs sudo (to create/chown its prefix,
+# e.g. /opt/homebrew) even when run non-interactively. Rather than hardcoding
+# `sudo` in front of brew commands (which corrupts Homebrew's expected
+# ownership model), we cache a sudo ticket up front and keep it alive for the
+# duration of this script, so the installer's own internal `sudo` calls don't
+# hang waiting on a password prompt.
+echo "==> This script needs sudo access to install Homebrew. You may be prompted for your password."
+sudo -v
+
+# Refresh the cached credential every 60s in the background until this
+# script exits, then clean up the background job automatically.
+( while true; do sudo -n true; sleep 60; kill -0 "$$" 2>/dev/null || exit; done ) 2>/dev/null &
+SUDO_KEEPALIVE_PID=$!
+trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
+
 # Homebrew's prefix differs by CPU architecture.
 if [[ "$(uname -m)" == "arm64" ]]; then
   BREW_PREFIX="/opt/homebrew"
