@@ -53,6 +53,7 @@
   system.activationScripts.postActivation.text = ''
     # -c = settings while on AC power. 0 == never sleep.
     pmset -c sleep 0 disksleep 0 displaysleep 0
+    launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist 2>/dev/null || true
   '';
 
   # ---- Remote access (needed once this Mac has no keyboard/monitor) -------
