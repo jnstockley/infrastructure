@@ -48,23 +48,24 @@ if [[ ! -x "$BREW_BIN" ]]; then
 fi
 
 # --- Post-install: put brew on PATH for future shells -----------------------
+# Mirrors the exact steps Homebrew's own installer prints, but done
+# idempotently and without hardcoding a username or prefix. `zsh` is passed
+# explicitly to `brew shellenv` because we're targeting .zprofile regardless
+# of which shell happens to be running this script (its shebang is bash).
 PROFILE_FILE="${HOME}/.zprofile"
-SHELLENV_LINE="eval \"\$(${BREW_BIN} shellenv)\""
+SHELLENV_LINE="eval \"\$(${BREW_BIN} shellenv zsh)\""
 
 if ! grep -qsF "$SHELLENV_LINE" "$PROFILE_FILE" 2>/dev/null; then
   echo "==> Adding Homebrew shellenv to ${PROFILE_FILE}..."
-  {
-    echo ""
-    echo "# Added by scripts/install-homebrew.sh"
-    echo "$SHELLENV_LINE"
-  } >> "$PROFILE_FILE"
+  echo >> "$PROFILE_FILE"
+  echo "$SHELLENV_LINE" >> "$PROFILE_FILE"
 else
   echo "==> ${PROFILE_FILE} already configures Homebrew shellenv."
 fi
 
 # Load it into the current shell too, so the rest of this script (and this
 # terminal session, if sourced) can use `brew` immediately.
-eval "$("$BREW_BIN" shellenv)"
+eval "$("$BREW_BIN" shellenv zsh)"
 
 echo "==> Running brew doctor..."
 brew doctor || true
