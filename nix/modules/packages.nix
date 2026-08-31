@@ -14,7 +14,6 @@
   environment.systemPackages = with pkgs; [
     docker
     fastfetch
-    ghostty
     ollama
     gh
     git
