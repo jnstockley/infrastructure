@@ -76,13 +76,20 @@ plain community installer doesn't).
    actual short macOS username (check with `whoami`).
 3. From the repo root:
    ```bash
+   scripts/install-homebrew.sh
+   ```
+   This installs Homebrew, since nix-darwin's Homebrew module assumes it's 
+   already present. You can skip this if you already have Homebrew installed, 
+   but nix-darwin will still manage it from
+4. From the repo root:
+   ```bash
    scripts/bootstrap.sh mini
    ```
    This installs Xcode Command Line Tools if needed, installs Nix if
    needed, and does the first `nix-darwin` activation. It's safe to just
    re-run it if it stops partway (e.g. to wait for a GUI installer, or for
    you to open a new terminal so PATH changes take effect).
-4. Once it finishes, open `modules/homebrew.nix` and start uncommenting /
+5. Once it finishes, open `modules/homebrew.nix` and start uncommenting /
    adding the casks, brews, and App Store apps you actually want, then:
    ```bash
    scripts/update.sh
