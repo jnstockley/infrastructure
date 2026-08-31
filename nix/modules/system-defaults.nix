@@ -7,9 +7,19 @@
   # not scriptable at all.
   system.defaults = {
     dock = {
-      autohide = true;
+      autohide = false;
       show-recents = false;
       mru-spaces = false;
+    };
+
+    SoftwareUpdate = {
+      AutomaticallyInstallMacOSUpdates=true;
+    };
+
+    loginwindow = {
+        autoLoginUser = "jackstockley";
+        DisableConsoleAccess = true;
+        GuestEnabled = false;
     };
 
     finder = {
@@ -20,17 +30,28 @@
 
     NSGlobalDomain = {
       AppleShowAllExtensions = true;
-      InitialKeyRepeat = 15;
-      KeyRepeat = 2;
-      NSAutomaticCapitalizationEnabled = false;
+      AppleInterfaceStyle = "Dark";
+      AppleShowAllFiles = true;
+      NSDocumentSaveNewDocumentsToCloud = false;
     };
 
     screensaver.askForPasswordDelay = 0;
+
+    WindowManager.StandardHideWidgets = true;
 
     # Uncomment on a real headless box — skips the "are you sure" dialog
     # when a script triggers a restart/shutdown.
     # loginwindow.LoginwindowText = "Managed by nix-darwin — see hosts/";
   };
+
+  # ---- Power management -----------------------------------------------------
+  # `pmset` isn't exposed via `system.defaults`, so it's set through an
+  # activation script instead. Runs on every `darwin-rebuild switch`, but
+  # `pmset` itself is idempotent (just re-applies the same setting).
+  system.activationScripts.postActivation.text = ''
+    # Disable system sleep when plugged into AC power (-c)
+    sudo pmset -c sleep 0
+  '';
 
   # ---- Remote access (needed once this Mac has no keyboard/monitor) -------
   # Confirm the exact option name for the nix-darwin revision this flake is
