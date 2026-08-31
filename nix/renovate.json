@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+
+  "nix": {
+    "enabled": true
+  },
+
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": ["schedule:weekly"]
+  },
+
+  "schedule": ["before 6am on monday"],
+  "timezone": "UTC",
+
+  "labels": ["nix", "dependencies"],
+  "commitMessagePrefix": "chore(deps):",
+
+  "packageRules": [
+    {
+      "matchManagers": ["nix"],
+      "matchDepNames": ["nixpkgs"],
+      "groupName": "nixpkgs",
+      "commitMessageTopic": "nixpkgs"
+    },
+    {
+      "matchManagers": ["nix"],
+      "matchDepNames": ["nix-darwin"],
+      "groupName": "nix-darwin",
+      "commitMessageTopic": "nix-darwin"
+    },
+    {
+      "matchManagers": ["nix"],
+      "matchDepNames": ["treefmt-nix"],
+      "groupName": "treefmt-nix",
+      "commitMessageTopic": "treefmt-nix"
+    }
+  ]
+}

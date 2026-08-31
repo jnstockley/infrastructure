@@ -1,0 +1,9 @@
+# Nix build output symlinks
+result
+result-*
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp

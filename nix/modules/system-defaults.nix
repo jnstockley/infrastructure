@@ -1,0 +1,48 @@
+{ ... }:
+{
+  # ---- System preferences -------------------------------------------------
+  # Only a subset of System Settings is exposed this way — see
+  # docs/SYSTEM_SETTINGS.md for the full list of what's covered, the
+  # CustomUserPreferences escape hatch for anything that isn't, and what's
+  # not scriptable at all.
+  system.defaults = {
+    dock = {
+      autohide = true;
+      show-recents = false;
+      mru-spaces = false;
+    };
+
+    finder = {
+      AppleShowAllExtensions = true;
+      FXPreferredViewStyle = "Nlsv"; # list view
+      ShowPathbar = true;
+    };
+
+    NSGlobalDomain = {
+      AppleShowAllExtensions = true;
+      InitialKeyRepeat = 15;
+      KeyRepeat = 2;
+      NSAutomaticCapitalizationEnabled = false;
+    };
+
+    screensaver.askForPasswordDelay = 0;
+
+    # Uncomment on a real headless box — skips the "are you sure" dialog
+    # when a script triggers a restart/shutdown.
+    # loginwindow.LoginwindowText = "Managed by nix-darwin — see hosts/";
+  };
+
+  # ---- Remote access (needed once this Mac has no keyboard/monitor) -------
+  # Confirm the exact option name for the nix-darwin revision this flake is
+  # pinned to before relying on it:
+  #   https://search.nixos.org/search?channel=unstable&query=openssh&flake=nix-darwin
+  # As a fallback you can always do this once by hand instead:
+  #   sudo systemsetup -setremotelogin on
+  services.openssh.enable = true;
+
+  # ---- Bookkeeping ----------------------------------------------------------
+  # This tracks the nix-darwin schema version your config was FIRST written
+  # against, not the current one. Do not bump it after initial activation —
+  # see README "Known limitations" for why.
+  system.stateVersion = 5;
+}
