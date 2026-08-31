@@ -17,7 +17,6 @@
     };
 
     loginwindow = {
-        autoLoginUser = "jackstockley";
         DisableConsoleAccess = true;
         GuestEnabled = false;
     };
