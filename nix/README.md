@@ -98,6 +98,8 @@ plain community installer doesn't).
 6. Setup GitHub Authentication using GH:
     ```bash
     gh auth login
+    git config --global user.name "Your Name"
+    git config --global user.email "your.email@example.com"
     ```
 
 ---
