@@ -85,23 +85,28 @@ plain community installer doesn't).
    ```bash
    scripts/bootstrap.sh mini
    ```
-   This installs Xcode Command Line Tools if needed, installs Nix if
-   needed, and does the first `nix-darwin` activation. It's safe to just
-   re-run it if it stops partway (e.g. to wait for a GUI installer, or for
-   you to open a new terminal so PATH changes take effect).
-5. Once it finishes, open `modules/homebrew.nix` and start uncommenting /
-   adding the casks, brews, and App Store apps you actually want, then:
-   ```bash
-   scripts/update.sh
-   ```
-   
-6. Setup GitHub Authentication using GH:
+5. Restart current shell, then setup GitHub Authentication using GH:
     ```bash
     gh auth login
     git config --global user.name "Your Name"
     git config --global user.email "your.email@example.com"
     ```
-
+   This installs Xcode Command Line Tools if needed, installs Nix if
+   needed, and does the first `nix-darwin` activation. It's safe to just
+   re-run it if it stops partway (e.g. to wait for a GUI installer, or for
+   you to open a new terminal so PATH changes take effect).
+6. Once it finishes, open `modules/homebrew.nix` and start uncommenting /
+   adding the casks, brews, and App Store apps you actually want, then:
+   ```bash
+   scripts/update.sh
+   ```
+7. Optional: reboot, and check for `Enter a password to unlock the disk "Nix Store"` prompt
+   How to fix:
+   1. Open KeyChain Access
+   2. Click on `System`
+   3. Search for `disks3 encryption password`
+   4. Double-click on it, and copy `Show password`
+   5. Use that password to unlock the disk, and check `Remember password in my keychain`
 ---
 
 ## Day-to-day workflow
