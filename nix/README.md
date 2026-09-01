@@ -94,6 +94,11 @@ plain community installer doesn't).
    ```bash
    scripts/update.sh
    ```
+   
+6. Setup GitHub Authentication using GH:
+    ```bash
+    gh auth login
+    ```
 
 ---
 
