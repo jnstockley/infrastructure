@@ -14,6 +14,8 @@ x-airflow-common: &airflow-common
     REDIS_URI: redis://redis:6379/0
     AUTHENTIK_APP_NANE: airflow-internal
     AIRFLOW__LOG_RETENTION_DAYS: 7
+    AIRFLOW_UID: 1000
+    AIRFLOW_GID: 0
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
