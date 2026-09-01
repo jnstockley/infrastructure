@@ -56,4 +56,6 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: Check formatting + lints (nixfmt, statix, deadnix)
-        run: nix flake check
+        run: |
+          cd nix
+          nix flake check
