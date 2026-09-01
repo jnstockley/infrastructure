@@ -64,7 +64,7 @@ jobs:
   yaml-lint:
     name: YAML Lint
     needs: changes
-    if: needs.changes.outputs.yaml == 'true'
+    #if: needs.changes.outputs.yaml == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
@@ -79,7 +79,7 @@ jobs:
   docker-lint:
     name: Docker Compose Lint
     needs: changes
-    if: needs.changes.outputs.docker == 'true'
+    #if: needs.changes.outputs.docker == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
@@ -94,7 +94,7 @@ jobs:
   shell-lint:
     name: Shell Lint
     needs: changes
-    if: needs.changes.outputs.shell == 'true'
+    #if: needs.changes.outputs.shell == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
@@ -111,7 +111,7 @@ jobs:
   python-lint:
     name: Python Lint
     needs: changes
-    if: needs.changes.outputs.python == 'true'
+    #if: needs.changes.outputs.python == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
@@ -128,7 +128,7 @@ jobs:
   nix-lint:
     name: Nix Lint
     needs: changes
-    if: needs.changes.outputs.nix == 'true'
+    #if: needs.changes.outputs.nix == 'true'
     runs-on: macos-latest
     permissions:
       id-token: write
@@ -147,7 +147,7 @@ jobs:
   terraform-lint:
     name: Terraform/OpenTofu Lint
     needs: changes
-    if: needs.changes.outputs.terraform == 'true'
+    #if: needs.changes.outputs.terraform == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
@@ -164,7 +164,7 @@ jobs:
   markdown-lint:
     name: Markdown Lint
     needs: changes
-    if: needs.changes.outputs.markdown == 'true'
+    #if: needs.changes.outputs.markdown == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
