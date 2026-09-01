@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # nix-darwin doesn't install GUI apps itself (the Nix store's immutability
   # doesn't play well with apps that expect to self-update or be dragged to
@@ -9,7 +9,7 @@
 
     onActivation = {
       autoUpdate = true; # `brew update` before installing
-      upgrade = true;    # `brew upgrade` anything already installed
+      upgrade = true; # `brew upgrade` anything already installed
       # "zap"  = uninstall anything present on the Mac but NOT listed below
       #          (true declarative state — a laptop that drifts gets pulled
       #          back in line on the next `darwin-rebuild switch`).

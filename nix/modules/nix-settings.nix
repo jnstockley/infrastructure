@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # If you installed Nix with the Determinate Systems installer (recommended,
   # see README "Prerequisites"), Determinate's own daemon manages

@@ -1,4 +1,4 @@
-{ ... }:
+_:
 {
   # ---- System preferences -------------------------------------------------
   # Only a subset of System Settings is exposed this way — see

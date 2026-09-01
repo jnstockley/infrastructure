@@ -21,12 +21,23 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, treefmt-nix, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nix-darwin,
+      treefmt-nix,
+      ...
+    }:
     let
       # Shared "recipe" for turning a hostname into a full darwin system.
       # Every Mac you manage gets one line below — see hosts/<name>/default.nix
       # for what's actually machine-specific.
-      mkHost = { hostname, system ? "aarch64-darwin" }:
+      mkHost =
+        {
+          hostname,
+          system ? "aarch64-darwin",
+        }:
         nix-darwin.lib.darwinSystem {
           inherit system;
           specialArgs = { inherit hostname; };
@@ -42,7 +53,12 @@
       # Formatting/linting works on any machine you edit this repo from
       # (your Mac, a Linux CI runner, etc.) — not just the darwin hosts
       # above, so it gets its own, broader system list.
-      lintSystems = [ "aarch64-darwin" "x86_64-darwin" "aarch64-linux" "x86_64-linux" ];
+      lintSystems = [
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs lintSystems;
 
       treefmtEval = forAllSystems (
