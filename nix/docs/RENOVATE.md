@@ -31,12 +31,14 @@ doesn't already auto-update itself.
 ## Setup (pick one)
 
 **Option A — hosted Renovate GitHub App (easiest):**
-1. Install https://github.com/apps/renovate on this repository.
+
+1. Install <https://github.com/apps/renovate> on this repository.
 2. That's it — `renovate.json` in this repo is already configured. Delete
    `.github/workflows/renovate.yml` so it doesn't run a redundant second
    copy.
 
 **Option B — self-hosted via GitHub Actions:**
+
 1. Keep `.github/workflows/renovate.yml`.
 2. Create a GitHub personal access token with `contents: write` and
    `pull-requests: write` on this repo, add it as a repository secret
@@ -50,7 +52,7 @@ the Mini until you merge and then rebuild.
 
 ## The full update loop
 
-```
+```text
 Renovate (weekly, on GitHub)
   → opens PR bumping nixpkgs/nix-darwin in flake.lock
   → you review the diff, merge (or let it auto-merge — see below)
@@ -70,11 +72,12 @@ mutable tag, so a merged PR is exactly reproducible. Still worth actually
 rebuilding (`scripts/install.sh`, which dry-runs first) before merging
 anything that touches `system.stateVersion`-sensitive areas, and reading
 the nix-darwin changelog if a PR bumps it by a large number of commits:
-https://github.com/nix-darwin/nix-darwin/releases
+<https://github.com/nix-darwin/nix-darwin/releases>
 
 If you'd rather not review every single bump by hand, you can let Renovate
 auto-merge minor/patch-equivalent nixpkgs updates once your Mini has been
 running long enough that you trust the loop — add to `renovate.json`:
+
 ```json
 {
   "packageRules": [
@@ -88,6 +91,7 @@ running long enough that you trust the loop — add to `renovate.json`:
   ]
 }
 ```
+
 Start without this. Turn it on once you're confident a bad nixpkgs bump
 would be obvious quickly (and remember `scripts/rollback.sh` is always
 right there if it isn't).

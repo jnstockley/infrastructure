@@ -1,32 +1,42 @@
 # Proxmox Setup
 
 ## Install Tofu on local machine
+
 - Run:
-```bash 
+
+```bash
  ./tf/install.sh
  ```
 
 ### Common Errors
-#### Failed to obtain the latest release from the GitHub API. Try passing --opentofu-version to specify a version.
+
+#### Failed to obtain the latest release from the GitHub API. Try passing --opentofu-version to specify a version
+
 1. Make sure `wget` is NOT installed using `brew`
 2. Ensure GH installed
 3. Ensure GH Auth return logged in state
     - If not, run `gh auth login`
 4. Ensure `GITHUB_TOKEN` is set in environment variables
-    - If not, run `gh auth token` and set the token in environment variables in `nano ~/.zshrc` or `nano ~/.bashrc`
+    - If not, run `gh auth token` and set the token in environment
+      variables in `nano ~/.zshrc` or `nano ~/.bashrc`
 
 ### 500 Internal Server Error, error status when using passthrough disks
+
 - Limitation in proxmox v8, must use the root user
 
 ### Repeated invalid OTP code
+
 - Bug in proxmox provider, issue [!1150](https://github.com/Telmate/terraform-provider-proxmox/issues/1150)
 - Workaround, disable MFA for user
 
 ## Setup Terraform
+
 ### Create Role
+
 - Name: `Terraform`
-- Privileges: 
-```
+- Privileges:
+
+```text
 Datastore.AllocateSpace
 Datastore.AllocateTemplate
 Datastore.Audit
@@ -56,17 +66,21 @@ pveum role modify TerraformProv -privs "Datastore.AllocateSpace Datastore.Audit 
 ```
 
 ### Create User
+
 - Name: `TerraformUser`
 
 ### Add Role to User
+
 - Go to Permissions
 - Assign Role `Terraform` to User `TerraformUser` with path `/`
 
 ### Create API User
+
 - User: `TerraformUser`
 - TokenId: `terraform`
 
 ### Setup Tofu
+
 - Save `TokenId` as `proxmox_api_token_id` in `credentials.auto.tfvars`
 - Save `Secret` as `proxmox_api_token_secret` in `credentials.auto.tfvars`
 

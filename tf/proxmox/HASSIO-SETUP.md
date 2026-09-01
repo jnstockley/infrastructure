@@ -1,1 +1,3 @@
-https://forum.proxmox.com/threads/guide-install-home-assistant-os-in-a-vm.143251/
+# Hassio Setup
+
+<https://forum.proxmox.com/threads/guide-install-home-assistant-os-in-a-vm.143251/>
