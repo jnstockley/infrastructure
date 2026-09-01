@@ -26,7 +26,7 @@ type fails `darwin-rebuild switch` instead of silently doing nothing), and
 covered by the nix-darwin manual/option search tools.
 
 | Group | Covers | Used in this repo |
-|---|---|---|
+| --- | --- | --- |
 | `dock` | Size, position, autohide, hot corners, persistent apps/spacers | `modules/system-defaults.nix` |
 | `finder` | View style, path/status bar, extensions, desktop icons | `modules/system-defaults.nix` |
 | `trackpad` | Tap to click, tap-to-drag, click pressure, gestures | not yet used — see example below |
@@ -48,11 +48,11 @@ covered by the nix-darwin manual/option search tools.
 | `ActivityMonitor` | Default columns, sort order, dock icon | not yet used |
 
 Full current list with types and defaults: search
-https://search.nixos.org/search?channel=unstable&query=system.defaults&flake=nix-darwin
-or browse https://mynixos.com/nix-darwin/options/system.defaults (community
+<https://search.nixos.org/search?channel=unstable&query=system.defaults&flake=nix-darwin>
+or browse <https://mynixos.com/nix-darwin/options/system.defaults> (community
 mirror of the same option data, sometimes easier to skim). Canonical source
 is the module code itself:
-https://github.com/nix-darwin/nix-darwin/tree/master/modules/system/defaults
+<https://github.com/nix-darwin/nix-darwin/tree/master/modules/system/defaults>
 
 ## The escape hatch: `CustomUserPreferences` / `CustomSystemPreferences`
 
@@ -81,6 +81,7 @@ system.defaults.CustomSystemPreferences = {
 ```
 
 **Caveats, from real-world reports, not hypothetical:**
+
 - Some domains only take effect after the owning process restarts or you
   log out/in — nix-darwin restarts Dock/Finder/SystemUIServer
   automatically, but not arbitrary apps.
@@ -99,6 +100,7 @@ system.defaults.CustomSystemPreferences = {
 1. Check if it's already a typed option first (search links above) — typed
    is always preferable when available.
 2. If not, find the exact domain and key macOS itself uses:
+
    ```bash
    # snapshot preferences before
    defaults read > /tmp/before.txt
@@ -106,16 +108,17 @@ system.defaults.CustomSystemPreferences = {
    defaults read > /tmp/after.txt
    diff /tmp/before.txt /tmp/after.txt
    ```
+
    Whatever domain/key shows up in the diff is what goes into
    `CustomUserPreferences`.
 3. Community references that catalogue individual keys (useful for
    *finding* a key; always verify against the diff method above before
    trusting it, especially on the newest macOS release):
-   - https://macos-defaults.com — organized by System Settings pane, shows
+   - <https://macos-defaults.com> — organized by System Settings pane, shows
      which macOS versions each command is confirmed on
-   - https://ss64.com/osx/defaults.html — general `defaults` command
+   - <https://ss64.com/osx/defaults.html> — general `defaults` command
      reference
-   - https://github.com/yannbertrand/macos-defaults — same data as
+   - <https://github.com/yannbertrand/macos-defaults> — same data as
      macos-defaults.com, as a searchable repo
 
 ## What isn't reachable this way at all
@@ -147,11 +150,13 @@ which operates below the layer these limitations live at.
 After `darwin-rebuild switch`, run `scripts/verify-defaults.sh` for a quick
 spot-check of the settings already configured in this repo, or check any
 key by hand:
+
 ```bash
 defaults read com.apple.dock autohide
 defaults read com.apple.finder AppleShowAllExtensions
 defaults read NSGlobalDomain KeyRepeat
 ```
+
 Returns the current value macOS has on file — if it doesn't match what
 you set, re-check the domain/key against the diff method above rather than
 assuming nix-darwin failed silently (it errors loudly on a bad option

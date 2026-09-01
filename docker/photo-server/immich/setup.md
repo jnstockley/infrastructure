@@ -1,4 +1,5 @@
 # Install Nvidia driver
+
 ```bash
 sudo apt install software-properties-common -y
 sudo add-apt-repository contrib non-free-firmware

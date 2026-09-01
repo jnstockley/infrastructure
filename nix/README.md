@@ -12,7 +12,7 @@ past "generation" so you can roll back instantly if something breaks.
 
 ## Directory layout
 
-```
+```text
 .
 ├── flake.nix                  # entry point: pins dependency versions, lists hosts
 ├── treefmt.nix                 # formatter/linter config (nixfmt, statix, deadnix)
@@ -75,38 +75,48 @@ plain community installer doesn't).
 2. Open `hosts/mini/default.nix` and replace every `CHANGE_ME` with your
    actual short macOS username (check with `whoami`).
 3. From the repo root:
+
    ```bash
    scripts/install-homebrew.sh
    ```
-   This installs Homebrew, since nix-darwin's Homebrew module assumes it's 
-   already present. You can skip this if you already have Homebrew installed, 
+
+   This installs Homebrew, since nix-darwin's Homebrew module assumes it's
+   already present. You can skip this if you already have Homebrew installed,
    but nix-darwin will still manage it from
 4. From the repo root:
+
    ```bash
    scripts/bootstrap.sh mini
    ```
+
 5. Restart current shell, then setup GitHub Authentication using GH:
+
     ```bash
     gh auth login
     git config --global user.name "Your Name"
     git config --global user.email "your.email@example.com"
     ```
+
    This installs Xcode Command Line Tools if needed, installs Nix if
    needed, and does the first `nix-darwin` activation. It's safe to just
    re-run it if it stops partway (e.g. to wait for a GUI installer, or for
    you to open a new terminal so PATH changes take effect).
 6. Once it finishes, open `modules/homebrew.nix` and start uncommenting /
    adding the casks, brews, and App Store apps you actually want, then:
+
    ```bash
    scripts/update.sh
    ```
-7. Optional: reboot, and check for `Enter a password to unlock the disk "Nix Store"` prompt
+
+7. Optional: reboot, and check for
+   `Enter a password to unlock the disk "Nix Store"` prompt
    How to fix:
    1. Open KeyChain Access
    2. Click on `System`
    3. Search for `disks3 encryption password`
    4. Double-click on it, and copy `Show password`
    5. Use that password to unlock the disk, and check `Remember password in my keychain`
+
 ---
 
 ## Day-to-day workflow
@@ -160,9 +170,11 @@ a rebuild six months from now install the *exact* same package versions as
 today, instead of silently drifting.
 
 To pull in newer package versions / newer nix-darwin features by hand:
+
 ```bash
 scripts/update.sh mini --update-inputs
 ```
+
 This runs `nix flake update`, rebuilds, and if it works, updates
 `flake.lock`. **Review the diff before committing** — `git diff flake.lock`
 — and if the rebuild broke something, `git checkout flake.lock` to revert
@@ -177,6 +189,7 @@ Homebrew and Mac App Store apps already self-update on every rebuild (see
 `docs/PACKAGES.md` for why there's nothing to pin there).
 
 To clean up old build artifacts and reclaim disk space:
+
 ```bash
 nix-collect-garbage --delete-older-than 30d   # keep last 30 days
 sudo darwin-rebuild --list-generations         # see what's still kept
@@ -189,13 +202,16 @@ sudo darwin-rebuild --list-generations         # see what's still kept
 ```bash
 scripts/new-host.sh macbook
 ```
+
 Follow the printed instructions (edit the placeholder username, add one
 line to `flake.nix`, commit/push). Then on the new Mac:
+
 ```bash
 git clone <your-repo-url>
 cd nix-mac-config
 scripts/bootstrap.sh macbook
 ```
+
 Any module you already wrote (Homebrew list, system defaults) applies
 automatically — you're only writing the handful of things unique to that
 machine.
@@ -267,6 +283,7 @@ machine.
 **"error: refusing to set up ... conflicting files"** during first
 activation — usually `/etc/zshenv`, `/etc/bashrc`, etc. already exist from
 a prior setup. Back them up and retry:
+
 ```bash
 sudo mv /etc/zshenv /etc/zshenv.before-nix-darwin
 ```
@@ -281,6 +298,7 @@ it from `/Applications` and let nix-darwin install it, or add it to
 `modules/homebrew.nix` so it's recognized as managed.
 
 **Want to know what changed between two generations?**
+
 ```bash
 darwin-rebuild --list-generations
 nix store diff-closures /nix/var/nix/profiles/system-<OLD>-link /nix/var/nix/profiles/system-<NEW>-link
@@ -290,8 +308,8 @@ nix store diff-closures /nix/var/nix/profiles/system-<OLD>-link /nix/var/nix/pro
 
 ## References
 
-- nix-darwin manual: https://nix-darwin.github.io/nix-darwin/manual/
-- nix-darwin option search: https://search.nixos.org/search?channel=unstable&flake=nix-darwin
-- nixpkgs package search: https://search.nixos.org/packages
-- Determinate Nix installer: https://determinate.systems/nix-installer/
-- `mas` (App Store CLI): https://github.com/mas-cli/mas
+- nix-darwin manual: <https://nix-darwin.github.io/nix-darwin/manual/>
+- nix-darwin option search: <https://search.nixos.org/search?channel=unstable&flake=nix-darwin>
+- nixpkgs package search: <https://search.nixos.org/packages>
+- Determinate Nix installer: <https://determinate.systems/nix-installer/>
+- `mas` (App Store CLI): <https://github.com/mas-cli/mas>

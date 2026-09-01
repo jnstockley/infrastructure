@@ -1,4 +1,5 @@
 # Providers
+
 - AdGuard Home
 - Cloudflare
 - Proxmox
@@ -8,6 +9,7 @@
 - Home Assistant
 
 ## To-Do
+
 - [ ] Gitea
 - [ ] GitLab
 - [ ] GitHub?

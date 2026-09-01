@@ -4,13 +4,13 @@ This config can install software three different ways. They behave
 differently enough that the choice matters — this doc is the reference for
 picking one.
 
-| | **nixpkgs**<br>`environment.systemPackages` | **Homebrew formula**<br>`homebrew.brews` | **Homebrew cask**<br>`homebrew.casks` | **Mac App Store**<br>`homebrew.masApps` |
-|---|---|---|---|---|
-| Best for | CLI tools, dev tooling | CLI tools not well-packaged in nixpkgs, or that need real macOS integration (Keychain, etc.) | GUI `.app` applications | App Store–exclusive apps (sandboxed, paid) |
-| Version pinning | **Yes** — pinned by `flake.lock` | No — always "latest" at rebuild time | No — always "latest" | No — App Store doesn't support pinning |
-| Rollback | **Instant**, part of `darwin-rebuild switch --rollback` | No — brew mutates state directly, outside nix-darwin's generations | No | No |
-| Stays current via | Bumping the `nixpkgs` input (Renovate can automate — see `docs/RENOVATE.md`) | `homebrew.onActivation.upgrade = true` on every rebuild | same | `mas upgrade`, triggered by brew's activation |
-| Typical examples | `ripgrep`, `jq`, `htop`, `terraform`, `node`, `python3` | `mas`, `ffmpeg` | iTerm2, Rectangle, Docker Desktop, Slack | Xcode, Keynote, Pages |
+|                   | **nixpkgs** (`environment.systemPackages`)                                   | **Homebrew formula** (`homebrew.brews`)                                                      | **Homebrew cask** (`homebrew.casks`)     | **Mac App Store** (`homebrew.masApps`)        |
+|-------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|------------------------------------------|-----------------------------------------------|
+| Best for          | CLI tools, dev tooling                                                       | CLI tools not well-packaged in nixpkgs, or that need real macOS integration (Keychain, etc.) | GUI `.app` applications                  | App Store–exclusive apps (sandboxed, paid)    |
+| Version pinning   | **Yes** — pinned by `flake.lock`                                             | No — always "latest" at rebuild time                                                         | No — always "latest"                     | No — App Store doesn't support pinning        |
+| Rollback          | **Instant**, part of `darwin-rebuild switch --rollback`                      | No — brew mutates state directly, outside nix-darwin's generations                           | No                                       | No                                            |
+| Stays current via | Bumping the `nixpkgs` input (Renovate can automate — see `docs/RENOVATE.md`) | `homebrew.onActivation.upgrade = true` on every rebuild                                      | same                                     | `mas upgrade`, triggered by brew's activation |
+| Typical examples  | `ripgrep`, `jq`, `htop`, `terraform`, `node`, `python3`                      | `mas`, `ffmpeg`                                                                              | iTerm2, Rectangle, Docker Desktop, Slack | Xcode, Keynote, Pages                         |
 
 ## The short version
 
@@ -30,6 +30,7 @@ picking one.
 ## Examples
 
 **Adding a CLI tool via nixpkgs** (preferred path):
+
 ```nix
 # modules/packages.nix
 { pkgs, ... }:
@@ -42,18 +43,21 @@ picking one.
   ];
 }
 ```
-Find the right attribute name first: https://search.nixos.org/packages
+
+Find the right attribute name first: <https://search.nixos.org/packages>
 (or `nix search nixpkgs terraform` from a terminal that already has Nix).
 Then `scripts/update.sh`.
 
 **The same tools via Homebrew instead**, shown only for contrast — for CLI
 tools this loses you pinning/rollback for no benefit:
+
 ```nix
 # modules/homebrew.nix
 homebrew.brews = [ "ripgrep" "jq" "htop" "terraform" ];
 ```
 
 **Adding a GUI app** (Homebrew cask is the right tool here):
+
 ```nix
 # modules/homebrew.nix
 homebrew.casks = [
@@ -62,19 +66,23 @@ homebrew.casks = [
   "docker"
 ];
 ```
-Find the exact cask name at https://formulae.brew.sh/cask/ — it must match
+
+Find the exact cask name at <https://formulae.brew.sh/cask/> — it must match
 exactly (e.g. `docker`, not `docker-desktop`).
 
 **Adding an App Store app:**
+
 ```bash
 mas search "Tailscale"     # find the numeric ID
 ```
+
 ```nix
 # modules/homebrew.nix
 homebrew.masApps = {
   "Tailscale" = 1475387142;
 };
 ```
+
 Requires being signed into the App Store GUI at least once first (see
 README "Known limitations").
 
@@ -87,11 +95,14 @@ you need `nodejs_18` specifically, but your main `nixpkgs` pin has moved
 past it).
 
 Add a second, independently-pinned `nixpkgs` input in `flake.nix`:
+
 ```nix
 inputs.nixpkgs-pinned.url = "github:NixOS/nixpkgs/<commit-or-branch>";
 ```
+
 Thread it through `mkHost`'s `specialArgs` alongside the default `pkgs`,
 then reference it where you need the pinned version:
+
 ```nix
 # modules/packages.nix
 { pkgs, pkgsPinned, ... }:
@@ -100,6 +111,7 @@ then reference it where you need the pinned version:
     ++ [ pkgsPinned.nodejs_18 ];
 }
 ```
+
 Use this sparingly — every extra pinned input is one more thing Renovate
 will (correctly) open update PRs for, and one more thing to reason about
 when debugging a version mismatch.

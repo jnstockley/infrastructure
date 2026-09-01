@@ -11,10 +11,76 @@ on:
       - main
 
 jobs:
-  lint:
-    name: Lint
+  changes:
+    name: Detect Changes
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      yaml: ${{ steps.filter.outputs.yaml }}
+      docker: ${{ steps.filter.outputs.docker }}
+      shell: ${{ steps.filter.outputs.shell }}
+      python: ${{ steps.filter.outputs.python }}
+      nix: ${{ steps.filter.outputs.nix }}
+      terraform: ${{ steps.filter.outputs.terraform }}
+      markdown: ${{ steps.filter.outputs.markdown }}
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
 
+      - name: Step 2 - Filter changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            yaml:
+              - "**/*.yml"
+              - "**/*.yaml"
+            docker:
+              - "docker/**/compose.yml"
+              - "docker/**/compose.yaml"
+            shell:
+              - "**/*.sh"
+              - "**/*.bash"
+              - "**/*.ksh"
+              - "**/*.bashrc"
+              - "**/*.bash_profile"
+              - "**/*.bash_login"
+              - "**/*.bash_logout"
+            python:
+              - "**/*.py"
+              - "pyproject.toml"
+              - "uv.lock"
+            nix:
+              - "nix/**"
+            terraform:
+              - "**/*.tofu"
+              - "**/*.tf"
+              - "**/*.tfvars"
+              - "**/*.hcl"
+            markdown:
+              - "**/*.md"
+
+  yaml-lint:
+    name: YAML Lint
+    needs: changes
+    if: needs.changes.outputs.yaml == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
+
+      - name: Step 2 - Install yamllint
+        run: sudo apt-get update && sudo apt-get install -y yamllint
+
+      - name: Step 3 - Lint Yaml Files
+        run: yamllint -s .
+
+  docker-lint:
+    name: Docker Compose Lint
+    needs: changes
+    if: needs.changes.outputs.docker == 'true'
+    runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
         uses: actions/checkout@v7
@@ -22,32 +88,47 @@ jobs:
       - name: Step 2 - Setup Node.js environment
         uses: actions/setup-node@v7
 
-      - name: Step 3 - Install uv
-        uses: astral-sh/setup-uv@v10.0.1
-
-      - name: Step 4 - Install Linters
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y yamllint shellcheck shfmt
-
-      - name: Step 5 - Lint Yaml Files
-        run: yamllint -s .
-
-      - name: Step 6 - Lint Docker Compose Files
+      - name: Step 3 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/
 
-      - name: Step 7 - Lint Shell Scripts
+  shell-lint:
+    name: Shell Lint
+    needs: changes
+    if: needs.changes.outputs.shell == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
+
+      - name: Step 2 - Install Linters
+        run: sudo apt-get update && sudo apt-get install -y shellcheck shfmt
+
+      - name: Step 3 - Lint Shell Scripts
         run: |
           find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) -print0 | xargs -0 shellcheck -x -S style -e SC2016,SC1091
           shfmt -d -i 4 -ci .
 
-      - name: Step 8 - Lint Python files
+  python-lint:
+    name: Python Lint
+    needs: changes
+    if: needs.changes.outputs.python == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
+
+      - name: Step 2 - Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+
+      - name: Step 3 - Lint Python files
         run: |
           uvx ruff check
           uvx ruff format --check
 
   nix-lint:
     name: Nix Lint
+    needs: changes
+    if: needs.changes.outputs.nix == 'true'
     runs-on: macos-latest
     permissions:
       id-token: write
@@ -62,3 +143,34 @@ jobs:
         run: |
           cd nix
           nix flake check
+
+  terraform-lint:
+    name: Terraform/OpenTofu Lint
+    needs: changes
+    if: needs.changes.outputs.terraform == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
+
+      - name: Step 2 - Install OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.12.6
+
+      - name: Step 3 - Lint Terraform/OpenTofu Files
+        run: tofu fmt -check -diff -recursive tf/
+
+  markdown-lint:
+    name: Markdown Lint
+    needs: changes
+    if: needs.changes.outputs.markdown == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v7
+
+      - name: Step 2 - Lint Markdown Files
+        uses: DavidAnson/markdownlint-cli2-action@v20
+        with:
+          globs: "**/*.md"
