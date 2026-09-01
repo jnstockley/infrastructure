@@ -20,7 +20,9 @@ UPDATE_INPUTS="${2:-}"
 # to run from there. The git repo root is one level up from that — git
 # commands (pull/add/commit/push) need to run from there instead.
 NIX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GIT_ROOT="$(cd "$NIX_DIR" && git rev-parse --show-toplevel 2>/dev/null || true)"
+if ! GIT_ROOT="$(cd "$NIX_DIR" && git rev-parse --show-toplevel 2>/dev/null)"; then
+  GIT_ROOT=""
+fi
 
 if [[ -n "$GIT_ROOT" ]]; then
   echo "==> Pulling latest config from git..."
