@@ -5,7 +5,7 @@
 set -euo pipefail
 
 echo "==> Available generations:"
-darwin-rebuild --list-generations
+sudo darwin-rebuild --list-generations
 echo ""
 
 read -r -p "Roll back to the PREVIOUS generation? [y/N] " confirm

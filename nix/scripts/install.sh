@@ -26,4 +26,4 @@ sudo darwin-rebuild switch --flake ".#${HOSTNAME_TARGET}"
 
 echo ""
 echo "==> Activated. Current generations:"
-darwin-rebuild --list-generations | tail -5
+sudo darwin-rebuild --list-generations | tail -5

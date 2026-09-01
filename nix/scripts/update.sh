@@ -56,4 +56,4 @@ fi
 
 echo ""
 echo "==> Current generations:"
-darwin-rebuild --list-generations | tail -5
+sudo darwin-rebuild --list-generations | tail -5
