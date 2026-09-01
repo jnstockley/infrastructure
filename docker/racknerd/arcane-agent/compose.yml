@@ -13,6 +13,8 @@ services:
       EDGE_TRANSPORT: "poll"
       MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net:3552"
       TZ: "America/Chicago"
+      PUID: 1000
+      GUID: 1000
     env_file:
       - .env
     network_mode: service:tailscale
