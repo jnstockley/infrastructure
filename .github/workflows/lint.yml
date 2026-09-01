@@ -22,35 +22,43 @@ jobs:
       - name: Step 2 - Setup Node.js environment
         uses: actions/setup-node@v7
 
-      - name: Step 3 - Install Nix
-        uses: cachix/install-nix-action@v31
-
-      - name: Step 4 - Install uv
+      - name: Step 3 - Install uv
         uses: astral-sh/setup-uv@v10.0.1
 
-      - name: Step 5 - Install Linters
+      - name: Step 4 - Install Linters
         run: |
           sudo apt-get update
           sudo apt-get install -y yamllint shellcheck shfmt
 
-      - name: Step 6 - Lint Yaml Files
+      - name: Step 5 - Lint Yaml Files
         run: yamllint -s .
 
-      - name: Step 7 - Lint Docker Compose Files
+      - name: Step 6 - Lint Docker Compose Files
         run: npx dclint -r --max-warnings 0 docker/
 
-      - name: Step 8 - Lint Shell Scripts
+      - name: Step 7 - Lint Shell Scripts
         run: |
           find . -type f \( -name '*.sh' -o -name '*.bash' -o -name '*.ksh' -o -name '*.bashrc' -o -name '*.bash_profile' -o -name '*.bash_login' -o -name '*.bash_logout' \) -print0 | xargs -0 shellcheck -x -S style -e SC2016,SC1091
           shfmt -d -i 4 -ci .
 
-      - name: Step 9 - Lint Nix files
-        run: |
-          cp nix/macbook-pro/flake.nix /tmp/flake.nix
-          nix-shell -I nixpkgs=channel:nixos-unstable -p nixfmt-rfc-style --run "nixfmt ./nix/macbook-pro/flake.nix"
-          diff /tmp/flake.nix nix/macbook-pro/flake.nix
-
-      - name: Step 10 - Lint Python files
+      - name: Step 8 - Lint Python files
         run: |
           uvx ruff check
           uvx ruff format --check
+
+  nix-lint:
+    name: Nix Lint
+    runs-on: macos-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Check formatting + lints (nixfmt, statix, deadnix)
+        run: |
+          cd nix
+          nix flake check
