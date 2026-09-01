@@ -13,12 +13,12 @@
     };
 
     SoftwareUpdate = {
-      AutomaticallyInstallMacOSUpdates=true;
+      AutomaticallyInstallMacOSUpdates = true;
     };
 
     loginwindow = {
-        DisableConsoleAccess = true;
-        GuestEnabled = false;
+      DisableConsoleAccess = true;
+      GuestEnabled = false;
     };
 
     finder = {

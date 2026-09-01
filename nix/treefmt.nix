@@ -2,7 +2,7 @@
 # `checks` outputs). Run `nix fmt` to auto-format, `nix flake check` (or
 # scripts/lint.sh) to check without modifying anything — see
 # docs/LINTING.md.
-{ pkgs, ... }:
+_:
 {
   projectRootFile = "flake.nix";
 
