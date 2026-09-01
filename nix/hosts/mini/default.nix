@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # ---- Identity -------------------------------------------------------------
   networking.hostName = "mini";
   networking.computerName = "Mac Mini";

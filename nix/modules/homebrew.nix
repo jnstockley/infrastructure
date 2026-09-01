@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # nix-darwin doesn't install GUI apps itself (the Nix store's immutability
   # doesn't play well with apps that expect to self-update or be dragged to
   # /Applications). Instead it drives Homebrew declaratively: this file is

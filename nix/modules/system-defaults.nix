@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # ---- System preferences -------------------------------------------------
   # Only a subset of System Settings is exposed this way — see
   # docs/SYSTEM_SETTINGS.md for the full list of what's covered, the

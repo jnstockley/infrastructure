@@ -1,5 +1,4 @@
-_:
-{
+_: {
   # If you installed Nix with the Determinate Systems installer (recommended,
   # see README "Prerequisites"), Determinate's own daemon manages
   # /etc/nix/nix.conf and experimental features. Leave this OFF in that case
