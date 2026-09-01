@@ -8,10 +8,10 @@
 set -uo pipefail # no -e: a missing/unset key is a normal, expected result here
 
 check() {
-  local domain="$1" key="$2"
-  local value
-  value="$(defaults read "$domain" "$key" 2>&1)"
-  printf "%-45s %-30s %s\n" "$domain" "$key" "$value"
+    local domain="$1" key="$2"
+    local value
+    value="$(defaults read "$domain" "$key" 2>&1)"
+    printf "%-45s %-30s %s\n" "$domain" "$key" "$value"
 }
 
 echo "==> Current values on this Mac (compare against modules/system-defaults.nix):"

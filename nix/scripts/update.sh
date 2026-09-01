@@ -21,22 +21,22 @@ UPDATE_INPUTS="${2:-}"
 # commands (pull/add/commit/push) need to run from there instead.
 NIX_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 if ! GIT_ROOT="$(cd "$NIX_DIR" && git rev-parse --show-toplevel 2>/dev/null)"; then
-  GIT_ROOT=""
+    GIT_ROOT=""
 fi
 
 if [[ -n "$GIT_ROOT" ]]; then
-  echo "==> Pulling latest config from git..."
-  git -C "$GIT_ROOT" pull --ff-only
+    echo "==> Pulling latest config from git..."
+    git -C "$GIT_ROOT" pull --ff-only
 else
-  echo "==> Not a git repo (or git not found) — skipping pull."
+    echo "==> Not a git repo (or git not found) — skipping pull."
 fi
 
 cd "$NIX_DIR"
 
 LOCKFILE_CHANGED=0
 if [[ "$UPDATE_INPUTS" == "--update-inputs" ]]; then
-  echo "==> Updating flake inputs (nixpkgs, nix-darwin) to their latest commits..."
-  nix flake update
+    echo "==> Updating flake inputs (nixpkgs, nix-darwin) to their latest commits..."
+    nix flake update
 fi
 
 echo "==> Rebuilding and activating host: ${HOSTNAME_TARGET}"
@@ -48,16 +48,16 @@ sudo darwin-rebuild switch --flake ".#${HOSTNAME_TARGET}"
 # succeeded — `set -e` means a failed rebuild exits before we ever get here,
 # so a broken lockfile never gets pushed.
 if [[ -n "$GIT_ROOT" ]] && ! git -C "$GIT_ROOT" diff --quiet -- nix/flake.lock; then
-  LOCKFILE_CHANGED=1
+    LOCKFILE_CHANGED=1
 fi
 
 if [[ "$LOCKFILE_CHANGED" -eq 1 ]]; then
-  echo "==> git noticed flake.lock changed — committing and pushing..."
-  git -C "$GIT_ROOT" add nix/flake.lock
-  git -C "$GIT_ROOT" commit -m "nix: update flake.lock"
-  git -C "$GIT_ROOT" push
+    echo "==> git noticed flake.lock changed — committing and pushing..."
+    git -C "$GIT_ROOT" add nix/flake.lock
+    git -C "$GIT_ROOT" commit -m "nix: update flake.lock"
+    git -C "$GIT_ROOT" push
 else
-  echo "==> flake.lock unchanged — nothing to commit."
+    echo "==> flake.lock unchanged — nothing to commit."
 fi
 
 echo ""

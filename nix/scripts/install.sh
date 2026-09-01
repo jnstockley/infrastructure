@@ -18,8 +18,8 @@ nix build ".#darwinConfigurations.${HOSTNAME_TARGET}.system" --dry-run
 echo ""
 read -r -p "Dry run looks clean — proceed with activation? [y/N] " confirm
 if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-  echo "Aborted. Nothing was changed."
-  exit 1
+    echo "Aborted. Nothing was changed."
+    exit 1
 fi
 
 sudo darwin-rebuild switch --flake ".#${HOSTNAME_TARGET}"

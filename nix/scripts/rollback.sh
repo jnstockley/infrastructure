@@ -10,10 +10,10 @@ echo ""
 
 read -r -p "Roll back to the PREVIOUS generation? [y/N] " confirm
 if [[ "$confirm" =~ ^[Yy]$ ]]; then
-  sudo darwin-rebuild switch --rollback
-  echo "==> Rolled back."
+    sudo darwin-rebuild switch --rollback
+    echo "==> Rolled back."
 else
-  echo ""
-  echo "To roll back to a specific generation number instead, run:"
-  echo "  sudo darwin-rebuild switch --switch-generation <N>"
+    echo ""
+    echo "To roll back to a specific generation number instead, run:"
+    echo "  sudo darwin-rebuild switch --switch-generation <N>"
 fi

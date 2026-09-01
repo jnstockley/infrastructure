@@ -11,12 +11,12 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
 if [[ -d "hosts/${NEW_HOST}" ]]; then
-  echo "hosts/${NEW_HOST} already exists — nothing to do."
-  exit 1
+    echo "hosts/${NEW_HOST} already exists — nothing to do."
+    exit 1
 fi
 
 mkdir -p "hosts/${NEW_HOST}"
-cat > "hosts/${NEW_HOST}/default.nix" <<EOF
+cat >"hosts/${NEW_HOST}/default.nix" <<EOF
 { pkgs, ... }:
 {
   networking.hostName = "${NEW_HOST}";
