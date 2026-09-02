@@ -1232,7 +1232,7 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
 resource "uptimekuma_monitor_ping" "hallway-camera" {
   provider    = uptimekuma.local
   name        = "Hallway Camera"
-  hostname    = "192.168.2.8"
+  hostname    = "192.168.2.200"
   interval    = 60
   max_retries = 3
   active      = true
@@ -1249,7 +1249,7 @@ resource "uptimekuma_monitor_ping" "hallway-camera" {
 resource "uptimekuma_monitor_ping" "kitchen-camera" {
   provider    = uptimekuma.local
   name        = "Kitchen Camera"
-  hostname    = "192.168.2.114"
+  hostname    = "192.168.2.116"
   interval    = 60
   max_retries = 3
   active      = true
