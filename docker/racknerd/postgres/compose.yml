@@ -11,6 +11,8 @@ services:
     environment:
       - TZ=America/Chicago
       - PGTZ=America/Chicago
+      - PUID=1000
+      - PGID=1000
     networks:
       - proxy
       - private

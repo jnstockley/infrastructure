@@ -9,6 +9,9 @@ services:
     environment:
       - PORT=45876
       - HUB_URL=https://stats.local.jstockley.com
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
     env_file:
       - .env
     ports:

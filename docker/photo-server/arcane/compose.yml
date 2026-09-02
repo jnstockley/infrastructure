@@ -16,7 +16,7 @@ services:
       - OIDC_ISSUER_URL=https://idp.jstockley.com/application/o/arcane/
       - OIDC_PROVIDER_NAME=Authentik
       - PUID=1000
-      - GUID=1000
+      - PGID=1000
     env_file:
       - .env
     network_mode: service:tailscale
