@@ -19,6 +19,7 @@ x-airflow-common: &airflow-common
     - ./data:/opt/airflow/data
   security_opt:
     - no-new-privileges:true
+  user: "${AIRFLOW_UID}:${AIRFLOW_GID}"
 
 name: airflow
 services:
