@@ -19,7 +19,7 @@ x-airflow-common: &airflow-common
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
-  user: "${AIRFLOW_UID}:${AIRFLOW_GID}"
+  user: 1000:0
 
 name: airflow
 services:
