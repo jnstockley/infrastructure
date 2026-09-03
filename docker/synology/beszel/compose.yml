@@ -6,6 +6,12 @@ services:
     container_name: beszel-agent-synology
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - PORT=45876
+      - HUB_URL=https://stats.local.jstockley.com
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Chicago
     env_file:
       - .env
     ports:
