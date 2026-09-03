@@ -21,7 +21,7 @@ services:
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.simplelogin.rule=Host(`mail.jstockley.com`)"
       - "traefik.http.routers.simplelogin.entrypoints=websecure"
-      - "traefik.http.routers.simplelogin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.simplelogin.tls.certresolver=production"
       - "traefik.http.services.simplelogin.loadbalancer.server.port=7777"
 
   email:
