@@ -105,6 +105,12 @@ resource "infisical_project_environment" "authentik" {
   slug       = "authentik"
 }
 
+resource "infisical_project_environment" "better-stack" {
+  name       = "Better Stack"
+  project_id = infisical_project.open-tofu.id
+  slug       = "better-stack"
+}
+
 resource "infisical_project_environment" "cloudflare" {
   name       = "Cloudflare"
   project_id = infisical_project.open-tofu.id

@@ -31,6 +31,17 @@ data "terraform_remote_state" "adguard" {
   }
 }
 
+data "terraform_remote_state" "better-stack" {
+  backend = "http"
+
+  config = {
+    address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/better-stack"
+    username = var.gitlab_username
+    password = var.gitlab_access_token
+  }
+}
+
+
 variable "smtp_password" {
   type      = string
   sensitive = true
