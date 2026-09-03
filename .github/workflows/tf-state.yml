@@ -36,6 +36,7 @@ jobs:
     outputs:
       adguard: ${{ steps.filter.outputs.adguard }}
       authentik: ${{ steps.filter.outputs.authentik }}
+      better-stack: ${{ steps.filter.outputs.better-stack }}
       cloudflare: ${{ steps.filter.outputs.cloudflare }}
       forgejo: ${{ steps.filter.outputs.forgejo }}
       infisical: ${{ steps.filter.outputs.infisical }}
@@ -58,6 +59,10 @@ jobs:
               - '.github/workflows/tf-state.yml'
             authentik:
               - 'tf/authentik/**'
+              - 'tf/.opentofu-version'
+              - '.github/workflows/tf-state.yml'
+            better-stack:
+              - 'tf/better-stack/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
             cloudflare:
@@ -209,6 +214,68 @@ jobs:
           TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
         run: |
           cd tf/authentik
+          tofu plan -out=tfplan
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            tofu apply -auto-approve tfplan
+          fi
+
+  better-stack:
+    name: Run Better Stack
+    concurrency:
+      group: better-stack
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    needs: [lint, changes]
+    if: needs.changes.outputs.better-stack == 'true'
+    environment: better-stack
+    permissions:  # Needed for Infisical
+      id-token: write  # Required for OIDC authentication
+      contents: read   # Required for checking out code
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v2
+        with:
+          tofu_version_file: tf/.opentofu-version
+
+      - name: Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.17
+        with:
+          method: "oidc"
+          identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
+          domain: "https://secrets.jstockley.com"
+          project-slug: "open-tofu"
+          env-slug: "better-stack"
+
+      - name: Init Better Stack
+        run: |
+          cd tf/better-stack
+          tofu init \
+          -backend-config=address=${{env.TF_ADDRESS}} \
+          -backend-config=lock_address=${{env.TF_ADDRESS}}/lock \
+          -backend-config=unlock_address=${{env.TF_ADDRESS}}/lock \
+          -backend-config=username=${{env.TF_USERNAME}} \
+          -backend-config=password=${{env.TF_PASSWORD}} \
+          -backend-config=lock_method=POST \
+          -backend-config=unlock_method=DELETE \
+          -backend-config=retry_wait_min=5 \
+          -reconfigure \
+          -upgrade
+
+      - name: Validate Better Stack
+        run: |
+          cd tf/better-stack
+          tofu validate
+
+      - name: Plan and Apply Better Stack
+        env:
+          TF_VAR_better_stack_api_key: ${{ env.BETTER_STACK_API_KEY }}
+          TF_VAR_gitlab_username: ${{ env.TF_USERNAME }}
+          TF_VAR_gitlab_access_token: ${{ env.TF_PASSWORD }}
+        run: |
+          cd tf/better-stack
           tofu plan -out=tfplan
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
             tofu apply -auto-approve tfplan

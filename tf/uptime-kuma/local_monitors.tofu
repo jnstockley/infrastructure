@@ -689,6 +689,18 @@ resource "uptimekuma_monitor_http" "beszel-http" {
   max_retries         = 0
 }
 
+resource "uptimekuma_monitor_http" "better-stack-http" {
+  provider            = uptimekuma.local
+  name                = "Better Stack Heartbeat Monitor"
+  url                 = data.terraform_remote_state.better-stack.outputs.uptime-kuma-local-monitor-heartbeat-url
+  cache_buster        = true
+  expiry_notification = false
+  interval            = 60
+  active              = true
+  max_retries         = 0
+}
+
+
 resource "uptimekuma_monitor_http" "bitwarden-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
