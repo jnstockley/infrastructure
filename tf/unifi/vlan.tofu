@@ -23,13 +23,20 @@ resource "unifi_network" "iot" {
   name               = "IoT"
   subnet             = "192.168.2.1/24"
   vlan               = 2
-  internet_access    = false
+  internet_access    = true
   lte_lan            = false
   setting_preference = "manual"
+  ipv6_pd_interface   = "wan"
 
   dhcp_server = {
     enabled = true
     start   = "192.168.2.6"
     stop    = "192.168.2.254"
+    dns_enabled = true
+    dns_servers = [
+      "192.168.1.135",
+      "1.1.1.2",
+      "1.0.0.2"
+    ]
   }
 }
