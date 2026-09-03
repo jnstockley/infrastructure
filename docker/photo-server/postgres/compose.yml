@@ -34,7 +34,7 @@ services:
       - traefik.docker.network=proxy
 
   pg-admin:
-    image: dpage/pgadmin4:9.15.0
+    image: dpage/pgadmin4:9.17
     container_name: pgadmin
     depends_on:
       - postgres-db
