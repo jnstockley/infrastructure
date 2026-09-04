@@ -30,7 +30,7 @@ services:
       - /dev/fuse
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:3.1.2
+    image: ghcr.io/paperless-ngx/paperless-ngx:3.1.3
     container_name: paperless-ngx
     volumes:
       - ./data:/usr/src/paperless/data
