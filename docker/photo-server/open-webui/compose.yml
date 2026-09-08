@@ -1,0 +1,56 @@
+---
+name: open-webui
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.11.3-slim
+    container_name: open-webui
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - ENABLE_LOGIN_FORM=false
+      - ENABLE_PASSWORD_AUTH=false
+      - ENABLE_PASSWORD_CHANGE_FORM=false
+      - WEBUI_SESSION_COOKIE_SECURE=true
+      - WEBUI_SESSION_COOKIE_SAME_SITE=strict
+      - JWT_EXPIRES_IN=24h
+      - CORS_ALLOW_ORIGIN=https://ai.local.stockley.com
+      - HSTS=max-age=31536000;includeSubDomains
+      - FORWARDED_ALLOW_IPS=172.18.0.0/16
+      - OAUTH_ALLOWED_DOMAINS=idp.jstockley.com
+      - ENABLE_OAUTH_ROLE_MANAGEMENT=true
+      - OAUTH_ROLES_CLAIM=groups
+      - OAUTH_ADMIN_ROLES="authentik Admins"
+      - OAUTH_ALLOWED_ROLES="OpenWebUI Access"
+      - OAUTH_MAX_SESSIONS_PER_USER=5
+      - ENABLE_OAUTH_BACKCHANNEL_LOGOUT=true
+      - ENABLE_OAUTH_SIGNUP=true
+      - OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true
+      - OAUTH_PROVIDER_NAME=Authentik
+      - OPENID_PROVIDER_URL=https://idp.jstockley.com/application/o/open-webui/.well-known/openid-configuration
+      - OAUTH_SCOPES="openid email profile"
+      - OPENID_REDIRECT_URI=https://ai.local.jstockley.com/oauth/oidc/callback
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - private
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.open-webui.entrypoints=websecure
+      - traefik.http.routers.open-webui.rule=Host(`ai.local.jstockley.com`)
+      - traefik.http.routers.open-webui.tls=true
+      - traefik.http.routers.open-webui.tls.certresolver=production
+      - traefik.http.routers.open-webui.service=open-webui
+      - traefik.http.services.open-webui.loadbalancer.server.port=8080
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true

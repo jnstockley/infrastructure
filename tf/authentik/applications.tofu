@@ -255,6 +255,40 @@ resource "authentik_policy_binding" "nextcloud" {
   order  = 0
 }
 
+resource "authentik_provider_oauth2" "open-webui" {
+  access_token_validity = "minutes=5"
+  allowed_redirect_uris = [
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://ai.${data.terraform_remote_state.adguard.outputs.local_wildcard}/oauth/oidc/callback"
+    }
+  ]
+  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  client_id          = "MFheXhPNBKB4tQEvY4xhszAZ6VxlhK9PjKMYR7xX"
+  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name               = "Open WebUI"
+  property_mappings = [
+    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    "4fe26886-06bc-4c83-8f21-beb85752491f",
+  ]
+  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+}
+
+resource "authentik_application" "open-webui" {
+  name              = "Open WebUI"
+  slug              = "open-webui"
+  protocol_provider = authentik_provider_oauth2.open-webui.id
+  meta_icon         = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/open-webui.svg"
+}
+
+resource "authentik_policy_binding" "open-webui" {
+  target = authentik_application.open-webui.uuid
+  group  = authentik_group.openwebui-access.id
+  order  = 0
+}
+
 resource "authentik_provider_oauth2" "paperless" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
