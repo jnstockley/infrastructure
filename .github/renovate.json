@@ -9,6 +9,7 @@
   "assignees": [
     "jnstockley"
   ],
+  "prConcurrentLimit": 0,
   "nix": {
     "enabled": true
   },
