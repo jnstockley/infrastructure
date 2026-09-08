@@ -17,6 +17,6 @@
     ollama
     gh
     git
-		lmstudio
+    lmstudio
   ];
 }
