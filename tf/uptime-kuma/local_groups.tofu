@@ -148,16 +148,6 @@ resource "uptimekuma_monitor_group" "minecraft-group" {
   name = "Minecraft"
 }
 
-resource "uptimekuma_monitor_group" "n8n-group" {
-  provider    = uptimekuma.local
-  interval    = 60
-  max_retries = 3
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-  name = "n8n"
-}
-
 resource "uptimekuma_monitor_group" "nextcloud-group" {
   provider    = uptimekuma.local
   interval    = 60

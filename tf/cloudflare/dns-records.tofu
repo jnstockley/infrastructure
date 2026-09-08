@@ -289,15 +289,6 @@ resource "cloudflare_dns_record" "play" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "n8n" {
-  name    = "n8n.jstockley.com"
-  ttl     = 1
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  content = cloudflare_dns_record.iowa-vpn.name
-  proxied = false
-}
-
 resource "cloudflare_dns_record" "dkim" {
   name    = "sig1._domainkey"
   ttl     = 1
@@ -499,10 +490,6 @@ output "pikvm_dns_record_name" {
 
 output "play_dns_record_name" {
   value = cloudflare_dns_record.play.name
-}
-
-output "n8n_dns_record_name" {
-  value = cloudflare_dns_record.n8n.name
 }
 
 output "secrets_dns_record_name" {
