@@ -33,6 +33,10 @@ resource "authentik_group" "nextcloud-access" {
   is_superuser = false
 }
 
+resource "authentik_group" "openwebui-access" {
+  name = "OpenWebUI Access"
+}
+
 resource "authentik_group" "paperless-access" {
   name         = "Paperless Access"
   is_superuser = false
