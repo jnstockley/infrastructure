@@ -127,15 +127,6 @@ resource "cloudflare_dns_record" "home" {
   proxied = true
 }
 
-resource "cloudflare_dns_record" "node-red" {
-  name    = "hook.jstockley.com"
-  ttl     = 1
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  content = cloudflare_dns_record.iowa-vpn.name
-  proxied = true
-}
-
 resource "cloudflare_dns_record" "idp" {
   name    = "idp.jstockley.com"
   ttl     = 1
