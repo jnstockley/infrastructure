@@ -265,7 +265,7 @@ resource "authentik_provider_oauth2" "open-webui" {
     }
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  client_id          = "MFheXhPNBKB4tQEvY4xhszAZ6VxlhK9PjKMYR7xX"
+  client_id          = "bEUN5tyzB9i7WtxkAnT0KGeUkoIM24hidfUXADq5"
   invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
   name               = "Open WebUI"
   property_mappings = [
