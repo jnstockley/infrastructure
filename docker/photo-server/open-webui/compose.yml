@@ -54,3 +54,9 @@ networks:
     external: true
     enable_ipv4: true
     enable_ipv6: true
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
