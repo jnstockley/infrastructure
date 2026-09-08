@@ -14,21 +14,20 @@ services:
       - WEBUI_SESSION_COOKIE_SECURE=true
       - WEBUI_SESSION_COOKIE_SAME_SITE=strict
       - JWT_EXPIRES_IN=24h
-      - CORS_ALLOW_ORIGIN=https://ai.local.stockley.com
+      - CORS_ALLOW_ORIGIN=https://ai.local.jstockley.com
       - HSTS=max-age=31536000;includeSubDomains
       - FORWARDED_ALLOW_IPS=172.18.0.0/16
-      - OAUTH_ALLOWED_DOMAINS=idp.jstockley.com
       - ENABLE_OAUTH_ROLE_MANAGEMENT=true
       - OAUTH_ROLES_CLAIM=groups
       - OAUTH_ADMIN_ROLES="authentik Admins"
-      - OAUTH_ALLOWED_ROLES="OpenWebUI Access"
+      - OAUTH_ALLOWED_ROLES=OpenWebUI Access
       - OAUTH_MAX_SESSIONS_PER_USER=5
       - ENABLE_OAUTH_BACKCHANNEL_LOGOUT=true
       - ENABLE_OAUTH_SIGNUP=true
       - OAUTH_MERGE_ACCOUNTS_BY_EMAIL=true
       - OAUTH_PROVIDER_NAME=Authentik
       - OPENID_PROVIDER_URL=https://idp.jstockley.com/application/o/open-webui/.well-known/openid-configuration
-      - OAUTH_SCOPES="openid email profile"
+      - OAUTH_SCOPES=openid email profile
       - OPENID_REDIRECT_URI=https://ai.local.jstockley.com/oauth/oidc/callback
     env_file:
       - .env
