@@ -69,7 +69,6 @@ resource "uptimekuma_maintenance_monitors" "router-reboot-maintenance-monitors" 
     uptimekuma_monitor_group.mariadb-group.id,
     uptimekuma_monitor_group.postgres-group.id,
     uptimekuma_monitor_group.databasus-group.id,
-    uptimekuma_monitor_group.n8n-group.id,
     uptimekuma_monitor_group.paperless-group.id,
     uptimekuma_monitor_group.airflow-group.id,
     uptimekuma_monitor_group.beszel-group.id,

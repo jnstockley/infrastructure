@@ -350,17 +350,6 @@ resource "uptimekuma_monitor_docker" "minecraft-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "n8n-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "n8n"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.n8n-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "nextcloud-apahce-docker" {
   provider         = uptimekuma.local
   name             = "Apache Container"
@@ -831,34 +820,6 @@ resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.minecraft-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http_json_query" "n8n-local-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage (Local)"
-  url                 = "https://n8n.${data.terraform_remote_state.adguard.outputs.local_wildcard}/healthz/readiness"
-  json_path           = "$.status"
-  expected_value      = "ok"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.n8n-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http_json_query" "n8n-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.n8n_dns_record_name}/healthz/readiness"
-  json_path           = "$.status"
-  expected_value      = "ok"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.n8n-group.id
   max_retries         = 0
 }
 

@@ -15,5 +15,4 @@
 - [ ] GitHub?
 - [ ] Tailscale
 - [ ] PostgreSQL
-- [ ] n8n
 - [ ] Nextcloud
