@@ -5,7 +5,7 @@ services:
     image: ghcr.io/open-webui/open-webui:v0.11.3-slim
     container_name: open-webui
     volumes:
-      - open-webui:/app/backend/data
+      - ./data:/app/backend/data
     environment:
       - REDIS_URL=redis://redis:6379/0
       - ENABLE_LOGIN_FORM=false
