@@ -53,8 +53,13 @@ services:
     environment:
       UNIFI_API_TYPE: local
       UNIFI_LOCAL_HOST: 192.168.1.1
-      MCP_SERVER_TRANSPORT: streamable_http
+      MCP_SERVER_TRANSPORT: http
+      MCP_SERVER_PORT: 3000
       MCP_SERVER_HOST: 0.0.0.0            # container-internal; keep the published port on loopback
+    env_file:
+      - .env
+    networks:
+      - private
     restart: always
 
 networks:
