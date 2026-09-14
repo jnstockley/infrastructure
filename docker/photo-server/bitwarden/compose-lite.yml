@@ -7,6 +7,9 @@ services:
       - ./data:/etc/bitwarden
     env_file:
       - .env
+    networks:
+      - proxy
+      - private
     restart: always
     labels:
       - traefik.enable=true
