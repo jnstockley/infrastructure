@@ -116,7 +116,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -179,7 +179,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -241,7 +241,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -303,7 +303,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -369,7 +369,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -434,7 +434,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -497,7 +497,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -570,7 +570,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -631,7 +631,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
@@ -704,7 +704,7 @@ jobs:
           tofu_version_file: tf/.opentofu-version
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.17
+        uses: Infisical/secrets-action@v1.0.18
         with:
           method: "oidc"
           identity-id: "646b2754-c197-462a-a2c3-9db2507b4b8e"
