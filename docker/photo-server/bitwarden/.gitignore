@@ -4,3 +4,6 @@ core/
 logs/
 *.crt
 *.key
+# Bitwarden Lite
+.env
+data/
