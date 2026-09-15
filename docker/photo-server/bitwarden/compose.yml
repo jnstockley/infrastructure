@@ -2,8 +2,8 @@
 name: bitwarden-lite
 services:
   bitwarden:
-    container_name: bitwarden
     image: ghcr.io/bitwarden/lite:2026.8.1
+    container_name: bitwarden
     volumes:
       - ./data:/etc/bitwarden
     env_file:
