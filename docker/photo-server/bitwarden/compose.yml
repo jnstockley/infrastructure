@@ -1,180 +1,37 @@
 ---
-name: bitwarden
+name: bitwarden-lite
 services:
-  admin:
-    image: ghcr.io/bitwarden/admin:2026.8.2
-    container_name: bitwarden-admin
-    depends_on:
-      - mssql
+  bitwarden:
+    container_name: bitwarden
+    image: ghcr.io/bitwarden/lite:2026.8.1
     volumes:
-      - ./core:/etc/bitwarden/core
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/admin:/etc/bitwarden/logs
+      - ./data:/etc/bitwarden
     env_file:
-      - env/global.env
-      - env/uid.env
-      - env/global.override.env
+      - .env
     networks:
-      - default
-      - public
+      - proxy
+      - private
     restart: always
-    security_opt:
-      - no-new-privileges:true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.bw.entrypoints=websecure
+      - traefik.http.routers.bw.rule=Host(`vault.jstockley.com`)
+      - traefik.http.routers.bw.tls=true
+      - traefik.http.routers.bw.tls.certresolver=production
+      - traefik.http.routers.bw.service=bw
+      - traefik.http.services.bw.loadbalancer.server.port=8080
+      - traefik.docker.network=proxy
 
-  api:
-    image: ghcr.io/bitwarden/api:2026.8.2
-    container_name: bitwarden-api
-    volumes:
-      - ./core:/etc/bitwarden/core
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/api:/etc/bitwarden/logs
-    env_file:
-      - env/global.env
-      - env/uid.env
-      - env/global.override.env
-    networks:
-      - default
-      - public
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  attachments:
-    image: ghcr.io/bitwarden/attachments:2026.8.2
-    container_name: bitwarden-attachments
-    volumes:
-      - ./core/attachments:/etc/bitwarden/core/attachments
-    env_file:
-      - env/global.env
-      - env/uid.env
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  events:
-    image: ghcr.io/bitwarden/events:2026.8.2
-    container_name: bitwarden-events
-    volumes:
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/events:/etc/bitwarden/logs
-    env_file:
-      - env/global.env
-      - env/uid.env
-      - env/global.override.env
-    networks:
-      - default
-      - public
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  icons:
-    image: ghcr.io/bitwarden/icons:2026.8.2
-    container_name: bitwarden-icons
-    volumes:
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/icons:/etc/bitwarden/logs
-    env_file:
-      - env/global.env
-      - env/uid.env
-    networks:
-      - default
-      - public
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  identity:
-    image: ghcr.io/bitwarden/identity:2026.8.2
-    container_name: bitwarden-identity
-    volumes:
-      - ./identity:/etc/bitwarden/identity
-      - ./core:/etc/bitwarden/core
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/identity:/etc/bitwarden/logs
-    env_file:
-      - env/global.env
-      - env/uid.env
-      - env/global.override.env
-    networks:
-      - default
-      - public
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  mssql:
-    image: ghcr.io/bitwarden/mssql:2026.8.2
-    container_name: bitwarden-mssql
-    volumes:
-      - ./mssql/data:/var/opt/mssql/data
-      - ./logs/mssql:/var/opt/mssql/log
-      - ./mssql/backups:/etc/bitwarden/mssql/backups
-    env_file:
-      - env/mssql.env
-      - env/uid.env
-      - env/mssql.override.env
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-    stop_grace_period: 60s
-
-  nginx:
-    image: ghcr.io/bitwarden/nginx:2026.8.2
-    container_name: bitwarden-nginx
-    depends_on:
-      - admin
-      - api
-      - identity
-      - web
-    volumes:
-      - ./nginx:/etc/bitwarden/nginx
-      - ./letsencrypt:/etc/letsencrypt
-      - ./logs/nginx:/var/log/nginx
-    env_file:
-      - env/uid.env
-    networks:
-      - default
-      - public
-      - bitwarden
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  notifications:
-    image: ghcr.io/bitwarden/notifications:2026.8.2
-    container_name: bitwarden-notifications
-    volumes:
-      - ./ca-certificates:/etc/bitwarden/ca-certificates
-      - ./logs/notifications:/etc/bitwarden/logs
-    env_file:
-      - env/global.env
-      - env/uid.env
-      - env/global.override.env
-    networks:
-      - default
-      - public
-    restart: always
-    security_opt:
-      - no-new-privileges:true
-
-  web:
-    image: ghcr.io/bitwarden/web:2026.8.1
-    container_name: bitwarden-web
-    volumes:
-      - ./web:/etc/bitwarden/web
-    env_file:
-      - env/global.env
-      - env/uid.env
-    restart: always
-    security_opt:
-      - no-new-privileges:true
 
 networks:
-  default:
-    internal: true
-  public:
-    internal: false
-  bitwarden:
+  proxy:
+    name: proxy
     external: true
-    name: bitwarden
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
