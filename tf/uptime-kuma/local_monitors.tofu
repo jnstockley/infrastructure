@@ -108,110 +108,11 @@ resource "uptimekuma_monitor_docker" "beszel-agent-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "bitwarden-nginx-docker" {
+resource "uptimekuma_monitor_docker" "bitwarden-docker" {
   provider         = uptimekuma.local
-  name             = "Nginx Container"
+  name             = "Container"
   docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-nginx"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-admin-docker" {
-  provider         = uptimekuma.local
-  name             = "Admin Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-admin"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-identity-docker" {
-  provider         = uptimekuma.local
-  name             = "Identity Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-identity"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-api-docker" {
-  provider         = uptimekuma.local
-  name             = "API Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-api"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-events-docker" {
-  provider         = uptimekuma.local
-  name             = "Events Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-events"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-icons-docker" {
-  provider         = uptimekuma.local
-  name             = "Icons Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-icons"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-web" {
-  provider         = uptimekuma.local
-  name             = "Web Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-web"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-mssql-docker" {
-  provider         = uptimekuma.local
-  name             = "Mssql Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-mssql"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-attachments-docker" {
-  provider         = uptimekuma.local
-  name             = "Attachments Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-attachments"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bitwarden-group.id
-  max_retries      = 0
-}
-
-resource "uptimekuma_monitor_docker" "bitwarden-notifications-docker" {
-  provider         = uptimekuma.local
-  name             = "Notifications Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bitwarden-notifications"
+  docker_container = "bitwarden"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.bitwarden-group.id
