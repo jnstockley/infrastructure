@@ -64,7 +64,7 @@ services:
     entrypoint: ["/bin/sh", "/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh", "/opt/bitnami/scripts/openldap/run.sh"]
     restart: always
   opencloud:
-    image: opencloudeu/opencloud:7.5.0
+    image: opencloudeu/opencloud-rolling:8.0.1
     depends_on:
       - idp-ldap
     volumes:
