@@ -1,0 +1,29 @@
+---
+# Content-Security-Policy overrides for OpenCloud's proxy service.
+# Add every external domain OpenCloud's web UI needs to talk to or frame.
+# OC_DOMAIN, AUTHENTIK_DOMAIN and EURO_OFFICE_DOMAIN below must match the
+# values you set in .env — this file does NOT expand ${VARS}, so edit the
+# literal hostnames in.
+directives:
+  default-src:
+    - "'self'"
+  script-src:
+    - "'self'"
+  connect-src:
+    - "'self'"
+    - "https://auth.jstockley.com"         # <- set to your AUTHENTIK_DOMAIN
+  frame-src:
+    - "'self'"
+    - "https://auth.jstockley.com"         # <- set to your AUTHENTIK_DOMAIN
+    - "https://euro-office.jstockley.com"  # <- set to your EURO_OFFICE_DOMAIN
+  img-src:
+    - "'self'"
+    - "data:"
+    - "blob:"
+    - "https://euro-office.jstockley.com"  # <- set to your EURO_OFFICE_DOMAIN
+  media-src:
+    - "'self'"
+  object-src:
+    - "'none'"
+  base-uri:
+    - "'self'"

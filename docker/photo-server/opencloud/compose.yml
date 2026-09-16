@@ -1,0 +1,123 @@
+---
+name: opencloud
+
+services:
+
+  # Antivirus engine
+  clamav:
+    image: clamav/clamav:1.5.4
+    volumes:
+      - ./data/clamav:/var/lib/clamav
+    networks:
+      - opencloud
+    restart: always
+    healthcheck:
+      test: clamdcheck.sh
+      start_period: 5m
+
+  # Euro Office document server (WOPI editing UI)
+  # TODO: verify against upstream weboffice/euro-office.yml + traefik/euro-office.yml
+  # https://github.com/opencloud-eu/opencloud-compose/tree/main/weboffice
+  # before relying on this for real documents — the WOPI/JWT wiring changed
+  # recently and this integration is community-supported, not official.
+  euro-office:
+    image: ghcr.io/euro-office/documentserver:v9.3.4
+    environment:
+      JWT_ENABLED: 'true'
+      JWT_SECRET: ${EURO_OFFICE_JWT_SECRET}
+    networks:
+      - proxy
+      - opencloud
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.euro-office.entrypoints=websecure
+      - traefik.http.routers.euro-office.rule=Host(`office.local.jstockley.com`)
+      - traefik.http.routers.euro-office.tls=true
+      - traefik.http.routers.euro-office.tls.certresolver=production
+      - traefik.http.routers.euro-office.service=euro-office
+      - traefik.http.services.euro-office.loadbalancer.server.port=9900
+      - traefik.docker.network=proxy
+
+  # Internal LDAP directory — stores users/groups autoprovisioned from
+  # Authentik on first login. Schema files below must be copied verbatim
+  # from https://github.com/opencloud-eu/opencloud-compose/tree/main/config/ldap
+  idp-ldap:
+    image: bitnami/openldap:2.6
+    volumes:
+      - ./config/ldap/ldif/10_base.ldif:/ldifs/10_base.ldif:ro
+      - ./config/ldap/schemas/10_opencloud_schema.ldif:/schemas/10_opencloud_schema.ldif:ro
+      - ./config/ldap/docker-entrypoint-override.sh:/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh:ro
+      - ./data/ldap/certs:/opt/bitnami/openldap/share
+      - ./data/ldap/data:/bitnami/openldap
+    environment:
+      BITNAMI_DEBUG: 'false'
+      LDAP_TLS_VERIFY_CLIENT: never
+      LDAP_ENABLE_TLS: 'yes'
+      LDAP_TLS_CA_FILE: /opt/bitnami/openldap/share/openldap.crt
+      LDAP_TLS_CERT_FILE: /opt/bitnami/openldap/share/openldap.crt
+      LDAP_TLS_KEY_FILE: /opt/bitnami/openldap/share/openldap.key
+      LDAP_ROOT: dc=opencloud,dc=eu
+      LDAP_ADMIN_PASSWORD: ${LDAP_BIND_PASSWORD}
+    networks:
+      - opencloud
+    entrypoint: ["/bin/sh", "/opt/bitnami/scripts/openldap/docker-entrypoint-override.sh", "/opt/bitnami/scripts/openldap/run.sh"]
+    restart: always
+  opencloud:
+    image: opencloudeu/opencloud:7.5.0
+    depends_on:
+      - idp-ldap
+    volumes:
+      - ./data/opencloud/config:/etc/opencloud
+      - ./data/opencloud/data:/var/lib/opencloud
+      - ./config/opencloud/csp.yaml:/etc/opencloud/csp.yaml:ro
+      - ./config/opencloud/apps.yaml:/etc/opencloud/apps.yaml:ro
+      - ./config/opencloud/proxy.yaml:/etc/opencloud/proxy.yaml:ro
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - opencloud
+    # opencloud init generates config on first run; safe to ignore failure on
+    # subsequent starts because the config file already exists
+    command: ["-c", "opencloud init || true; opencloud server"]
+    entrypoint:
+      - /bin/sh
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.opencloud.entrypoints=websecure
+      - traefik.http.routers.opencloud.rule=Host(`cloud.local.jstockley.com`)
+      - traefik.http.routers.opencloud.tls=true
+      - traefik.http.routers.opencloud.tls.certresolver=production
+      - traefik.http.routers.opencloud.service=opencloud
+      - traefik.http.services.opencloud.loadbalancer.server.port=9200
+      - traefik.docker.network=proxy
+    user: '1000:1000'
+
+  # CalDAV / CardDAV
+  radicale:
+    image: opencloudeu/radicale:3.5.7
+    volumes:
+      - ./data/radicale:/var/lib/radicale
+    networks:
+      - opencloud
+    restart: always
+
+  # Full text search extraction
+  tika:
+    image: apache/tika:2.9.2.1
+    networks:
+      - opencloud
+    restart: always
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  opencloud:
+    name: opencloud
+    enable_ipv4: true
+    enable_ipv6: true
