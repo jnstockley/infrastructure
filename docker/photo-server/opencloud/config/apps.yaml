@@ -1,0 +1,5 @@
+---
+# Web UI extensions/apps config. Left minimal on purpose — copy the
+# defaults from upstream if you rely on any bundled web extensions:
+# https://github.com/opencloud-eu/opencloud-compose/blob/main/config/opencloud/apps.yaml
+apps: []

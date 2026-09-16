@@ -1,0 +1,38 @@
+---
+# OpenCloud proxy service configuration.
+# Combines:
+#  1. Radicale CalDAV/CardDAV reverse-proxy routes (from OpenCloud's Radicale
+#     integration docs / opencloud-compose radicale/radicale.yml overlay)
+#  2. OIDC role mapping driven by an authentik claim (since
+#     PROXY_ROLE_ASSIGNMENT_DRIVER=oidc is set on the opencloud service)
+#
+# You must configure a Property Mapping in authentik that emits an
+# "opencloudRoles" claim (array or string) with one of the claim_value
+# strings below, and attach that mapping to the OpenCloud OAuth2/OIDC
+# provider's scopes.
+
+additional_policies:
+  - name: default
+    routes:
+      - endpoint: /caldav/
+        backend: http://radicale:5232
+        remote_user_header: X-Remote-User
+        skip_x_access_token: true
+        additional_headers:
+          - X-Script-Name: /caldav
+      - endpoint: /carddav/
+        backend: http://radicale:5232
+        remote_user_header: X-Remote-User
+        skip_x_access_token: true
+        additional_headers:
+          - X-Script-Name: /carddav
+
+role_assignment:
+  driver: oidc
+  oidc_role_mapper:
+    role_claim: opencloudRoles
+    role_mapping:
+      - role_name: admin
+        claim_value: authentik Admin
+      - role_name: user
+        claim_value: OpenCloud Access

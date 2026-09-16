@@ -49,7 +49,7 @@ resource "cloudflare_zero_trust_access_policy" "internal_ips-v6" {
   include = [
     {
       ip = {
-        ip = "2604:2e8b:8077::/56"
+        ip = "2604:2e8b:9ca3:0:a08e:e3ae:723a:f37f"
       }
   }]
 }
