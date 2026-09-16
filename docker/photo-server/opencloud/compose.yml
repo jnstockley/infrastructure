@@ -97,7 +97,7 @@ services:
 
   # CalDAV / CardDAV
   radicale:
-    image: opencloudeu/radicale:3.5.7
+    image: opencloudeu/radicale:v3.8.0
     volumes:
       - ./data/radicale:/var/lib/radicale
     networks:
@@ -106,7 +106,7 @@ services:
 
   # Full text search extraction
   tika:
-    image: apache/tika:2.9.2.1
+    image: apache/tika:3.3.1.0
     networks:
       - opencloud
     restart: always
