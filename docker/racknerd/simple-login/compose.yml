@@ -2,7 +2,7 @@
 name: simplelogin
 services:
   app:
-    image: simplelogin/app-ci:v4.82.1
+    image: simplelogin/app-ci:v4.82.3
     container_name: sl-app
     volumes:
       - ./data:/sl
@@ -25,7 +25,7 @@ services:
       - "traefik.http.services.simplelogin.loadbalancer.server.port=7777"
 
   email:
-    image: simplelogin/app-ci:v4.82.1
+    image: simplelogin/app-ci:v4.82.3
     container_name: sl-email
     volumes:
       - ./data:/sl
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   init:
-    image: simplelogin/app-ci:v4.82.1
+    image: simplelogin/app-ci:v4.82.3
     container_name: sl-init
     volumes:
       - ./data:/sl
@@ -60,7 +60,7 @@ services:
     profiles: ["tools"]  # only runs when explicitly invoked, not on `up`
 
   job-runner:
-    image: simplelogin/app-ci:v4.82.1
+    image: simplelogin/app-ci:v4.82.3
     container_name: sl-job-runner
     volumes:
       - ./data:/sl
@@ -75,7 +75,7 @@ services:
     command: ["python", "job_runner.py"]
     restart: unless-stopped
   migration:
-    image: simplelogin/app-ci:v4.82.1
+    image: simplelogin/app-ci:v4.82.3
     container_name: sl-migration
     volumes:
       - ./data:/sl
