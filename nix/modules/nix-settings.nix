@@ -13,4 +13,7 @@ _: {
   # in that host's own hosts/<name>/default.nix instead (system stanza),
   # not here, since this file is shared by every host.
   nixpkgs.hostPlatform = "aarch64-darwin";
+
+  # Allow proprietary packages declared in modules/packages.nix.
+  nixpkgs.config.allowUnfree = true;
 }
