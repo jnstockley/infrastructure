@@ -146,6 +146,7 @@ Store). Full decision guide with worked examples: **[docs/PACKAGES.md](docs/PACK
 
 Short version: CLI tools → nixpkgs (`modules/packages.nix`), GUI apps →
 Homebrew casks (`modules/homebrew.nix`), App Store–exclusive apps → `mas`.
+Unfree nixpkgs packages are enabled for all configured hosts.
 
 ---
 
