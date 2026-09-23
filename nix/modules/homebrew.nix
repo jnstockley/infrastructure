@@ -33,6 +33,7 @@ _: {
     # GUI applications (Homebrew Casks).
     casks = [
       "vnc-server"
+      "lm-studio"
     ];
 
     # Mac App Store apps, by numeric ID (find with: mas search "<name>").
