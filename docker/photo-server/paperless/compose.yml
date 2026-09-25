@@ -28,6 +28,8 @@ services:
       - SYS_ADMIN
     devices:
       - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
 
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:3.2.1
