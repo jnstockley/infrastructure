@@ -1,0 +1,41 @@
+---
+name: pve-ups
+services:
+  pve-ups:
+    image: ghcr.io/ffind-dev/pve-ups:v4.2.0
+    container_name: pve-ups
+    volumes:
+      - pve-ups-config:/etc/pve-usv
+      - pve-ups-data:/var/lib/pve-usv
+    environment:
+      - TZ=America/Chicago
+    networks:
+      - proxy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/api/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pve-ups.entrypoints=websecure
+      - traefik.http.routers.pve-ups.rule=Host(`ups.local.jstockley.com`)
+      - traefik.http.routers.pve-ups.tls=true
+      - traefik.http.routers.pve-ups.tls.certresolver=production
+      - traefik.http.routers.pve-ups.service=pve-ups
+      - traefik.http.services.pve-ups.loadbalancer.server.port=8080
+      - traefik.docker.network=proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+
+
+volumes:
+  pve-ups-config:
+  pve-ups-data:
