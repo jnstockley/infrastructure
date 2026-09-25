@@ -30,8 +30,8 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "python3", "/opt/airflow/healthcheck.py"]
-      interval: 30s
-      timeout: 10s
+      interval: 60s
+      timeout: 45s
       retries: 5
       start_period: 30s
     labels:
@@ -54,8 +54,8 @@ services:
     restart: always
     healthcheck:
       test: ["CMD", "airflow", "jobs", "check", "--job-type", "DagProcessorJob", "--local"]
-      interval: 30s
-      timeout: 10s
+      interval: 60s
+      timeout: 45s
       retries: 5
       start_period: 30s
     <<: *airflow-common
@@ -94,10 +94,10 @@ services:
           "CMD",
           "python3",
           "-c",
-          "import urllib.request; urllib.request.urlopen('http://localhost:8974/health', timeout=5)"
+          "import urllib.request; urllib.request.urlopen('http://localhost:8974/health', timeout=45)"
         ]
-      interval: 30s
-      timeout: 10s
+      interval: 60s
+      timeout: 45s
       retries: 5
       start_period: 30s
     <<: *airflow-common
@@ -112,8 +112,8 @@ services:
     healthcheck:
       test:
         ["CMD", "airflow", "jobs", "check", "--job-type", "TriggererJob", "--local"]
-      interval: 30s
-      timeout: 10s
+      interval: 60s
+      timeout: 45s
       retries: 5
       start_period: 30s
     <<: *airflow-common
