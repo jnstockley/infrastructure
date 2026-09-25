@@ -504,6 +504,17 @@ resource "uptimekuma_monitor_docker" "unifi-toolkit-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "ups-docker" {
+  provider         = uptimekuma.local
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "pve-ups"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.ups-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "wireguard-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -833,6 +844,18 @@ resource "uptimekuma_monitor_http" "unifi-toolkit-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.unifi-toolkit-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http" "ups-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://ups.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/health"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.ups-group.id
   max_retries         = 0
 }
 

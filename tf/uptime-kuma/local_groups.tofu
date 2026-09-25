@@ -228,6 +228,16 @@ resource "uptimekuma_monitor_group" "unifi-toolkit-group" {
   name = "Unifi Toolkit"
 }
 
+resource "uptimekuma_monitor_group" "ups-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "UPS"
+}
+
 resource "uptimekuma_monitor_group" "wireguard-group" {
   provider    = uptimekuma.local
   interval    = 60
