@@ -12,14 +12,12 @@ x-airflow-common: &airflow-common
     REDIS_URI: redis://redis:6379/0
     AUTHENTIK_APP_NANE: airflow
     AIRFLOW__LOG_RETENTION_DAYS: 7
-    AIRFLOW_UID: 1000
-    AIRFLOW_GID: 0
   volumes:
     - ./logs:/opt/airflow/logs
     - ./data:/opt/airflow/data
   security_opt:
     - no-new-privileges:true
-    # user: 1000:0
+  user: "50000:0"
 
 name: airflow
 services:
