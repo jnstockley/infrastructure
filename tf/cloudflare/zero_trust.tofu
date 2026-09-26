@@ -41,19 +41,6 @@ resource "cloudflare_zero_trust_access_policy" "internal_ips" {
   }]
 }
 
-resource "cloudflare_zero_trust_access_policy" "internal_ips-v6" {
-  account_id       = var.cloudflare_account_id
-  name             = "Bypass Internal IPv6s"
-  session_duration = "24h"
-  decision         = "bypass"
-  include = [
-    {
-      ip = {
-        ip = "2604:2e8b:9ca3:0:a08e:e3ae:723a:f37f"
-      }
-  }]
-}
-
 resource "cloudflare_zero_trust_access_policy" "external_ips" {
   account_id       = var.cloudflare_account_id
   name             = "Allow External IPs"
@@ -93,9 +80,6 @@ resource "cloudflare_zero_trust_access_application" "traefik" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
@@ -118,9 +102,6 @@ resource "cloudflare_zero_trust_access_application" "pikvm" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
@@ -143,9 +124,6 @@ resource "cloudflare_zero_trust_access_application" "minecraft" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
@@ -168,9 +146,6 @@ resource "cloudflare_zero_trust_access_application" "pgadmin" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
@@ -193,9 +168,6 @@ resource "cloudflare_zero_trust_access_application" "synology" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
@@ -218,9 +190,6 @@ resource "cloudflare_zero_trust_access_application" "databasus" {
     },
     {
       id = cloudflare_zero_trust_access_policy.external_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips-v6.id
     }
   ]
 }
