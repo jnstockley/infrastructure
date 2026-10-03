@@ -97,7 +97,7 @@ services:
 
   # CalDAV / CardDAV
   radicale:
-    image: opencloudeu/radicale:v3.8.0
+    image: opencloudeu/radicale:v3.8.1
     volumes:
       - ./data/radicale:/var/lib/radicale
     networks:
