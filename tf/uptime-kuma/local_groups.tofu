@@ -327,13 +327,3 @@ resource "uptimekuma_monitor_group" "youtube-rss" {
   ]
   name = "YouTube RSS"
 }
-
-resource "uptimekuma_monitor_group" "bypass-internal-ips" {
-  provider    = uptimekuma.local
-  interval    = 60
-  max_retries = 10
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-  name = "Bypass Internal IPs"
-}
