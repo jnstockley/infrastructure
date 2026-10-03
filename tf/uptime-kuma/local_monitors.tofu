@@ -1176,17 +1176,3 @@ resource "uptimekuma_monitor_ping" "outside-camera" {
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
 }
-
-resource "uptimekuma_monitor_http" "mc-bypass-http" {
-  provider            = uptimekuma.local
-  name                = "MC Bypass"
-  url                 = "https://mc.jstockley.com/api/v2/crafty/check"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.bypass-internal-ips.id
-  max_retries         = 0
-  max_redirects       = 0
-  ip_family           = "IPv6"
-}
