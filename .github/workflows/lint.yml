@@ -156,7 +156,7 @@ jobs:
       - name: Step 2 - Install OpenTofu
         uses: opentofu/setup-opentofu@v2
         with:
-          tofu_version: 1.12.6
+          tofu_version: v1.13.1
 
       - name: Step 3 - Lint Terraform/OpenTofu Files
         run: tofu fmt -check -diff -recursive tf/
