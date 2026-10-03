@@ -1188,5 +1188,5 @@ resource "uptimekuma_monitor_http" "mc-bypass-http" {
   parent              = uptimekuma_monitor_group.bypass-internal-ips.id
   max_retries         = 0
   max_redirects       = 0
-  ip_family            = "IPv6"
+  ip_family           = "IPv6"
 }
