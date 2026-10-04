@@ -11,7 +11,7 @@ resource "proxmox_vm_qemu" "debian-12" {
   description            = "Debian 12 VM"
   full_clone             = false
   machine                = "q35"
-  balloon                = 16384
+  balloon                = 24576
   memory                 = 32768
   name                   = "debian-12"
   qemu_os                = "l26"
