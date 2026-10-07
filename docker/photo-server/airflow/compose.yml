@@ -1,6 +1,6 @@
 ---
 x-airflow-common: &airflow-common
-  image: jnstockley/airflow:2026.10.03
+  image: jnstockley/airflow:2026.10.07
   dns:
     - 192.168.1.135
   networks:
