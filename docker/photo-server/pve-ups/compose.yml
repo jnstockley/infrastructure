@@ -2,7 +2,7 @@
 name: pve-ups
 services:
   pve-ups:
-    image: ghcr.io/ffind-dev/pve-ups:v4.2.0
+    image: ghcr.io/ffind-dev/pve-ups:v4.3.0
     container_name: pve-ups
     volumes:
       - pve-ups-config:/etc/pve-usv
