@@ -1,0 +1,74 @@
+---
+name: metamcp
+services:
+  metamcp:
+    image: ghcr.io/metatool-ai/metamcp:2.4.22
+    container_name: metamcp
+    volumes:
+      # Caches uvx/npx installs of STDIO MCP servers so restarts aren't slow.
+      # Named volume (not a bind mount) so it inherits the image's uid 1001 ownership.
+      - uv-cache:/home/nextjs/.cache/uv
+    environment:
+      - TZ=America/Chicago
+      - NODE_ENV=production
+      # ── Public URL ────────────────────────────────────────────────────────
+      - APP_URL=https://mcp.jstockley.com
+      - NEXT_PUBLIC_APP_URL=https://mcp.jstockley.com
+      - EXTRA_TRUSTED_ORIGINS=https://mcp.jstockley.com
+      # ── Existing Postgres (private network) ───────────────────────────────
+      - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB}
+      # ── Authentik OIDC (UI login + the login step of the MCP OAuth flow) ──
+      # Redirect URI to register in Authentik:
+      #   https://mcp.jstockley.com/api/auth/oauth2/callback/oidc
+      - OIDC_PROVIDER_ID=oidc
+      - OIDC_CLIENT_ID=W601Omw1oHifRHHVSbcFutVs4FOallpbAP9CZRZw
+      - OIDC_DISCOVERY_URL=https://idp.jstockley.com/application/o/metamcp/.well-known/openid-configuration
+      # Required by MetaMCP due to a better-auth bug (see upstream example.env)
+      - OIDC_AUTHORIZATION_URL=https://idp.jstockley.com/application/o/authorize/
+      - OIDC_SCOPES=openid email profile
+      - OIDC_PKCE=true
+      # Lets "localhost" in an MCP server config resolve to the Docker host
+      - TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=true
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - private
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    healthcheck:
+      test: curl -f http://localhost:12008/health || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.metamcp.entrypoints=websecure
+      - traefik.http.routers.metamcp.rule=Host(`mcp.jstockley.com`)
+      - traefik.http.routers.metamcp.tls=true
+      - traefik.http.routers.metamcp.tls.certresolver=production
+      - traefik.http.routers.metamcp.service=metamcp
+      - traefik.http.services.metamcp.loadbalancer.server.port=12008
+      - traefik.docker.network=proxy
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+
+volumes:
+  uv-cache:

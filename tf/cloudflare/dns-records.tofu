@@ -136,6 +136,15 @@ resource "cloudflare_dns_record" "idp" {
   proxied = true
 }
 
+resource "cloudflare_dns_record" "mcp" {
+  name    = "mcp.jstockley.com"
+  ttl     = 1
+  type    = "CNAME"
+  zone_id = var.cloudflare_zone_id
+  content = cloudflare_dns_record.iowa-vpn.name
+  proxied = true
+}
+
 resource "cloudflare_dns_record" "website_ipv4_1" {
   name    = "jstockley.com"
   ttl     = 1
@@ -450,6 +459,10 @@ output "home_dns_record_name" {
 
 output "authentik_dns_record_name" {
   value = cloudflare_dns_record.idp.name
+}
+
+output "mcp_dns_record_name" {
+  value = cloudflare_dns_record.mcp.name
 }
 
 output "website_dns_record_name" {
