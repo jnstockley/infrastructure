@@ -28,6 +28,11 @@ resource "authentik_group" "immich-access" {
   is_superuser = false
 }
 
+resource "authentik_group" "meta-mcp-access" {
+  name         = "MetaMCP Access"
+  is_superuser = false
+}
+
 resource "authentik_group" "nextcloud-access" {
   name         = "Nextcloud Access"
   is_superuser = false

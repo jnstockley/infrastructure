@@ -221,6 +221,40 @@ resource "authentik_policy_binding" "forgejo" {
   order  = 0
 }
 
+resource "authentik_provider_oauth2" "meta-mcp" {
+  access_token_validity = "minutes=5"
+  allowed_redirect_uris = [
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.mcp_dns_record_name}/api/auth/oauth2/callback/oidc"
+    }
+  ]
+  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  client_id          = "W601Omw1oHifRHHVSbcFutVs4FOallpbAP9CZRZw"
+  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name               = "MetaMCP"
+  property_mappings = [
+    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    "4fe26886-06bc-4c83-8f21-beb85752491f",
+  ]
+  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+}
+
+resource "authentik_application" "meta-mcp" {
+  name              = "MetaMCP"
+  slug              = "meta-mcp"
+  protocol_provider = authentik_provider_oauth2.meta-mcp.id
+  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/metamcp.webp"
+}
+
+resource "authentik_policy_binding" "meta-mcp" {
+  target = authentik_application.meta-mcp.uuid
+  group  = authentik_group.meta-mcp-access.id
+  order  = 0
+}
+
 resource "authentik_provider_oauth2" "nextcloud" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
