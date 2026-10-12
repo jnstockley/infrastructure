@@ -24,7 +24,7 @@ services:
       #   https://mcp.jstockley.com/api/auth/oauth2/callback/oidc
       - OIDC_PROVIDER_ID=oidc
       - OIDC_CLIENT_ID=W601Omw1oHifRHHVSbcFutVs4FOallpbAP9CZRZw
-      - OIDC_DISCOVERY_URL=https://idp.jstockley.com/application/o/metamcp/.well-known/openid-configuration
+      - OIDC_DISCOVERY_URL=https://idp.jstockley.com/application/o/meta-mcp/.well-known/openid-configuration
       # Required by MetaMCP due to a better-auth bug (see upstream example.env)
       - OIDC_AUTHORIZATION_URL=https://idp.jstockley.com/application/o/authorize/
       - OIDC_SCOPES=openid email profile
