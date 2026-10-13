@@ -240,6 +240,17 @@ resource "uptimekuma_monitor_docker" "mend-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "meta-mcp-docker" {
+  provider         = uptimekuma.local
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "metamcp"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.meta-mcp-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "minecraft-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -718,6 +729,20 @@ resource "uptimekuma_monitor_http_keyword" "mend-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.mend-group.id
+  max_retries         = 0
+}
+
+resource "uptimekuma_monitor_http_json_query" "meta-mcp-http" {
+  provider            = uptimekuma.local
+  name                = "WebPage"
+  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.mcp_dns_record_name}/health"
+  json_path           = "$.status"
+  expected_value      = "ok"
+  cache_buster        = true
+  expiry_notification = true
+  interval            = 60
+  active              = true
+  parent              = uptimekuma_monitor_group.meta-mcp-group.id
   max_retries         = 0
 }
 
