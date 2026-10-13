@@ -31,6 +31,12 @@ services:
       - OIDC_PKCE=true
       # Lets "localhost" in an MCP server config resolve to the Docker host
       - TRANSFORM_LOCALHOST_TO_DOCKER_INTERNAL=true
+      # ── SSRF allowlist ───────────────────────────────────────────────────
+      # MetaMCP refuses to proxy to private/internal addresses by default
+      # (e.g. the `private` network's RFC1918/ULA ranges). Explicitly allow
+      # the internal MCP servers it needs to reach here (comma-separated
+      # hostnames, matched against the URL you configure for the server).
+      - MCP_PROXY_URL_ALLOWED_HOSTS=unifi-mcp
     env_file:
       - .env
     networks:
