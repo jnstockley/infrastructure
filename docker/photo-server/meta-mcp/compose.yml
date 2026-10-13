@@ -2,7 +2,7 @@
 name: metamcp
 services:
   metamcp:
-    image: ghcr.io/metatool-ai/metamcp:2.4.22
+    image: ghcr.io/umbrella-it-group/metamcp:725171ae5c2fa67cf34b502b9871229ed94803e5
     container_name: metamcp
     volumes:
       # Caches uvx/npx installs of STDIO MCP servers so restarts aren't slow.
@@ -12,9 +12,9 @@ services:
       - TZ=America/Chicago
       - NODE_ENV=production
       # ── Public URL ────────────────────────────────────────────────────────
-      - APP_URL=https://mcp.jstockley.com
-      - NEXT_PUBLIC_APP_URL=https://mcp.jstockley.com
-      - EXTRA_TRUSTED_ORIGINS=https://mcp.jstockley.com
+      - APP_URL=https://mcp.jstockley.com/
+      - NEXT_PUBLIC_APP_URL=https://mcp.jstockley.com/
+      - EXTRA_TRUSTED_ORIGINS=https://mcp.jstockley.com/
       # ── Existing Postgres (private network) ───────────────────────────────
       - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
