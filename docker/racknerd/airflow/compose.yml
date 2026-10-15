@@ -10,7 +10,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__API__BASE_URL: https://airflow.jstockley.com
     AIRFLOW_VAR_ENV: prod
     REDIS_URI: redis://redis:6379/0
-    AUTHENTIK_APP_NANE: airflow
+    AUTHENTIK_APP_NAME: airflow
     AIRFLOW__LOG_RETENTION_DAYS: 7
   volumes:
     - ./logs:/opt/airflow/logs
