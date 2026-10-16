@@ -24,6 +24,11 @@ resource "authentik_provider_oauth2" "cloudflare" {
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
   invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
   signing_key        = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode           = "user_username"
+  grant_types = [
+    "authorization_code",
+    "refresh_token",
+  ]
 }
 
 resource "authentik_policy_binding" "cloudflare-access" {
@@ -70,6 +75,10 @@ resource "authentik_provider_oauth2" "homeassistant" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "homeassistant" {
@@ -104,6 +113,10 @@ resource "authentik_provider_oauth2" "airflow" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "airflow" {
@@ -138,6 +151,10 @@ resource "authentik_provider_oauth2" "airflow-internal" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "airflow-internal" {
@@ -172,6 +189,10 @@ resource "authentik_provider_oauth2" "airflow-dev" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "airflow-dev" {
@@ -206,6 +227,10 @@ resource "authentik_provider_oauth2" "forgejo" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "forgejo" {
@@ -240,6 +265,10 @@ resource "authentik_provider_oauth2" "meta-mcp" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "meta-mcp" {
@@ -274,6 +303,10 @@ resource "authentik_provider_oauth2" "nextcloud" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "nextcloud" {
@@ -286,40 +319,6 @@ resource "authentik_application" "nextcloud" {
 resource "authentik_policy_binding" "nextcloud" {
   target = authentik_application.nextcloud.uuid
   group  = authentik_group.nextcloud-access.id
-  order  = 0
-}
-
-resource "authentik_provider_oauth2" "open-webui" {
-  access_token_validity = "minutes=5"
-  allowed_redirect_uris = [
-    {
-      matching_mode     = "strict",
-      redirect_uri_type = "authorization",
-      url               = "https://ai.${data.terraform_remote_state.adguard.outputs.local_wildcard}/oauth/oidc/callback"
-    }
-  ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  client_id          = "bEUN5tyzB9i7WtxkAnT0KGeUkoIM24hidfUXADq5"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
-  name               = "Open WebUI"
-  property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
-  ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
-}
-
-resource "authentik_application" "open-webui" {
-  name              = "Open WebUI"
-  slug              = "open-webui"
-  protocol_provider = authentik_provider_oauth2.open-webui.id
-  meta_icon         = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/open-webui.svg"
-}
-
-resource "authentik_policy_binding" "open-webui" {
-  target = authentik_application.open-webui.uuid
-  group  = authentik_group.openwebui-access.id
   order  = 0
 }
 
@@ -342,6 +341,10 @@ resource "authentik_provider_oauth2" "paperless" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "paperless" {
@@ -381,6 +384,10 @@ resource "authentik_provider_oauth2" "synology" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "synology" {
@@ -415,6 +422,10 @@ resource "authentik_provider_oauth2" "tailscale" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  #sub_mode    = "user_username" # TODO Re-enable at some point
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "tailscale" {
@@ -449,7 +460,10 @@ resource "authentik_provider_oauth2" "proxmox" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
-  sub_mode    = "user_email"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "proxmox" {
@@ -484,6 +498,10 @@ resource "authentik_provider_oauth2" "pg-admin-local" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "pg-admin-local" {
@@ -518,6 +536,10 @@ resource "authentik_provider_oauth2" "pg-admin-external" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "pg-admin-external" {
@@ -531,6 +553,17 @@ resource "authentik_policy_binding" "pg-admin-external" {
   target = authentik_application.pg-admin-external.uuid
   group  = authentik_group.pg-admin-access.id
   order  = 0
+}
+
+resource "authentik_property_mapping_provider_scope" "beszel_email" {
+  name       = "Beszel email"
+  scope_name = "email"
+  expression = <<-EOF
+    return {
+      "email": request.user.email,
+      "email_verified": True,
+    }
+  EOF
 }
 
 resource "authentik_provider_oauth2" "beszel" {
@@ -547,11 +580,17 @@ resource "authentik_provider_oauth2" "beszel" {
   invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
   name               = "Beszel"
   property_mappings = [
+    # OpenID scope
     "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    authentik_property_mapping_provider_scope.beszel_email.id,
+    # Profile scope
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "beszel" {
@@ -653,7 +692,17 @@ resource "authentik_provider_oauth2" "immich" {
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.photos_dns_record_name}/user-settings"
+    },
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
       url               = "https://photos.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/login"
+    },
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://photos.${data.terraform_remote_state.adguard.outputs.local_wildcard}/user-settings"
     },
     {
       matching_mode     = "regex",
@@ -671,6 +720,10 @@ resource "authentik_provider_oauth2" "immich" {
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
 }
 
 resource "authentik_application" "immich" {
@@ -727,23 +780,20 @@ resource "authentik_provider_oauth2" "arcane" {
   ]
   authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
   client_id          = "vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0"
-  grant_types = [
-    "authorization_code",
-    "hybrid",
-    "implicit",
-    "client_credentials",
-    "password",
-    "urn:ietf:params:oauth:grant-type:device_code",
-    "refresh_token",
-  ]
-  invalidation_flow = "46110172-b91f-4d45-acd9-b559ac3994c8"
-  name              = "Arcane"
+  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name               = "Arcane"
   property_mappings = [
     "4a51d5ca-8d95-4145-8fed-e400b9aac760",
     "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
   signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+    "refresh_token",
+    "urn:ietf:params:oauth:grant-type:device_code",
+  ]
 }
 
 resource "authentik_application" "arcane" {

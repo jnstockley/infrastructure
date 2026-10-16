@@ -56,7 +56,7 @@ resource "cloudflare_zero_trust_access_policy" "external_ips" {
     {
       oidc = {
         claim_name           = "groups"
-        claim_value          = "authentik Admins"
+        claim_value          = "Cloudflare Access"
         identity_provider_id = cloudflare_zero_trust_access_identity_provider.authentik.id
       }
   }]
