@@ -12,10 +12,12 @@ services:
       - LOG_LEVEL=INFO
       - STALKER_REFRESH_INTERVAL=60
       - UNIFI_VERIFY_SSL=true
+      - DOMAIN=unifi-toolkit.local.jstockley.com
     env_file:
       - .env
     networks:
       - private
+      - bridge
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health"]
@@ -33,6 +35,7 @@ services:
       - traefik.http.routers.unifi-toolkit.middlewares=authentik-proxy-chain@file
 
 networks:
+  bridge:
   private:
     name: private
     internal: true
