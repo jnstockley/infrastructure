@@ -7,6 +7,7 @@ services:
     environment:
       UNIFI_API_TYPE: local
       UNIFI_LOCAL_HOST: unifi.local.jstockley.com
+      UNIFI_LOCAL_VERIFY_SSL: true
       MCP_SERVER_TRANSPORT: streamable_http
       MCP_SERVER_HOST: 0.0.0.0
       MCP_SERVER_PORT: 3000
@@ -16,9 +17,15 @@ services:
     env_file:
       - .env
     networks:
+      - proxy
       - private
 
 networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
   private:
     name: private
     internal: true
