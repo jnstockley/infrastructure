@@ -20,7 +20,6 @@ resource "authentik_user" "jackstockley" {
     authentik_group.traefik-local-access.id,
     authentik_group.unifi-access.id,
     authentik_group.arcane-access.id,
-    authentik_group.openwebui-access.id,
     authentik_group.meta-mcp-access.id
   ]
 }
@@ -34,6 +33,5 @@ resource "authentik_user" "claylarson" {
     authentik_group.immich-access.id,
     authentik_group.nextcloud-access.id,
     authentik_group.open-speedtest-access.id,
-    authentik_group.openwebui-access.id
   ]
 }
