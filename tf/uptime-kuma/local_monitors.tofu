@@ -119,17 +119,6 @@ resource "uptimekuma_monitor_docker" "bitwarden-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "bsn-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "bsn"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.bsn-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "databasus-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -1154,7 +1143,7 @@ resource "uptimekuma_monitor_ping" "balcony-plug" {
 resource "uptimekuma_monitor_ping" "hallway-camera" {
   provider    = uptimekuma.local
   name        = "Hallway Camera"
-  hostname    = "192.168.2.200"
+  hostname    = "192.168.2.7"
   interval    = 60
   max_retries = 3
   active      = true
