@@ -58,16 +58,6 @@ resource "uptimekuma_monitor_group" "bitwarden-group" {
   name = "Bitwarden"
 }
 
-resource "uptimekuma_monitor_group" "bsn-group" {
-  provider    = uptimekuma.local
-  interval    = 60
-  max_retries = 3
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-  name = "BSN"
-}
-
 resource "uptimekuma_monitor_group" "databasus-group" {
   provider    = uptimekuma.local
   interval    = 60
