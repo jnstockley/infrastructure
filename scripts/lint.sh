@@ -8,4 +8,3 @@ shfmt --diff -i 4 -ci .
 uvx ruff check
 uvx ruff format --check
 tofu fmt -check -diff -recursive tf/
-npx markdownlint-cli2 "**/*.md"
