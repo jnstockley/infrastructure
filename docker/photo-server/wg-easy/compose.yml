@@ -1,0 +1,74 @@
+---
+name: wg-easy
+services:
+  wg-easy:
+    image: ghcr.io/wg-easy/wg-easy:15.4.0
+    container_name: wg-easy
+    volumes:
+      - ./data:/etc/wireguard
+      - /lib/modules:/lib/modules:ro
+    environment:
+      - TZ=America/Chicago
+      # Unattended first-run setup (ignored once the DB exists).
+      # INIT_USERNAME / INIT_PASSWORD come from .env
+      - INIT_ENABLED=true
+      - INIT_HOST=iowa.vpn.jstockley.com
+      - INIT_PORT=51820
+      # AdGuard Home's static IP on the `wg` network
+      - INIT_DNS=10.42.42.43,fdcc:ad94:bacf:61a3::2b
+      - INIT_IPV4_CIDR=10.8.0.0/24
+      - INIT_IPV6_CIDR=fd42:42:42::/64
+      # Only trust Traefik's forwarded headers, set to the `proxy` subnet:
+      - TRUSTED_PROXIES=172.18.0.0/16,fd6e:3ea9:a697:1::/64
+    env_file:
+      - .env
+    ports:
+      - '0.0.0.0:51820:51820/udp'
+    networks:
+      wg:
+        interface_name: eth0
+        ipv4_address: 10.42.42.42
+        ipv6_address: fdcc:ad94:bacf:61a3::2a
+        # VPN egress is masqueraded out eth0 ({{device}}), so `wg`
+        # must hold the default route
+        gw_priority: 1
+      proxy:
+        interface_name: eth1
+    restart: unless-stopped
+    labels:
+      # Web UI is only reachable through Traefik (51821 is NOT published)
+      - traefik.enable=true
+      - traefik.http.routers.wg-easy.entrypoints=websecure
+      - traefik.http.routers.wg-easy.rule=Host(`wg.local.jstockley.com`)
+      - traefik.http.routers.wg-easy.tls=true
+      - traefik.http.routers.wg-easy.tls.certresolver=production
+      - traefik.http.routers.wg-easy.service=wg-easy
+      - traefik.http.services.wg-easy.loadbalancer.server.port=51821
+      - traefik.docker.network=proxy
+      # Alternative: put the UI behind Authentik like your other admin UIs
+      # (replace the `service` label above with these two, then create a
+      # Proxy Provider in Authentik with internal host http://wg-easy:51821)
+      # - traefik.http.routers.wg-easy.service=authentik-outpost@file
+      # - traefik.http.routers.wg-easy.middlewares=authentik-proxy-chain@file
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+      - net.ipv6.conf.default.forwarding=1
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  wg:
+    # Created once by hand (needs a fixed subnet), see setup.md
+    name: wg
+    external: true
