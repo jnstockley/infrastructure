@@ -13,7 +13,7 @@ services:
       # INIT_USERNAME / INIT_PASSWORD come from .env
       - INIT_ENABLED=true
       - INIT_HOST=iowa.vpn.jstockley.com
-      - INIT_PORT=51820
+      - INIT_PORT=51822
       # AdGuard Home's static IP on the `wg` network
       - INIT_DNS=10.42.42.43,fdcc:ad94:bacf:61a3::2b
       - INIT_IPV4_CIDR=10.8.0.0/24
@@ -23,7 +23,7 @@ services:
     env_file:
       - .env
     ports:
-      - '0.0.0.0:51820:51820/udp'
+      - '0.0.0.0:51822:51822/udp'
     networks:
       wg:
         interface_name: eth0
