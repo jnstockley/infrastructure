@@ -7,6 +7,19 @@ output "authentik_cloudflare_client_secret" {
   sensitive = true
 }
 
+output "authentik_wg_easy_client_id" {
+  value = authentik_provider_oauth2.wg_easy.client_id
+}
+
+output "authentik_wg_easy_client_secret" {
+  value     = authentik_provider_oauth2.wg_easy.client_secret
+  sensitive = true
+}
+
+output "authentik_wg_easy_oidc_server" {
+  value = "https://${data.terraform_remote_state.cloudflare.outputs.authentik_dns_record_name}"
+}
+
 resource "authentik_provider_oauth2" "cloudflare" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [{
@@ -603,6 +616,53 @@ resource "authentik_application" "beszel" {
 resource "authentik_policy_binding" "beszel" {
   target = authentik_application.beszel.uuid
   group  = authentik_group.beszel-access.id
+  order  = 0
+}
+
+resource "authentik_provider_oauth2" "wg_easy" {
+  access_token_validity = "minutes=5"
+  allowed_redirect_uris = [
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://wg.local.jstockley.com/api/auth/oidc/callback"
+    },
+    {
+      matching_mode     = "strict",
+      redirect_uri_type = "authorization",
+      url               = "https://wg.local.jstockley.com/api/auth/oidc/link"
+    }
+  ]
+  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  client_type        = "confidential"
+  client_id          = "1AZvHSHwm3HzOnTThq7LPkcBz7ADfmkNEy5S7OtW"
+  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  name               = "wg-easy"
+  property_mappings = [
+    # OpenID scope
+    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    # Email scope
+    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    # Profile scope
+    "4fe26886-06bc-4c83-8f21-beb85752491f",
+  ]
+  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  sub_mode    = "user_username"
+  grant_types = [
+    "authorization_code",
+  ]
+}
+
+resource "authentik_application" "wg_easy" {
+  name              = "wg-easy"
+  slug              = "wg-easy"
+  protocol_provider = authentik_provider_oauth2.wg_easy.id
+  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/wireguard.svg"
+}
+
+resource "authentik_policy_binding" "wg_easy" {
+  target = authentik_application.wg_easy.uuid
+  group  = authentik_group.wireguard-access.id
   order  = 0
 }
 
