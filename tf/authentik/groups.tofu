@@ -68,6 +68,11 @@ resource "authentik_group" "beszel-access" {
   is_superuser = false
 }
 
+resource "authentik_group" "wireguard-access" {
+  name         = "WireGuard Access"
+  is_superuser = false
+}
+
 resource "authentik_group" "open-speedtest-access" {
   name         = "OpenSpeed Test Access"
   is_superuser = false
