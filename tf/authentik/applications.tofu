@@ -641,8 +641,8 @@ resource "authentik_provider_oauth2" "wg_easy" {
   property_mappings = [
     # OpenID scope
     "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    # Email scope
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
+    # Email scope includes email_verified, matching Beszel's mapping.
+    authentik_property_mapping_provider_scope.beszel_email.id,
     # Profile scope
     "4fe26886-06bc-4c83-8f21-beb85752491f",
   ]
