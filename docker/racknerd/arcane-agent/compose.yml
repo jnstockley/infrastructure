@@ -12,12 +12,15 @@ services:
       EDGE_AGENT: "true"
       EDGE_TRANSPORT: "poll"
       MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net:3552"
+      HTTP_PROXY: "http://tailscale:1055"
+      NO_PROXY: "localhost,127.0.0.1"
       TZ: "America/Chicago"
       PUID: 1000
       PGID: 1000
     env_file:
       - .env
-    network_mode: service:tailscale
+    depends_on:
+      - tailscale
     restart: unless-stopped
 
   tailscale:
@@ -27,17 +30,14 @@ services:
       - ts-state:/var/lib/tailscale
     environment:
       - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=true
+      - TS_HOSTNAME=arcane-agent-racknerd
       - TS_EXTRA_ARGS=--ssh=false --accept-dns=true
-      - TS_USERSPACE=false
+      - TS_OUTBOUND_HTTP_PROXY_LISTEN=0.0.0.0:1055
     env_file:
       - .env
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    devices:
-      - /dev/net/tun:/dev/net/tun
-    hostname: arcane-agent-racknerd
 
 volumes:
   ts-state:
+
