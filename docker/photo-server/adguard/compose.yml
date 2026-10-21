@@ -14,7 +14,10 @@ services:
       - '0.0.0.0:53:53/tcp'
       - '0.0.0.0:53:53/udp'
     networks:
-      - proxy
+      proxy:
+      wg:
+        ipv4_address: 10.42.42.43
+        ipv6_address: fdcc:ad94:bacf:61a3::2b
     restart: unless-stopped
     labels:
       - traefik.enable=true
@@ -42,3 +45,6 @@ networks:
     external: true
     enable_ipv4: true
     enable_ipv6: true
+  wg:
+    name: wg
+    external: true
