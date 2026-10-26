@@ -2,7 +2,7 @@
 name: unifi-mcp
 services:
   unifi-mcp:
-    image: ghcr.io/enuno/unifi-mcp-server:0.6.1
+    image: ghcr.io/enuno/unifi-mcp-server:0.6.4
     container_name: unifi-mcp
     environment:
       UNIFI_API_TYPE: local
