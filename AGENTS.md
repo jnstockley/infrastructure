@@ -1,15 +1,46 @@
 # Repository Guidelines
 
+## Required Documentation Review — Every Change
+
+**A task is not complete until documentation has been reviewed and any
+needed updates are included in the same change.** This requirement applies
+to every AI agent working anywhere in this repository, including automated
+dependency changes and follow-up edits. Do not defer documentation to a
+separate task or PR.
+
+Before editing, read the nearest section/host/provider `README.md` and
+[docs/documentation.md](docs/documentation.md). Before reporting completion:
+
+1. Review the docs for every changed area, including relevant parent
+   overviews, runbooks, inventories, examples, and Mermaid diagrams.
+2. Update all descriptions affected by added, changed, moved, or removed
+   configuration. Check dependencies, input names, networking, storage,
+   deployment, validation, and recovery steps where applicable.
+3. Add a linked README for every new major section, Docker host, or
+   OpenTofu root. Update indexes and links when moving or removing one.
+4. Check Markdown formatting, relative links, and diagram relationships
+   against the final implementation. Never copy secret values into docs.
+5. In the final handoff or PR, list documentation updated and validation
+   performed. If no documentation edit is needed, explicitly name the
+   documents reviewed and explain why they remain accurate.
+
+Use the change-to-document mapping and completion checklist in
+[docs/documentation.md](docs/documentation.md). A passing code test or lint
+job does not replace this required review.
+
 ## Project Structure & Module Organization
 
 `docker/` contains deployable Docker Compose stacks grouped by host
 (`photo-server/`, `racknerd/`, `synology/`), usually one service per
-directory with a `compose.yml` and occasional `.env.example`. `tf/` holds
+directory with a `compose.yml` and occasional `sample.env`. `tf/` holds
 Terraform environment inputs and related notes; keep provider-specific
 files inside their existing subdirectories. `scripts/` contains CI and ops
 helpers such as `diffs.sh` and `lint.sh`. `tests/` contains the Python
-compatibility checks for Compose images. `nix/` stores machine-specific Nix
-configurations, and `trivy/` contains security scan configuration.
+compatibility checks for Compose images. `services/` holds host systemd
+units, `docs/` indexes runbooks, and `trivy/` contains security scan
+configuration. `.github/` contains workflow
+and dependency-update configuration. There is currently no `nix/` tree,
+although CI retains a Nix path filter and lint job.
 
 ## Build, Test, and Development Commands
 
@@ -54,6 +85,6 @@ screenshots only when UI-facing services are changed.
 ## Security & Configuration Tips
 
 Do not commit live secrets or generated `.env` files; use the existing
-`.env.example` pattern and Infisical-backed CI secrets. Treat
+`sample.env` pattern and Infisical-backed CI secrets. Treat
 `terraform.tfvars` as environment-specific inputs and review Trivy
 findings before merging.

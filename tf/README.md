@@ -1,18 +1,126 @@
-# Providers
+# OpenTofu infrastructure
 
-- AdGuard Home
-- Cloudflare
-- Proxmox
-- Unifi (TODO)
-- Authentik (TODO)
-- Uptime Kuma (TODO)
-- Home Assistant
+[Repository overview](../README.md)
 
-## To-Do
+This directory contains independent OpenTofu root configurations, mostly
+in `.tofu` files. Each provider directory has its own HTTP backend and
+provider credentials. These are separate states, not child modules in a
+single root configuration. Use the version pinned in
+[.opentofu-version](.opentofu-version); provider constraints live in each
+`provider.tofu` and dependency selections in `.terraform.lock.hcl`.
 
-- [ ] Gitea
-- [ ] GitLab
-- [ ] GitHub?
-- [ ] Tailscale
-- [ ] PostgreSQL
-- [ ] Nextcloud
+## Provider areas
+
+| Root | Managed configuration |
+| --- | --- |
+| [AdGuard](adguard/README.md) | DNS server settings, clients, local rewrites, and filtering rules |
+| [Authentik](authentik/README.md) | Users, groups, applications, OAuth/proxy providers, and outpost |
+| [Better Stack](better-stack/README.md) | External uptime checks and local-monitor heartbeat |
+| [Cloudflare](cloudflare/README.md) | DNS, dynamic address lookups, tunnels, and Zero Trust |
+| [Databasus](databasus/README.md) | Backup workspace, local storage, and webhook notifier |
+| [Forgejo](forgejo/README.md) | User accounts and mirrored repositories |
+| [Infisical](infisical/README.md) | Secret-manager projects, environments, identities, and OIDC grants |
+| [Proxmox](proxmox/README.md) | Debian, Windows, and Home Assistant virtual machines |
+| [Tailscale](tailscale/README.md) | Tailnet access policy and Arcane device tags |
+| [UniFi](unifi/README.md) | Networks, Wi-Fi, firewall zones/policies, VPN, and forwarding |
+| [Uptime Kuma](uptime-kuma/README.md) | Local/public monitoring, notifications, groups, and maintenance |
+
+A provider configuration does not install its backing application. Docker
+services, API endpoints, initial credentials, and state access must already
+exist where required. There is no separate Nix tree or Home Assistant
+provider root in the current checkout; Home Assistant VM configuration is
+under Proxmox.
+
+## State relationships
+
+```mermaid
+flowchart LR
+    CF[Cloudflare] -->|outputs read by| AD[AdGuard]
+    CF --> AU[Authentik]
+    AD --> AU
+    AU -->|OAuth outputs read by| CF
+    CF --> BS[Better Stack]
+    CF --> FJ[Forgejo]
+    CF --> IN[Infisical]
+    AD --> PX[Proxmox]
+    AD --> UF[UniFi]
+    CF --> UK[Uptime Kuma]
+    AD --> UK
+    BS --> UK
+    CF --> DA[Databasus]
+    AD --> DA
+    TS[Tailscale: independent state]
+```
+
+Every arrow points from a state whose outputs are read to its consumer.
+This is **not an apply-order diagram**: Cloudflare and Authentik read each
+other's state, and AdGuard also participates through their dependencies.
+A fresh installation needs an explicit bootstrap plan and existing state
+outputs; applying all roots alphabetically will not resolve the cycle.
+Remote-state reads use the GitLab HTTP endpoints in `provider.tofu`.
+Changing an output requires reviewing all consumers, even if their files
+did not change and their CI jobs would therefore not run.
+
+## Local workflow
+
+Run format checks from the repository root:
+
+```bash
+tofu fmt -check -diff -recursive tf/
+```
+
+For a single root, first provision `TF_ADDRESS`, `TF_USERNAME`, and
+`TF_PASSWORD` for that root's HTTP state backend. Set the declared inputs
+as `TF_VAR_<variable_name>` through the approved secret mechanism. Most
+roots also need `TF_VAR_gitlab_username` and
+`TF_VAR_gitlab_access_token` to read other states; backend credentials do
+not automatically populate input variables.
+
+Then work inside that root, for example:
+
+```bash
+cd tf/adguard
+bash ../init.sh
+tofu validate
+tofu plan -out=tfplan
+```
+
+[init.sh](init.sh) configures the HTTP address and `/lock` endpoints,
+POST/DELETE locking, and a five-second retry wait. It uses `-reconfigure`
+and `-upgrade`, so initialization can update provider selections; review
+lockfile changes. Do not run it with missing variables: its defaults are
+placeholder strings. [install.sh](install.sh) downloads and runs the
+OpenTofu installer; it is separate from initialization.
+
+`tofu plan` reads live APIs and remote states and can place sensitive data
+in the saved plan. Keep generated plans, state, `.terraform/`, and secret
+inputs out of commits. Inspect the plan and apply it only as part of an
+authorized rollout. Restore state or infrastructure using an explicit
+recovery procedure; reverting HCL alone does not restore deleted data.
+
+## Continuous integration
+
+[tf-state.yml](../.github/workflows/tf-state.yml) detects changed roots,
+checks formatting, retrieves each environment's secrets from Infisical,
+initializes, validates, and plans. It applies saved plans on pushes to
+`main`; PR jobs plan without applying. Provider jobs serialize by root,
+but do not order themselves by remote-state dependencies.
+
+Current coverage exceptions:
+
+- Databasus has no change filter or provider job, and no matching
+  OpenTofu Infisical environment/OIDC subject in the checked-in resources.
+- The Tailscale filter matches `tf/tailcale/**`, rather than
+  `tf/tailscale/**`. A Tailscale-only change can miss its job. Changes to
+  the shared version file or workflow still match that filter.
+- Changes to a provider README are within `tf/<provider>/**` filters and
+  can trigger that provider's plan, and its apply job on a push to `main`.
+- Proxmox, UniFi, and Uptime Kuma jobs set up WireGuard for private API
+  access. Other local endpoints still require reachable DNS and routing.
+
+See [the automation guide](../.github/README.md) for the full trigger map.
+
+**Maintenance:** update the provider index, state diagram, command
+prerequisites, and coverage notes whenever their sources change. Update
+the affected provider README and output consumers in the same change,
+following [the required checklist](../docs/documentation.md).
