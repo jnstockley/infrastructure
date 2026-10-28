@@ -13,6 +13,7 @@ server and worker run in
 | [provider.tofu](provider.tofu) | Provider requirements, HTTP backend, inputs, and API configuration. |
 | [users.tofu](users.tofu) | Managed user accounts. |
 | [groups.tofu](groups.tofu) | Managed identity groups. |
+| [defaults.tofu](defaults.tofu) | Read-only lookups for provider authorization/invalidation flows, standard OAuth scopes, and the existing signing certificate. |
 | [applications.tofu](applications.tofu) | Applications, OAuth2 and proxy providers, policy bindings, scope mappings, and exported client settings. |
 | [outpout.tofu](outpout.tofu) | Outpost definition; the filename is intentionally shown as it exists. |
 
@@ -41,6 +42,12 @@ Review redirect URIs, provider URLs, policy bindings, and the corresponding
 Traefik routes together. Verify an affected sign-in flow after an
 authorized change. Updating a provider in OpenTofu does not automatically
 refresh host-local `.env` values used by application containers.
+
+Provider defaults are selected by flow slug, scope managed name, and
+certificate name instead of installation-specific UUIDs. Certificate and
+private-key retrieval are disabled for the signing-key lookup; only its
+ID is needed. Custom mappings such as the Beszel email scope remain
+managed resources. wg-easy callback URLs use the AdGuard local suffix.
 
 ## Validation and maintenance
 

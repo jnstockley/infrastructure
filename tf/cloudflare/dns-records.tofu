@@ -40,7 +40,7 @@ resource "cloudflare_dns_record" "simplelogin" {
 resource "cloudflare_dns_record" "simplelogin-mx" {
   zone_id  = var.cloudflare_zone_id
   content  = cloudflare_dns_record.simplelogin.name
-  name     = "mail.jstockley.com"
+  name     = cloudflare_dns_record.simplelogin.name
   ttl      = 300
   type     = "MX"
   priority = 10
@@ -49,7 +49,7 @@ resource "cloudflare_dns_record" "simplelogin-mx" {
 resource "cloudflare_dns_record" "simplelogin-txt" {
   zone_id = var.cloudflare_zone_id
   content = "v=spf1 mx ~all"
-  name    = "mail.jstockley.com"
+  name    = cloudflare_dns_record.simplelogin.name
   ttl     = 1
   type    = "TXT"
   proxied = false

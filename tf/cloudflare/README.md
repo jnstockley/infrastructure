@@ -40,10 +40,17 @@ separate bootstrap procedure. Address lookups use the custom API and its
 API key, so a plan also depends on that API being reachable.
 
 DNS outputs are consumed by AdGuard, Authentik, Better Stack, Forgejo,
-Infisical, Uptime Kuma, and Databasus. Review those consumers when renaming
+Infisical, and Uptime Kuma. Review those consumers when renaming
 or removing outputs. Tunnel configuration here must agree with the
 [connector stack](../../docker/racknerd/cloudflared/compose.yml) and its
 host-local credentials.
+
+The SimpleLogin MX and TXT records reuse the managed mail A record's name.
+The dynamic-address API base URL remains explicit: deriving it from the
+API DNS record would create a cycle through the VPN address lookup. The
+[October 2026 audit](../README.md#reference-and-drift-audit) records
+existing DNS-comment and Access-policy differences that a full plan can
+include alongside otherwise unchanged mail records.
 
 ## API token permissions
 

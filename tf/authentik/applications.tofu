@@ -29,14 +29,14 @@ resource "authentik_provider_oauth2" "cloudflare" {
   }]
   name = "Cloudflare"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
   client_id          = "Y5eqZC2y7N2XMuoTjBApYtbNnUH2h0xPxPgNfcrJ"
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
-  signing_key        = "da130ba5-244d-41c9-8982-c37e23beac27"
+  authorization_flow = data.authentik_flow.provider_authorization.id
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
+  signing_key        = data.authentik_certificate_key_pair.signing.id
   sub_mode           = "user_username"
   grant_types = [
     "authorization_code",
@@ -78,16 +78,16 @@ resource "authentik_provider_oauth2" "homeassistant" {
 
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "L1MWdx5EC0IxFSXU87wBphPsBuMpJp6CUmIe8w5K"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Home Assistant"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -116,16 +116,16 @@ resource "authentik_provider_oauth2" "airflow" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.airflow_dns_record_name}/auth/oauth-authorized/authentik"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "XWSMEaXaUZtYUOBmzLTPVWQ5jB7WVmB54GE65IAL"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Airflow"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -154,16 +154,16 @@ resource "authentik_provider_oauth2" "airflow-internal" {
       url               = "https://airflow.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/oauth-authorized/authentik"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "DrI2FN7eij5c5ui5k8SkgXBRRjYJfbEDKlPZji2w"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Airflow (Internal)"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -192,16 +192,16 @@ resource "authentik_provider_oauth2" "airflow-dev" {
       url               = "http://localhost:8080/auth/oauth-authorized/authentik"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "1QLST1WJaaNbk7r9xGHv5spelxyIpvB0RArKjxn5"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Airflow (Dev)"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -230,16 +230,16 @@ resource "authentik_provider_oauth2" "forgejo" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.forgejo_dns_record_name}/user/oauth2/Authentik/callback"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "aFPmalIM8sOPGEYZbsaTQ2ZRpqtFEZIuHesZeMhY"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Forgejo"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -268,16 +268,16 @@ resource "authentik_provider_oauth2" "meta-mcp" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.mcp_dns_record_name}/api/auth/oauth2/callback/oidc"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "W601Omw1oHifRHHVSbcFutVs4FOallpbAP9CZRZw"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "MetaMCP"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -306,16 +306,16 @@ resource "authentik_provider_oauth2" "nextcloud" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}/apps/user_oidc/code"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "MFheXhPNBKB4tQEvY4xhszAZ6VxlhK9PjKMYR7xX"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Nextcloud"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -344,16 +344,16 @@ resource "authentik_provider_oauth2" "paperless" {
       url               = "https://paperless.${data.terraform_remote_state.adguard.outputs.local_wildcard}/accounts/oidc/authentik/login/callback/"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "CWSg33B30WeVvV9UuXIJpuC2QcDKQeUOPQVgNZfo"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Paperless"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -387,16 +387,16 @@ resource "authentik_provider_oauth2" "synology" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.synology_dns_record_name}"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "OnKBwOvBqFGRr0HkFbHk01aA7pq98RuQ8Ypu7HG2"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Synology"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -425,16 +425,16 @@ resource "authentik_provider_oauth2" "tailscale" {
       url               = "https://login.tailscale.com/a/oauth_response"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "LJIUFWKbWnvZ33AMkMoYcAHYJ7tfy2NM9ojLSwxR"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Tasilcale"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   #sub_mode    = "user_username" # TODO Re-enable at some point
   grant_types = [
     "authorization_code",
@@ -463,16 +463,16 @@ resource "authentik_provider_oauth2" "proxmox" {
       url               = "https://proxmox.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "NveGGE53TORdj3GMiIWfCEL01MFeR4sCPDWFwwiU"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Proxmox"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -501,16 +501,16 @@ resource "authentik_provider_oauth2" "pg-admin-local" {
       url               = "https://pgadmin.${data.terraform_remote_state.adguard.outputs.local_wildcard}/oauth2/authorize"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "akBCvqkKPR9qkvj7thfk9Y8fVorDzId3dl0gqb8J"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "PgAdmin (Local)"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -539,16 +539,16 @@ resource "authentik_provider_oauth2" "pg-admin-external" {
       url               = "https://${data.terraform_remote_state.cloudflare.outputs.pgadmin_dns_record_name}/oauth2/authorize"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "PwmmIHTfK6C7ihje2o7PqM6aFEgbe5QL9N82coCa"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "PgAdmin (External)"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -588,18 +588,18 @@ resource "authentik_provider_oauth2" "beszel" {
       url               = "https://stats.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/oauth2-redirect"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "AFIHnE8JkYQUVFrYep8aIoCMgbFA4qqgtGeKddw6"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Beszel"
   property_mappings = [
     # OpenID scope
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    data.authentik_property_mapping_provider_scope.openid.id,
     authentik_property_mapping_provider_scope.beszel_email.id,
     # Profile scope
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -625,28 +625,28 @@ resource "authentik_provider_oauth2" "wg_easy" {
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://wg.local.jstockley.com/api/auth/oidc/callback"
+      url               = "https://wg.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/auth/oidc/callback"
     },
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://wg.local.jstockley.com/api/auth/oidc/link"
+      url               = "https://wg.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/auth/oidc/link"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_type        = "confidential"
   client_id          = "1AZvHSHwm3HzOnTThq7LPkcBz7ADfmkNEy5S7OtW"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "wg-easy"
   property_mappings = [
     # OpenID scope
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
+    data.authentik_property_mapping_provider_scope.openid.id,
     # Email scope includes email_verified, matching Beszel's mapping.
     authentik_property_mapping_provider_scope.beszel_email.id,
     # Profile scope
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -668,8 +668,8 @@ resource "authentik_policy_binding" "wg_easy" {
 
 resource "authentik_provider_proxy" "open-speed-test-local" {
   access_token_validity        = "minutes=5"
-  authorization_flow           = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  invalidation_flow            = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  authorization_flow           = data.authentik_flow.provider_authorization.id
+  invalidation_flow            = data.authentik_flow.provider_invalidation.id
   name                         = "OpenSpeed Test (Local)"
   external_host                = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   internal_host                = "http://openspeedtest:3000"
@@ -687,8 +687,8 @@ resource "authentik_application" "open-speed-test-local" {
 
 resource "authentik_provider_proxy" "open-speed-test" {
   access_token_validity        = "minutes=5"
-  authorization_flow           = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  invalidation_flow            = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  authorization_flow           = data.authentik_flow.provider_authorization.id
+  invalidation_flow            = data.authentik_flow.provider_invalidation.id
   name                         = "OpenSpeed Test"
   external_host                = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
   internal_host                = "http://openspeedtest:3000"
@@ -718,8 +718,8 @@ resource "authentik_policy_binding" "open-speed-test" {
 
 resource "authentik_provider_proxy" "traefik-local" {
   access_token_validity        = "minutes=5"
-  authorization_flow           = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  invalidation_flow            = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  authorization_flow           = data.authentik_flow.provider_authorization.id
+  invalidation_flow            = data.authentik_flow.provider_invalidation.id
   name                         = "Traefik (Local)"
   external_host                = "https://traefik.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   internal_host                = "http://traefik:8080"
@@ -770,16 +770,16 @@ resource "authentik_provider_oauth2" "immich" {
       url               = "app.immich:///oauth-callback*"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "AXFoL1rXApIZN9tYX84QtMiAREYfASTvPIyJqgYB"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Immich"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",
@@ -801,8 +801,8 @@ resource "authentik_policy_binding" "immich" {
 
 resource "authentik_provider_proxy" "unifi-toolkit" {
   access_token_validity        = "minutes=5"
-  authorization_flow           = "0baa88b2-76ec-49a3-9924-358bb13ba743"
-  invalidation_flow            = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  authorization_flow           = data.authentik_flow.provider_authorization.id
+  invalidation_flow            = data.authentik_flow.provider_invalidation.id
   name                         = "UniFi Toolkit"
   external_host                = "https://unifi-toolkit.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
   internal_host                = "http://unifi-toolkit:8000"
@@ -838,16 +838,16 @@ resource "authentik_provider_oauth2" "arcane" {
       url               = "arcane-mobile://oidc-callback"
     }
   ]
-  authorization_flow = "0baa88b2-76ec-49a3-9924-358bb13ba743"
+  authorization_flow = data.authentik_flow.provider_authorization.id
   client_id          = "vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0"
-  invalidation_flow  = "46110172-b91f-4d45-acd9-b559ac3994c8"
+  invalidation_flow  = data.authentik_flow.provider_invalidation.id
   name               = "Arcane"
   property_mappings = [
-    "4a51d5ca-8d95-4145-8fed-e400b9aac760",
-    "14f1df8f-0ab0-4337-ad1d-08f59fa63e95",
-    "4fe26886-06bc-4c83-8f21-beb85752491f",
+    data.authentik_property_mapping_provider_scope.openid.id,
+    data.authentik_property_mapping_provider_scope.email.id,
+    data.authentik_property_mapping_provider_scope.profile.id,
   ]
-  signing_key = "da130ba5-244d-41c9-8982-c37e23beac27"
+  signing_key = data.authentik_certificate_key_pair.signing.id
   sub_mode    = "user_username"
   grant_types = [
     "authorization_code",

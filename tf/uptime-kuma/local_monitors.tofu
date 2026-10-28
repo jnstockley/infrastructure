@@ -936,7 +936,7 @@ resource "uptimekuma_monitor_http" "proxmox-http" {
 resource "uptimekuma_monitor_http" "proxmox-ip-http" {
   provider     = uptimekuma.local
   name         = "WebPage (IP)"
-  url          = "https://192.168.1.18:8006"
+  url          = "https://${data.terraform_remote_state.adguard.outputs.host_records.proxmox_server.ipv4}:8006"
   cache_buster = true
   ignore_tls   = true
   interval     = 60
@@ -1020,7 +1020,7 @@ resource "uptimekuma_monitor_ping" "racknerd-ping" {
 resource "uptimekuma_monitor_ping" "backup-server-dns-ping" {
   provider    = uptimekuma.local
   name        = "DNS PING"
-  hostname    = "backup-server.internal.jstockley.com"
+  hostname    = data.terraform_remote_state.adguard.outputs.host_records.backup_server.hostname
   interval    = 60
   max_retries = 0
   active      = true
@@ -1030,7 +1030,7 @@ resource "uptimekuma_monitor_ping" "backup-server-dns-ping" {
 resource "uptimekuma_monitor_ping" "backup-server-ip-ping" {
   provider    = uptimekuma.local
   name        = "IP PING"
-  hostname    = "192.168.1.111"
+  hostname    = data.terraform_remote_state.adguard.outputs.host_records.backup_server.ipv4
   interval    = 60
   max_retries = 0
   active      = true

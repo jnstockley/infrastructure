@@ -75,11 +75,12 @@ tofu plan -out=tfplan
 Review the plan before an authorized apply. Follow the
 [shared workflow and CI caveats](../README.md) for state access and rollout.
 
-The import blocks use controller IDs for QoS groups and MAC addresses for
-clients. On a state where these four objects are not yet managed, the
-adoption plan should show four imports with no additions, changes, or
-deletions. Import blocks can remain after adoption; subsequent plans skip
-objects already present in state. The All APs lookup needs no import.
+The default QoS group and three clients are present in the remote state
+checked during the [October 2026 audit](../README.md#reference-and-drift-audit).
+This checkout has no import blocks. When adopting these objects into a
+different state, use controller IDs for QoS groups and MAC addresses for
+clients; verify an import-only plan before applying. The All APs lookup
+needs no import.
 Client deletion uses the provider's default forget behavior; review any
 future destroy plan before removing a managed reservation.
 

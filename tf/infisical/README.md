@@ -14,6 +14,7 @@ application itself runs in
 | [provider.tofu](provider.tofu) | Provider requirements, HTTP backend, inputs, and API configuration. |
 | [projects.tofu](projects.tofu) | Projects and environments, including infrastructure host/security environments and OpenTofu provider environments. |
 | [identities.tofu](identities.tofu) | Machine identities, OIDC issuer/audience/subject restrictions, and project access roles. |
+| [organization.tofu](organization.tofu) | Reads the authenticated machine identity's organization for identity ownership. |
 
 Provider sources: `Infisical/infisical`. See
 `provider.tofu` for version constraints and `.terraform.lock.hcl` for
@@ -36,6 +37,12 @@ Reads the secret service hostname from Cloudflare state. Provider access
 uses an existing Infisical client ID and client secret. This root manages
 access configuration, not all secret values. Running CI requires the
 secret service and its bootstrap credentials to exist first.
+
+All managed machine identities use the organization ID returned by
+`data.infisical_identity_details.current`. Authenticate with a machine
+identity in the intended organization; changing those credentials to an
+identity in another organization changes the organization selected by
+this root. Review that plan before applying.
 
 GitHub job `environment` names must match OIDC subject restrictions and
 Infisical environment slugs. Review workflow permissions, audience,
