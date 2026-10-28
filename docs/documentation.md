@@ -32,6 +32,11 @@ A change can cross several rows. For example, a new application can need a
 host inventory entry, DNS records, an Authentik application, monitoring,
 and updates to their respective guides.
 
+New or expanded Compose stacks must also follow the
+[stack integration checklist](../docker/README.md#stack-integration-checklist)
+for Uptime Kuma and applicable Authentik/OIDC configuration. These
+integration requirements apply even when no Markdown changes are needed.
+
 ## When documentation needs updating
 
 1. Read the relevant overview or runbook when the change affects its

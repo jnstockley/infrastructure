@@ -49,6 +49,14 @@ private-key retrieval are disabled for the signing-key lookup; only its
 ID is needed. Custom mappings such as the Beszel email scope remain
 managed resources. wg-easy callback URLs use the AdGuard local suffix.
 
+When adding a Compose application, follow the
+[OIDC integration checklist](../../docker/README.md#authentik-and-oidc).
+Verify generic OIDC client support and plugin/license requirements, then
+configure both the Authentik resources/access bindings and the application.
+Report missing inputs, UI provisioning, unsupported features, or explicit
+user deferrals rather than describing a provider definition alone as
+working sign-in.
+
 ## Validation and maintenance
 
 From this directory, after backend and credential provisioning:

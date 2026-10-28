@@ -18,6 +18,29 @@ and do not require a list of reviewed documents in every handoff.
 See [docs/documentation.md](docs/documentation.md) for scope and conventions.
 Never copy secrets into documentation.
 
+## New or changed Docker services
+
+When adding a Compose stack or adding/renaming services, implement the
+applicable monitoring and identity integrations in the same change:
+
+- Add Uptime Kuma container checks for every long-running container,
+  including workers and sidecars, using the correct host's Docker connection.
+- Add an HTTP check for each applicable web service. Prefer a JSON health
+  endpoint with an explicit healthy-value assertion, then a keyword health
+  check, then an HTTP status check or index-page check if no health endpoint
+  exists. Verify endpoint support for the deployed application version.
+- Check whether the application supports OIDC login through Authentik.
+  When supported and usable, add the provider, application, access policy
+  bindings, and application-side configuration. Check plugin/licensing and
+  secret requirements; respect explicit user deferrals.
+- Follow the [stack integration checklist](docker/README.md#stack-integration-checklist)
+  for groups, alerts, validation, exceptions, and completion criteria. If an
+  integration is blocked or inapplicable, explain why in the handoff;
+  do not silently omit it or claim it is configured.
+
+These are configuration requirements, not a requirement to edit Markdown
+for every new monitor or application.
+
 ## Project Structure & Module Organization
 
 `docker/` contains deployable Docker Compose stacks grouped by host

@@ -70,6 +70,14 @@ is outside this repository; a monitor is not evidence of a Compose stack.
 After an authorized change, check actual probe results and alert delivery.
 CI establishes WireGuard for local instance access.
 
+New or expanded Compose stacks must follow the
+[stack integration checklist](../../docker/README.md#stack-integration-checklist):
+cover every long-running container on the correct host and add an HTTP
+check for applicable web services. Prefer JSON health assertions, then
+keyword health checks, then status/index checks. Group notifications and
+maintenance coverage with the service; report unsupported or blocked
+checks in the handoff rather than silently omitting them.
+
 ## Validation and maintenance
 
 From this directory, after backend and credential provisioning:
