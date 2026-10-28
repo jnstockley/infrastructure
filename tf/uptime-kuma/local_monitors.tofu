@@ -504,6 +504,20 @@ resource "uptimekuma_monitor_docker" "wireguard-docker" {
   max_retries      = 0
 }
 
+# wg-easy has no dedicated HTTP health route; its Docker check covers the VPN interface.
+resource "uptimekuma_monitor_http" "wireguard-http" {
+  provider              = uptimekuma.local
+  name                  = "WebPage"
+  url                   = "https://wg.${data.terraform_remote_state.adguard.outputs.local_wildcard}/"
+  accepted_status_codes = ["200"]
+  cache_buster          = true
+  expiry_notification   = true
+  interval              = 60
+  active                = true
+  parent                = uptimekuma_monitor_group.wireguard-group.id
+  max_retries           = 0
+}
+
 resource "uptimekuma_monitor_http" "adguard-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
