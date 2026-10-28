@@ -26,7 +26,7 @@ resource "unifi_firewall_policy" "block_internet" {
   source = {
     zone_id         = data.unifi_firewall_zone.internal.id
     matching_target = "CLIENT"
-    client_macs     = ["cc:b5:d1:31:7c:fd", "80:5b:65:ca:29:0c"]
+    client_macs     = [unifi_client.air_quality_monitor.mac, unifi_client.lg_tv.mac]
   }
 
   destination = {
@@ -64,7 +64,7 @@ resource "unifi_firewall_policy" "iot_dns" {
   source = {
     zone_id            = unifi_firewall_zone.iot.id
     matching_target    = "CLIENT"
-    client_macs        = ["bc:24:11:c1:69:d7"]
+    client_macs        = [unifi_client.photo_server.mac]
     port               = "53"
     port_matching_type = "SPECIFIC"
   }

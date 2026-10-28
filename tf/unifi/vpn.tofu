@@ -13,7 +13,7 @@ resource "unifi_vpn_server" "wireguard_server_1" {
 
   dns = {
     servers = [
-      "192.168.1.135",
+      unifi_client.photo_server.fixed_ip,
       "1.1.1.1"
     ]
   }

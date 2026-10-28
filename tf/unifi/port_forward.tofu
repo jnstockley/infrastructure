@@ -1,7 +1,3 @@
-locals {
-  photo_server_ip = "192.168.1.135"
-}
-
 resource "unifi_port_forward" "http" {
   name     = "HTTP"
   protocol = "tcp_udp"
@@ -13,7 +9,7 @@ resource "unifi_port_forward" "http" {
   }
 
   forward = {
-    ip   = local.photo_server_ip
+    ip   = unifi_client.photo_server.fixed_ip
     port = "80,443"
   }
 }
@@ -29,7 +25,7 @@ resource "unifi_port_forward" "dot" {
   }
 
   forward = {
-    ip   = local.photo_server_ip
+    ip   = unifi_client.photo_server.fixed_ip
     port = "853"
   }
 }
@@ -46,7 +42,7 @@ resource "unifi_port_forward" "wireguard" {
   }
 
   forward = {
-    ip   = local.photo_server_ip
+    ip   = unifi_client.photo_server.fixed_ip
     port = "51822"
   }
 }
