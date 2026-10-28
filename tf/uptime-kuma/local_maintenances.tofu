@@ -61,7 +61,6 @@ resource "uptimekuma_maintenance_monitors" "router-reboot-maintenance-monitors" 
     uptimekuma_monitor_group.racknerd-group.id,
     uptimekuma_monitor_group.bitwarden-group.id,
     uptimekuma_monitor_group.home-assistant-group.id,
-    uptimekuma_monitor_group.minecraft-group.id,
     uptimekuma_monitor_group.pikvm-group.id,
     uptimekuma_monitor_group.immich-group.id,
     uptimekuma_monitor_group.unifi-group.id,
@@ -76,7 +75,6 @@ resource "uptimekuma_maintenance_monitors" "router-reboot-maintenance-monitors" 
     uptimekuma_monitor_group.proxmox-group.id,
     uptimekuma_monitor_group.authentik-group.id,
     uptimekuma_monitor_group.unifi-toolkit-group.id,
-    uptimekuma_monitor_group.openspeedtest-group.id,
     uptimekuma_monitor_group.synology-group.id
   ]
 }

@@ -73,11 +73,6 @@ resource "authentik_group" "wireguard-access" {
   is_superuser = false
 }
 
-resource "authentik_group" "open-speedtest-access" {
-  name         = "OpenSpeed Test Access"
-  is_superuser = false
-}
-
 resource "authentik_group" "traefik-local-access" {
   name         = "Traefik Access"
   is_superuser = false

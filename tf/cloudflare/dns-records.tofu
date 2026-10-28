@@ -217,15 +217,6 @@ resource "cloudflare_dns_record" "website_ipv6_4" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "mc" {
-  name    = "mc.jstockley.com"
-  ttl     = 1
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  content = cloudflare_dns_record.iowa-vpn.name
-  proxied = true
-}
-
 resource "cloudflare_dns_record" "mend" {
   name    = "mend.jstockley.com"
   ttl     = 1
@@ -237,15 +228,6 @@ resource "cloudflare_dns_record" "mend" {
 
 resource "cloudflare_dns_record" "nextcloud" {
   name    = "nextcloud.jstockley.com"
-  ttl     = 1
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  content = cloudflare_dns_record.iowa-vpn.name
-  proxied = true
-}
-
-resource "cloudflare_dns_record" "open-speedtest" {
-  name    = "speed.jstockley.com"
   ttl     = 1
   type    = "CNAME"
   zone_id = var.cloudflare_zone_id
@@ -287,15 +269,6 @@ resource "cloudflare_dns_record" "pikvm" {
   zone_id = var.cloudflare_zone_id
   content = cloudflare_dns_record.iowa-vpn.name
   proxied = true
-}
-
-resource "cloudflare_dns_record" "play" {
-  name    = "play.jstockley.com"
-  ttl     = 1
-  type    = "CNAME"
-  zone_id = var.cloudflare_zone_id
-  content = cloudflare_dns_record.iowa-vpn.name
-  proxied = false
 }
 
 resource "cloudflare_dns_record" "dkim" {
@@ -469,20 +442,12 @@ output "website_dns_record_name" {
   value = cloudflare_dns_record.website_ipv4_1.name
 }
 
-output "minecraft_dns_record_name" {
-  value = cloudflare_dns_record.mc.name
-}
-
 output "mend_dns_record_name" {
   value = cloudflare_dns_record.mend.name
 }
 
 output "nextcloud_dns_record_name" {
   value = cloudflare_dns_record.nextcloud.name
-}
-
-output "open_speedtest_dns_record_name" {
-  value = cloudflare_dns_record.open-speedtest.name
 }
 
 output "pgadmin_dns_record_name" {
@@ -499,10 +464,6 @@ output "photos_dns_record_name" {
 
 output "pikvm_dns_record_name" {
   value = cloudflare_dns_record.pikvm.name
-}
-
-output "play_dns_record_name" {
-  value = cloudflare_dns_record.play.name
 }
 
 output "secrets_dns_record_name" {

@@ -151,6 +151,18 @@ GPU hook script outside the provider schema, and Home Assistant state
 contains a stale unused-disk entry. These findings were not reconciled
 with live infrastructure by this audit.
 
+The subsequent Compose inventory review removes OpenSpeedTest and
+Minecraft/Crafty identity, DNS, Access, and monitoring resources, along
+with their memberships, maintenance references, and retired DNS outputs.
+The local WireGuard container monitor targets `wg-easy`; Racknerd retains
+its `wireguard` target. Airflow's development identity setup remains
+configured. These are configuration changes until an authorized apply;
+the earlier live-monitor counts above describe the pre-cleanup audit.
+Full cleanup plans completed for Authentik, Cloudflare, and Uptime Kuma:
+they propose seven, four, and seven deletions respectively, plus the
+related membership and monitor-target updates. Cloudflare still includes
+the four pre-existing updates described above. No cleanup was applied.
+
 **Maintenance:** update the provider index, state diagram, command
 prerequisites, and coverage notes whenever their sources change. Update
 the affected provider README and output consumers in the same change,

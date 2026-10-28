@@ -240,17 +240,6 @@ resource "uptimekuma_monitor_docker" "meta-mcp-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "minecraft-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "crafty"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.minecraft-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "nextcloud-apahce-docker" {
   provider         = uptimekuma.local
   name             = "Apache Container"
@@ -405,17 +394,6 @@ resource "uptimekuma_monitor_docker" "nextcloud-mastercontainer-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "openspeedtest-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "openspeedtest"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.openspeedtest-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "paperless-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -519,7 +497,7 @@ resource "uptimekuma_monitor_docker" "wireguard-docker" {
   provider         = uptimekuma.local
   name             = "Container"
   docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "wireguard"
+  docker_container = "wg-easy"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.wireguard-group.id
@@ -735,20 +713,6 @@ resource "uptimekuma_monitor_http_json_query" "meta-mcp-http" {
   max_retries         = 0
 }
 
-resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.minecraft_dns_record_name}/api/v2/crafty/check"
-  json_path           = "$.status"
-  expected_value      = "ok"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.minecraft-group.id
-  max_retries         = 0
-}
-
 resource "uptimekuma_monitor_http" "nextcloud-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
@@ -770,30 +734,6 @@ resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.nextcloud-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http" "openspeedtest-local-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage (Local)"
-  url                 = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.openspeedtest-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http" "openspeedtest-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.openspeedtest-group.id
   max_retries         = 0
 }
 

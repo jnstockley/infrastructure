@@ -128,16 +128,6 @@ resource "uptimekuma_monitor_group" "mend-group" {
   name = "Mend"
 }
 
-resource "uptimekuma_monitor_group" "minecraft-group" {
-  provider    = uptimekuma.local
-  interval    = 60
-  max_retries = 3
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-  name = "Minecraft"
-}
-
 resource "uptimekuma_monitor_group" "nextcloud-group" {
   provider    = uptimekuma.local
   interval    = 60
@@ -146,16 +136,6 @@ resource "uptimekuma_monitor_group" "nextcloud-group" {
     uptimekuma_notification_smtp.local-smtp-failover.id
   ]
   name = "Nextcloud"
-}
-
-resource "uptimekuma_monitor_group" "openspeedtest-group" {
-  provider    = uptimekuma.local
-  interval    = 60
-  max_retries = 3
-  notification_ids = [
-    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
-  ]
-  name = "OpenSpeedTest"
 }
 
 resource "uptimekuma_monitor_group" "paperless-group" {

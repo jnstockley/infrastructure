@@ -666,56 +666,6 @@ resource "authentik_policy_binding" "wg_easy" {
   order  = 0
 }
 
-resource "authentik_provider_proxy" "open-speed-test-local" {
-  access_token_validity        = "minutes=5"
-  authorization_flow           = data.authentik_flow.provider_authorization.id
-  invalidation_flow            = data.authentik_flow.provider_invalidation.id
-  name                         = "OpenSpeed Test (Local)"
-  external_host                = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
-  internal_host                = "http://openspeedtest:3000"
-  mode                         = "proxy"
-  internal_host_ssl_validation = false
-}
-
-resource "authentik_application" "open-speed-test-local" {
-  name              = "OpenSpeed Test (Local)"
-  slug              = "open-speed-test-local"
-  protocol_provider = authentik_provider_proxy.open-speed-test-local.id
-  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/openspeedtest.svg"
-  meta_launch_url   = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
-}
-
-resource "authentik_provider_proxy" "open-speed-test" {
-  access_token_validity        = "minutes=5"
-  authorization_flow           = data.authentik_flow.provider_authorization.id
-  invalidation_flow            = data.authentik_flow.provider_invalidation.id
-  name                         = "OpenSpeed Test"
-  external_host                = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
-  internal_host                = "http://openspeedtest:3000"
-  mode                         = "proxy"
-  internal_host_ssl_validation = false
-}
-
-resource "authentik_application" "open-speed-test" {
-  name              = "OpenSpeed Test"
-  slug              = "open-speed-test"
-  protocol_provider = authentik_provider_proxy.open-speed-test.id
-  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/openspeedtest.svg"
-  meta_launch_url   = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
-}
-
-resource "authentik_policy_binding" "open-speed-test-local" {
-  target = authentik_application.open-speed-test-local.uuid
-  group  = authentik_group.open-speedtest-access.id
-  order  = 0
-}
-
-resource "authentik_policy_binding" "open-speed-test" {
-  target = authentik_application.open-speed-test.uuid
-  group  = authentik_group.open-speedtest-access.id
-  order  = 0
-}
-
 resource "authentik_provider_proxy" "traefik-local" {
   access_token_validity        = "minutes=5"
   authorization_flow           = data.authentik_flow.provider_authorization.id
