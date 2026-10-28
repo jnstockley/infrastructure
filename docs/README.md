@@ -11,7 +11,7 @@ before applying them to a host.
 
 | Document | Purpose |
 | --- | --- |
-| [Documentation maintenance](documentation.md) | Required review and update process for every change |
+| [Documentation maintenance](documentation.md) | Documentation scope and writing conventions |
 | [UPS notes](ups.md) | Existing external reference for Proxmox UPS setup |
 | [Racknerd setup](../docker/racknerd/setup.md) | Debian, SSH, firewall, and rootless Docker setup |
 | [Photo server setup](../docker/photo-server/setup.md) | Disk mounts and host prerequisites |

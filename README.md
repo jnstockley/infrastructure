@@ -69,14 +69,14 @@ startup; it does not validate the full application. See
 [the testing guide](tests/README.md). For infrastructure changes, use the
 [OpenTofu workflow](tf/README.md) and review the plan before applying.
 
-## Required documentation maintenance
+## Documentation
 
-**Every change must include a documentation review. Update affected
-READMEs, runbooks, inventories, and diagrams in the same change.**
-[AGENTS.md](AGENTS.md) makes this a required completion step for AI agents;
-[the maintenance guide](docs/documentation.md) maps paths to documents and
-explains what to check. For changes with no documentation impact, record
-what was reviewed and why no edit was needed in the handoff or PR.
+Keep READMEs and runbooks focused on general operating guidance. Update
+Markdown when those instructions become inaccurate or a new major area
+needs an overview; routine configuration edits do not require a prose
+update. Keep change summaries and validation results in commits or PRs.
+See [AGENTS.md](AGENTS.md) and the
+[documentation guide](docs/documentation.md) for scope and conventions.
 
 Store secret values in the approved secret store or host-local environment
 files. Document variable names and provisioning steps, never credentials.

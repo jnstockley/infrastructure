@@ -2,15 +2,19 @@
 
 [Documentation index](README.md) · [Agent instructions](../AGENTS.md)
 
-Documentation is part of implementing a change. **Every change requires a
-documentation review before it is considered complete.** Update affected
-documents in the same commit or PR as the configuration or code they
-describe. This applies to humans and AI agents, including dependency
-updates, removals, and changes made during a review.
+Markdown provides general guidance for maintaining the repository. It is
+not a changelog, task log, or record of every configuration edit.
 
-## Find the documents to review
+Do not update documentation for every change. Update it when architecture,
+setup, dependencies, validation, deployment, or recovery guidance becomes
+inaccurate, or when a new major section needs an overview. Routine resource
+additions, monitor changes, version bumps, audit findings, and plan results
+usually belong in configuration, commit messages, or the handoff/PR rather
+than README prose. Keep needed documentation updates in the same change.
 
-| Changed area | Required review |
+## Where general guidance lives
+
+| Changed area | Relevant guidance |
 | --- | --- |
 | `docker/<host>/<service>/` | Host README, Docker overview, and service runbooks; review DNS, identity, and monitors if affected |
 | Docker host or stack added/removed | Host inventory, Docker host index, and root README if the host changes |
@@ -28,25 +32,18 @@ A change can cross several rows. For example, a new application can need a
 host inventory entry, DNS records, an Authentik application, monitoring,
 and updates to their respective guides.
 
-## Completion checklist
+## When documentation needs updating
 
-1. Read the nearest README and applicable runbooks before editing.
-2. Compare the implementation with descriptions of purpose, resources,
-   dependencies, environment variables, ports, networks, storage, startup,
-   validation, deployment, and recovery.
-3. Update every affected description, table, example, link, and diagram.
-   Add a README for a new major section, Docker host, or OpenTofu root.
-   Remove obsolete entries when removing resources.
-4. Validate Markdown and relative links. Check diagram nodes and arrows
-   against actual configuration. An arrow must have a stated meaning.
-5. Include documentation changes and validation in the handoff or PR. If
-   no text needs changing, name the documents reviewed and explain why
-   their descriptions remain accurate.
+1. Read the relevant overview or runbook when the change affects its
+   instructions or architecture.
+2. Correct affected guidance, links, examples, and diagrams. Add a linked
+   README for a new major section, host, or OpenTofu root.
+3. Validate Markdown and relative links for documents that changed. Keep
+   diagram relationships consistent with the configuration.
 
-An image version update can require no prose edits when documentation
-links to the Compose source instead of repeating versions. It still
-requires reviewing changed behavior, requirements, and upgrade steps.
-Do not make meaningless edits merely to mark a document as reviewed.
+Do not add prose solely to mark a document as reviewed or to describe the
+latest implementation. There is no requirement to edit Markdown or list
+reviewed documents in every handoff.
 
 ## Writing and diagram conventions
 
@@ -65,7 +62,7 @@ Do not make meaningless edits merely to mark a document as reviewed.
   source files instead of duplicating version strings in prose.
 
 The root AGENTS.md is the entry point for agent instructions. This guide
-provides the detailed checklist; instructions require agents to read it.
+provides documentation scope and writing conventions.
 These are repository requirements, not a technical guarantee that every
 external tool or agent will load or obey them. Current Markdown CI checks
 formatting; it cannot establish whether prose matches the implementation.

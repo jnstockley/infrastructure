@@ -1,32 +1,22 @@
 # Repository Guidelines
 
-## Required Documentation Review — Every Change
+## Documentation scope
 
-**A task is not complete until documentation has been reviewed and any
-needed updates are included in the same change.** This requirement applies
-to every AI agent working anywhere in this repository, including automated
-dependency changes and follow-up edits. Do not defer documentation to a
-separate task or PR.
+Keep Markdown focused on general architecture, setup, dependencies,
+validation, deployment, and recovery guidance. Do not update Markdown for
+every code or configuration change, or append per-change summaries,
+monitor details, audit results, plan counts, or task history to READMEs.
+Keep implementation details in the configuration and report change-specific
+validation in the handoff or PR.
 
-Before editing, read the nearest section/host/provider `README.md` and
-[docs/documentation.md](docs/documentation.md). Before reporting completion:
+Update documentation only when a change makes existing guidance inaccurate
+or introduces a major section that needs an overview. When an update is
+needed, include it in the same change and check relevant links and diagrams.
+Do not make documentation edits solely to record that a change happened,
+and do not require a list of reviewed documents in every handoff.
 
-1. Review the docs for every changed area, including relevant parent
-   overviews, runbooks, inventories, examples, and Mermaid diagrams.
-2. Update all descriptions affected by added, changed, moved, or removed
-   configuration. Check dependencies, input names, networking, storage,
-   deployment, validation, and recovery steps where applicable.
-3. Add a linked README for every new major section, Docker host, or
-   OpenTofu root. Update indexes and links when moving or removing one.
-4. Check Markdown formatting, relative links, and diagram relationships
-   against the final implementation. Never copy secret values into docs.
-5. In the final handoff or PR, list documentation updated and validation
-   performed. If no documentation edit is needed, explicitly name the
-   documents reviewed and explain why they remain accurate.
-
-Use the change-to-document mapping and completion checklist in
-[docs/documentation.md](docs/documentation.md). A passing code test or lint
-job does not replace this required review.
+See [docs/documentation.md](docs/documentation.md) for scope and conventions.
+Never copy secrets into documentation.
 
 ## Project Structure & Module Organization
 
