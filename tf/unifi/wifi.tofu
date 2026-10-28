@@ -12,9 +12,9 @@ resource "unifi_wlan" "wifi" {
 
   network_id = unifi_network.default.id
   ap_group = {
-    ids = ["692ce189a40eb661dbe8c467"]
+    ids = [data.unifi_ap_group.all.id]
   }
-  user_group_id = "692ce188a40eb661dbe8c462"
+  user_group_id = unifi_client_qos_rate.default.id
 
   bss_transition            = true
   group_rekey               = 0
@@ -39,9 +39,9 @@ resource "unifi_wlan" "iot" {
 
   network_id = unifi_network.iot.id
   ap_group = {
-    ids = ["692ce189a40eb661dbe8c467"]
+    ids = [data.unifi_ap_group.all.id]
   }
-  user_group_id = "692ce188a40eb661dbe8c462"
+  user_group_id = unifi_client_qos_rate.default.id
 
   bss_transition            = false
   group_rekey               = 0

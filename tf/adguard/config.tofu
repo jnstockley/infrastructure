@@ -40,8 +40,14 @@ resource "adguard_config" "config" {
 
   tls = {
     certificate_chain = ""
-    enabled           = true
+    enabled           = false
     private_key       = ""
     server_name       = data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name
+  }
+
+  lifecycle {
+    # The API returns [] for an unset allowlist; provider validation rejects [].
+    # Keep managing disallowed_clients while suppressing this normalization diff.
+    ignore_changes = [dns.allowed_clients]
   }
 }

@@ -47,10 +47,21 @@ Also supply the backend variables described in the
 [cloudflare](../cloudflare/README.md), [adguard](../adguard/README.md),
 [better-stack](../better-stack/README.md).
 
-Cloudflare supplies public hostnames; AdGuard supplies the local suffix.
+Cloudflare supplies public hostnames; AdGuard supplies the local suffix
+and `host_records` for the backup server DNS/IP probes and Proxmox IP probe.
 Better Stack supplies the local heartbeat URL. Each instance has separate
 credentials and Nextcloud Talk secrets; SMTP and conversation inputs are
 also required. Keep provider aliases explicit when adding resources.
+
+Until AdGuard publishes `host_records`, the remote-state data source uses
+temporary defaults matching the previous monitor targets. Once published,
+the real output takes precedence. Remove those compatibility defaults
+after a reviewed AdGuard rollout; changing configuration alone does not
+publish a remote-state output.
+The [October 2026 audit](../README.md#reference-and-drift-audit)
+describes the temporary output preview used to verify these references
+without applying either root. The defaults also allow ordinary planning
+against the current remote state without racing the AdGuard job.
 
 When a service is renamed or removed, review both monitor files, groups,
 notification associations, maintenance links, Docker container names, and
@@ -58,6 +69,14 @@ any JSON/content assertions. Monitoring includes endpoints whose deployment
 is outside this repository; a monitor is not evidence of a Compose stack.
 After an authorized change, check actual probe results and alert delivery.
 CI establishes WireGuard for local instance access.
+
+New or expanded Compose stacks must follow the
+[stack integration checklist](../../docker/README.md#stack-integration-checklist):
+cover every long-running container on the correct host and add an HTTP
+check for applicable web services. Prefer JSON health assertions, then
+keyword health checks, then status/index checks. Group notifications and
+maintenance coverage with the service; report unsupported or blocked
+checks in the handoff rather than silently omitting them.
 
 ## Validation and maintenance
 

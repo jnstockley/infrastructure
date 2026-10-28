@@ -32,6 +32,6 @@ resource "adguard_client" "family-room-apple-tv" {
 
 resource "adguard_client" "home-assistant" {
   name = "Home Assistant"
-  ids  = ["192.168.1.119", "home-assistant"]
+  ids  = [adguard_rewrite.home_server_ipv4.answer, "home-assistant"]
   tags = ["os_linux"]
 }

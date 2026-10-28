@@ -106,28 +106,6 @@ resource "cloudflare_zero_trust_access_application" "pikvm" {
   ]
 }
 
-resource "cloudflare_zero_trust_access_application" "minecraft" {
-  allowed_idps = [
-    cloudflare_zero_trust_access_identity_provider.authentik.id
-  ]
-  auto_redirect_to_identity = false
-  enable_binding_cookie     = false
-  options_preflight_bypass  = false
-  domain                    = cloudflare_dns_record.mc.name
-  type                      = "self_hosted"
-  account_id                = var.cloudflare_account_id
-  session_duration          = "15m"
-  name                      = "Minecraft"
-  policies = [
-    {
-      id = cloudflare_zero_trust_access_policy.internal_ips.id
-    },
-    {
-      id = cloudflare_zero_trust_access_policy.external_ips.id
-    }
-  ]
-}
-
 resource "cloudflare_zero_trust_access_application" "pgadmin" {
   allowed_idps = [
     cloudflare_zero_trust_access_identity_provider.authentik.id

@@ -1,7 +1,7 @@
 resource "infisical_identity" "infrastructure-identity" {
   name   = "GitHub Infrastructure"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "infrastructure-oidc-auth" {
@@ -25,7 +25,7 @@ resource "infisical_project_identity" "infrastructure-project-identity" {
 resource "infisical_identity" "python-starter-identity" {
   name   = "GitHub python-starter"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "python-starter-oidc-auth" {
@@ -49,7 +49,7 @@ resource "infisical_project_identity" "python-starter-project-identity" {
 resource "infisical_identity" "airflow-identity" {
   name   = "GitHub airflow"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "airflow-oidc-auth" {
@@ -73,7 +73,7 @@ resource "infisical_project_identity" "airflow-project-identity" {
 resource "infisical_identity" "api-identity" {
   name   = "GitHub api"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "api-oidc-auth" {
@@ -97,7 +97,7 @@ resource "infisical_project_identity" "api-project-identity" {
 resource "infisical_identity" "bsn-identity" {
   name   = "GitHub bsn"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "bsn-oidc-auth" {
@@ -121,7 +121,7 @@ resource "infisical_project_identity" "bsn-project-identity" {
 resource "infisical_identity" "email-to-calendar-identity" {
   name   = "GitHub email-to-calendar"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "email-to-calendar-oidc-auth" {
@@ -145,7 +145,7 @@ resource "infisical_project_identity" "email-to-calendar-project-identity" {
 resource "infisical_identity" "poetry-identity" {
   name   = "GitHub poetry"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "poetry-oidc-auth" {
@@ -169,7 +169,7 @@ resource "infisical_project_identity" "poetry-project-identity" {
 resource "infisical_identity" "secret-santa-identity" {
   name   = "GitHub secret-santa"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "secret-santa-oidc-auth" {
@@ -193,7 +193,7 @@ resource "infisical_project_identity" "secret-santa-project-identity" {
 resource "infisical_identity" "web-scraper-identity" {
   name   = "GitHub web-scraper"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "web-scraper-oidc-auth" {
@@ -217,7 +217,7 @@ resource "infisical_project_identity" "web-scraper-project-identity" {
 resource "infisical_identity" "govee-cloud-identity" {
   name   = "GitHub govee-cloud"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "govee-cloud-oidc-auth" {
@@ -241,7 +241,7 @@ resource "infisical_project_identity" "govee-cloud-project-identity" {
 resource "infisical_identity" "open-tofu-identity" {
   name   = "OpenTofu"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "open-tofu-oidc-auth" {
@@ -265,7 +265,7 @@ resource "infisical_project_identity" "open-tofu-project-identity" {
 resource "infisical_identity" "youtube-notify-identity" {
   name   = "GitHub youtube-notify"
   role   = "no-access"
-  org_id = "668742a7-11b2-484e-9e4e-684fcbbcb304"
+  org_id = data.infisical_identity_details.current.organization.id
 }
 
 resource "infisical_identity_oidc_auth" "youtube-notify-oidc-auth" {

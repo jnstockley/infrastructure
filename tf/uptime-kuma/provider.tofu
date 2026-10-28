@@ -24,6 +24,19 @@ data "terraform_remote_state" "cloudflare" {
 data "terraform_remote_state" "adguard" {
   backend = "http"
 
+  # Compatibility until AdGuard publishes host_records. Remove after rollout.
+  defaults = {
+    host_records = {
+      backup_server = {
+        hostname = "backup-server.internal.jstockley.com"
+        ipv4     = "192.168.1.111"
+      }
+      proxmox_server = {
+        ipv4 = "192.168.1.18"
+      }
+    }
+  }
+
   config = {
     address  = "https://gitlab.com/api/v4/projects/75895281/terraform/state/adguard"
     username = var.gitlab_username

@@ -13,7 +13,7 @@ server is defined in
 | [provider.tofu](provider.tofu) | Provider requirements, HTTP backend, inputs, and API configuration. |
 | [config.tofu](config.tofu) | Server-wide DNS settings. |
 | [clients.tofu](clients.tofu) | Known clients and their DNS/filtering behavior. |
-| [dns-rewrites.tofu](dns-rewrites.tofu) | Internal host records and local wildcard rewrites; exports `local_wildcard` without the wildcard prefix. |
+| [dns-rewrites.tofu](dns-rewrites.tofu) | Internal host records and local wildcard rewrites; exports `local_wildcard` and `host_records`. |
 | [rules.tofu](rules.tofu) | Custom filtering rules. |
 
 Provider sources: `gmichels/adguard`. See
@@ -34,9 +34,28 @@ Also supply the backend variables described in the
 [cloudflare](../cloudflare/README.md).
 
 The Cloudflare state supplies the AdGuard endpoint hostname. The exported
-`local_wildcard` feeds Authentik, Proxmox, UniFi, Uptime Kuma, and Databasus
+`local_wildcard` feeds Authentik, Proxmox, UniFi, and Uptime Kuma
 endpoint construction. Changing this suffix affects DNS and API access
 across several roots.
+
+`host_records` exports `home_server`, `photo_server`, `backup_server`, and
+`proxmox_server`, each with `hostname` and `ipv4` attributes. Uptime Kuma
+uses the backup server hostname/address and Proxmox address. Wildcard
+destinations reuse the photo server rewrite answers, and the Home
+Assistant client reuses the home server IPv4 answer.
+
+Publish the AdGuard output through a reviewed apply before removing Uptime
+Kuma's temporary remote-state defaults. An output-only change still needs
+an apply to become visible to consumers. See the
+[audit overview](../README.md#reference-and-drift-audit) for verification
+and rollout details.
+
+AdGuard-native TLS is disabled because Traefik terminates HTTPS and
+DNS-over-TLS, forwarding to AdGuard's HTTP and DNS ports. The configuration
+ignores changes only to `dns.allowed_clients`: the API reports an unset
+allowlist as `[]`, while the provider plans `null` and rejects an explicit
+empty list. This also stops detection of future allowlist changes. The
+`disallowed_clients` blocklist and other DNS settings remain managed.
 
 Check DNS resolution from a client using this server after an authorized
 change. Review wildcard IPv4/IPv6 destinations and individual rewrites

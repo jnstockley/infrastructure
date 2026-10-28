@@ -42,6 +42,17 @@ resource "uptimekuma_monitor_docker" "airflow-dag-processor-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "airflow-log-groomer-docker" {
+  provider         = uptimekuma.local
+  name             = "Log Groomer Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "airflow-log-groomer"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.airflow-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "airflow-scheduler-docker" {
   provider         = uptimekuma.local
   name             = "Scheduler Container"
@@ -58,6 +69,17 @@ resource "uptimekuma_monitor_docker" "arcane-docker" {
   name             = "Arcane Container"
   docker_host_id   = uptimekuma_docker_host.local_socket.id
   docker_container = "arcane"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.arcane-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "arcane-tailscale-docker" {
+  provider         = uptimekuma.local
+  name             = "Tailscale Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "ts-manager-host"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.arcane-group.id
@@ -240,17 +262,6 @@ resource "uptimekuma_monitor_docker" "meta-mcp-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "minecraft-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "crafty"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.minecraft-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "nextcloud-apahce-docker" {
   provider         = uptimekuma.local
   name             = "Apache Container"
@@ -405,17 +416,6 @@ resource "uptimekuma_monitor_docker" "nextcloud-mastercontainer-docker" {
   max_retries      = 0
 }
 
-resource "uptimekuma_monitor_docker" "openspeedtest-docker" {
-  provider         = uptimekuma.local
-  name             = "Container"
-  docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "openspeedtest"
-  interval         = 60
-  active           = true
-  parent           = uptimekuma_monitor_group.openspeedtest-group.id
-  max_retries      = 0
-}
-
 resource "uptimekuma_monitor_docker" "paperless-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -493,6 +493,17 @@ resource "uptimekuma_monitor_docker" "traefik-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "unifi-mcp-docker" {
+  provider         = uptimekuma.local
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "unifi-mcp"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.unifi-mcp-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "unifi-toolkit-docker" {
   provider         = uptimekuma.local
   name             = "Container"
@@ -519,11 +530,25 @@ resource "uptimekuma_monitor_docker" "wireguard-docker" {
   provider         = uptimekuma.local
   name             = "Container"
   docker_host_id   = uptimekuma_docker_host.local_socket.id
-  docker_container = "wireguard"
+  docker_container = "wg-easy"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.wireguard-group.id
   max_retries      = 0
+}
+
+# wg-easy has no dedicated HTTP health route; its Docker check covers the VPN interface.
+resource "uptimekuma_monitor_http" "wireguard-http" {
+  provider              = uptimekuma.local
+  name                  = "WebPage"
+  url                   = "https://wg.${data.terraform_remote_state.adguard.outputs.local_wildcard}/"
+  accepted_status_codes = ["200"]
+  cache_buster          = true
+  expiry_notification   = true
+  interval              = 60
+  active                = true
+  parent                = uptimekuma_monitor_group.wireguard-group.id
+  max_retries           = 0
 }
 
 resource "uptimekuma_monitor_http" "adguard-http" {
@@ -735,20 +760,6 @@ resource "uptimekuma_monitor_http_json_query" "meta-mcp-http" {
   max_retries         = 0
 }
 
-resource "uptimekuma_monitor_http_json_query" "minecraft-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.minecraft_dns_record_name}/api/v2/crafty/check"
-  json_path           = "$.status"
-  expected_value      = "ok"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.minecraft-group.id
-  max_retries         = 0
-}
-
 resource "uptimekuma_monitor_http" "nextcloud-http" {
   provider            = uptimekuma.local
   name                = "WebPage"
@@ -770,30 +781,6 @@ resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
   interval            = 60
   active              = true
   parent              = uptimekuma_monitor_group.nextcloud-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http" "openspeedtest-local-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage (Local)"
-  url                 = "https://speed.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.openspeedtest-group.id
-  max_retries         = 0
-}
-
-resource "uptimekuma_monitor_http" "openspeedtest-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage"
-  url                 = "https://${data.terraform_remote_state.cloudflare.outputs.open_speedtest_dns_record_name}"
-  cache_buster        = true
-  expiry_notification = true
-  interval            = 60
-  active              = true
-  parent              = uptimekuma_monitor_group.openspeedtest-group.id
   max_retries         = 0
 }
 
@@ -936,7 +923,7 @@ resource "uptimekuma_monitor_http" "proxmox-http" {
 resource "uptimekuma_monitor_http" "proxmox-ip-http" {
   provider     = uptimekuma.local
   name         = "WebPage (IP)"
-  url          = "https://192.168.1.18:8006"
+  url          = "https://${data.terraform_remote_state.adguard.outputs.host_records.proxmox_server.ipv4}:8006"
   cache_buster = true
   ignore_tls   = true
   interval     = 60
@@ -1020,7 +1007,7 @@ resource "uptimekuma_monitor_ping" "racknerd-ping" {
 resource "uptimekuma_monitor_ping" "backup-server-dns-ping" {
   provider    = uptimekuma.local
   name        = "DNS PING"
-  hostname    = "backup-server.internal.jstockley.com"
+  hostname    = data.terraform_remote_state.adguard.outputs.host_records.backup_server.hostname
   interval    = 60
   max_retries = 0
   active      = true
@@ -1030,7 +1017,7 @@ resource "uptimekuma_monitor_ping" "backup-server-dns-ping" {
 resource "uptimekuma_monitor_ping" "backup-server-ip-ping" {
   provider    = uptimekuma.local
   name        = "IP PING"
-  hostname    = "192.168.1.111"
+  hostname    = data.terraform_remote_state.adguard.outputs.host_records.backup_server.ipv4
   interval    = 60
   max_retries = 0
   active      = true

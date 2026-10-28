@@ -16,7 +16,6 @@ resource "authentik_user" "jackstockley" {
     authentik_group.proxmox-access.id,
     authentik_group.pg-admin-access.id,
     authentik_group.beszel-access.id,
-    authentik_group.open-speedtest-access.id,
     authentik_group.traefik-local-access.id,
     authentik_group.unifi-access.id,
     authentik_group.arcane-access.id,
@@ -33,6 +32,5 @@ resource "authentik_user" "claylarson" {
     authentik_group.home-assistant-access.id,
     authentik_group.immich-access.id,
     authentik_group.nextcloud-access.id,
-    authentik_group.open-speedtest-access.id,
   ]
 }

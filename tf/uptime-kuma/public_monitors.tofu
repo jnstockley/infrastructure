@@ -31,6 +31,17 @@ resource "uptimekuma_monitor_docker" "public-airflow-dag-processor-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "public-airflow-log-groomer-docker" {
+  provider         = uptimekuma.public
+  name             = "Log Groomer Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "airflow-log-groomer"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-airflow-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "public-airflow-scheduler-docker" {
   provider         = uptimekuma.public
   name             = "Scheduler Container"
@@ -58,6 +69,17 @@ resource "uptimekuma_monitor_docker" "arcan-agent-docker" {
   name             = "Container"
   docker_host_id   = uptimekuma_docker_host.public_socket.id
   docker_container = "arcane-agent"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.arcane-agent-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "arcane-agent-tailscale-docker" {
+  provider         = uptimekuma.public
+  name             = "Tailscale Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "ts-agent-host"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.arcane-agent-group.id
@@ -152,6 +174,50 @@ resource "uptimekuma_monitor_docker" "public-redis-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "public-simplelogin-app-docker" {
+  provider         = uptimekuma.public
+  name             = "App Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "sl-app"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-simplelogin-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "public-simplelogin-email-docker" {
+  provider         = uptimekuma.public
+  name             = "Email Handler Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "sl-email"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-simplelogin-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "public-simplelogin-job-runner-docker" {
+  provider         = uptimekuma.public
+  name             = "Job Runner Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "sl-job-runner"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-simplelogin-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "public-simplelogin-pg-forwarder-docker" {
+  provider         = uptimekuma.public
+  name             = "PostgreSQL Forwarder Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "sl-pg-forwarder"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-simplelogin-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "public-syncthing-docker" {
   provider         = uptimekuma.public
   name             = "Container"
@@ -171,6 +237,17 @@ resource "uptimekuma_monitor_docker" "public-traefik-docker" {
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.public-traefik-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "public-uptime-kuma-docker" {
+  provider         = uptimekuma.public
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.public_socket.id
+  docker_container = "uptime-kuma"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.public-uptime-kuma-group.id
   max_retries      = 0
 }
 

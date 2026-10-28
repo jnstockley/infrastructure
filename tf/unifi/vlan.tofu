@@ -7,7 +7,7 @@ resource "unifi_network" "default" {
     dns = {
       enabled = true
       servers = [
-        "192.168.1.135",
+        unifi_client.photo_server.fixed_ip,
         "1.1.1.2",
         "1.0.0.2"
       ]
@@ -34,7 +34,7 @@ resource "unifi_network" "iot" {
     dns = {
       enabled = true
       servers = [
-        "192.168.1.135",
+        unifi_client.photo_server.fixed_ip,
         "1.1.1.2",
         "1.0.0.2"
       ]
