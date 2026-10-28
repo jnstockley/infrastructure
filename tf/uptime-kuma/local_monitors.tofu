@@ -42,6 +42,17 @@ resource "uptimekuma_monitor_docker" "airflow-dag-processor-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "airflow-log-groomer-docker" {
+  provider         = uptimekuma.local
+  name             = "Log Groomer Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "airflow-log-groomer"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.airflow-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "airflow-scheduler-docker" {
   provider         = uptimekuma.local
   name             = "Scheduler Container"
@@ -58,6 +69,17 @@ resource "uptimekuma_monitor_docker" "arcane-docker" {
   name             = "Arcane Container"
   docker_host_id   = uptimekuma_docker_host.local_socket.id
   docker_container = "arcane"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.arcane-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "arcane-tailscale-docker" {
+  provider         = uptimekuma.local
+  name             = "Tailscale Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "ts-manager-host"
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.arcane-group.id
@@ -468,6 +490,17 @@ resource "uptimekuma_monitor_docker" "traefik-docker" {
   interval         = 60
   active           = true
   parent           = uptimekuma_monitor_group.traefik-group.id
+  max_retries      = 0
+}
+
+resource "uptimekuma_monitor_docker" "unifi-mcp-docker" {
+  provider         = uptimekuma.local
+  name             = "Container"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "unifi-mcp"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.unifi-mcp-group.id
   max_retries      = 0
 }
 

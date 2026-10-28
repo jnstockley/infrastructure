@@ -86,6 +86,7 @@ files. Document variable names and provisioning steps, never credentials.
 - Complete the migration to Infisical on hosts.
 - Update the Databasus healthcheck as needed.
 - Finish Arcane agent setup.
+- Configure SimpleLogin OIDC login with Authentik.
 
 These are carried forward from the previous README; configuration in this
 repository does not establish whether the operational work is complete.

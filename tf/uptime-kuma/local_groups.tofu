@@ -188,6 +188,16 @@ resource "uptimekuma_monitor_group" "traefik-group" {
   name = "Traefik"
 }
 
+resource "uptimekuma_monitor_group" "unifi-mcp-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "UniFi MCP"
+}
+
 resource "uptimekuma_monitor_group" "unifi-toolkit-group" {
   provider    = uptimekuma.local
   interval    = 60

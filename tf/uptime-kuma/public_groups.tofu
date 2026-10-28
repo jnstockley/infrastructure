@@ -88,6 +88,16 @@ resource "uptimekuma_monitor_group" "public-redis-group" {
   name = "Redis"
 }
 
+resource "uptimekuma_monitor_group" "public-simplelogin-group" {
+  provider    = uptimekuma.public
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.public-nextcloud-talk.id
+  ]
+  name = "SimpleLogin"
+}
+
 resource "uptimekuma_monitor_group" "public-syncthing-group" {
   provider    = uptimekuma.public
   interval    = 60
@@ -106,6 +116,16 @@ resource "uptimekuma_monitor_group" "public-traefik-group" {
     uptimekuma_notification_nextcloudtalk.public-nextcloud-talk.id
   ]
   name = "Traefik"
+}
+
+resource "uptimekuma_monitor_group" "public-uptime-kuma-group" {
+  provider    = uptimekuma.public
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.public-nextcloud-talk.id
+  ]
+  name = "Uptime Kuma"
 }
 
 resource "uptimekuma_monitor_group" "public-wireguard-group" {
