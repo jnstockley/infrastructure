@@ -2,7 +2,7 @@
 name: trivy
 services:
   trivy:
-    image: aquasec/trivy:0.76.1
+    image: aquasec/trivy:0.76.2
     container_name: trivy
     volumes:
       - /:/app:ro
