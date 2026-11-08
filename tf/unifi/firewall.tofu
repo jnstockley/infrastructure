@@ -24,7 +24,7 @@ resource "unifi_firewall_policy" "block_internet" {
   create_allow_respond = false
 
   source = {
-    zone_id         = data.unifi_firewall_zone.internal.id
+    zone_id         = unifi_firewall_zone.iot.id
     matching_target = "CLIENT"
     client_macs     = [unifi_client.air_quality_monitor.mac, unifi_client.lg_tv.mac]
   }

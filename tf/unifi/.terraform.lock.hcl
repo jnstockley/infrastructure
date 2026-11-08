@@ -27,6 +27,7 @@ provider "registry.opentofu.org/ubiquiti-community/unifi" {
     "zh:78e0db33a6bfd5f4a98d8ea7c785420b6cd8ddf970d582795b7be3cf8ccd7740",
     "zh:7f527d97d7baaa26d7e9013b1621ebae08e40061b32eb3c2828a9c973630d8e8",
     "zh:8217befe9fb4dd802d5612750f01adfdfdc8bbc8ba0f6afc4f1c56a11cc95fc0",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
     "zh:9cdac2d10882e49e56b8f56b09c1d35d8ce1ea2ff7c2def86b5d20616a9cbea4",
     "zh:a5a8f8d3810d93f98a07d281cf69cf52283ae642e3d897a0e710b4fc92fb09b1",
     "zh:c95ca86be5aa1afa8c1b3abb90d65bc1d6c42fba532a85095765adb3b180b53d",
