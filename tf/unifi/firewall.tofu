@@ -53,24 +53,56 @@ resource "unifi_firewall_policy" "allow_internal" {
   }
 }
 
-# Lets the DNS server (on the IoT zone side) resolve upstream
+# Allow IoT clients to query AdGuard on the Internal photo server.
+# In the IoT -> Internal policy table, keep this exception above Block IoT to Internal.
 resource "unifi_firewall_policy" "iot_dns" {
-  name                 = "IoT DNS"
-  action               = "ALLOW"
-  protocol             = "all"
-  ip_version           = "BOTH"
-  create_allow_respond = false
+  name                  = "IoT DNS"
+  action                = "ALLOW"
+  enabled               = true
+  protocol              = "tcp_udp"
+  ip_version            = "BOTH"
+  connection_state_type = "ALL"
+  create_allow_respond  = true
 
   source = {
-    zone_id            = unifi_firewall_zone.iot.id
-    matching_target    = "CLIENT"
-    client_macs        = [unifi_client.photo_server.mac]
-    port               = "53"
-    port_matching_type = "SPECIFIC"
+    zone_id         = unifi_firewall_zone.iot.id
+    matching_target = "ANY"
+    # Omitted endpoint fields retain imported values in provider v0.65.0.
+    port_matching_type = "ANY"
   }
 
   destination = {
-    zone_id         = data.unifi_firewall_zone.external.id
+    zone_id            = data.unifi_firewall_zone.internal.id
+    matching_target    = "IP"
+    ips                = [unifi_client.photo_server.fixed_ip]
+    port               = "53"
+    port_matching_type = "SPECIFIC"
+  }
+}
+
+# Block IoT-initiated traffic, while leaving established/related replies to
+# Internal-initiated connections to the return rule from Allow Internal.
+resource "unifi_firewall_policy" "block_iot_internal" {
+  name                  = "Block IoT to Internal"
+  action                = "BLOCK"
+  enabled               = true
+  protocol              = "all"
+  ip_version            = "BOTH"
+  connection_state_type = "CUSTOM"
+  connection_states     = ["NEW", "INVALID"]
+  create_allow_respond  = false
+
+  # Sequence initial operations after the exception, but this does not enforce
+  # policy evaluation order; that must be checked in the UniFi policy table.
+  depends_on = [unifi_firewall_policy.iot_dns, unifi_firewall_policy.allow_internal]
+
+  source = {
+    zone_id         = unifi_firewall_zone.iot.id
+    matching_target = "ANY"
+  }
+
+  destination = {
+    zone_id         = data.unifi_firewall_zone.internal.id
     matching_target = "ANY"
   }
 }
