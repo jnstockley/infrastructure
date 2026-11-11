@@ -214,6 +214,30 @@ resource "infisical_project_identity" "web-scraper-project-identity" {
   ]
 }
 
+resource "infisical_identity" "monopolygo-rewards-identity" {
+  name   = "GitHub monopolygo-rewards"
+  role   = "no-access"
+  org_id = data.infisical_identity_details.current.organization.id
+}
+
+resource "infisical_identity_oidc_auth" "monopolygo-rewards-oidc-auth" {
+  identity_id        = infisical_identity.monopolygo-rewards-identity.id
+  oidc_discovery_url = "https://token.actions.githubusercontent.com"
+  bound_issuer       = "https://token.actions.githubusercontent.com"
+  bound_audiences    = ["https://github.com/jnstockley"]
+  bound_subject      = "repo:jnstockley/monopolygo-rewards:environment:(docker|sync)"
+}
+
+resource "infisical_project_identity" "monopolygo-rewards-project-identity" {
+  project_id  = infisical_project.monopolygo-rewards.id
+  identity_id = infisical_identity.monopolygo-rewards-identity.id
+  roles = [
+    {
+      role_slug = "viewer"
+    }
+  ]
+}
+
 resource "infisical_identity" "govee-cloud-identity" {
   name   = "GitHub govee-cloud"
   role   = "no-access"
