@@ -65,6 +65,13 @@ resource "infisical_project" "web-scraper" {
   type        = "secret-manager" # Default project type
 }
 
+resource "infisical_project" "monopolygo-rewards" {
+  name        = "monopolygo-rewards"
+  slug        = "monopolygo-rewards"
+  description = "GitHub monopolygo-rewards secrets"
+  type        = "secret-manager" # Default project type
+}
+
 resource "infisical_project" "secret-santa" {
   name        = "secret-santa"
   slug        = "secret-santa"
