@@ -644,7 +644,7 @@ resource "uptimekuma_monitor_http_json_query" "databasus-http" {
   name                = "WebPage"
   url                 = "https://databasus.${data.terraform_remote_state.adguard.outputs.local_wildcard}/api/v1/system/health"
   json_path           = "$.status"
-  expected_value      = "Application is healthy, internal DB working fine and disk usage is below 95%. You can connect downdetector to this endpoint"
+  expected_value      = "HEALTHY"
   cache_buster        = true
   expiry_notification = true
   interval            = 60
