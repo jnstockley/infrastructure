@@ -24,6 +24,7 @@ services:
       - .env
     ports:
       - '0.0.0.0:51822:51822/udp'
+      - '[::]:51822:51822/udp'
     networks:
       wg:
         interface_name: eth0
