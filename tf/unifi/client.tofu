@@ -7,12 +7,6 @@ resource "unifi_client" "photo_server" {
   fixed_ip = "192.168.1.135"
 }
 
-resource "unifi_client" "air_quality_monitor" {
-  mac      = "cc:b5:d1:31:7c:fd"
-  name     = "Air Quality Monitor"
-  fixed_ip = "192.168.2.85"
-}
-
 resource "unifi_client" "lg_tv" {
   mac      = "80:5b:65:ca:29:0c"
   fixed_ip = "192.168.2.71"
