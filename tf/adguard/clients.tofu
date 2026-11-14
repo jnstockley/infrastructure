@@ -30,6 +30,12 @@ resource "adguard_client" "family-room-apple-tv" {
   tags = ["device_tv"]
 }
 
+resource "adguard_client" "master-bedroom-apple-tv" {
+  name = "Master Bedroom Apple TV"
+  ids  = ["master-bedroom-apple-tv"]
+  tags = ["device_tv"]
+}
+
 resource "adguard_client" "home-assistant" {
   name = "Home Assistant"
   ids  = [adguard_rewrite.home_server_ipv4.answer, "home-assistant"]
