@@ -39,7 +39,7 @@ services:
         - CMD
         - node
         - -e
-        - "fetch('http://localhost:3000/health').then(async r => process.exit(r.ok && (await r.json()).status === 'healthy' ? 0 : 1)).catch(() => process.exit(1))"
+        - "fetch('http://localhost:3000/readyz').then(async r => process.exit(r.ok && (await r.json()).status === 'ready' ? 0 : 1)).catch(() => process.exit(1))"
       interval: 60s
       retries: 5
       start_period: 60s
