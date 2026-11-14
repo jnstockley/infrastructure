@@ -24,7 +24,7 @@ for image versions, ports, mounts, and environment requirements.
 | [jellyfin](jellyfin/compose.yml) | Media service on host networking; library mounted from `/mnt/media`. |
 | [mariadb](mariadb/compose.yml) | Shared MariaDB and phpMyAdmin. |
 | [mend](mend/compose.yml) | Mend Renovate Community Edition with local config, logs, and certificates. |
-| [meta-mcp](meta-mcp/compose.yml) | MetaMCP gateway with shared database connectivity and a named uv cache. |
+| [mcp-hub](mcp-hub/compose.yml) | MCPHub gateway with Authentik OIDC, shared PostgreSQL connectivity, and persistent data and package caches. |
 | [nextcloud](nextcloud/compose.yml) | Nextcloud AIO master container, which manages additional application containers. |
 | [paperless](paperless/compose.yml) | Document management and Nextcloud sync helper; archive and FUSE access. |
 | [postgres](postgres/compose.yml) | Shared PostgreSQL, pgAdmin, and Databasus backup UI. |

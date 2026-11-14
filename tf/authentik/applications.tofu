@@ -259,19 +259,19 @@ resource "authentik_policy_binding" "forgejo" {
   order  = 0
 }
 
-resource "authentik_provider_oauth2" "meta-mcp" {
+resource "authentik_provider_oauth2" "mcp-hub" {
   access_token_validity = "minutes=5"
   allowed_redirect_uris = [
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://${data.terraform_remote_state.cloudflare.outputs.mcp_dns_record_name}/api/auth/oauth2/callback/oidc"
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.mcp_dns_record_name}/api/auth/better/callback/oidc"
     }
   ]
   authorization_flow = data.authentik_flow.provider_authorization.id
-  client_id          = "W601Omw1oHifRHHVSbcFutVs4FOallpbAP9CZRZw"
+  client_id          = "VhrFmHRms80fekupMJIpdxvio8Y5yA-7CIhIrXcp"
   invalidation_flow  = data.authentik_flow.provider_invalidation.id
-  name               = "MetaMCP"
+  name               = "MCPHub"
   property_mappings = [
     data.authentik_property_mapping_provider_scope.openid.id,
     data.authentik_property_mapping_provider_scope.email.id,
@@ -284,16 +284,16 @@ resource "authentik_provider_oauth2" "meta-mcp" {
   ]
 }
 
-resource "authentik_application" "meta-mcp" {
-  name              = "MetaMCP"
-  slug              = "meta-mcp"
-  protocol_provider = authentik_provider_oauth2.meta-mcp.id
-  meta_icon         = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/webp/metamcp.webp"
+resource "authentik_application" "mcp-hub" {
+  name              = "MCPHub"
+  slug              = "mcp-hub"
+  protocol_provider = authentik_provider_oauth2.mcp-hub.id
+  meta_icon         = "https://raw.githubusercontent.com/samanhappy/mcphub/v1.2.4/docs/favicon.svg"
 }
 
-resource "authentik_policy_binding" "meta-mcp" {
-  target = authentik_application.meta-mcp.uuid
-  group  = authentik_group.meta-mcp-access.id
+resource "authentik_policy_binding" "mcp-hub" {
+  target = authentik_application.mcp-hub.uuid
+  group  = authentik_group.mcp-hub-access.id
   order  = 0
 }
 

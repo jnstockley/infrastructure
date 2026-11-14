@@ -28,8 +28,8 @@ resource "authentik_group" "immich-access" {
   is_superuser = false
 }
 
-resource "authentik_group" "meta-mcp-access" {
-  name         = "MetaMCP Access"
+resource "authentik_group" "mcp-hub-access" {
+  name         = "MCPHub Access"
   is_superuser = false
 }
 
