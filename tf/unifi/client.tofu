@@ -11,3 +11,8 @@ resource "unifi_client" "lg_tv" {
   mac      = "80:5b:65:ca:29:0c"
   fixed_ip = "192.168.2.71"
 }
+
+resource "unifi_client" "tcl_tv" {
+  mac      = "14:ea:63:f6:4b:b5"
+  fixed_ip = "192.168.2.227"
+}

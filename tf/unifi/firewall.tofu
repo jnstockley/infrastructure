@@ -24,7 +24,7 @@ resource "unifi_firewall_policy" "block_internet" {
   source = {
     zone_id         = unifi_firewall_zone.iot.id
     matching_target = "CLIENT"
-    client_macs     = [unifi_client.lg_tv.mac]
+    client_macs     = [unifi_client.lg_tv.mac, unifi_client.tcl_tv.mac]
   }
 
   destination = {
