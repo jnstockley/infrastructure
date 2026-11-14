@@ -2,7 +2,7 @@
 name: metamcp
 services:
   metamcp:
-    image: ghcr.io/umbrella-it-group/metamcp:latest@sha256:344659b12cb2c749fa48207f8d7f1949efa9b3abf44c4a4059afd903ca946205
+    image: ghcr.io/umbrella-it-group/metamcp:latest@sha256:6049479407c7825bbad3c1d16785a2fed98c0fd07fa60d7f04f12c8783d829ff
     container_name: metamcp
     volumes:
       # Caches uvx/npx installs of STDIO MCP servers so restarts aren't slow.
