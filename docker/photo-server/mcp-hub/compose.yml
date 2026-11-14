@@ -1,0 +1,74 @@
+---
+name: mcp-hub
+services:
+  mcp-hub:
+    image: samanhappy/mcphub:1.2.4
+    container_name: mcp-hub
+    volumes:
+      - ./data:/app/data
+      - uv-cache:/root/.cache/uv
+      - npm-cache:/root/.npm
+    environment:
+      - TZ=America/Chicago
+      - NODE_ENV=production
+      - PORT=3000
+      - INSTALL_BASE_URL=https://mcp.jstockley.com
+      # Use a dedicated database on the existing PostgreSQL server.
+      - BETTER_AUTH_ENABLED=true
+      - BETTER_AUTH_URL=https://mcp.jstockley.com
+      - BETTER_AUTH_BASE_PATH=/api/auth/better
+      - BETTER_AUTH_TRUSTED_ORIGINS=https://mcp.jstockley.com
+      # Authentik callback: https://mcp.jstockley.com/api/auth/better/callback/oidc
+      - BETTER_AUTH_OIDC_ENABLED=true
+      - BETTER_AUTH_OIDC_PROVIDER_ID=oidc
+      - BETTER_AUTH_OIDC_DISCOVERY_URL=https://idp.jstockley.com/application/o/mcp-hub/.well-known/openid-configuration
+      - BETTER_AUTH_OIDC_SCOPES=openid,email,profile
+      - BETTER_AUTH_OIDC_PKCE=true
+      - OIDC_CLIENT_ID=VhrFmHRms80fekupMJIpdxvio8Y5yA-7CIhIrXcp
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - private
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:3000/health').then(async r => process.exit(r.ok && (await r.json()).status === 'healthy' ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 60s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mcp-hub.entrypoints=websecure
+      - traefik.http.routers.mcp-hub.rule=Host(`mcp.jstockley.com`)
+      - traefik.http.routers.mcp-hub.tls=true
+      - traefik.http.routers.mcp-hub.tls.certresolver=production
+      - traefik.http.routers.mcp-hub.service=mcp-hub
+      - traefik.http.services.mcp-hub.loadbalancer.server.port=3000
+      - traefik.docker.network=proxy
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+  private:
+    name: private
+    internal: true
+    external: true
+    enable_ipv4: true
+    enable_ipv6: true
+
+volumes:
+  data:
+  npm-cache:
+  uv-cache:

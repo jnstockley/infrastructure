@@ -19,7 +19,7 @@ resource "authentik_user" "jackstockley" {
     authentik_group.traefik-local-access.id,
     authentik_group.unifi-access.id,
     authentik_group.arcane-access.id,
-    authentik_group.meta-mcp-access.id,
+    authentik_group.mcp-hub-access.id,
     authentik_group.wireguard-access.id
   ]
 }
