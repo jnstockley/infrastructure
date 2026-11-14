@@ -24,6 +24,7 @@ services:
       - BETTER_AUTH_OIDC_DISCOVERY_URL=https://idp.jstockley.com/application/o/mcp-hub/.well-known/openid-configuration
       - BETTER_AUTH_OIDC_SCOPES=openid,email,profile
       - BETTER_AUTH_OIDC_PKCE=true
+      - BETTER_AUTH_DISABLE_PASSWORD_LOGIN=true
       - OIDC_CLIENT_ID=VhrFmHRms80fekupMJIpdxvio8Y5yA-7CIhIrXcp
     env_file:
       - .env
