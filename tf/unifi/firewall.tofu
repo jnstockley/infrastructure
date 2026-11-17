@@ -21,6 +21,9 @@ resource "unifi_firewall_policy" "block_internet" {
   ip_version           = "BOTH"
   create_allow_respond = false
 
+  # Creation order only; keep the External exception above this block in UniFi.
+  depends_on = [unifi_firewall_policy.iot_jstockley_domains]
+
   source = {
     zone_id         = unifi_firewall_zone.iot.id
     matching_target = "CLIENT"
@@ -30,6 +33,37 @@ resource "unifi_firewall_policy" "block_internet" {
   destination = {
     zone_id         = data.unifi_firewall_zone.external.id
     matching_target = "ANY"
+  }
+}
+
+# Allow IoT access to jstockley.com subdomains, including local destinations.
+# Keep each exception above the block in its IoT -> Internal/External table.
+# Provider v0.65.0 cannot manage policy evaluation order.
+resource "unifi_firewall_policy" "iot_jstockley_domains" {
+  for_each = {
+    internal = data.unifi_firewall_zone.internal.id
+    external = data.unifi_firewall_zone.external.id
+  }
+
+  name                  = "Allow IoT jstockley.com (${each.key})"
+  action                = "ALLOW"
+  enabled               = true
+  protocol              = "all"
+  ip_version            = "BOTH"
+  connection_state_type = "ALL"
+  create_allow_respond  = true
+
+  source = {
+    zone_id            = unifi_firewall_zone.iot.id
+    matching_target    = "ANY"
+    port_matching_type = "ANY"
+  }
+
+  destination = {
+    zone_id            = each.value
+    matching_target    = "WEB"
+    web_domains        = ["*.jstockley.com"]
+    port_matching_type = "ANY"
   }
 }
 
@@ -94,6 +128,7 @@ resource "unifi_firewall_policy" "block_iot_internal" {
   # policy evaluation order; that must be checked in the UniFi policy table.
   depends_on = [
     unifi_firewall_policy.iot_dns,
+    unifi_firewall_policy.iot_jstockley_domains,
     unifi_firewall_policy.allow_internal
   ]
 
