@@ -12,8 +12,8 @@ services:
       - /home/jackstockley/infrastructure/docker/racknerd:/app/data/projects
     environment:
       EDGE_AGENT: "true"
-      EDGE_TRANSPORT: "poll"
-      MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net:3552"
+      ARCANE_AGENT_TRANSPORT: "auto"
+      ARCANE_MANAGER_API_URL: "http://arcane-manager-photo-server.tail5bef84.ts.net:3552"
       HTTP_PROXY: "http://tailscale:1055"
       NO_PROXY: "localhost,127.0.0.1"
       TZ: "America/Chicago"
