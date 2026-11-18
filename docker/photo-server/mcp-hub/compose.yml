@@ -2,7 +2,7 @@
 name: mcp-hub
 services:
   mcp-hub:
-    image: samanhappy/mcphub:1.2.5
+    image: samanhappy/mcphub:1.2.6
     container_name: mcp-hub
     volumes:
       - ./data:/app/data
