@@ -36,12 +36,12 @@ resource "unifi_firewall_policy" "block_internet" {
   }
 }
 
-# Allow IoT access to jstockley.com subdomains, including local destinations.
-# Keep each exception above the block in its IoT -> Internal/External table.
+# Domain destinations are supported only for the External zone on this controller.
+# Use the base domain rather than a literal *. wildcard, which the API rejects.
+# Keep this exception above Block Internet in the IoT -> External table.
 # Provider v0.65.0 cannot manage policy evaluation order.
 resource "unifi_firewall_policy" "iot_jstockley_domains" {
   for_each = {
-    internal = data.unifi_firewall_zone.internal.id
     external = data.unifi_firewall_zone.external.id
   }
 
@@ -51,7 +51,9 @@ resource "unifi_firewall_policy" "iot_jstockley_domains" {
   protocol              = "all"
   ip_version            = "BOTH"
   connection_state_type = "ALL"
-  create_allow_respond  = true
+  # The controller rejects auto-created return policies for this WEB rule.
+  # Internet replies use UniFi's built-in External -> IoT Allow Return Traffic.
+  create_allow_respond = false
 
   source = {
     zone_id            = unifi_firewall_zone.iot.id
@@ -62,7 +64,7 @@ resource "unifi_firewall_policy" "iot_jstockley_domains" {
   destination = {
     zone_id            = each.value
     matching_target    = "WEB"
-    web_domains        = ["*.jstockley.com"]
+    web_domains        = ["jstockley.com"]
     port_matching_type = "ANY"
   }
 }
@@ -112,6 +114,37 @@ resource "unifi_firewall_policy" "iot_dns" {
   }
 }
 
+# Internal destinations cannot use WEB matching on this controller. Allow the
+# reverse proxy's web ports; this also allows other sites hosted on these IPs.
+# Keep this above Block IoT to Internal in the UniFi policy table.
+resource "unifi_firewall_policy" "iot_local_web" {
+  name                  = "Allow IoT Local Web"
+  action                = "ALLOW"
+  enabled               = true
+  protocol              = "tcp"
+  ip_version            = "BOTH"
+  connection_state_type = "ALL"
+  create_allow_respond  = true
+
+  source = {
+    zone_id            = unifi_firewall_zone.iot.id
+    matching_target    = "ANY"
+    port_matching_type = "ANY"
+  }
+
+  destination = {
+    zone_id         = data.unifi_firewall_zone.internal.id
+    matching_target = "IP"
+    ips = [
+      unifi_client.photo_server.fixed_ip,
+      # Matches the photo server AAAA rewrite in tf/adguard/dns-rewrites.tofu.
+      "2604:2e8b:8077:0:be24:11ff:fec1:69d7"
+    ]
+    port               = "80,443"
+    port_matching_type = "SPECIFIC"
+  }
+}
+
 # Block IoT-initiated traffic, while leaving established/related replies to
 # Internal-initiated connections to the return rule from Allow Internal.
 resource "unifi_firewall_policy" "block_iot_internal" {
@@ -128,7 +161,7 @@ resource "unifi_firewall_policy" "block_iot_internal" {
   # policy evaluation order; that must be checked in the UniFi policy table.
   depends_on = [
     unifi_firewall_policy.iot_dns,
-    unifi_firewall_policy.iot_jstockley_domains,
+    unifi_firewall_policy.iot_local_web,
     unifi_firewall_policy.allow_internal
   ]
 
