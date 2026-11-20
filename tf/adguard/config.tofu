@@ -38,11 +38,19 @@ resource "adguard_config" "config" {
     interval = 168
   }
 
+  # Traefik issues/renews the certificate; its exporter shares only this
+  # domain's PEM files with AdGuard. These are paths inside the container,
+  # not file() reads on the OpenTofu runner. Deploy the mounts/exporter first.
   tls = {
-    certificate_chain = ""
-    enabled           = false
-    private_key       = ""
-    server_name       = data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name
+    certificate_chain  = "/opt/adguardhome/certs/cert.pem"
+    enabled            = true
+    force_https        = false
+    port_https         = 443
+    port_dns_over_tls  = 0
+    port_dns_over_quic = 0
+    private_key        = "/opt/adguardhome/certs/key.pem"
+    serve_plain_dns    = true
+    server_name        = data.terraform_remote_state.cloudflare.outputs.adguard_dns_record_name
   }
 
   lifecycle {

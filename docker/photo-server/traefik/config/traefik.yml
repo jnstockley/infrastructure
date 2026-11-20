@@ -69,9 +69,6 @@ entryPoints:
         - "172.0.0.0/8"
         - "172.64.0.0/13"
 
-  dot:
-    address: :853/tcp
-
 ping:
   entryPoint: "ping"
 
@@ -87,14 +84,9 @@ certificatesResolvers:
           - "1.1.1.1:53"
           - "1.0.0.1:53"
 
-tls:
-  options:
-    default:
-      minVersion: VersionTLS13
-
 providers:
   docker:
     exposedByDefault: false
   file:
-    directory: /etc/traefik
+    directory: /etc/traefik/conf
     watch: true

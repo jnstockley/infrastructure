@@ -2,6 +2,36 @@
 ---
 name: traefik
 services:
+  adguard-cert-exporter:
+    image: ghcr.io/kereis/traefik-certs-dumper:1.8.33-alpine
+    container_name: adguard-cert-exporter
+    depends_on:
+      traefik:
+        condition: service_started
+    volumes:
+      - ./config/certs:/traefik:ro
+      - ./config/adguard-certs:/output
+    environment:
+      - DOMAIN=dns.jstockley.com
+      - TZ=America/Chicago
+    network_mode: none
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - /usr/bin/healthcheck && test -s /output/key.pem && openssl x509 -in /output/cert.pem -noout -checkend 604800
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    cap_drop:
+      - ALL
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:mode=0700
+
   traefik:
     image: traefik:v3.7.19
     container_name: traefik
@@ -20,8 +50,6 @@ services:
       - '[::]:80:80'
       - '0.0.0.0:443:443'
       - '[::]:443:443'
-      - '0.0.0.0:853:853/tcp'
-      - '[::]:853:853/tcp'
       - '0.0.0.0:25565:25565/tcp'
       - '[::]:25565:25565/tcp'
     networks:

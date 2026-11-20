@@ -31,7 +31,7 @@ for image versions, ports, mounts, and environment requirements.
 | [pve-ups](pve-ups/compose.yml) | UPS management UI with named configuration and data volumes. |
 | [redis](redis/compose.yml) | Shared Redis with persistent local data on the `private` network. |
 | [syncthing](syncthing/compose.yml) | File synchronization with photo, backup, and stack directories mounted. |
-| [traefik](traefik/compose.yml) | Reverse proxy, TLS certificates, file routes, DNS-over-TLS and Minecraft entrypoints. |
+| [traefik](traefik/compose.yml) | Reverse proxy, TLS certificates, AdGuard certificate exporter, file routes and Minecraft entrypoint. |
 | [unifi-mcp](unifi-mcp/compose.yml) | UniFi MCP server on project-local bridge and shared private networks. |
 | [unifi-toolkit](unifi-toolkit/compose.yml) | UniFi tools routed through the Authentik outpost; SQLite data directory. |
 | [uptime-kuma](uptime-kuma/compose.yml) | Local service monitoring, persistent data, and Docker socket access. |
@@ -106,7 +106,7 @@ connect to the AIO Apache and master containers.
 Jellyfin uses host networking for discovery and routes through
 `host.docker.internal:8096`; verify that name resolves on the target host.
 Syncthing additionally publishes TCP 8384 directly. Traefik publishes
-80/443, TCP 853, and TCP 25565; published ports alone do not prove the
+80/443 and TCP 25565; published ports alone do not prove the
 corresponding upstream service is configured or reachable.
 
 Mend loads its checked-in [config.js](mend/config.js) through a read-only
