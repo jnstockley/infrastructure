@@ -493,6 +493,17 @@ resource "uptimekuma_monitor_docker" "traefik-docker" {
   max_retries      = 0
 }
 
+resource "uptimekuma_monitor_docker" "adguard-cert-exporter-docker" {
+  provider         = uptimekuma.local
+  name             = "AdGuard Certificate Exporter"
+  docker_host_id   = uptimekuma_docker_host.local_socket.id
+  docker_container = "adguard-cert-exporter"
+  interval         = 60
+  active           = true
+  parent           = uptimekuma_monitor_group.traefik-group.id
+  max_retries      = 0
+}
+
 resource "uptimekuma_monitor_docker" "unifi-mcp-docker" {
   provider         = uptimekuma.local
   name             = "Container"

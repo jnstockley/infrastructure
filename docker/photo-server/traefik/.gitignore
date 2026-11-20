@@ -1,3 +1,4 @@
 certs/
 logs/
 .env
+adguard-certs/

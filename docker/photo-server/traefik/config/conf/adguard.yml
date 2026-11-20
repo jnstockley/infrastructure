@@ -1,20 +1,23 @@
 ---
-tcp:
+http:
   routers:
-    adguard-dot:
-      rule: "HostSNI(`*.dns.local.jstockley.com`) || HostSNI(`*.dns.jstockley.com`)"
+    adguard-doh:
+      rule: "Host(`dns.jstockley.com`) && (Path(`/dns-query`) || PathPrefix(`/dns-query/`))"
       entryPoints:
-        - "dot"
-      service: adguard-dot
-      tls:
-        certResolver: "production"
-        domains:
-          - main: "*.dns.jstockley.com"
-            sans:
-              - "*.dns.local.jstockley.com"
+        - websecure
+      priority: 100
+      service: adguard-doh
+      tls: {}
 
   services:
-    adguard-dot:
+    adguard-doh:
       loadBalancer:
+        passHostHeader: true
+        serversTransport: adguard-tls
         servers:
-          - address: "adguard:53"
+          - url: "https://adguard:443"
+
+  serversTransports:
+    adguard-tls:
+      serverName: dns.jstockley.com
+      insecureSkipVerify: false
