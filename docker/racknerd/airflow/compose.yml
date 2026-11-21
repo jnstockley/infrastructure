@@ -72,12 +72,12 @@ services:
 
   airflow-log-groomer:
     container_name: airflow-log-groomer
-    restart: unless-stopped
     environment:
       <<: *airflow-common-env
     command:
       - bash
       - /clean-logs
+    restart: unless-stopped
     healthcheck:
       disable: true
     <<: *airflow-common
