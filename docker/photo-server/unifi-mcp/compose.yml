@@ -19,6 +19,7 @@ services:
     networks:
       - private
       - bridge
+    restart: always
 
 networks:
   bridge:
