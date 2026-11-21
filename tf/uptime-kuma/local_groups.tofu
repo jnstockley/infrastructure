@@ -317,3 +317,13 @@ resource "uptimekuma_monitor_group" "mcp-hub-group" {
   ]
   name = "MCPHub"
 }
+
+resource "uptimekuma_monitor_group" "hub-group" {
+  provider    = uptimekuma.local
+  interval    = 60
+  max_retries = 3
+  notification_ids = [
+    uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
+  ]
+  name = "Hub"
+}
