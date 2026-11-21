@@ -20,7 +20,6 @@ root configures monitoring after those instances exist.
 | [local_notifications.tofu](local_notifications.tofu) | Local SMTP and Nextcloud Talk notifications. |
 | [public_notifications.tofu](public_notifications.tofu) | Public SMTP and Nextcloud Talk notifications. |
 | [local_maintenances.tofu](local_maintenances.tofu) | Local maintenance schedules and monitor associations. |
-| [public_maintenances.tofu](public_maintenances.tofu) | Public maintenance schedules and monitor associations. |
 | [local_tags.tofu](local_tags.tofu) | Local monitor tags. |
 
 Provider sources: `breml/uptimekuma`. See

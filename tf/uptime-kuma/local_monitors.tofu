@@ -784,9 +784,12 @@ resource "uptimekuma_monitor_http" "nextcloud-http" {
 }
 
 resource "uptimekuma_monitor_http" "nextcloud-aio-http" {
-  provider            = uptimekuma.local
-  name                = "WebPage (AIO)"
-  url                 = "https://nextcloud-aio.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+  provider = uptimekuma.local
+  name     = "WebPage (AIO)"
+  url      = "https://nextcloud-aio.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+  headers = jsonencode({
+    "Sec-Fetch-Site" = "none"
+  })
   cache_buster        = true
   expiry_notification = true
   interval            = 60
@@ -1170,6 +1173,36 @@ resource "uptimekuma_monitor_ping" "kitchen-camera" {
   notification_ids = [
     uptimekuma_notification_nextcloudtalk.local-nextcloud-talk.id
   ]
+}
+
+resource "uptimekuma_monitor_ping" "family-room-apple-tv" {
+  provider    = uptimekuma.local
+  name        = "Family Room Apple TV"
+  hostname    = "192.168.1.68"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  parent      = uptimekuma_monitor_group.hub-group.id
+}
+
+resource "uptimekuma_monitor_ping" "master-bedroom-apple-tv" {
+  provider    = uptimekuma.local
+  name        = "Master Bedroom Apple TV"
+  hostname    = "192.168.1.114"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  parent      = uptimekuma_monitor_group.hub-group.id
+}
+
+resource "uptimekuma_monitor_ping" "kitchen-homepod-mini" {
+  provider    = uptimekuma.local
+  name        = "Kitchen HomePod Mini"
+  hostname    = "192.168.2.8"
+  interval    = 60
+  max_retries = 3
+  active      = true
+  parent      = uptimekuma_monitor_group.hub-group.id
 }
 
 resource "uptimekuma_monitor_ping" "outside-camera" {
