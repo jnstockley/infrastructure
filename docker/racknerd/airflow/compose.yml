@@ -72,6 +72,7 @@ services:
 
   airflow-log-groomer:
     container_name: airflow-log-groomer
+    restart: unless-stopped
     environment:
       <<: *airflow-common-env
     command:
