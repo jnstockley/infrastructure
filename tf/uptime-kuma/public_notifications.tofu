@@ -4,7 +4,6 @@ resource "uptimekuma_notification_nextcloudtalk" "public-nextcloud-talk" {
   host               = "https://${data.terraform_remote_state.cloudflare.outputs.nextcloud_dns_record_name}"
   conversation_token = var.nextcloud_talk_conversation_token
   bot_secret         = var.nextcloud_talk_public_secret
-  is_active          = true
   is_default         = false
 }
 
@@ -29,6 +28,5 @@ resource "uptimekuma_notification_smtp" "public-smtp-failover" {
   # Optional: Email customization
   html_body = true
 
-  is_active  = true
   is_default = false
 }
