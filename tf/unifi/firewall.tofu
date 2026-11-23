@@ -21,8 +21,10 @@ resource "unifi_firewall_policy" "block_internet" {
   ip_version           = "BOTH"
   create_allow_respond = false
 
-  # Creation order only; keep the External exception above this block in UniFi.
-  depends_on = [unifi_firewall_policy.iot_jstockley_domains]
+  # Creation order only; keep the External exceptions above this block in UniFi.
+  depends_on = [
+    unifi_firewall_policy.google_cast_exception
+  ]
 
   source = {
     zone_id         = unifi_firewall_zone.iot.id
@@ -40,12 +42,12 @@ resource "unifi_firewall_policy" "block_internet" {
 # Use the base domain rather than a literal *. wildcard, which the API rejects.
 # Keep this exception above Block Internet in the IoT -> External table.
 # Provider v0.65.0 cannot manage policy evaluation order.
-resource "unifi_firewall_policy" "iot_jstockley_domains" {
+resource "unifi_firewall_policy" "google_cast_exception" {
   for_each = {
     external = data.unifi_firewall_zone.external.id
   }
 
-  name                  = "Allow IoT jstockley.com (${each.key})"
+  name                  = "Google Cast exception"
   action                = "ALLOW"
   enabled               = true
   protocol              = "all"
@@ -57,14 +59,15 @@ resource "unifi_firewall_policy" "iot_jstockley_domains" {
 
   source = {
     zone_id            = unifi_firewall_zone.iot.id
-    matching_target    = "ANY"
+    matching_target    = "CLIENT"
+    client_macs        = [unifi_client.tcl_tv.mac]
     port_matching_type = "ANY"
   }
 
   destination = {
     zone_id            = each.value
     matching_target    = "WEB"
-    web_domains        = ["jstockley.com"]
+    web_domains        = ["jstockley.com", "cast.home-assistant.io", "www.gstatic.com", "ajax.googleapis.com", "clients3.google.com", "connectivitycheck.gstatic.com", "www.google.com", "www.home-assistant.io"]
     port_matching_type = "ANY"
   }
 }

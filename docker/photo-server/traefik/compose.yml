@@ -3,7 +3,7 @@
 name: traefik
 services:
   adguard-cert-exporter:
-    image: ghcr.io/kereis/traefik-certs-dumper:1.8.33-alpine
+    image: ghcr.io/kereis/traefik-certs-dumper:1.8.34-alpine
     container_name: adguard-cert-exporter
     depends_on:
       traefik:
