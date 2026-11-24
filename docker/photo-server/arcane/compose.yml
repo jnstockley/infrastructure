@@ -9,12 +9,12 @@ services:
       - ./data:/app/data
       - /home/jackstockley/infrastructure/docker/photo-server:/app/data/projects
     environment:
-      - APP_URL=https://arcane.local.jstockley.com
+      - ARCANE_APP_URL=https://arcane.local.jstockley.com
       - TZ=America/Chicago
-      - OIDC_ENABLED=true
-      - OIDC_CLIENT_ID=vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0
-      - OIDC_ISSUER_URL=https://idp.jstockley.com/application/o/arcane/
-      - OIDC_PROVIDER_NAME=Authentik
+      - ARCANE_OIDC_ENABLED=true
+      - ARCANE_OIDC_CLIENT_ID=vYQq0ffAnfGnkuZidCfj3HpJrmU0f1AQmMC1rkO0
+      - ARCANE_OIDC_ISSUER_URL=https://idp.jstockley.com/application/o/arcane/
+      - ARCANE_OIDC_PROVIDER_NAME=Authentik
       - PUID=1000
       - PGID=1000
     env_file:
