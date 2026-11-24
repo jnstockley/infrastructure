@@ -1198,7 +1198,7 @@ resource "uptimekuma_monitor_ping" "master-bedroom-apple-tv" {
 resource "uptimekuma_monitor_ping" "kitchen-homepod-mini" {
   provider    = uptimekuma.local
   name        = "Kitchen HomePod Mini"
-  hostname    = "192.168.2.8"
+  hostname    = "192.168.1.7"
   interval    = 60
   max_retries = 3
   active      = true
