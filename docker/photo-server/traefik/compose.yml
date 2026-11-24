@@ -33,7 +33,7 @@ services:
       - /tmp:mode=0700
 
   traefik:
-    image: traefik:v3.7.19
+    image: traefik:v3.8.0
     container_name: traefik
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro

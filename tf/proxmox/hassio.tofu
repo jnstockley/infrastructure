@@ -7,10 +7,13 @@ resource "proxmox_vm_qemu" "hassio" {
     sockets = 1
     cores   = 4
   }
+  ciupgrade              = false
   define_connection_info = false
   description            = "Home Assistant OS VM"
   full_clone             = false
+  hotplug                = "network,disk,usb"
   machine                = "q35"
+  balloon                = 0
   memory                 = 8192
   name                   = "hassio"
   qemu_os                = "l26"
@@ -37,6 +40,7 @@ resource "proxmox_vm_qemu" "hassio" {
     bridge   = "vmbr0"
     firewall = true
     id       = 0
+    macaddr  = "BC:24:11:4F:3F:6F"
     model    = "virtio"
   }
 
