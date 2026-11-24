@@ -13,6 +13,8 @@ services:
       - PGTZ=America/Chicago
       - PUID=1000
       - PGID=1000
+    env_file:
+      - .env
     networks:
       - proxy
       - private
