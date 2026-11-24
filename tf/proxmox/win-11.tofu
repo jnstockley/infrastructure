@@ -1,18 +1,22 @@
 resource "proxmox_vm_qemu" "win-11" {
   agent = 1
   bios  = "ovmf"
-  boot  = "order=virtio0;ide0"
+  boot  = "order=virtio0"
   cpu {
     type    = "host"
     sockets = 1
     cores   = 4
   }
+  ciupgrade              = false
   define_connection_info = false
   description            = "Windows 11 VM"
   full_clone             = false
+  hotplug                = "network,disk,usb"
   machine                = "pc-q35-9.0"
+  balloon                = 0
   memory                 = 12288
   name                   = "win-11"
+  qemu_os                = "other"
   scsihw                 = "virtio-scsi-single"
   target_nodes           = ["proxmox"]
   start_at_node_boot     = true
@@ -20,13 +24,6 @@ resource "proxmox_vm_qemu" "win-11" {
   automatic_reboot       = true
 
   disks {
-    ide {
-      ide0 {
-        cdrom {
-          iso = "local:iso/windows-11.iso"
-        }
-      }
-    }
     virtio {
       virtio0 {
         passthrough {
@@ -49,6 +46,7 @@ resource "proxmox_vm_qemu" "win-11" {
     }
   }
 
+  # Proxmox uses ms-cert=2023k; this provider version cannot manage that setting.
   efidisk {
     efitype           = "4m"
     format            = "raw"
@@ -56,10 +54,16 @@ resource "proxmox_vm_qemu" "win-11" {
     storage           = "local-lvm"
   }
 
+  tpm_state {
+    storage = "local-lvm"
+    version = "v2.0"
+  }
+
   network {
     bridge   = "vmbr0"
     firewall = true
     id       = 0
+    macaddr  = "BC:24:11:07:F7:91"
     model    = "virtio"
   }
 
@@ -71,5 +75,8 @@ resource "proxmox_vm_qemu" "win-11" {
 
   lifecycle {
     prevent_destroy = true
+    # The provider does not refresh the existing TPM into state. Keep its
+    # configuration for creation, but leave subsequent TPM changes to Proxmox.
+    ignore_changes = [tpm_state]
   }
 }

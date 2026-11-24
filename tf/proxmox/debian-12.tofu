@@ -1,15 +1,19 @@
 resource "proxmox_vm_qemu" "debian-12" {
+  # The GPU reset hook (local:snippets/gpu-reset.sh) is configured in Proxmox;
+  # telmate/proxmox 3.0.2-rc10 does not expose hookscript.
   agent = 1
   bios  = "seabios"
-  boot  = "order=virtio0;ide0"
+  boot  = "order=virtio0"
   cpu {
     type    = "host"
     sockets = 1
     cores   = 6
   }
+  ciupgrade              = false
   define_connection_info = false
   description            = "Debian 12 VM"
   full_clone             = false
+  hotplug                = "network,disk,usb"
   machine                = "q35"
   balloon                = 24576
   memory                 = 32768
@@ -21,13 +25,6 @@ resource "proxmox_vm_qemu" "debian-12" {
   vmid                   = 100
 
   disks {
-    ide {
-      ide0 {
-        cdrom {
-          iso = "local:iso/debian-amd64-netinst.iso"
-        }
-      }
-    }
     virtio {
       virtio0 {
         passthrough {
@@ -37,7 +34,7 @@ resource "proxmox_vm_qemu" "debian-12" {
       }
       virtio1 {
         passthrough {
-          file      = "/dev/disk/by-id/wwn-0x5001b448b02ee912"
+          file      = "/dev/disk/by-id/wwn-0x5001b44dd44ffced"
           replicate = true
         }
       }
@@ -48,6 +45,7 @@ resource "proxmox_vm_qemu" "debian-12" {
     bridge   = "vmbr0"
     firewall = true
     id       = 0
+    macaddr  = "BC:24:11:C1:69:D7"
     model    = "virtio"
   }
 
