@@ -10,7 +10,7 @@ resource "adguard_rewrite" "photo_server_ipv4" {
 
 resource "adguard_rewrite" "photo_server_ipv6" {
   domain = adguard_rewrite.photo_server_ipv4.domain
-  answer = "2604:2e8b:8077:0:be24:11ff:fec1:69d7"
+  answer = "2604:2e8b:9ca3:0:be24:11ff:fec1:69d7"
 }
 
 resource "adguard_rewrite" "backup_server_ipv4" {
