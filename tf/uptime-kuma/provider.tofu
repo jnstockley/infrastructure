@@ -82,7 +82,17 @@ variable "uptime_kuma_local_password" {
   sensitive = true
 }
 
+variable "uptime_kuma_local_totp" {
+  type      = string
+  sensitive = true
+}
+
 variable "uptime_kuma_public_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "uptime_kuma_public_totp" {
   type      = string
   sensitive = true
 }
@@ -103,15 +113,17 @@ variable "nextcloud_talk_public_secret" {
 }
 
 provider "uptimekuma" {
-  alias    = "local"
-  endpoint = "https://status.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
-  username = var.uptime_kuma_local_username
-  password = var.uptime_kuma_local_password
+  alias       = "local"
+  endpoint    = "https://status.${data.terraform_remote_state.adguard.outputs.local_wildcard}"
+  username    = var.uptime_kuma_local_username
+  password    = var.uptime_kuma_local_password
+  totp_secret = var.uptime_kuma_local_totp
 }
 
 provider "uptimekuma" {
-  alias    = "public"
-  endpoint = "https://${data.terraform_remote_state.cloudflare.outputs.status_dns_record_name}"
-  username = var.uptime_kuma_public_username
-  password = var.uptime_kuma_public_password
+  alias       = "public"
+  endpoint    = "https://${data.terraform_remote_state.cloudflare.outputs.status_dns_record_name}"
+  username    = var.uptime_kuma_public_username
+  password    = var.uptime_kuma_public_password
+  totp_secret = var.uptime_kuma_public_totp
 }
