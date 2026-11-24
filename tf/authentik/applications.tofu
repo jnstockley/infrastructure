@@ -63,18 +63,18 @@ resource "authentik_provider_oauth2" "homeassistant" {
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://${data.terraform_remote_state.cloudflare.outputs.home_dns_record_name}/auth/openid/callback"
+      url               = "https://${data.terraform_remote_state.cloudflare.outputs.home_dns_record_name}/auth/oidc/callback"
     },
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "https://home.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/openid/callback"
+      url               = "https://home.${data.terraform_remote_state.adguard.outputs.local_wildcard}/auth/oidc/callback"
 
     },
     {
       matching_mode     = "strict",
       redirect_uri_type = "authorization",
-      url               = "http://homeassistant.local:8123/auth/openid/callback"
+      url               = "http://homeassistant.local:8123/auth/oidc/callback"
 
     }
   ]
