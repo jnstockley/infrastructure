@@ -7,6 +7,7 @@ on:
     paths:
       - 'tf/**'
       - '.github/workflows/tf-state.yml'
+      - 'scripts/configure-vpn-dns.sh'
   pull_request:
     branches:
       - main
@@ -14,6 +15,7 @@ on:
     paths:
       - 'tf/**'
       - '.github/workflows/tf-state.yml'
+      - 'scripts/configure-vpn-dns.sh'
 
 jobs:
   lint:
@@ -81,6 +83,7 @@ jobs:
               - 'tf/proxmox/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
+              - 'scripts/configure-vpn-dns.sh'
             tailscale:
               - 'tf/tailcale/**'
               - 'tf/.opentofu-version'
@@ -89,10 +92,12 @@ jobs:
               - 'tf/unifi/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
+              - 'scripts/configure-vpn-dns.sh'
             uptime-kuma:
               - 'tf/uptime-kuma/**'
               - 'tf/.opentofu-version'
               - '.github/workflows/tf-state.yml'
+              - 'scripts/configure-vpn-dns.sh'
 
   adguard:
     name: Run AdGuard
@@ -533,6 +538,7 @@ jobs:
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
+            bash scripts/configure-vpn-dns.sh proxmox.local.jstockley.com
 
       - name: Plan and Apply Proxmox
         env:
@@ -667,6 +673,7 @@ jobs:
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
+            bash scripts/configure-vpn-dns.sh unifi.local.jstockley.com
 
       - name: Plan and Apply Unifi
         env:
@@ -740,6 +747,7 @@ jobs:
             sudo chmod 600 wg0.conf
             sudo cp wg0.conf /etc/wireguard/
             sudo wg-quick up wg0
+            bash scripts/configure-vpn-dns.sh status.local.jstockley.com
 
       - name: Plan and Apply Uptime Kuma
         env:
