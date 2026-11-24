@@ -84,6 +84,7 @@ jobs:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
           private_key: ${{ env.SSH_KEY }}
+          command_timeout: "1800"
           command: ${{ steps.racknerd-ssh.outputs.ssh_commands }}
 
   photo_server_deploy:
@@ -140,4 +141,5 @@ jobs:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
           private_key: ${{ env.SSH_KEY }}
+          command_timeout: "1800"
           command: ${{ steps.photo-server-ssh.outputs.ssh_commands }}
