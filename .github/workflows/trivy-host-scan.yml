@@ -28,7 +28,7 @@ jobs:
           env-slug: "racknerd"
 
       - name: Step 2 - Run Trivy on Racknerd
-        uses: jnstockley/gh-ssh-action@v1.2.36
+        uses: jnstockley/gh-ssh-action@v1.2.37
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
@@ -102,7 +102,7 @@ jobs:
           bash scripts/configure-vpn-dns.sh "$IP_ADDRESS"
 
       - name: Step 3 - Run Trivy on Photo Server
-        uses: jnstockley/gh-ssh-action@v1.2.36
+        uses: jnstockley/gh-ssh-action@v1.2.37
         with:
           host: ${{ env.IP_ADDRESS }}
           username: jackstockley
